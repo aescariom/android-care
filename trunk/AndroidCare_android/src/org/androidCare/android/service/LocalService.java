@@ -62,7 +62,7 @@ public class LocalService extends Service {
 	
     protected AccountManager accountManager;
     protected Account user = null;
-    protected DefaultHttpClient http_client = new DefaultHttpClient();
+    private DefaultHttpClient http_client = new DefaultHttpClient();
     private final IBinder binder = new LocalServiceBinder();
 
 	protected final String tag="AndroidCare service";
@@ -134,7 +134,7 @@ public class LocalService extends Service {
                     e.printStackTrace();
             }
         }
-    }
+    };
     
     /**
      * 
@@ -158,16 +158,16 @@ public class LocalService extends Service {
         protected Boolean doInBackground(Object... tokens) {
             try {
                     // Don't follow redirects
-                    http_client.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
+                    getHttp_client().getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
                     
                     HttpGet http_get = new HttpGet(Constants.APP_URL + "_ah/login?continue=http://localhost/&auth=" + tokens[0].toString());
                     HttpResponse response;
-                    response = http_client.execute(http_get);
+                    response = getHttp_client().execute(http_get);
                     if(response.getStatusLine().getStatusCode() != 302)
                             // Response should be a redirect
                             return false;
                     
-                    for(Cookie cookie : http_client.getCookieStore().getCookies()) {
+                    for(Cookie cookie : getHttp_client().getCookieStore().getCookies()) {
                             if(cookie.getName().equals("ACSID"))
                                     return true;
                     }
@@ -176,7 +176,7 @@ public class LocalService extends Service {
             } catch (IOException e) {
                     e.printStackTrace();
             } finally {
-                    http_client.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, true);
+                    getHttp_client().getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, true);
             }
             return false;
         }
@@ -187,7 +187,7 @@ public class LocalService extends Service {
         protected void onPostExecute(Object result) {
                 new AuthenticatedRequestTask().execute(Constants.ALERTS_URL);
         }
-    }
+    };
     
     /**
      * 
@@ -203,7 +203,7 @@ public class LocalService extends Service {
         protected HttpResponse doInBackground(Object... arg) {
                 try {
                         HttpGet http_get = new HttpGet(arg[0].toString());
-                        return http_client.execute(http_get);
+                        return getHttp_client().execute(http_get);
                 } catch (ClientProtocolException e) {
                         e.printStackTrace();
                 } catch (IOException e) {
@@ -244,7 +244,7 @@ public class LocalService extends Service {
             	e.printStackTrace();
 			}
         }
-    }
+    };
 
     /**
      * schedules a series of alerts using the notification center
@@ -307,5 +307,9 @@ public class LocalService extends Service {
 	@Override
 	public IBinder onBind(Intent intent) {
 	    return binder;
+	}
+
+	public DefaultHttpClient getHttp_client() {
+		return http_client;
 	}
 }

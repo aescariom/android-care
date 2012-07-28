@@ -43,6 +43,7 @@ public class Alert implements Serializable{
 	private static final long serialVersionUID = 5999355389212728810L;
 	
 	//Alert data - the same than in the web
+	private int id;
 	private String title;
 	private String description;
 	private boolean repeat;
@@ -70,6 +71,7 @@ public class Alert implements Serializable{
 	 * @param obj
 	 */
 	public Alert(JSONObject obj) {
+		try { this.setId(Integer.parseInt(obj.getString("id"))); } catch (JSONException e) { Log.w("Parsing alert", "No id found"); }
 		try { this.setTitle(obj.getString("title")); } catch (JSONException e) { Log.w("Parsing alert", "No title found"); }
 		try { this.setDescription(obj.getString("description")); } catch (JSONException e) { Log.w("Parsing alert", "No description found"); }
 		try { this.setRepeatEach(obj.getInt("repeatEach")); } catch (JSONException e) { Log.w("Parsing alert", "No repeatEach found"); }
@@ -806,5 +808,13 @@ public class Alert implements Serializable{
 	 */
 	public void setRequestConfirmation(boolean requestConfirmation) {
 		this.requestConfirmation = requestConfirmation;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

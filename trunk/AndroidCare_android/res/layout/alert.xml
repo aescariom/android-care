@@ -14,9 +14,11 @@
     <Button android:id="@+id/btnNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Done" />
+            android:text="Done" 
+            android:onClick="setDone"/>
     <Button android:id="@+id/btnYes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Not done" />
+            android:text="Not done"
+            android:onClick="setUndone" />
 </LinearLayout>

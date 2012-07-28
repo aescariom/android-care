@@ -53,6 +53,9 @@ public class MainActivity extends ListActivity {
 		Intent i = new Intent(this.getApplicationContext(),
 				   LocalService.class);
 		this.startService(i);  
+		
+		//4 - Closing the activity
+		this.finish();
 	}
 
 	/**
