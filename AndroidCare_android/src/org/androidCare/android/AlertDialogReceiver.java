@@ -16,8 +16,22 @@
 
 package org.androidCare.android;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.androidCare.android.miscellaneous.Constants;
 import org.androidCare.android.objects.Alert;
 import org.androidCare.android.service.LocalService;
+import org.androidCare.common.AlertStatusCode;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -28,6 +42,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -43,6 +58,7 @@ public class AlertDialogReceiver extends Activity {
 	private final Handler handler = new Handler(); 
 	// this connection will allow us to interact with the service
 	LocalServiceConnection conn = new LocalServiceConnection();
+	Alert alert;
 	
 	/**
 	 * Default activity creator method
@@ -62,16 +78,17 @@ public class AlertDialogReceiver extends Activity {
 
 		//3 - getting the relevant information
 		Bundle b = getIntent().getExtras();
-		Alert a = (Alert) b.getSerializable("alert");
+		alert = (Alert) b.getSerializable("alert");
 		
 		//4 - displaying the information
 		TextView txt = (TextView)findViewById(R.id.alarm_title);
-		txt.setText(a.getTitle());
+		txt.setText(alert.getTitle());
 		txt = (TextView)findViewById(R.id.alarm_description);
-		txt.setText(a.getDescription());
+		txt.setText(alert.getDescription());
 
 		//5 - rescheduling the alert
-		reschedule(a);
+		reschedule(alert);
+		 postData(AlertStatusCode.ALERT_DISPLAYED);
 	}
 
 	/**
@@ -97,6 +114,59 @@ public class AlertDialogReceiver extends Activity {
         
         //3 - delaying the schedule. Then the activity and the service should be connected
         handler.postDelayed(r, 4000L); 		
+	}
+	
+	public void setDone(View view) {
+		 postData(AlertStatusCode.ALERT_DONE);
+	     this.finish();
+	}
+	
+	public void postData(AlertStatusCode statusCode) {
+		//1 - Set Connection
+	    final HttpPost httppost = new HttpPost(Constants.ALERT_LOG_URL);
+
+        //2 - Add your data
+        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("alertId", String.valueOf(alert.getId())));
+        nameValuePairs.add(new BasicNameValuePair("statusCode", String.valueOf(statusCode.getCode())));
+        try {
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			//3 - connecting with the local service
+			Intent intent = new Intent(this, LocalService.class);
+			getApplicationContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+			
+			//4 - delegating to a thread the rescheduling
+			Runnable r = new Runnable()  { 
+	            public void run() { 
+	            	//5 - rescheduling
+	
+	        	    try {
+	        	        // Execute HTTP Post Request
+	        	        HttpResponse response = conn.getService().getHttp_client().execute(httppost);
+	        	    } catch (ClientProtocolException e) {
+	        	    	e.printStackTrace();
+	        	        // TODO Auto-generated catch block
+	        	    } catch (IOException e) {
+	        	    	e.printStackTrace();
+	        	        // TODO Auto-generated catch block
+	        	    }
+	            } 
+	        }; 
+	        
+	        //6 - delaying the schedule. Then the activity and the service should be connected
+	        handler.postDelayed(r, 4000L); 	
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}	
+		
+
+	} 
+	
+	public void setUndone(View view) {
+		 postData(AlertStatusCode.ALERT_IGNORED);
+	     this.finish();
 	}
 	
 	/**
@@ -131,5 +201,6 @@ public class AlertDialogReceiver extends Activity {
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			service = null;				
-		}};
+		}
+	};
 }

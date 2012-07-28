@@ -24,6 +24,7 @@ package org.androidCare.android.miscellaneous;
 public class Constants {
 	public static final String APP_URL = "http://androidcare2.appspot.com/";
 	public static final String ALERTS_URL = APP_URL + "api/retrieveAlerts";
+	public static final String ALERT_LOG_URL = APP_URL + "api/addAlertLog";
 	
 	
 	public static final int HOUR = 0;
