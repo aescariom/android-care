@@ -37,4 +37,8 @@ public interface AlertService extends RemoteService {
 	Boolean deleteAlert(Alert alert);
 
 	List<AlertLog> fetchAlertLogs(Alert alert);
+
+	List<AlertLog> fetchAlertLogPage(Alert a, int start, int length);
+
+	int AlertLogCount(Alert alert);
 }

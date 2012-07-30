@@ -36,4 +36,8 @@ public interface AlertServiceAsync {
 	void deleteAlert(Alert alert, AsyncCallback<Boolean> callback);
 
 	void fetchAlertLogs(Alert alert, AsyncCallback<List<AlertLog>> asyncCallback);
+
+	void fetchAlertLogPage(Alert a, int start, int length, AsyncCallback<List<AlertLog>> callback);
+
+	void AlertLogCount(Alert alert, AsyncCallback<Integer> asyncCallback);
 }

@@ -26,9 +26,15 @@ import org.androidcare.web.shared.persistent.Alert;
 import org.androidcare.web.shared.persistent.AlertLog;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.HasData;
 
 /**
  * table that lists the logs of a selected alert
@@ -38,7 +44,9 @@ import com.google.gwt.user.client.ui.FlexTable;
 public class AlertLogTable extends ObservableForm {
     
 	private Alert alert;
-	private FlexTable table;
+	private CellTable<AlertLog> table;
+	private SimplePager pager;
+	private AsyncDataProvider<AlertLog> provider;
 	
 
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
@@ -66,12 +74,31 @@ public class AlertLogTable extends ObservableForm {
      * 
      */
 	private void setUpTable() {
-		this.table = new FlexTable();
+		this.table = new CellTable<AlertLog>();
+	    this.pager = new SimplePager();
 
-		this.table.setText(0, 0, "Time");
-		this.table.setText(0, 1, "Code");
+		this.table.setPageSize(10);
+
+		TextColumn<AlertLog> timeColumn = new TextColumn<AlertLog>(){
+			@Override
+			public String getValue(AlertLog a){
+				return a.getTime().toString();
+			}
+		};
+		TextColumn<AlertLog> codeColumn = new TextColumn<AlertLog>(){
+			@Override
+			public String getValue(AlertLog a){
+				return a.getCode().toString();
+			}
+		};
+
+		this.table.addColumn(timeColumn, "Time");
+		this.table.addColumn(codeColumn, "Action");
 		
-		this.setWidget(table);
+	    VerticalPanel vp = new VerticalPanel();
+	    vp.add(table);
+	    vp.add(pager);
+		this.setWidget(vp);
 	}
 
 	/**
@@ -79,39 +106,45 @@ public class AlertLogTable extends ObservableForm {
 	 */
 	public void getLogs() {
 
-		// Then, we send the input to the server.
-		alertService.fetchAlertLogs(this.alert,
-			new AsyncCallback<List<AlertLog>>() {
-				public void onFailure(Throwable caught) {
-					Window.alert("Error en el servidor!!!");
-					caught.printStackTrace();
-				}
+		final Alert alert = this.alert;
+		alertService.AlertLogCount(alert,
+				new AsyncCallback<Integer>() {
+					public void onFailure(Throwable caught) {
+						Window.alert("Error en el servidor!!!");
+						caught.printStackTrace();
+					}
 
-				@Override
-				public void onSuccess(List<AlertLog> rs) {
-					fill(rs);
-				}
-			});
-	}
-	
-	/**
-	 * 
-	 * @param log
-	 */
-	public void addLogEntry(AlertLog log){
-		int row = this.table.getRowCount();
-		this.table.setText(row, 0, log.getTime().toString());
-		this.table.setText(row, 1, log.getCode().toString());
-	}
+					@Override
+					public void onSuccess(Integer count) {
+					    provider.updateRowCount(count, true);
+					}
+				});
 
-	/**
-	 * 
-	 * @param rs
-	 */
-	private void fill(List<AlertLog> rs) {
-		for(AlertLog log : rs){
-			addLogEntry(log);
-		}
+		provider = new AsyncDataProvider<AlertLog>() {
+
+			@Override
+		      protected void onRangeChanged(HasData<AlertLog> display) {
+		        final int start = display.getVisibleRange().getStart();
+		        int length = display.getVisibleRange().getLength();
+		        AsyncCallback<List<AlertLog>> callback = new AsyncCallback<List<AlertLog>>() {
+		          @Override
+		          public void onFailure(Throwable caught) {
+		            Window.alert(caught.getMessage());
+		          }
+		          @Override
+		          public void onSuccess(List<AlertLog> result) {
+		            updateRowData(start, result);
+		          }
+		        };
+		        // The remote service that should be implemented
+		        alertService.fetchAlertLogPage(alert, start, length, callback);
+		      }
+		    };
+		    
+	    provider.addDataDisplay(table);
+	 
+	    pager.setDisplay(table);
+	 
 	}
 
 }
