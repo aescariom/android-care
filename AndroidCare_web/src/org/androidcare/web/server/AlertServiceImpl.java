@@ -213,4 +213,44 @@ public class AlertServiceImpl extends RemoteServiceServlet implements
         }
 		return list;
 	}
+
+	@Override
+	public List<AlertLog> fetchAlertLogPage(Alert alert, int start, int length) {
+		List<AlertLog> list = new ArrayList<AlertLog>();
+		
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try{
+			Alert a = (Alert)pm.getObjectById(Alert.class, alert.getId());
+			List<AlertLog> rs = a.getLog();	
+		    if(rs != null){
+		    	if(rs.size() > start){
+		    		int end = start + length;
+		    		end = Math.min(end, rs.size());
+		    		for(int i = start; i < end; i++){
+		    			list.add(rs.get(i));
+		    		}
+		    	}
+	        }
+		} catch(Exception ex){
+			ex.printStackTrace();
+        } finally {
+            pm.close();
+        }
+		return list;
+	}
+
+	@Override
+	public int AlertLogCount(Alert alert) {
+		
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try{
+			Alert a = (Alert)pm.getObjectById(Alert.class, alert.getId());
+			return a.getLog().size();
+		} catch(Exception ex){
+			ex.printStackTrace();
+        } finally {
+            pm.close();
+        }
+		return 0;
+	}
 }
