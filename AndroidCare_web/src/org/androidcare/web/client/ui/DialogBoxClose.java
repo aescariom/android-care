@@ -47,7 +47,7 @@ public class DialogBoxClose extends DialogBox {
         closeAnchor = new Anchor("x");
 
         FlexTable captionLayoutTable = new FlexTable();
-        captionLayoutTable.setWidth("100%");
+        captionLayoutTable.setWidth("600px");
         captionLayoutTable.setText(0, 0, title);
         captionLayoutTable.setWidget(0, 1, closeAnchor);
         captionLayoutTable.getCellFormatter().setHorizontalAlignment(0, 1,
@@ -78,7 +78,7 @@ public class DialogBoxClose extends DialogBox {
         this.add(panel);
         
         this.center();
-        this.setPopupPosition(this.getPopupLeft(), 50);
+        this.setPopupPosition(this.getPopupLeft() - 150, 50);
     }
 	
 	/**

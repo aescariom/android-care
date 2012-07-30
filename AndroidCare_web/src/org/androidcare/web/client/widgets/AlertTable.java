@@ -58,8 +58,8 @@ public class AlertTable extends FlexTable implements Observer {
 	public AlertTable(){
 		super();
 		
-		this.setText(0, 0, "Id");
-		this.setText(0, 1, "Title");
+		this.setText(0, 0, "Title");
+		this.setText(0, 1, "Description");
 		
 		getAlerts();
 	}
@@ -96,8 +96,12 @@ public class AlertTable extends FlexTable implements Observer {
 	 */
 	public void addAlert(final Alert alert){
 		int row = this.getRowCount();
-		this.setText(row, 0, alert.getId().toString());
-		this.setText(row, 1, alert.getTitle());
+		this.setText(row, 0, alert.getTitle());
+		String description = alert.getDescription();
+		if(description.length() > 100){
+			description = description.substring(0, 100) + "...";
+		}
+		this.setText(row, 1, description);
 
 		Button btnLog = new Button(LocalizedConstants.log());
 		btnLog.addClickHandler(new ClickHandler() {
