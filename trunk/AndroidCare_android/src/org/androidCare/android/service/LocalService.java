@@ -224,7 +224,7 @@ public class LocalService extends Service {
                 while((aux = reader.readLine()) != null){
                    	response += aux;
                 }
-                if(response.isEmpty()){
+                if(response.isEmpty()){ 
                 	Log.e("Request", "Empty response, this means that the user is not logged in.");
                 	return;
                 }
