@@ -55,7 +55,7 @@ public class MainActivity extends ListActivity {
 		this.startService(i);  
 		
 		//4 - Closing the activity
-		this.finish();
+		//this.finish();
 	}
 
 	/**

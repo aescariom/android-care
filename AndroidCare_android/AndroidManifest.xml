@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="7" />
+    <uses-sdk android:minSdkVersion="9" />
 
 	<!-- Permisos -->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission> <!-- obtención de las cuentas de google -->
@@ -33,5 +33,13 @@
         
         <receiver  android:process=":remote" android:name="AlarmReceiver"></receiver>
         <service 	android:enabled="true" android:name="org.androidCare.android.service.LocalService" /> <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
+        
+        <!--  start the service on boot -->
+        <receiver android:name="StartupIntentReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<category android:name="android.intent.category.HOME" />
+			</intent-filter>
+		</receiver>
     </application>
 </manifest>
