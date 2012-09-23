@@ -32,7 +32,7 @@
         </activity>
         
         <receiver  android:process=":remote" android:name="AlarmReceiver"></receiver>
-        <service 	android:enabled="true" android:name="org.androidCare.android.service.LocalService" /> <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
+        <service 	android:enabled="true" android:name="org.androidcare.android.service.LocalService" /> <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         
         <!--  start the service on boot -->
         <receiver android:name="StartupIntentReceiver">
