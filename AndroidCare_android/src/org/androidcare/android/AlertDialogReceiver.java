@@ -21,8 +21,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.androidcare.android.objects.Alert;
 import org.androidcare.android.service.LocalService;
+import org.androidcare.android.util.Reminder;
 import org.androidcare.common.AlertStatusCode;
 import org.androidcare.android.R;
 import org.apache.http.HttpResponse;
@@ -58,7 +58,7 @@ public class AlertDialogReceiver extends Activity {
 	private final Handler handler = new Handler(); 
 	// this connection will allow us to interact with the service
 	LocalServiceConnection conn = new LocalServiceConnection();
-	Alert alert;
+	Reminder alert;
 	
 	/**
 	 * Default activity creator method
@@ -78,7 +78,7 @@ public class AlertDialogReceiver extends Activity {
 
 		//3 - getting the relevant information
 		Bundle b = getIntent().getExtras();
-		alert = (Alert) b.getSerializable("alert");
+		alert = (Reminder) b.getSerializable("alert");
 		
 		//4 - displaying the information
 		TextView txt = (TextView)findViewById(R.id.alarm_title);
@@ -95,7 +95,7 @@ public class AlertDialogReceiver extends Activity {
 	 * reschedules an alert. In order to do that, we have to interact with the service
 	 * @param a
 	 */
-	private void reschedule(final Alert a) {
+	private void reschedule(final Reminder a) {
 		//1 - connecting with the local service
 		Intent intent = new Intent(this, LocalService.class);
 		getApplicationContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
@@ -143,7 +143,7 @@ public class AlertDialogReceiver extends Activity {
 	
 	        	    try {
 	        	        // Execute HTTP Post Request
-	        	        HttpResponse response = conn.getService().getHttp_client().execute(httppost);
+	        	        HttpResponse response = conn.getService().getHttpClient().execute(httppost);
 	        	    } catch (ClientProtocolException e) {
 	        	    	e.printStackTrace();
 	        	        // TODO Auto-generated catch block
