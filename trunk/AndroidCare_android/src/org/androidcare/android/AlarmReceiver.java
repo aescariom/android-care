@@ -18,6 +18,8 @@ package org.androidcare.android;
 
 import java.io.IOException;
 
+import org.androidcare.android.util.Reminder;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +29,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import org.androidcare.android.objects.*;
 
 /**
  * Alarm receiver handles the events related to alerts/alarms 
@@ -43,7 +44,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	   try {
 		   //1 - extracting the data from the 'messenger'
 		   Bundle bundle = intent.getExtras();
-		   Alert a = (Alert)bundle.getSerializable("alert");
+		   Reminder a = (Reminder)bundle.getSerializable("alert");
 		   //2 - display the detail dialog 
 		   displayDialog(context, a);
 		   //3 - getting user's attention
@@ -61,7 +62,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	  * @param ctx
 	  * @param a
 	  */
-	 private void displayDialog(Context ctx, Alert a) {
+	 private void displayDialog(Context ctx, Reminder a) {
 		//1 - setting up the intent
 		Intent intent = new Intent("android.intent.action.MAIN");
 		intent.setClass(ctx, AlertDialogReceiver.class);
