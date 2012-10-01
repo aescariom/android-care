@@ -97,10 +97,15 @@ public class Reminder implements Serializable{
 			if(this.isRepeat()){
 				this.setRepeatEach(obj.getInt("repeatEach")); 
 				this.setEndType(obj.getInt("endType"));
-				this.setUntilIterations(obj.getInt("untilIterations"));
+				if(this.endType == Reminder.ITERATIONS){
+					this.setUntilIterations(obj.getInt("untilIterations"));
+				}else if(this.endType == Reminder.UNTIL_DATE){
+					this.setUntilDate(sdf.parse(obj.getString("untilDate"))); 
+				}
 				this.setRepeatPeriod(obj.getInt("repeatPeriod"));
-				this.setUntilDate(sdf.parse(obj.getString("untilDate"))); 
-				this.setWeek(new Week(obj.getJSONArray("weekDays")));
+				if(this.repeatPeriod == Reminder.WEEK){
+					this.setWeek(new Week(obj.getJSONArray("weekDays")));
+				}
 			}
 		}catch (JSONException e) { 
 			Log.w("Parsing alert", "Mandatory fields not found"); 

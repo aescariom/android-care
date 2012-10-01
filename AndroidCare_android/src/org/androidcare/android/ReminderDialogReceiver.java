@@ -21,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.androidcare.android.service.LocalService;
+import org.androidcare.android.service.ReminderService;
 import org.androidcare.android.util.Reminder;
 import org.androidcare.common.ReminderStatusCode;
 import org.androidcare.android.R;
@@ -90,7 +90,7 @@ public class ReminderDialogReceiver extends Activity {
 
 	private void reschedule(final Reminder a) {
 		//1 - connecting with the local service
-		Intent intent = new Intent(this, LocalService.class);
+		Intent intent = new Intent(this, ReminderService.class);
 		getApplicationContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
 		
 		//2 - delegating to a thread the rescheduling
@@ -116,7 +116,7 @@ public class ReminderDialogReceiver extends Activity {
 	
 	public void postData(ReminderStatusCode statusCode) {
 		//1 - Set Connection
-	    final HttpPost httppost = new HttpPost(LocalService.ALERT_LOG_URL);
+	    final HttpPost httppost = new HttpPost(ReminderService.ALERT_LOG_URL);
 
         //2 - Add your data
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
@@ -126,7 +126,7 @@ public class ReminderDialogReceiver extends Activity {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			//3 - connecting with the local service
-			Intent intent = new Intent(this, LocalService.class);
+			Intent intent = new Intent(this, ReminderService.class);
 			getApplicationContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
 			
 			//4 - delegating to a thread the rescheduling
@@ -168,21 +168,21 @@ public class ReminderDialogReceiver extends Activity {
 	public class LocalServiceConnection implements ServiceConnection{
 		
 		// service reference
-		private LocalService service;
+		private ReminderService service;
 		
 		/**
 		 * on connect handler
 		 */
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			this.service = ((LocalService.LocalServiceBinder)service).getService();
+			this.service = ((ReminderService.LocalServiceBinder)service).getService();
 		}
 		
 		/**
 		 * returns the instance of the service
 		 * @return
 		 */
-		public LocalService getService(){
+		public ReminderService getService(){
 			return service;
 		}
 

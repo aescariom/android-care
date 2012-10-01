@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, MainActivity!</string>
-    <string name="app_name">AndroidCare_android</string>
+    <string name="app_name">AndroidCare</string>
 
+    <!-- General -->
+    <string name="error">Error</string>
+    <string name="open_account_settings">Open settings</string>
+    <string name="restarting_service">Restarting background service&#8230;</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- Accounts -->
+    <string name="account">Accounts</string>
+    <string name="account_settings">Account settings</string>
+    <string name="account_summary">Select a Google account</string>
+    <string name="zero_accounts">Zero accounts found</string>
+    <string name="setup_google_account">Please, set up a Google account</string>
+    
+    <!-- Network -->
+    <string name="not_reachable">Server not responding</string>
+    <string name="check_internet_connection">Please, check yout Internet connection</string>
+    
 </resources>

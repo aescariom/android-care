@@ -4,20 +4,23 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="9" />
+    <uses-sdk 
+        android:targetSdkVersion="7"
+        android:minSdkVersion="7" />
 
 	<!-- Permisos -->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission> <!-- obtención de las cuentas de google -->
 	<uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission> <!-- usar las cuentas de google -->
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission> <!-- descargar datos de Internet -->
+	<uses-permission android:name="com.android.alarm.permission.SET_ALARM"></uses-permission> <!-- permitir la creación de alarmas -->
 		
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".PreferencesActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,14 +28,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AlertDialogReceiver"
-            android:label="@string/app_name" >
-            <intent-filter>
-            </intent-filter>
+            android:name=".ReminderDialogReceiver"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".AccountSelectorActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         
-        <receiver  android:process=":remote" android:name="AlarmReceiver"></receiver>
-        <service 	android:enabled="true" android:name="org.androidcare.android.service.LocalService" /> <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
+        <receiver  android:process=":remote" android:name="ReminderReceiver"></receiver>
+        <service 	android:enabled="true" android:name=".service.ReminderService" /> <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         
         <!--  start the service on boot -->
         <receiver android:name="StartupIntentReceiver">
