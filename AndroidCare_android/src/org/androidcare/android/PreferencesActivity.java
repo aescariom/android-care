@@ -10,6 +10,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 import android.accounts.Account;
 import android.accounts.AccountManager;

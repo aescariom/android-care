@@ -36,6 +36,11 @@ import android.util.Log;
  */
 public class Reminder implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8087552729716719434L;
+	
 	public static final int HOUR = 0;
 	public static final int DAY = 1;
 	public static final int WEEK = 2;
@@ -45,9 +50,6 @@ public class Reminder implements Serializable{
 	public static final int NEVER_ENDS = 0;
 	public static final int UNTIL_DATE = 1;
 	public static final int ITERATIONS = 2;
-	
-	//
-	private static final long serialVersionUID = 5999355389212728810L;
 	
 	//Alert data - the same than in the web
 	private int id;
