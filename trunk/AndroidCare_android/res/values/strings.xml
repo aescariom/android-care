@@ -8,6 +8,7 @@
     <string name="open_account_settings">Open settings</string>
     <string name="restarting_service">Restarting background service&#8230;</string>
     <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
     
     <!-- Accounts -->
     <string name="account">Accounts</string>

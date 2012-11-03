@@ -43,7 +43,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 	   try {
 		   //1 - extracting the data from the 'messenger'
 		   Bundle bundle = intent.getExtras();
-		   Reminder a = (Reminder)bundle.getSerializable("alert");
+		   Reminder a = (Reminder)bundle.getSerializable("reminder");
 		   //2 - display the detail dialog 
 		   displayDialog(context, a);
 		   //3 - getting user's attention
@@ -60,7 +60,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 		//1 - setting up the intent
 		Intent intent = new Intent("android.intent.action.MAIN");
 		intent.setClass(ctx, ReminderDialogReceiver.class);
-		intent.putExtra("alert", a);
+		intent.putExtra("reminder", a);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		//2 - displaying the activity
 		ctx.startActivity(intent);    
