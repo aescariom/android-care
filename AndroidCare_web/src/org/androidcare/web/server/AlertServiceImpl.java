@@ -151,8 +151,8 @@ public class AlertServiceImpl extends RemoteServiceServlet implements
 	    User user = userService.getCurrentUser();
 		
 		Query query = pm.newQuery(Alert.class);
-	    query.setFilter("owner == alertOwner");
-	    query.declareParameters("String alertOwner");
+	    query.setFilter("owner == reminderOwner");
+	    query.declareParameters("String reminderOwner");
 	    //query.setRange(0, 1000);
 	    query.setOrdering("title asc");
 

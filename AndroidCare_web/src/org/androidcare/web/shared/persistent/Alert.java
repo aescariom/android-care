@@ -276,4 +276,9 @@ public class Alert implements Serializable{
 	public List<AlertLog> getLog(){
 		return this.log;
 	}
+
+	public void cleanForAPI() {
+		owner = null;
+		log = null;
+	}
 }
