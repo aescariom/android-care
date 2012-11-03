@@ -18,6 +18,7 @@ package org.androidcare.web.server.api;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +44,7 @@ import org.androidcare.web.shared.*;
  * @author Alejandro Escario MŽndez
  *
  */
-public class AddAlertLog extends HttpServlet {
+public class AddReminderLog extends HttpServlet {
 
 	/**
 	 * 
@@ -67,9 +68,16 @@ public class AddAlertLog extends HttpServlet {
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Transaction txn = datastore.beginTransaction();
 			try {
-				int alertId = Integer.parseInt(req.getParameter("alertId").toString()); 
+				if(req.getParameter("reminderId") == null || req.getParameter("statusCode") == null){
+					return;
+				}
+				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString()); 
 				int statusCode = Integer.parseInt(req.getParameter("statusCode").toString()); 
-				Alert a = (Alert)pm.getObjectById(Alert.class, alertId);
+				Alert a = (Alert)pm.getObjectById(Alert.class, reminderId);
+
+				if(a.getOwner().compareToIgnoreCase(user.getUserId()) != 0){
+					return;
+				}
 				
 				AlertLog log = new AlertLog();
 				log.setTime(new Date());
@@ -78,7 +86,9 @@ public class AddAlertLog extends HttpServlet {
 				a.addLog(log);
 
 			    txn.commit();
-			} finally {
+			} catch (JDOObjectNotFoundException e){
+				// object not found
+			}finally {
 			    if (txn.isActive()) {
 			        txn.rollback();
 			    }

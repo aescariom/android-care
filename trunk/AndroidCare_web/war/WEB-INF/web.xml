@@ -11,12 +11,12 @@
     <servlet-class>org.androidcare.web.server.AlertServiceImpl</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>retrieveAlerts</servlet-name>
-    <servlet-class>org.androidcare.web.server.api.RetrieveAlerts</servlet-class>
+    <servlet-name>retrieveReminders</servlet-name>
+    <servlet-class>org.androidcare.web.server.api.RetrieveReminders</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>addAlertLog</servlet-name>
-    <servlet-class>org.androidcare.web.server.api.AddAlertLog</servlet-class>
+    <servlet-name>addReminderLog</servlet-name>
+    <servlet-class>org.androidcare.web.server.api.AddReminderLog</servlet-class>
   </servlet>
   
   <servlet-mapping>
@@ -25,17 +25,17 @@
   </servlet-mapping>
   
   <servlet-mapping>
-    <servlet-name>retrieveAlerts</servlet-name>
-    <url-pattern>/api/retrieveAlerts</url-pattern>
+    <servlet-name>retrieveReminders</servlet-name>
+    <url-pattern>/api/retrieveReminders</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>addAlertLog</servlet-name>
-    <url-pattern>/api/addAlertLog</url-pattern>
+    <servlet-name>addReminderLog</servlet-name>
+    <url-pattern>/api/addReminderLog</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>Dashboard.html</welcome-file>
   </welcome-file-list>
   
   <!-- Security -->

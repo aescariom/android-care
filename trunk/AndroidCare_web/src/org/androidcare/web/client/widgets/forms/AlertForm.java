@@ -53,17 +53,17 @@ import com.google.gwt.user.client.ui.TextBox;
  *
  */
 public class AlertForm extends ObservableForm{
-	private static final int BASIC_ADVANCED_ROW = 0;
-	private static final int TITLE_ROW = 1;
-	private static final int DESCRIPTION_ROW = 2;
-	private static final int REPEAT_ROW = 3;
-	private static final int SINCE_ROW = 4;
-	private static final int UNTIL_ROW = 5;
-	private static final int REPEAT_PERIOD_ROW = 6;
-	private static final int DAYS_ROW = 7;
-	private static final int REPEAT_EACH_ROW = 8;
-	private static final int CONFIRMATION_ROW = 9;
-	//private static final int BRIEF_ROW = 10;
+	private static final int TITLE_ROW = 0;
+	private static final int DESCRIPTION_ROW = 1;
+	private static final int REPEAT_ROW = 2;
+	private static final int SINCE_ROW = 3;
+	private static final int UNTIL_ROW = 4;
+	private static final int REPEAT_PERIOD_ROW = 5;
+	private static final int DAYS_ROW = 6;
+	private static final int REPEAT_EACH_ROW = 7;
+	private static final int CONFIRMATION_ROW = 8;
+	//private static final int BRIEF_ROW = 9;
+	private static final int BASIC_ADVANCED_ROW = 10;
 	private static final int SEND_ROW = 11;
 	
 	private static final String grpName = "until";
