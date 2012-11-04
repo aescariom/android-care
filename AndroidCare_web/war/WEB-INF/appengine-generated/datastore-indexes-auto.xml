@@ -1,16 +1,4 @@
-<!-- Indices written at Sat, 3 Nov 2012 20:43:43 CET -->
+<!-- Indices written at Sun, 4 Nov 2012 22:26:39 CET -->
 
-<datastore-indexes>
+<datastore-indexes/>
 
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Alert" ancestor="false" source="auto">
-        <property name="owner" direction="asc"/>
-        <property name="title" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 5 times in query history -->
-    <datastore-index kind="AlertLog" ancestor="true" source="auto">
-        <property name="time" direction="desc"/>
-    </datastore-index>
-
-</datastore-indexes>
