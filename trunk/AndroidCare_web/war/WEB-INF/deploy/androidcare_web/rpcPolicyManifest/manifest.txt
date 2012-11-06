@@ -1,2 +1,4 @@
 # Module androidcare_web
 # RPC service class, partial path of RPC policy file
+org.androidcare.web.client.PositionService, B760645C542E6DAEC8FBABD3D48D0215.gwt.rpc
+org.androidcare.web.client.AlertService, 52017C105245CC24BB300C387A8A1B5A.gwt.rpc

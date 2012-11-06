@@ -9,8 +9,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.api.datastore.GeoPt;
-
 /**
  * 
  * @author Alejandro Escario MŽndez
@@ -19,12 +17,19 @@ import com.google.appengine.api.datastore.GeoPt;
 @PersistenceCapable
 public class Position implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8108731095389801231L;
+
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
-	
+
 	@Persistent
-    private GeoPt geoPoint;
+    private Float latitude;
+	@Persistent
+    private Float longitude;
 	
 	@Persistent 
 	private Date date;
@@ -32,8 +37,11 @@ public class Position implements Serializable {
 	@Persistent
 	private String owner;
 	
+	public Position(){}
+	
 	public Position(float latitude, float longitude, String owner, Date date){
-		this.geoPoint = new GeoPt(latitude, longitude);
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.owner = owner;
 		this.date = date;
 	}
@@ -42,7 +50,11 @@ public class Position implements Serializable {
 		this(latitude, longitude, owner, new Date());
 	}
 	
-	public String toString(){
-		return "lat: " + geoPoint.getLatitude() + " long: " + geoPoint.getLongitude() + " date: " + date.toString();
+	public float getLatitude(){
+		return latitude;
+	}
+	
+	public float getLongitude(){
+		return longitude;
 	}
 }

@@ -11,6 +11,10 @@
     <servlet-class>org.androidcare.web.server.AlertServiceImpl</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>positionServlet</servlet-name>
+    <servlet-class>org.androidcare.web.server.PositionServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>retrieveReminders</servlet-name>
     <servlet-class>org.androidcare.web.server.api.RetrieveReminders</servlet-class>
   </servlet>
@@ -26,6 +30,10 @@
   <servlet-mapping>
     <servlet-name>alertServlet</servlet-name>
     <url-pattern>/androidcare_web/alert</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>positionServlet</servlet-name>
+    <url-pattern>/androidcare_web/position</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

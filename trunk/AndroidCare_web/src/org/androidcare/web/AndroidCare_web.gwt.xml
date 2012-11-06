@@ -13,6 +13,8 @@
   <inherits name='net.sf.gilead.adapter4appengine.Adapter4AppEngine'/>
 
   <!-- Other module inherits                                      -->
+  <!--  Google maps -->
+  <inherits name='com.google.gwt.maps.GoogleMaps' />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='org.androidcare.web.client.Dashboard'/>
