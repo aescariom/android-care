@@ -29,7 +29,7 @@ public class ReminderLogMessage extends Message {
 		
 		//2 - Add your data
 		List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
-		nameValuePairs.add(new BasicNameValuePair("alertId", String.valueOf(this.reminder.getId())));
+		nameValuePairs.add(new BasicNameValuePair("reminderId", String.valueOf(this.reminder.getId())));
 		nameValuePairs.add(new BasicNameValuePair("statusCode", String.valueOf(this.statusCode.getCode())));
 			
 		httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
