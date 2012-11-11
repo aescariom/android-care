@@ -9,7 +9,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class UIReminderBasicView extends UIReminderView{
@@ -18,21 +17,19 @@ public class UIReminderBasicView extends UIReminderView{
 	protected Button btnNotPerformed;
 	protected TextView lblTitle;
 	protected TextView lblDescription;
-	protected LinearLayout wrapper;
 	
 	public UIReminderBasicView(Context context, Reminder reminder) {
 		super(context, reminder);
+		
+		inflate(context, R.layout.basic_reminder_ui, this);
 		
 		//2 - turning on the screen, display the activity over the locked screen, keeping the screen on, and unlocking the keyboard
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
 	            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
 	            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
 	            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-		
-		this.wrapper = new LinearLayout(context);
-		this.wrapper.setOrientation(LinearLayout.VERTICAL);
 
-		btnPerformed = new Button(context);
+		btnPerformed = (Button) findViewById(R.id.btnOk);
 		btnPerformed.setText(R.string.ok);
 		btnPerformed.setOnClickListener(new OnClickListener(){
 
@@ -43,7 +40,7 @@ public class UIReminderBasicView extends UIReminderView{
 			
 		});
 		
-		btnNotPerformed = new Button(context);
+		btnNotPerformed = (Button) findViewById(R.id.btnCancel);
 		btnNotPerformed.setText(R.string.cancel);
 		btnNotPerformed.setOnClickListener(new OnClickListener(){
 
@@ -54,19 +51,11 @@ public class UIReminderBasicView extends UIReminderView{
 			
 		});
 		
-		lblTitle = new TextView(context);
+		lblTitle = (TextView) findViewById(R.id.txtReminderTitle);
 		lblTitle.setText(this.reminder.getTitle());
 		
-		lblDescription = new TextView(context);
+		lblDescription = (TextView) findViewById(R.id.txtReminderDescription);
 		lblTitle.setText(this.reminder.getDescription());
-
-		this.wrapper.addView(lblTitle);
-		this.wrapper.addView(lblDescription);
-		
-		this.wrapper.addView(btnPerformed);
-		this.wrapper.addView(btnNotPerformed);
-		
-		this.addView(this.wrapper);
 
 		//5 - notifying
 		postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DISPLAYED));

@@ -23,8 +23,8 @@ import android.util.Log;
  *
  */
 public class ReminderService extends ConnectionService {
-	public static final String REMINDERS_URL = ConnectionService.APP_URL + "api/retrieveAlerts";
-	public static final String REMINDERS_LOG_URL = ConnectionService.APP_URL + "api/addAlertLog";
+	public static final String REMINDERS_URL = ConnectionService.APP_URL + "api/retrieveReminders";
+	public static final String REMINDERS_LOG_URL = ConnectionService.APP_URL + "api/addReminderLog";
 
 	private static final int REMINDER_REQUEST_CODE = 0;
 	
@@ -72,7 +72,7 @@ public class ReminderService extends ConnectionService {
 				Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		
 		AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-		manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
+		manager.set(AlarmManager.RTC_WAKEUP, /*cal.getTimeInMillis()*/Calendar.getInstance().getTimeInMillis(), sender);
 		
 		Log.i(tag, "Reminder scheduled: " + r.getTitle() + " @ " + cal.getTime().toString());
 	}
