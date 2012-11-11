@@ -59,7 +59,7 @@ public class ReminderService extends ConnectionService {
 		}
 	}
 
-	private void schedule(Reminder r) throws NoDateFoundException {
+	public void schedule(Reminder r) throws NoDateFoundException {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(TimeManager.getNextTimeLapse(r, cal.getTime()));
 		
@@ -72,7 +72,7 @@ public class ReminderService extends ConnectionService {
 				Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		
 		AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-		manager.set(AlarmManager.RTC_WAKEUP, /*cal.getTimeInMillis()*/Calendar.getInstance().getTimeInMillis(), sender);
+		manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
 		
 		Log.i(tag, "Reminder scheduled: " + r.getTitle() + " @ " + cal.getTime().toString());
 	}

@@ -3,6 +3,7 @@ package org.androidcare.android.view;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.ReminderLogMessage;
 import org.androidcare.android.service.ReminderService;
+import org.androidcare.android.util.NoDateFoundException;
 import org.androidcare.android.util.Reminder;
 import org.androidcare.common.ReminderStatusCode;
 
@@ -56,31 +57,41 @@ public abstract class UIReminderView extends RelativeLayout {
 		Activity parent = (Activity)getContext();
 		return parent.getWindow();
 	}
+	
+	private void connectWithReminderService() {
+		if(this.conn.getService() == null){
+			//1 - connecting with the local service
+			Intent intent = new Intent(getContext(), ReminderService.class);
+			getContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+		}
+	}
 
 	protected void reschedule(final Reminder a) {
-		//1 - connecting with the local service
-		Intent intent = new Intent(getContext(), ReminderService.class);
-		getContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+		connectWithReminderService();
 		
-		//2 - delegating to a thread the rescheduling
+		//TODO arreglar esta chapuza v
 		Runnable r = new Runnable()  { 
             public void run() { 
             	//4 - rescheduling
             	if (conn.getService() != null)  { 
-                      //conn.getService().schedule(a);
+                      try {
+						conn.getService().schedule(a);
+					} catch (NoDateFoundException e) {
+	                	Log.e(getClass().getName(), "Could not connect with the service, the alert won't be scheduled again");
+						e.printStackTrace();
+					}
                 } else{
                 	Log.e(getClass().getName(), "Could not connect with the service, the alert won't be scheduled again");
                 }
             } 
         }; 
-        
-        //3 - delaying the schedule. Then the activity and the service should be connected
         handler.postDelayed(r, 4000L); 		
 	}
-	
+
 	protected void postData(final Message message) {
-        Intent intent = new Intent(getContext(), ReminderService.class);
-		getContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+		connectWithReminderService();
+		
+		//TODO arreglar esta chapuza v
 		Runnable r = new Runnable()  { 
             public void run() { 
             	conn.getService().pushMessage(message);	
