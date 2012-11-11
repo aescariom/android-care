@@ -1,18 +1,10 @@
 package org.androidcare.android.view;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.androidcare.android.service.Message;
+import org.androidcare.android.service.ReminderLogMessage;
 import org.androidcare.android.service.ReminderService;
 import org.androidcare.android.util.Reminder;
 import org.androidcare.common.ReminderStatusCode;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -30,7 +22,7 @@ public abstract class UIReminderView extends RelativeLayout {
 	// this handler will allow us to wait to the service
 	protected final Handler handler = new Handler(); 
 	// this connection will allow us to interact with the service
-	protected LocalServiceConnection conn = new LocalServiceConnection();
+	protected ReminderServiceConnection conn = new ReminderServiceConnection();
 	protected Reminder reminder;
 
 	public UIReminderView(Context context, Reminder reminder) {
@@ -40,11 +32,11 @@ public abstract class UIReminderView extends RelativeLayout {
 	}
 	
 	public void performed(){
-		 postData(ReminderStatusCode.ALERT_DONE);
+		 postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DONE));
 	}
 	
 	public void notPerformed(){
-		 postData(ReminderStatusCode.ALERT_IGNORED);
+		 postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_IGNORED));
 	}
 	
 	public void delayed(){
@@ -52,7 +44,7 @@ public abstract class UIReminderView extends RelativeLayout {
 	}
 	
 	public void displayed(){
-		 postData(ReminderStatusCode.ALERT_DISPLAYED);
+		 postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DISPLAYED));
 	}
 	
 	public void finish(){
@@ -75,7 +67,7 @@ public abstract class UIReminderView extends RelativeLayout {
             public void run() { 
             	//4 - rescheduling
             	if (conn.getService() != null)  { 
-                      conn.getService().schedule(a);
+                      //conn.getService().schedule(a);
                 } else{
                 	Log.e(getClass().getName(), "Could not connect with the service, the alert won't be scheduled again");
                 }
@@ -86,45 +78,15 @@ public abstract class UIReminderView extends RelativeLayout {
         handler.postDelayed(r, 4000L); 		
 	}
 	
-	protected void postData(ReminderStatusCode statusCode) {
-		//1 - Set Connection
-	    final HttpPost httppost = new HttpPost(ReminderService.REMINDERS_LOG_URL);
-
-        //2 - Add your data
-        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("alertId", String.valueOf(reminder.getId())));
-        nameValuePairs.add(new BasicNameValuePair("statusCode", String.valueOf(statusCode.getCode())));
-        try {
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-			//3 - connecting with the local service
-			Intent intent = new Intent(getContext(), ReminderService.class);
-			getContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
-			
-			//4 - delegating to a thread the rescheduling
-			Runnable r = new Runnable()  { 
-	            public void run() { 
-	            	//5 - rescheduling
-	
-	        	    try {
-	        	        // Execute HTTP Post Request
-	        	        HttpResponse response = conn.getService().getHttpClient().execute(httppost);
-	        	    } catch (ClientProtocolException e) {
-	        	    	e.printStackTrace();
-	        	        // TODO Auto-generated catch block
-	        	    } catch (IOException e) {
-	        	    	e.printStackTrace();
-	        	        // TODO Auto-generated catch block
-	        	    }
-	            } 
-	        }; 
-	        
-	        //6 - delaying the schedule. Then the activity and the service should be connected
-	        handler.postDelayed(r, 4000L); 	
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}	
+	protected void postData(final Message message) {
+        Intent intent = new Intent(getContext(), ReminderService.class);
+		getContext().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+		Runnable r = new Runnable()  { 
+            public void run() { 
+            	conn.getService().pushMessage(message);	
+            }
+		};
+		handler.postDelayed(r, 4000L); 
 	}
 	
 	/**
@@ -132,7 +94,7 @@ public abstract class UIReminderView extends RelativeLayout {
 	 * @author Alejandro Escario MŽndez
 	 *
 	 */
-	public class LocalServiceConnection implements ServiceConnection{
+	public class ReminderServiceConnection implements ServiceConnection{
 		
 		// service reference
 		private ReminderService service;
@@ -140,9 +102,8 @@ public abstract class UIReminderView extends RelativeLayout {
 		/**
 		 * on connect handler
 		 */
-		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
-			this.service = ((ReminderService.LocalServiceBinder)service).getService();
+			this.service = ((ReminderService.ReminderServiceBinder)service).getService();
 		}
 		
 		/**
@@ -156,7 +117,6 @@ public abstract class UIReminderView extends RelativeLayout {
 		/**
 		 * 
 		 */
-		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			service = null;				
 		}

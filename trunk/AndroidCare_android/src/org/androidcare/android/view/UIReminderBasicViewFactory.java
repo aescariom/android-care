@@ -7,7 +7,6 @@ import android.view.Window;
 
 public class UIReminderBasicViewFactory implements UIReminderViewFactory {
 
-	@Override
 	public UIReminderView createView(Context context, Reminder reminder) {
 		return new UIReminderBasicView(context, reminder);
 	}

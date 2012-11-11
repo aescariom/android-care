@@ -23,7 +23,7 @@ import android.os.Bundle;
 
 /**
  * Main activity
- * @author Alejandro Escario MŽndez
+ * @author Alejandro Escario Méndez
  *
  */
 public class PreferencesActivity extends PreferenceActivity {
@@ -65,16 +65,15 @@ public class PreferencesActivity extends PreferenceActivity {
 		    }
 		    
 		    accountList.setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
-
-				@Override
-				public boolean onPreferenceChange(Preference preference,
-						Object newValue) {
+		    	
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					Toast.makeText(getApplicationContext(), R.string.restarting_service, Toast.LENGTH_SHORT).show();
 					Intent serviceIntent = new Intent(getApplicationContext(), ReminderService.class);
 				    startService(serviceIntent);
 				    accountList.setSummary(newValue.toString());
 					return true;
-				}});
+				}
+			});
 
 		    int num = accounts.length;
 		    String[] text = new String[num];
