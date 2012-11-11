@@ -1,15 +1,14 @@
 package org.androidcare.android.view;
 
 import org.androidcare.android.R;
+import org.androidcare.android.service.ReminderLogMessage;
 import org.androidcare.android.util.Reminder;
 import org.androidcare.common.ReminderStatusCode;
 
 import android.content.Context;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,7 +36,6 @@ public class UIReminderBasicView extends UIReminderView{
 		btnPerformed.setText(R.string.ok);
 		btnPerformed.setOnClickListener(new OnClickListener(){
 
-			@Override
 			public void onClick(View v) {
 				performed();
 				finish();
@@ -49,7 +47,6 @@ public class UIReminderBasicView extends UIReminderView{
 		btnNotPerformed.setText(R.string.cancel);
 		btnNotPerformed.setOnClickListener(new OnClickListener(){
 
-			@Override
 			public void onClick(View v) {
 				notPerformed();
 				finish();
@@ -72,6 +69,6 @@ public class UIReminderBasicView extends UIReminderView{
 		this.addView(this.wrapper);
 
 		//5 - notifying
-		postData(ReminderStatusCode.ALERT_DISPLAYED);
+		postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DISPLAYED));
 	}
 }

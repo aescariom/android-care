@@ -43,13 +43,13 @@ public class ReminderReceiver extends BroadcastReceiver {
 	   try {
 		   //1 - extracting the data from the 'messenger'
 		   Bundle bundle = intent.getExtras();
-		   Reminder a = (Reminder)bundle.getSerializable("reminder");
+		   Reminder r = (Reminder)bundle.getSerializable("reminder");
 		   //2 - display the detail dialog 
-		   displayDialog(context, a);
+		   displayDialog(context, r);
 		   //3 - getting user's attention
 		   playSound(context);
 		   
-		   Log.i("AlarmReceiver", a.toString());
+		   Log.i("AlarmReceiver", r.toString());
 	    } catch (Exception e) { // we must catch the exception
 	    	Log.i("AlarmReceiver", "There was an error somewhere, but we still received an alarm");
 	    	e.printStackTrace();
