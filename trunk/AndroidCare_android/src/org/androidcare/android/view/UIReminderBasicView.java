@@ -30,7 +30,6 @@ public class UIReminderBasicView extends UIReminderView{
 	            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
 		btnPerformed = (Button) findViewById(R.id.btnOk);
-		btnPerformed.setText(R.string.ok);
 		btnPerformed.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
@@ -41,7 +40,6 @@ public class UIReminderBasicView extends UIReminderView{
 		});
 		
 		btnNotPerformed = (Button) findViewById(R.id.btnCancel);
-		btnNotPerformed.setText(R.string.cancel);
 		btnNotPerformed.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
