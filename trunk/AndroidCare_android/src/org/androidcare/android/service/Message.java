@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 
-public abstract class Message {
+public abstract class Message implements Comparable {
 	protected String url;
 	protected Date creationDate;
 	
@@ -25,7 +25,8 @@ public abstract class Message {
 
 	public abstract HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException;
 	
-	public final int compareTo(Message m){
+	public final int compareTo(Object o){
+		Message m = (Message) o;
 		return this.creationDate.compareTo(m.getCreationDate());
 	}
 	

@@ -25,11 +25,14 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Binder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -49,7 +52,41 @@ public abstract class ConnectionService extends Service {
 	// communcation
 	private final Queue<Message> pendingMessages = new PriorityQueue<Message>();	// service info
 	private final String tag = this.getClass().getName();
+	private IntentFilter mNetworkStateChangedFilter;
+    private BroadcastReceiver mNetworkStateIntentReceiver;
 	
+	@Override
+	public void onStart(Intent intent, int startId){
+		super.onStart(intent, startId);
+		
+		setConnectionStateListener();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(mNetworkStateIntentReceiver);
+    }
+	
+	private void setConnectionStateListener() {
+		mNetworkStateChangedFilter = new IntentFilter();
+		mNetworkStateChangedFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+		mNetworkStateIntentReceiver = new BroadcastReceiver() {
+		    @Override
+		    public void onReceive(Context context, Intent intent) {
+				if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+				    NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+				    if(info.isAvailable()){
+				    	ConnectionService.this.processMessageQueue();
+				    	Log.i(tag, "Connection is back!");
+				    }
+				}
+		    }
+		};
+		registerReceiver(mNetworkStateIntentReceiver, mNetworkStateChangedFilter);
+	}
+
 	private void getOauthCookie() throws ReminderServiceException{
 		//1 - fetching the selected Google account
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -142,8 +179,12 @@ public abstract class ConnectionService extends Service {
 		this.processMessageQueue();
 	}
 
-	private synchronized void processMessageQueue() {
+	public synchronized void processMessageQueue() {
 		Message m;
+		if(!isConnectionAvailable()){
+			triggerConnectionErrorNotification();
+			return;
+		}
 		if(!isSessionCookieValid()){
 			return;
 		}
@@ -237,6 +278,21 @@ public abstract class ConnectionService extends Service {
 		
 		this.displayNotification(tickerText, contentTitle, contentText, 
 				ConnectionService.NOTIFICATION_NO_CONNECTION, Settings.ACTION_WIFI_SETTINGS);
+	}
+	
+	protected boolean isConnectionAvailable(){
+		ConnectivityManager conMgr =  (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (conMgr == null) {
+			return false;
+		}
+		NetworkInfo i = conMgr.getActiveNetworkInfo();
+		if (i == null)
+			return false;
+		if (!i.isConnected())
+			return false;
+		if (!i.isAvailable())
+			return false;
+		return true;
 	}
 	
 	/**
