@@ -11,9 +11,14 @@ import org.androidcare.android.util.TimeManager;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -25,6 +30,7 @@ import android.util.Log;
 public class ReminderService extends ConnectionService {
 	public static final String REMINDERS_URL = ConnectionService.APP_URL + "api/retrieveReminders";
 	public static final String REMINDERS_LOG_URL = ConnectionService.APP_URL + "api/addReminderLog";
+	public static final String POSITION_LOG_URL = ConnectionService.APP_URL + "api/addPosition";
 
 	private static final int REMINDER_REQUEST_CODE = 0;
 	
@@ -33,6 +39,21 @@ public class ReminderService extends ConnectionService {
 	private final IBinder binder = new ReminderServiceBinder();
 	// service info
 	private final String tag = this.getClass().getName();
+	// location
+	private LocationManager locationManager;
+	private int minSeconds = 300000; // 5 min
+	private int minDistance = 20; // 20 meters
+	private LocationListener locationListener = new LocationListener() {
+	    public void onLocationChanged(Location location) {
+	    	ReminderService.this.pushMessage(new GeoMessage(location));
+	    }
+
+	    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+	    public void onProviderEnabled(String provider) {}
+
+	    public void onProviderDisabled(String provider) {}
+	  };
 	
 	@Override
 	public void onStart(Intent intent, int startId){
@@ -40,6 +61,11 @@ public class ReminderService extends ConnectionService {
 		Log.i(tag, "Service started");
 		
 		this.pushMessage(new GetSchedulableRemindersMessage(this));
+		
+		// Acquire a reference to the system Location Manager
+		this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		// Register the listener with the Location Manager to receive location updates
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, this.minSeconds, this.minDistance, locationListener);
 	}
 
 	@Override
