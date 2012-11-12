@@ -1,5 +1,6 @@
 package org.androidcare.web.client.widgets;
 
+import java.util.Date;
 import java.util.List;
 
 import org.androidcare.web.client.PositionService;
@@ -26,7 +27,8 @@ public class UserLocationMap extends FlowPanel {
 	
 	private MapWidget mapWidget;
 	private LatLng center;
-	private int zoom = 16;
+	private Date date;
+	private int zoom = 14;
 	
 	public UserLocationMap(){
 		getPositions();
@@ -34,6 +36,12 @@ public class UserLocationMap extends FlowPanel {
 
 	public void centerMap() {
 	    mapWidget.setCenter(center, zoom);
+	    // Add an info window to highlight a point of interest
+	    mapWidget.getInfoWindow().open(mapWidget.getCenter(),
+	        new InfoWindowContent(
+	        		"Lat: " + this.center.getLatitude() + 
+	        		"<br/>Lng: " + this.center.getLongitude() + 
+	        		"<br/>" + this.date.toString()));
 	    
 		mapWidget.checkResize();
 	}
@@ -45,6 +53,7 @@ public class UserLocationMap extends FlowPanel {
 		}else{
 			Position p = rs.get(0);
 			center = LatLng.newInstance(p.getLatitude(), p.getLongitude());
+			date = p.getDate();
 		}
 	    
 	    mapWidget = new MapWidget();
@@ -56,11 +65,9 @@ public class UserLocationMap extends FlowPanel {
 	    // Add a marker
 	    mapWidget.addOverlay(new Marker(center));
 
-	    // Add an info window to highlight a point of interest
-	    mapWidget.getInfoWindow().open(mapWidget.getCenter(),
-	        new InfoWindowContent("World's Largest Ball of Sisal Twine"));
 	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
 	        dock.addNorth(mapWidget, 500);
+		mapWidget.checkResize();
 		
 	    this.add(dock);	    
 	}

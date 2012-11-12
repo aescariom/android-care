@@ -57,7 +57,8 @@
   <!-- Security -->
   	<security-constraint>
         <web-resource-collection>
-            <url-pattern>/Dashboard.html</url-pattern>
+            <web-resource-name>all</web-resource-name>
+    		<url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>

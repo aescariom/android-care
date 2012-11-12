@@ -57,4 +57,8 @@ public class Position implements Serializable {
 	public float getLongitude(){
 		return longitude;
 	}
+	
+	public Date getDate(){
+		return date;
+	}
 }

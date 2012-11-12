@@ -64,10 +64,14 @@ public class AddPosition extends HttpServlet {
 				Position p = new Position(latitude, longitude, owner);
 
 	            pm.makePersistent(p);
-			} finally {
+	            resp.getWriter().write("{\"status\": 0}");
+			} catch(Exception ex){
+	            resp.getWriter().write("{\"status\": -1}");				
+			}finally {
 				pm.close();
 	        } 
 		}else{
+            resp.getWriter().write("{\"status\": -2}");
 		} 
 	}  
 			 
