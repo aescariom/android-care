@@ -14,6 +14,7 @@
 	<uses-permission android:name="android.permission.INTERNET" /> <!-- descargar datos de Internet -->
 	<uses-permission android:name="com.android.alarm.permission.SET_ALARM" /> <!-- permitir la creación de alarmas -->
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- permitir la localización por red y gps -->
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- permitir obtener el estado de la conexión de red -->
 		
     <application
         android:icon="@drawable/ic_launcher"
@@ -37,7 +38,9 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         
-        <receiver  android:process=":remote" android:name="ReminderReceiver"></receiver>
+        <!-- reminder notification receiver -->
+        <receiver  android:process=":remote" android:name="ReminderReceiver">
+        </receiver>
         <service 	android:enabled="true" android:name=".service.ReminderService" /> <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         
         <!--  start the service on boot -->
