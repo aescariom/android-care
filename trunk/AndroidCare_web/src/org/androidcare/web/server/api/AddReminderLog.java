@@ -71,19 +71,18 @@ public class AddReminderLog extends HttpServlet {
 				a.addLog(log);
 
 			    txn.commit();
+
+	            resp.getWriter().write("{\"status\": 0}");
 			} catch (JDOObjectNotFoundException e){
-				// object not found
+	            resp.getWriter().write("{\"status\": -1}");
 			}finally {
 			    if (txn.isActive()) {
 			        txn.rollback();
 			    }
-			}
-			//jsonArray = new JSONArray(list);   
+			}   
 		}else{
-			//jsonArray = new JSONArray();
+            resp.getWriter().write("{\"status\": -2}");
 		}
-		//Then output the JSON string to the servlet response  
-		//resp.getWriter().println(jsonArray.toString()); 
 	}  
 			 
 	/**
