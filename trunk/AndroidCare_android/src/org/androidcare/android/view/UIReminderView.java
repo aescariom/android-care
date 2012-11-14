@@ -94,7 +94,7 @@ public abstract class UIReminderView extends RelativeLayout {
 		//TODO arreglar esta chapuza v
 		Runnable r = new Runnable()  { 
             public void run() { 
-            	conn.getService().pushMessage(message);	
+            	conn.getService().pushLowPriorityMessage(message);	
             }
 		};
 		handler.postDelayed(r, 4000L); 
