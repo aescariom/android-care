@@ -54,6 +54,9 @@ public abstract class ConnectionService extends Service {
 	private final String tag = this.getClass().getName();
 	private IntentFilter mNetworkStateChangedFilter;
     private BroadcastReceiver mNetworkStateIntentReceiver;
+
+	private int maxPendingMessages = 10;
+	private long maxTimeSiceFirstMessage = 900000;//15 min in milliseconds
 	
 	@Override
 	public void onStart(Intent intent, int startId){
@@ -178,14 +181,23 @@ public abstract class ConnectionService extends Service {
 		this.pendingMessages.add(m);
 		this.processMessageQueue();
 	}
+	
+	public synchronized void pushLowPriorityMessage(Message m){
+		this.pendingMessages.add(m);
+		long timeDiff = (new Date()).getTime() - this.pendingMessages.peek().getCreationDate().getTime();
+		if(this.pendingMessages.size() > maxPendingMessages ||
+				timeDiff > maxTimeSiceFirstMessage){
+			this.processMessageQueue();
+		}
+	}
 
 	public synchronized void processMessageQueue() {
 		Message m;
-		if(!isConnectionAvailable()){
-			triggerConnectionErrorNotification();
+		if(this.pendingMessages.size() <= 0 || !isSessionCookieValid()){
 			return;
 		}
-		if(!isSessionCookieValid()){
+		if(!isConnectionAvailable()){
+			triggerConnectionErrorNotification();
 			return;
 		}
 		try {

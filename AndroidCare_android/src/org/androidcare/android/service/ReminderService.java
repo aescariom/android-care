@@ -45,7 +45,7 @@ public class ReminderService extends ConnectionService {
 	private int minDistance = 20; // 20 meters
 	private LocationListener locationListener = new LocationListener() {
 	    public void onLocationChanged(Location location) {
-	    	ReminderService.this.pushMessage(new GeoMessage(location));
+	    	ReminderService.this.pushLowPriorityMessage(new GeoMessage(location));
 	    }
 
 	    public void onStatusChanged(String provider, int status, Bundle extras) {}
