@@ -12,12 +12,13 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.message.BasicNameValuePair;
 
 public class ReminderLogMessage extends Message {
+	public static final String REMINDERS_LOG_URL = ConnectionService.APP_URL + "api/addReminderLog";
 	protected Reminder reminder;
 	private ReminderStatusCode statusCode;
 	
 	public ReminderLogMessage(Reminder r, ReminderStatusCode statusCode){
 		super();
-		this.url = ReminderService.REMINDERS_LOG_URL;
+		this.url = ReminderLogMessage.REMINDERS_LOG_URL;
 		this.reminder = r;
 		this.statusCode = statusCode;
 	}
