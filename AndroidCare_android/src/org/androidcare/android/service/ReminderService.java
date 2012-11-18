@@ -28,9 +28,6 @@ import android.util.Log;
  *
  */
 public class ReminderService extends ConnectionService {
-	public static final String REMINDERS_URL = ConnectionService.APP_URL + "api/retrieveReminders";
-	public static final String REMINDERS_LOG_URL = ConnectionService.APP_URL + "api/addReminderLog";
-	public static final String POSITION_LOG_URL = ConnectionService.APP_URL + "api/addPosition";
 
 	private static final int REMINDER_REQUEST_CODE = 0;
 	

@@ -90,14 +90,14 @@ public abstract class ConnectionService extends Service {
 		registerReceiver(mNetworkStateIntentReceiver, mNetworkStateChangedFilter);
 	}
 
-	private void getOauthCookie() throws ReminderServiceException{
+	private void getOauthCookie() throws ConnectionServiceException{
 		//1 - fetching the selected Google account
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
 		String googleAccount = prefs.getString("account", "");
 		
 		if(googleAccount.isEmpty()){
-			throw new ReminderServiceException("Zero accounts configured");
+			throw new ConnectionServiceException("Zero accounts configured");
 		}
 		
 		//2 - getting the google accounts information
@@ -106,7 +106,7 @@ public abstract class ConnectionService extends Service {
 		
 		if(accounts.length <= 0){
 			triggerAccountManagerNotification();
-			throw new ReminderServiceException("Zero accounts found in the device");
+			throw new ConnectionServiceException("Zero accounts found in the device");
 		}
 		
 		//3 - looking for the selected account
@@ -119,7 +119,7 @@ public abstract class ConnectionService extends Service {
 		
 		if(this.googleUser == null){
 			triggerAccountSelectorNotification();
-			throw new ReminderServiceException("The selected account is not being used in the device");
+			throw new ConnectionServiceException("The selected account is not being used in the device");
 		}
 		
 		//4 - getting the auth token
@@ -134,13 +134,13 @@ public abstract class ConnectionService extends Service {
 	/**
 	 * this method processes the new session data and creates the cookie
 	 * @param bundle
-	 * @throws ReminderServiceException
+	 * @throws ConnectionServiceException
 	 */
-	public void getOauthCookie(Bundle bundle) throws ReminderServiceException {
+	public void getOauthCookie(Bundle bundle) throws ConnectionServiceException {
 		//1 - get the auth token
 		this.authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
 		if(this.authToken.isEmpty()){
-			throw new ReminderServiceException("AuthToken could not be fetched");
+			throw new ConnectionServiceException("AuthToken could not be fetched");
 		}
 		
 		//2 - get the cookie
@@ -151,7 +151,7 @@ public abstract class ConnectionService extends Service {
 		
 		// the localhost statement in the url, means that we want to talk with our 
 		// android device
-		HttpGet httpGet = new HttpGet(ReminderService.APP_URL + 
+		HttpGet httpGet = new HttpGet(ConnectionService.APP_URL + 
 				"_ah/login?continue=http://localhost/&auth=" + this.authToken);
 		
 		try {
@@ -228,7 +228,7 @@ public abstract class ConnectionService extends Service {
 		if(this.authCookie == null || this.authCookie.getExpiryDate().compareTo(new Date()) <= 0){
 			try {
 				getOauthCookie();
-			} catch (ReminderServiceException e) {
+			} catch (ConnectionServiceException e) {
 				e.printStackTrace();
 			}
 			return false;
@@ -327,7 +327,7 @@ public abstract class ConnectionService extends Service {
 				e.printStackTrace();
 			} catch (AuthenticatorException e) {
 				e.printStackTrace();
-			} catch (ReminderServiceException e) {
+			} catch (ConnectionServiceException e) {
 				e.printStackTrace();
 			}
 		}

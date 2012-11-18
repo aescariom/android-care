@@ -1,9 +1,9 @@
 package org.androidcare.android.service;
 
-public class ReminderServiceException extends Exception {
+public class ConnectionServiceException extends Exception {
 	protected final String description;
 	
-	public ReminderServiceException(String str){
+	public ConnectionServiceException(String str){
 		super();
 		this.description = str;
 	}

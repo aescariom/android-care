@@ -14,12 +14,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GetSchedulableRemindersMessage extends Message {
+	public static final String REMINDERS_URL = ConnectionService.APP_URL + "api/retrieveReminders";
 	
 	protected ReminderService reminderService;
 
 	public GetSchedulableRemindersMessage(ReminderService reminderService){
 		super();
-		this.url = ReminderService.REMINDERS_URL;
+		this.url = GetSchedulableRemindersMessage.REMINDERS_URL;
 		this.reminderService = reminderService;
 	}
 	
