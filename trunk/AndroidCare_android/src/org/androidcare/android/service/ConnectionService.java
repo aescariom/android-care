@@ -7,8 +7,10 @@ import java.util.Queue;
 
 import org.androidcare.android.PreferencesActivity;
 import org.androidcare.android.R;
+import org.androidcare.android.mock.MockHttpClient;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.ClientPNames;
@@ -202,7 +204,7 @@ public abstract class ConnectionService extends Service {
 		}
 		try {
 			while((m = pendingMessages.peek()) != null){
-				DefaultHttpClient client = getDefaultHttpClient();
+				HttpClient client = getDefaultHttpClient();
 				m.onPreSend();
 				HttpRequestBase request = m.getHttpRequestBase();
 				HttpResponse response = client.execute(request);
@@ -218,9 +220,15 @@ public abstract class ConnectionService extends Service {
 		}
 	}
 
-	private DefaultHttpClient getDefaultHttpClient() {
-		DefaultHttpClient client = new DefaultHttpClient();
-		client.getCookieStore().addCookie(this.authCookie);
+	private HttpClient getDefaultHttpClient() {
+		HttpClient client = null;
+		boolean isMock = getApplicationContext().getResources().getBoolean(R.bool.mock);
+		if(isMock){
+			client = new MockHttpClient(this.getApplicationContext());
+		}else{
+			client = new DefaultHttpClient();
+			((DefaultHttpClient)client).getCookieStore().addCookie(this.authCookie);
+		}
 		return client;
 	}
 

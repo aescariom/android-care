@@ -1,0 +1,23 @@
+[
+{
+repeatEach: 1,
+id: 18001,
+title: "Hacer algo",
+repeatPeriod: 1,
+description: "descripción de hacer algo...",
+logSize: 0,
+endType: 0,
+requestConfirmation: true,
+since: "Fri Nov 02 21:30:00 UTC 2012",
+repeat: true,
+weekDays: [
+false,
+false,
+false,
+false,
+false,
+false,
+false
+]
+}
+]

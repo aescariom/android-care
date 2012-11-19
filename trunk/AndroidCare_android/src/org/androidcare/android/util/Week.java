@@ -17,8 +17,6 @@
 package org.androidcare.android.util;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
