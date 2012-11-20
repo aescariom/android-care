@@ -13,8 +13,10 @@ public abstract class Message implements Comparable<Message> {
 	public Message(){
 		creationDate = new Date();
 	}
+
+	public abstract HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException;
 	
-	public void onPreSend(){
+	public void onPreSend(HttpRequestBase request){
 	}
 	
 	public void onPostSend(HttpResponse response) throws InvalidMessageResponseException{
@@ -22,8 +24,6 @@ public abstract class Message implements Comparable<Message> {
 			throw new InvalidMessageResponseException();
 		}
 	}
-
-	public abstract HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException;
 	
 	public final int compareTo(Message m){
 		return this.creationDate.compareTo(m.getCreationDate());

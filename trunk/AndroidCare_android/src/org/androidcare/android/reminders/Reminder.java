@@ -1,4 +1,4 @@
-package org.androidcare.android.util;
+package org.androidcare.android.reminders;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -356,5 +356,9 @@ public class Reminder implements Serializable{
 
 	private void setUntilIterations(int untilIterations) {
 		this.untilIterations = untilIterations;
+	}
+
+	public Date getNextTimeLapse(Date time) throws NoDateFoundException {
+		return TimeManager.getNextTimeLapse(this, time);
 	}
 }

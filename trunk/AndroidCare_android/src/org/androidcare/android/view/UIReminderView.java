@@ -1,10 +1,10 @@
 package org.androidcare.android.view;
 
+import org.androidcare.android.reminders.NoDateFoundException;
+import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.ReminderLogMessage;
 import org.androidcare.android.service.ReminderService;
-import org.androidcare.android.util.NoDateFoundException;
-import org.androidcare.android.util.Reminder;
 import org.androidcare.common.ReminderStatusCode;
 
 import android.app.Activity;

@@ -1,5 +1,4 @@
-package org.androidcare.android;
-import org.androidcare.android.service.ReminderService;
+package org.androidcare.android.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

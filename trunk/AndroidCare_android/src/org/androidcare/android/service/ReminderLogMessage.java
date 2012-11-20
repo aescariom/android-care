@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.androidcare.android.util.Reminder;
+import org.androidcare.android.reminders.Reminder;
 import org.androidcare.common.ReminderStatusCode;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;

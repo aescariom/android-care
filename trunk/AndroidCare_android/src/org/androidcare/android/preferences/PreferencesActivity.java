@@ -1,4 +1,4 @@
-package org.androidcare.android;
+package org.androidcare.android.preferences;
 
 import org.androidcare.android.R;
 import org.androidcare.android.service.ReminderService;

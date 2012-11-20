@@ -14,7 +14,7 @@
  * 
  */
 
-package org.androidcare.android;
+package org.androidcare.android.view;
 
 import java.io.IOException;
 
@@ -27,7 +27,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import org.androidcare.android.util.*;
+
+import org.androidcare.android.reminders.*;
 
 /**
  * Alarm receiver handles the events related to alerts/alarms 

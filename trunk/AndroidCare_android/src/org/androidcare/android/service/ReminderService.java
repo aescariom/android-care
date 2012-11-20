@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.androidcare.android.ReminderReceiver;
-import org.androidcare.android.util.NoDateFoundException;
-import org.androidcare.android.util.Reminder;
-import org.androidcare.android.util.TimeManager;
+import org.androidcare.android.reminders.NoDateFoundException;
+import org.androidcare.android.reminders.Reminder;
+import org.androidcare.android.view.ReminderReceiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -84,7 +83,7 @@ public class ReminderService extends ConnectionService {
 
 	public void schedule(Reminder r) throws NoDateFoundException {
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(TimeManager.getNextTimeLapse(r, cal.getTime()));
+		cal.setTime(r.getNextTimeLapse(cal.getTime()));
 		
 		Intent intent = new Intent(this.getApplicationContext(), ReminderReceiver.class);
 		intent.setData(Uri.parse("androidCare://" + r.getId() + ".- " + r.getTitle()));
