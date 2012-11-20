@@ -13,7 +13,7 @@ public class DefaultHttpClientFactory {
 
     public static HttpClient getDefaultHttpClient(Context context, Cookie authCookie) {
         HttpClient client = null;
-        boolean isMock = Resources.getSystem().getBoolean(R.bool.mock);
+        boolean isMock = context.getResources().getBoolean(R.bool.mock);
         if (isMock) {
             client = new MockHttpClient(context);
         } else {

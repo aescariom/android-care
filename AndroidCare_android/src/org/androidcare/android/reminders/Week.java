@@ -14,9 +14,11 @@
  * 
  */
 
-package org.androidcare.android.util;
+package org.androidcare.android.reminders;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ import org.json.JSONException;
  * @author Alejandro Escario MŽndez
  *
  */
-public class Week implements Serializable{
+class Week implements Serializable{
 	private static final long serialVersionUID = -32589040262037485L;
 	
 	public enum daysOfTheWeek {Monday, Tuesday, Wednesday, Thursday, Friday,
@@ -205,5 +207,52 @@ public class Week implements Serializable{
 	 */
 	private void setSunday(boolean sunday) {
 		this.sunday = sunday;
+	}
+
+	/**
+	 * returns the int value with the difference between today and the next selected day
+	 * @param time
+	 * @return
+	 * @throws NoDaySelectedException
+	 */
+	public int getDayAfterInWeek(Date time) throws NoDaySelectedException {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(time);
+		int day = cal.get(Calendar.DAY_OF_WEEK); // each week starts on Sunday
+		/**
+		 *  sun mon tue wed thu fri sat
+		 *   1   2   3   4   5   6   7
+		 */
+		
+		// let's loop over the entire week
+		for(int i = day; i <= 7 + day; i++){
+			// what if we are beyond the end of the week? let's go back to a valid weekday 
+			int aux = (i-1) % 7;
+			aux++;
+			switch(aux){
+			case 2: // Monday
+				if(this.isMonday()) return 2 - day;
+				break;
+			case 3: // Tuesday
+				if(this.isTuesday()) return 3 - day;
+				break;
+			case 4: // Wednesday
+				if(this.isWednesday()) return 4 - day;
+				break;
+			case 5: // Thursday
+				if(this.isThursday()) return 5 - day;
+				break;
+			case 6: // Friday
+				if(this.isFriday()) return 6 - day;
+				break;
+			case 7: // Saturday
+				if(this.isSaturday()) return 7 - day;
+				break;
+			case 1: // Sunday
+				if(this.isSunday()) return 1 - day;
+				break;
+			}
+		}
+		throw new NoDaySelectedException();
 	}
 }

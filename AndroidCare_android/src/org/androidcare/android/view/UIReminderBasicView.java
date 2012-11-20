@@ -1,8 +1,8 @@
 package org.androidcare.android.view;
 
 import org.androidcare.android.R;
+import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.ReminderLogMessage;
-import org.androidcare.android.util.Reminder;
 import org.androidcare.common.ReminderStatusCode;
 
 import android.content.Context;

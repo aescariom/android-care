@@ -1,9 +1,9 @@
-package org.androidcare.android.util;
+package org.androidcare.android.reminders;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class TimeManager {
+abstract class TimeManager {
 
 	/**
 	 * returns the next date and time in which the alert should be triggered
@@ -379,7 +379,7 @@ public class TimeManager {
 
 			//6 - Wich is the next 'week day' that the alarm should be triggered?
 			try{
-				nextDay = TimeManager.getDayAfterInWeek(reminder.getWeek(), time);
+				nextDay = reminder.getWeek().getDayAfterInWeek(time);
 			} catch(NoDaySelectedException ex) {
 				//There aren't any week days selected, so we can't continue
 				throw new NoDateFoundException();
@@ -413,7 +413,7 @@ public class TimeManager {
 
 			//6 - Wich is the next 'week day' that the alarm should be triggered?
 			try{
-				nextDay = TimeManager.getDayAfterInWeek(reminder.getWeek(), reminder.getSince().getTime());
+				nextDay = reminder.getWeek().getDayAfterInWeek(reminder.getSince().getTime());
 			} catch(NoDaySelectedException ex) {
 				//There aren't any week days selected, so we can't continue
 				throw new NoDateFoundException();
@@ -486,52 +486,5 @@ public class TimeManager {
 		hours = (hours + reminder.getRepeatEach() - aux); 
 		//6 - add the calculated hours to the start date
 		return new Date(reminder.getSince().getTimeInMillis() + hours*factor);
-	}
-
-	/**
-	 * returns the int value with the difference between today and the next selected day
-	 * @param time
-	 * @return
-	 * @throws NoDaySelectedException
-	 */
-	public static int getDayAfterInWeek(Week week, Date time) throws NoDaySelectedException {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(time);
-		int day = cal.get(Calendar.DAY_OF_WEEK); // each week starts on Sunday
-		/**
-		 *  sun mon tue wed thu fri sat
-		 *   1   2   3   4   5   6   7
-		 */
-		
-		// let's loop over the entire week
-		for(int i = day; i <= 7 + day; i++){
-			// what if we are beyond the end of the week? let's go back to a valid weekday 
-			int aux = (i-1) % 7;
-			aux++;
-			switch(aux){
-			case 2: // Monday
-				if(week.isMonday()) return 2 - day;
-				break;
-			case 3: // Tuesday
-				if(week.isTuesday()) return 3 - day;
-				break;
-			case 4: // Wednesday
-				if(week.isWednesday()) return 4 - day;
-				break;
-			case 5: // Thursday
-				if(week.isThursday()) return 5 - day;
-				break;
-			case 6: // Friday
-				if(week.isFriday()) return 6 - day;
-				break;
-			case 7: // Saturday
-				if(week.isSaturday()) return 7 - day;
-				break;
-			case 1: // Sunday
-				if(week.isSunday()) return 1 - day;
-				break;
-			}
-		}
-		throw new NoDaySelectedException();
 	}
 }

@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.androidcare.android.PreferencesActivity;
 import org.androidcare.android.R;
+import org.androidcare.android.preferences.PreferencesActivity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -74,7 +74,6 @@ public abstract class ConnectionService extends Service {
     private void setConnectionStateListener() {
         mNetworkStateChangedFilter = new IntentFilter();
         mNetworkStateChangedFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-
         mNetworkStateIntentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -111,8 +110,8 @@ public abstract class ConnectionService extends Service {
                 while ((message = pendingMessages.peek()) != null) {
                     HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
                             this.getApplicationContext(), authCookie);
-                    message.onPreSend();
                     HttpRequestBase request = message.getHttpRequestBase();
+                    message.onPreSend(request);
                     HttpResponse response = client.execute(request);
                     message.onPostSend(response);
                     pendingMessages.poll();

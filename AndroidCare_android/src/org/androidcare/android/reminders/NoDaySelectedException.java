@@ -14,7 +14,7 @@
  * 
  */
 
-package org.androidcare.android.util;
+package org.androidcare.android.reminders;
 
 /**
  * This exception will specify which was the problem while trying get 
