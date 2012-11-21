@@ -96,13 +96,6 @@ public abstract class ConnectionService extends Service {
         registerReceiver(mNetworkStateIntentReceiver, mNetworkStateChangedFilter);
     }
 
-    // Comentario siempre es preferible usar un lock sobre un detalle de implementación interno
-    // del objeto (pendingMessages) que sólo tú vas a tocar que sobre el propio objeto
-    // ya que alguien (por ejemplo, el framework donde se ejecute tu código, u otro programador
-    // en otra parte del código) podría tomar lock ssobre este objeto por algún otro motivo
-    // por ejemplo, Android podría tomar un lock sobre este servicio por algún motivo
-    // que no tiene nada que ver con acceder a la cola de mensajes pendientes, y tendríamos un
-    // lock más "contended" de lo realmente necesario
     public void processMessageQueue() {
         synchronized (pendingMessages) {
             Message message;
