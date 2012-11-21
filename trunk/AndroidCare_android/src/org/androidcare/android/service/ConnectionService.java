@@ -55,6 +55,10 @@ public abstract class ConnectionService extends Service {
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
     private BroadcastReceiver mNetworkStateIntentReceiver;
+    
+    //intent broadcast receiver
+    private ConnectionServiceBroadcastReceiver connectionServiceReceiver = new ConnectionServiceBroadcastReceiver(this);
+    private IntentFilter filter = new IntentFilter(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
 
     private int maxPendingMessages = 10;
     private long maxTimeSiceFirstMessage = 900000; // 15 min in milliseconds
@@ -62,6 +66,7 @@ public abstract class ConnectionService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
+        registerReceiver(connectionServiceReceiver, filter);
         setConnectionStateListener();
     }
 
@@ -69,6 +74,8 @@ public abstract class ConnectionService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mNetworkStateIntentReceiver);
+        unregisterReceiver(connectionServiceReceiver);
+        this.processMessageQueue();
     }
 
     private void setConnectionStateListener() {

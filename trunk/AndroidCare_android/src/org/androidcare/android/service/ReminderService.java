@@ -12,6 +12,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,8 +34,16 @@ public class ReminderService extends ConnectionService {
 	// communcation
 	private final List<Intent> reminderIntents = new ArrayList<Intent>();
 	private final IBinder binder = new ReminderServiceBinder();
+	
 	// service info
 	private final String tag = this.getClass().getName();
+	
+
+    //intent broadcast receiver
+    private ReminderServiceBroadcastReceiver reminderServiceReceiver = 
+    		new ReminderServiceBroadcastReceiver(this);
+    private IntentFilter filter = new IntentFilter(ReminderServiceBroadcastReceiver.ACTION_SCHEDULE_REMINDER);
+	
 	// location
 	private LocationManager locationManager;
 	private int minSeconds = 300000; // 5 min
@@ -61,8 +70,19 @@ public class ReminderService extends ConnectionService {
 		// Acquire a reference to the system Location Manager
 		this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		// Register the listener with the Location Manager to receive location updates
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, this.minSeconds, this.minDistance, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 
+												this.minSeconds, 
+												this.minDistance, 
+												locationListener);
+
+        registerReceiver(reminderServiceReceiver, filter);
 	}
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(reminderServiceReceiver);
+    }
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -94,7 +114,7 @@ public class ReminderService extends ConnectionService {
 				Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		
 		AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-		manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
+		manager.set(AlarmManager.RTC_WAKEUP, /*cal.getTimeInMillis()*/Calendar.getInstance().getTimeInMillis() + 60000, sender);
 		
 		Log.i(tag, "Reminder scheduled: " + r.getTitle() + " @ " + cal.getTime().toString());
 	}
