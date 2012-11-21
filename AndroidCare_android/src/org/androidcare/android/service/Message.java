@@ -1,12 +1,13 @@
 package org.androidcare.android.service;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 
-public abstract class Message implements Comparable<Message> {
+public abstract class Message implements Serializable, Comparable<Message> {
 	protected String url;
 	protected Date creationDate;
 	
