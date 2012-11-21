@@ -114,7 +114,7 @@ public class ReminderService extends ConnectionService {
 				Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		
 		AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-		manager.set(AlarmManager.RTC_WAKEUP, /*cal.getTimeInMillis()*/Calendar.getInstance().getTimeInMillis() + 60000, sender);
+		manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
 		
 		Log.i(tag, "Reminder scheduled: " + r.getTitle() + " @ " + cal.getTime().toString());
 	}
