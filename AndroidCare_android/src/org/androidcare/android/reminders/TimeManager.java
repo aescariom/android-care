@@ -26,13 +26,11 @@ abstract class TimeManager {
 					return TimeManager.getNextTimeLapseByDate(reminder, time);
 				case Reminder.ITERATIONS:
 					return TimeManager.getNextTimeLapseByIterations(reminder, time);
-				default:
-					throw new NoDateFoundException();
 				}
 			}
 		}
-
-		throw new NoDateFoundException();
+		
+		throw new NoDateFoundException("This reminder has no future schedulable dates");
 	}
 
 	/**
@@ -41,7 +39,7 @@ abstract class TimeManager {
 	 * @return
 	 * @throws NoDateFoundException
 	 */
-	private static Date getNextTimeLapseByIterations(Reminder reminder, Date time) throws NoDateFoundException {
+	private static Date getNextTimeLapseByIterations(Reminder reminder, Date time) {
 		switch(reminder.getRepeatPeriod()){
 		case Reminder.HOUR:
 			Date nextHour = TimeManager.getNextHourByTimeLapse(reminder, time);
@@ -74,8 +72,7 @@ abstract class TimeManager {
 			}
 			break;
 		}
-
-		throw new NoDateFoundException();
+		return null;
 	}
 
 	/**
@@ -168,7 +165,7 @@ abstract class TimeManager {
 	 * @return
 	 * @throws NoDateFoundException
 	 */
-	private static Date getNextTimeLapseWithNoEnd(Reminder reminder, Date time) throws NoDateFoundException {
+	private static Date getNextTimeLapseWithNoEnd(Reminder reminder, Date time) {
 		//1 - let's calculate the next ocurrence
 		switch(reminder.getRepeatPeriod()){
 		case Reminder.HOUR:
@@ -187,9 +184,7 @@ abstract class TimeManager {
 			Date nextYear = TimeManager.getNextYearByTimeLapse(reminder, time);
 			return nextYear;
 		}
-
-		throw new NoDateFoundException();
-
+		return null;
 	}
 
 	/**
@@ -200,8 +195,8 @@ abstract class TimeManager {
 	 */
 	private static Date getNextTimeLapseByDate(Reminder reminder, Date time) throws NoDateFoundException {
 		//1 - is this alert still active? or, on the other hand, the end date is in the past
-		if(reminder.getUntilDate() == null || time.after(reminder.getUntilDate().getTime())){
-			throw new NoDateFoundException();
+		if(time.after(reminder.getUntilDate().getTime())){
+			throw new NoDateFoundException("The reminder has no future schedules");
 		}
 
 		//2 - let's calculate the next ocurrence
@@ -237,8 +232,7 @@ abstract class TimeManager {
 			}
 			break;
 		}
-
-		throw new NoDateFoundException();
+		return null;
 	}
 
 	/**
@@ -353,7 +347,7 @@ abstract class TimeManager {
 	 * @return
 	 * @throws NoDateFoundException
 	 */
-	private static Date getNextWeekDayByTimeLapse(Reminder reminder, Date time) throws NoDateFoundException {
+	private static Date getNextWeekDayByTimeLapse(Reminder reminder, Date time) {
 		/*
 		 * NOTES:
 		 * 		- the first day of the week is monday
@@ -378,12 +372,7 @@ abstract class TimeManager {
 			 */
 
 			//6 - Wich is the next 'week day' that the alarm should be triggered?
-			try{
-				nextDay = reminder.getWeek().getDayAfterInWeek(time);
-			} catch(NoDaySelectedException ex) {
-				//There aren't any week days selected, so we can't continue
-				throw new NoDateFoundException();
-			}
+			nextDay = reminder.getWeek().getDayAfterInWeek(time);
 			
 			/*
 			 *7 - if aux is equals to 0, then we are at the beginning of the week, so we can just get the next time just by calculating the difference
@@ -412,12 +401,7 @@ abstract class TimeManager {
 			 */
 
 			//6 - Wich is the next 'week day' that the alarm should be triggered?
-			try{
-				nextDay = reminder.getWeek().getDayAfterInWeek(reminder.getSince().getTime());
-			} catch(NoDaySelectedException ex) {
-				//There aren't any week days selected, so we can't continue
-				throw new NoDateFoundException();
-			}
+			nextDay = reminder.getWeek().getDayAfterInWeek(reminder.getSince().getTime());
 			
 			//7 - if the nomber of days is > 0 then we are in the same week but, if it's < 0 then we have to move to the next week 
 			if(nextDay < 0 ||

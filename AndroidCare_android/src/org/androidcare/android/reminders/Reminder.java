@@ -62,14 +62,19 @@ public class Reminder implements Serializable{
 	/**
 	 * creates an alert from a JSON object
 	 * @param obj
+	 * @throws NoDateFoundException 
+	 * @throws NoDaySelectedException 
 	 */
-	public Reminder(JSONObject obj) {
+	public Reminder(JSONObject obj) throws NoDateFoundException, NoDaySelectedException {
 		try{
 			
 			// Mandatory fields
 			this.setId(Integer.parseInt(obj.getString("id")));
 			this.setTitle(obj.getString("title"));
 			this.setSince(sdf.parse(obj.getString("since")));
+			if(this.since == null){
+				throw new NoDateFoundException("No start date found");
+			}
 			this.setRepeat(obj.getBoolean("repeat"));
 			this.setRequestConfirmation(obj.getBoolean("requestConfirmation"));
 			
@@ -87,16 +92,39 @@ public class Reminder implements Serializable{
 					this.setUntilIterations(obj.getInt("untilIterations"));
 				}else if(this.endType == Reminder.UNTIL_DATE){
 					this.setUntilDate(sdf.parse(obj.getString("untilDate"))); 
+					if(this.untilDate == null){
+						throw new NoDateFoundException("No end date found");
+					}
+				} else{
+					// if is not one of the above values, it must be the following one
+					this.endType = Reminder.NEVER_ENDS;
 				}
 				this.setRepeatPeriod(obj.getInt("repeatPeriod"));
-				if(this.repeatPeriod == Reminder.WEEK){
-					this.setWeek(new Week(obj.getJSONArray("weekDays")));
+				if(isRepeatPeriodValid()){
+					if(this.repeatPeriod == Reminder.WEEK){
+						this.setWeek(new Week(obj.getJSONArray("weekDays")));
+					}
+				}else{
+					throw new NoDateFoundException("Repeat period not valid");
 				}
 			}
 		}catch (JSONException e) { 
 			Log.w("Parsing alert", "Mandatory fields not found"); 
 		} catch (ParseException e) {
 			Log.w("Parsing alert", "Incorrect date format"); 
+		}
+	}
+
+	private boolean isRepeatPeriodValid() {
+		switch(this.repeatPeriod){
+		case Reminder.HOUR:
+		case Reminder.DAY:
+		case Reminder.WEEK:
+		case Reminder.MONTH:
+		case Reminder.YEAR:
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -111,7 +139,7 @@ public class Reminder implements Serializable{
 	 * @param repeatPeriod
 	 * @param repeatEach
 	 */
-	public Reminder(String title, String description, Date startTime, Date endTime, boolean repeat,
+	/*public Reminder(String title, String description, Date startTime, Date endTime, boolean repeat,
 			int endType, int repeatPeriod, int repeatEach) {
 		this.setTitle(title);
 		this.setDescription(description);
@@ -129,7 +157,7 @@ public class Reminder implements Serializable{
 		this.untilDate = cEnd;
 		this.repeatPeriod = repeatPeriod;
 		this.repeatEach = repeatEach;
-	}
+	}*/
 	
 	/**
 	 * custom constructor
@@ -143,11 +171,11 @@ public class Reminder implements Serializable{
 	 * @param repeatEach
 	 * @param iterations
 	 */
-	public Reminder(String title, String description, Date startTime, Date endTime, boolean repeat,
+	/*public Reminder(String title, String description, Date startTime, Date endTime, boolean repeat,
 			int endType, int repeatPeriod, int repeatEach, int iterations) {
 		this(title, description, startTime, endTime, repeat, endType, repeatPeriod, repeatEach);
 		this.setUntilIterations(iterations);
-	}
+	}*/
 
 	/**
 	 * string representation
