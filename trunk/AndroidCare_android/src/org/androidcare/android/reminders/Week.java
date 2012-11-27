@@ -46,8 +46,10 @@ class Week implements Serializable{
 	/**
 	 * 
 	 * @param arr
+	 * @throws NoDaySelectedException 
+	 * @throws NoDateFoundException 
 	 */
-	public Week(JSONArray arr) {
+	public Week(JSONArray arr) throws NoDaySelectedException {
 		try { this.setMonday(arr.getBoolean(0)); } catch (JSONException e) { e.printStackTrace(); }
 		try { this.setTuesday(arr.getBoolean(1)); } catch (JSONException e) { e.printStackTrace(); }
 		try { this.setWednesday(arr.getBoolean(2)); } catch (JSONException e) { e.printStackTrace(); }
@@ -55,6 +57,10 @@ class Week implements Serializable{
 		try { this.setFriday(arr.getBoolean(4)); } catch (JSONException e) { e.printStackTrace(); }
 		try { this.setSaturday(arr.getBoolean(5)); } catch (JSONException e) { e.printStackTrace(); }
 		try { this.setSunday(arr.getBoolean(6)); } catch (JSONException e) { e.printStackTrace(); }
+		if(!this.monday && !this.tuesday && !this.wednesday && !this.thursday && !this.friday &&
+				!this.saturday && !this.sunday){
+			throw new NoDaySelectedException();
+		}
 	}
 
 	/**
@@ -215,7 +221,7 @@ class Week implements Serializable{
 	 * @return
 	 * @throws NoDaySelectedException
 	 */
-	public int getDayAfterInWeek(Date time) throws NoDaySelectedException {
+	public int getDayAfterInWeek(Date time) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(time);
 		int day = cal.get(Calendar.DAY_OF_WEEK); // each week starts on Sunday
@@ -253,6 +259,6 @@ class Week implements Serializable{
 				break;
 			}
 		}
-		throw new NoDaySelectedException();
+		return 0;
 	}
 }
