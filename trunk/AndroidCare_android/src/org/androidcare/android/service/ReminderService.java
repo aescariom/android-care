@@ -2,6 +2,7 @@ package org.androidcare.android.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.androidcare.android.reminders.NoDateFoundException;
@@ -92,18 +93,17 @@ public class ReminderService extends ConnectionService {
 	public void schedule(Reminder[] reminders){
 		cancelAllReminders();
 		for(Reminder r : reminders){
-			try {
-				this.schedule(r);
-			} catch (NoDateFoundException e) {
-				Log.e(tag, "Reminder not scheduled: " + r.getTitle());
-				e.printStackTrace();
-			}
+			this.schedule(r);
 		}
 	}
 
-	public void schedule(Reminder r) throws NoDateFoundException {
+	public void schedule(Reminder r) {
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(r.getNextTimeLapse(cal.getTime()));
+		Date date = r.getNextTimeLapse(cal.getTime());
+		if(date == null){
+			return;
+		}
+		cal.setTime(date);
 		
 		Intent intent = new Intent(this.getApplicationContext(), ReminderReceiver.class);
 		intent.setData(Uri.parse("androidCare://" + r.getId() + ".- " + r.getTitle()));

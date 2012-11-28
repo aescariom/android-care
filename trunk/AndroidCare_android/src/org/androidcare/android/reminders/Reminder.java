@@ -64,54 +64,51 @@ public class Reminder implements Serializable{
 	 * @param obj
 	 * @throws NoDateFoundException 
 	 * @throws NoDaySelectedException 
+	 * @throws JSONException 
+	 * @throws NumberFormatException 
+	 * @throws ParseException 
 	 */
-	public Reminder(JSONObject obj) throws NoDateFoundException, NoDaySelectedException {
-		try{
-			
-			// Mandatory fields
-			this.setId(Integer.parseInt(obj.getString("id")));
-			this.setTitle(obj.getString("title"));
-			this.setSince(sdf.parse(obj.getString("since")));
-			if(this.since == null){
-				throw new NoDateFoundException("No start date found");
-			}
-			this.setRepeat(obj.getBoolean("repeat"));
-			this.setRequestConfirmation(obj.getBoolean("requestConfirmation"));
-			
-			// Optional fields
-			try { 
-				this.setDescription(obj.getString("description")); 
-			} catch (JSONException e) { 
-				Log.w("Parsing alert", "No description found"); 
-			}
-			
-			if(this.isRepeat()){
-				this.setRepeatEach(obj.getInt("repeatEach")); 
-				this.setEndType(obj.getInt("endType"));
-				if(this.endType == Reminder.ITERATIONS){
-					this.setUntilIterations(obj.getInt("untilIterations"));
-				}else if(this.endType == Reminder.UNTIL_DATE){
-					this.setUntilDate(sdf.parse(obj.getString("untilDate"))); 
-					if(this.untilDate == null){
-						throw new NoDateFoundException("No end date found");
-					}
-				} else{
-					// if is not one of the above values, it must be the following one
-					this.endType = Reminder.NEVER_ENDS;
+	public Reminder(JSONObject obj) throws 	NoDateFoundException, NoDaySelectedException, 
+											NumberFormatException, JSONException, ParseException {
+		// Mandatory fields
+		this.setId(Integer.parseInt(obj.getString("id")));
+		this.setTitle(obj.getString("title"));
+		this.setSince(sdf.parse(obj.getString("since")));
+		if(this.since == null){
+			throw new NoDateFoundException("No start date found");
+		}
+		this.setRepeat(obj.getBoolean("repeat"));
+		this.setRequestConfirmation(obj.getBoolean("requestConfirmation"));
+		
+		// Optional fields
+		try { 
+			this.setDescription(obj.getString("description")); 
+		} catch (JSONException e) { 
+			Log.w("Parsing alert", "No description found"); 
+		}
+		
+		if(this.isRepeat()){
+			this.setRepeatEach(obj.getInt("repeatEach")); 
+			this.setEndType(obj.getInt("endType"));
+			if(this.endType == Reminder.ITERATIONS){
+				this.setUntilIterations(obj.getInt("untilIterations"));
+			}else if(this.endType == Reminder.UNTIL_DATE){
+				this.setUntilDate(sdf.parse(obj.getString("untilDate"))); 
+				if(this.untilDate == null){
+					throw new NoDateFoundException("No end date found");
 				}
-				this.setRepeatPeriod(obj.getInt("repeatPeriod"));
-				if(isRepeatPeriodValid()){
-					if(this.repeatPeriod == Reminder.WEEK){
-						this.setWeek(new Week(obj.getJSONArray("weekDays")));
-					}
-				}else{
-					throw new NoDateFoundException("Repeat period not valid");
-				}
+			} else{
+				// if is not one of the above values, it must be the following one
+				this.endType = Reminder.NEVER_ENDS;
 			}
-		}catch (JSONException e) { 
-			Log.w("Parsing alert", "Mandatory fields not found"); 
-		} catch (ParseException e) {
-			Log.w("Parsing alert", "Incorrect date format"); 
+			this.setRepeatPeriod(obj.getInt("repeatPeriod"));
+			if(isRepeatPeriodValid()){
+				if(this.repeatPeriod == Reminder.WEEK){
+					this.setWeek(new Week(obj.getJSONArray("weekDays")));
+				}
+			}else{
+				throw new NoDateFoundException("Repeat period not valid");
+			}
 		}
 	}
 
@@ -386,7 +383,7 @@ public class Reminder implements Serializable{
 		this.untilIterations = untilIterations;
 	}
 
-	public Date getNextTimeLapse(Date time) throws NoDateFoundException {
+	public Date getNextTimeLapse(Date time) {
 		return TimeManager.getNextTimeLapse(this, time);
 	}
 }

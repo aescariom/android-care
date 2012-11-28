@@ -47,16 +47,16 @@ class Week implements Serializable{
 	 * 
 	 * @param arr
 	 * @throws NoDaySelectedException 
-	 * @throws NoDateFoundException 
+	 * @throws JSONException 
 	 */
-	public Week(JSONArray arr) throws NoDaySelectedException {
-		try { this.setMonday(arr.getBoolean(0)); } catch (JSONException e) { e.printStackTrace(); }
-		try { this.setTuesday(arr.getBoolean(1)); } catch (JSONException e) { e.printStackTrace(); }
-		try { this.setWednesday(arr.getBoolean(2)); } catch (JSONException e) { e.printStackTrace(); }
-		try { this.setThursday(arr.getBoolean(3)); } catch (JSONException e) { e.printStackTrace(); }
-		try { this.setFriday(arr.getBoolean(4)); } catch (JSONException e) { e.printStackTrace(); }
-		try { this.setSaturday(arr.getBoolean(5)); } catch (JSONException e) { e.printStackTrace(); }
-		try { this.setSunday(arr.getBoolean(6)); } catch (JSONException e) { e.printStackTrace(); }
+	public Week(JSONArray arr) throws NoDaySelectedException, JSONException {
+		this.setMonday(arr.getBoolean(0));
+		this.setTuesday(arr.getBoolean(1));
+		this.setWednesday(arr.getBoolean(2));
+		this.setThursday(arr.getBoolean(3));
+		this.setFriday(arr.getBoolean(4));
+		this.setSaturday(arr.getBoolean(5));
+		this.setSunday(arr.getBoolean(6));
 		if(!this.monday && !this.tuesday && !this.wednesday && !this.thursday && !this.friday &&
 				!this.saturday && !this.sunday){
 			throw new NoDaySelectedException();
@@ -219,7 +219,6 @@ class Week implements Serializable{
 	 * returns the int value with the difference between today and the next selected day
 	 * @param time
 	 * @return
-	 * @throws NoDaySelectedException
 	 */
 	public int getDayAfterInWeek(Date time) {
 		Calendar cal = Calendar.getInstance();
