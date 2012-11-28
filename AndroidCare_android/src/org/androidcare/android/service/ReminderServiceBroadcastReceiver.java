@@ -1,6 +1,5 @@
 package org.androidcare.android.service;
 
-import org.androidcare.android.reminders.NoDateFoundException;
 import org.androidcare.android.reminders.Reminder;
 
 import android.content.BroadcastReceiver;
@@ -26,12 +25,7 @@ public class ReminderServiceBroadcastReceiver extends BroadcastReceiver {
 		Bundle extras = intent.getExtras();
 
 		Reminder r = (Reminder)extras.getSerializable(ReminderServiceBroadcastReceiver.EXTRA_REMINDER);
-		try {
-			this.reminderService.schedule(r);
-		} catch (NoDateFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.reminderService.schedule(r);
 	}
 
 }

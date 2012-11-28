@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 
 import org.androidcare.android.reminders.NoDateFoundException;
 import org.androidcare.android.reminders.NoDaySelectedException;
@@ -59,10 +60,12 @@ public class GetSchedulableRemindersMessage extends Message {
 				try {
 					reminders[i] = new Reminder(obj);
 				} catch (NoDateFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NoDaySelectedException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 			}

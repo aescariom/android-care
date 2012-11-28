@@ -8,17 +8,16 @@ abstract class TimeManager {
 	/**
 	 * returns the next date and time in which the alert should be triggered
 	 * @param time
-	 * @return 
-	 * @throws NoDateFoundException 
+	 * @return if there is no future dates
 	 */
-	public static Date getNextTimeLapse(Reminder reminder, Date time) throws NoDateFoundException {
+	public static Date getNextTimeLapse(Reminder reminder, Date time) {
 		time.setSeconds(0);
 		if(reminder.getSince() != null){
 			if(time.before(reminder.getSince().getTime()) && reminder.getRepeatPeriod() != Reminder.WEEK){ 
 				//If we are before the start date, let's select the start date as the next execution time
 				return reminder.getSince().getTime();
 			}else if(reminder.isRepeat()){
-				// let's look for the next ocurrence
+				// let's look for the next occurrence
 				switch (reminder.getEndType()){
 				case Reminder.NEVER_ENDS:
 					return TimeManager.getNextTimeLapseWithNoEnd(reminder, time);
@@ -29,15 +28,13 @@ abstract class TimeManager {
 				}
 			}
 		}
-		
-		throw new NoDateFoundException("This reminder has no future schedulable dates");
+		return null;
 	}
 
 	/**
 	 * Returns the next execution time based on the limitation of the number of executions
 	 * @param time
 	 * @return
-	 * @throws NoDateFoundException
 	 */
 	private static Date getNextTimeLapseByIterations(Reminder reminder, Date time) {
 		switch(reminder.getRepeatPeriod()){
@@ -163,7 +160,6 @@ abstract class TimeManager {
 	 * returns the next triggering date
 	 * @param time
 	 * @return
-	 * @throws NoDateFoundException
 	 */
 	private static Date getNextTimeLapseWithNoEnd(Reminder reminder, Date time) {
 		//1 - let's calculate the next ocurrence
@@ -191,12 +187,11 @@ abstract class TimeManager {
 	 * returns the next triggering date
 	 * @param time
 	 * @return
-	 * @throws NoDateFoundException
 	 */
-	private static Date getNextTimeLapseByDate(Reminder reminder, Date time) throws NoDateFoundException {
+	private static Date getNextTimeLapseByDate(Reminder reminder, Date time) {
 		//1 - is this alert still active? or, on the other hand, the end date is in the past
 		if(time.after(reminder.getUntilDate().getTime())){
-			throw new NoDateFoundException("The reminder has no future schedules");
+			return null;
 		}
 
 		//2 - let's calculate the next ocurrence
@@ -300,7 +295,8 @@ abstract class TimeManager {
 		cTime.setTime(time);
 
 		//2 - get the difference (in months) between today and the start date
-		int diff = (cTime.get(Calendar.YEAR) * 12 + cTime.get(Calendar.MONTH)) - (reminder.getSince().get(Calendar.YEAR) * 12 + reminder.getSince().get(Calendar.MONTH));
+		int diff = (cTime.get(Calendar.YEAR) * 12 + cTime.get(Calendar.MONTH)) - 
+				(reminder.getSince().get(Calendar.YEAR) * 12 + reminder.getSince().get(Calendar.MONTH));
 		//3 - how many weeks passed since the last executed interval? 
 		int aux = diff % reminder.getRepeatEach(); 
 		
@@ -337,7 +333,8 @@ abstract class TimeManager {
 		return cTime.get(Calendar.DAY_OF_MONTH) < reminder.getSince().get(Calendar.DAY_OF_MONTH) ||
 				(cTime.get(Calendar.DAY_OF_MONTH) == reminder.getSince().get(Calendar.DAY_OF_MONTH)  && 
 					(cTime.get(Calendar.HOUR_OF_DAY) < reminder.getSince().get(Calendar.HOUR_OF_DAY) || 
-						(cTime.get(Calendar.HOUR_OF_DAY) == reminder.getSince().get(Calendar.HOUR_OF_DAY) && cTime.get(Calendar.MINUTE) < reminder.getSince().get(Calendar.MINUTE) )));
+						(cTime.get(Calendar.HOUR_OF_DAY) == reminder.getSince().get(Calendar.HOUR_OF_DAY) && 
+								cTime.get(Calendar.MINUTE) < reminder.getSince().get(Calendar.MINUTE) )));
 	}
 
 	/**
@@ -345,7 +342,6 @@ abstract class TimeManager {
 	 * based on the number of weeks or days of the week between alarms
 	 * @param time
 	 * @return
-	 * @throws NoDateFoundException
 	 */
 	private static Date getNextWeekDayByTimeLapse(Reminder reminder, Date time) {
 		/*
@@ -381,7 +377,8 @@ abstract class TimeManager {
 			if(nextDay < 0 || aux != 0 || 
 					(nextDay == 0 && 
 								(time.getHours() > reminder.getSince().get(Calendar.HOUR_OF_DAY) || 
-									(time.getHours() == reminder.getSince().get(Calendar.HOUR_OF_DAY) && time.getMinutes() > reminder.getSince().get(Calendar.MINUTE))))){
+									(time.getHours() == reminder.getSince().get(Calendar.HOUR_OF_DAY) && 
+										time.getMinutes() > reminder.getSince().get(Calendar.MINUTE))))){
 				weeks = reminder.getRepeatEach() - aux; 
 			}else{
 				/*
@@ -407,7 +404,8 @@ abstract class TimeManager {
 			if(nextDay < 0 ||
 					(nextDay == 0 && 
 						(time.getHours() > reminder.getSince().get(Calendar.HOUR_OF_DAY) || 
-								(time.getHours() == reminder.getSince().get(Calendar.HOUR_OF_DAY) && time.getMinutes() > reminder.getSince().get(Calendar.MINUTE))))){
+								(time.getHours() == reminder.getSince().get(Calendar.HOUR_OF_DAY) && 
+									time.getMinutes() > reminder.getSince().get(Calendar.MINUTE))))){
 				// 7 - this week has no more 'active' days, let's move to the next week
 				weeks = reminder.getRepeatEach();  
 			}else{ 
