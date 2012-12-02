@@ -22,6 +22,7 @@ public class ObservableForm extends FormPanel{
 	/**
 	 * 
 	 */
+	//@Comentario ya te he comentado una ocasión que  no me gusta sincronizar  a nivel de método
     public synchronized void deleteObservers() { 
     	getObservers().clear(); 
     } 

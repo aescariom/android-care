@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Panel;
  * @author Alejandro Escario MŽndez
  *
  */
+//@Comentario yo movería esta clase a org.androidcare.web.client
 public class DialogBoxClose extends DialogBox {
 
 	private Anchor closeAnchor;

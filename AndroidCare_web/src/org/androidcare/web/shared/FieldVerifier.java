@@ -20,6 +20,7 @@ package org.androidcare.web.shared;
  * JavaScript (such as Widgets) cannot be run on the server.
  * </p>
  */
+//@Comentario no se usa para nada ¿borrar?
 public class FieldVerifier {
 
 	/**
