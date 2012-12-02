@@ -4,8 +4,9 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="7" />
-
+    <uses-sdk 
+        android:targetSdkVersion="11"
+        android:minSdkVersion="11" />
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="org.androidCare.android" />
