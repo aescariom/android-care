@@ -14,18 +14,18 @@
  * 
  */
 
-package org.androidCare.android.test;
+package org.androidCare.android.reminders.test;
 
 import java.util.Date;
 
-import org.androidCare.android.Alert;
-import org.androidCare.android.Constants;
-import org.androidCare.android.NoDateFoundException;
-import org.androidCare.android.Week;
+import org.androidcare.android.reminders.AndroidCareDateFormatException;
+import org.androidcare.android.reminders.DaysOfWeekInWhichShouldTrigger;
+import org.androidcare.android.reminders.Reminder;
+
 
 import junit.framework.TestCase;
 
-public class AlertTest extends TestCase {
+public class RemaindertTest extends TestCase {
 
 
 	/**************************************************************
@@ -44,11 +44,11 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		try{
 			a.getNextTimeLapse(actualTime);
-		}catch (NoDateFoundException ex){
+		}catch (AndroidCareDateFormatException ex){
 			assertTrue(true); // ha saltado la excepción que tenía que saltar
 		}
 	}
@@ -68,7 +68,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -83,7 +83,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 20, 38);
@@ -99,7 +99,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 0, 38);
@@ -115,7 +115,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 20, 38);
@@ -133,7 +133,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 12, 38);
@@ -151,7 +151,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 13, 38);
@@ -169,7 +169,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 1, 1, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.HOUR, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_HOUR, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 1, 7, 38);
@@ -191,7 +191,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -206,7 +206,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 5, 18, 38);
@@ -218,7 +218,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 5, 1, 18, 38);
@@ -234,7 +234,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 5, 18, 38);
@@ -252,7 +252,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 18, 38);
@@ -270,7 +270,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38);
@@ -288,7 +288,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 1, 1, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.DAY, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_DAY, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 7, 1, 38);
@@ -310,10 +310,11 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miércoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_WEEK, 1);
+		
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+		DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+		a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38); // es viernes, debería ejecutarse este día
@@ -330,10 +331,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setMonday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { true, false, false, false, false, false, false };//on mondays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 7, 18, 38); // es lunes, debería ejecutarse este día
@@ -349,10 +350,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38); // es viernes, debería ejecutarse este día
@@ -368,10 +369,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.WEEK, 3);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_WEEK, 3);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 25, 18, 38); // es viernes, debería ejecutarse este día
@@ -387,10 +388,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 18, 18, 38); // es viernes, debería ejecutarse este día
@@ -406,10 +407,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 11, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 18, 18, 38);
@@ -425,10 +426,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 11, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 11, 18, 38);
@@ -451,7 +452,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.MONTH, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_MONTH, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -462,7 +463,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(120, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.MONTH, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_MONTH, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(113, 0, 3, 18, 38);
@@ -478,7 +479,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.MONTH, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_MONTH, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 5, 1, 18, 38);
@@ -494,7 +495,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.MONTH, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_MONTH, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 6, 1, 18, 38);
@@ -510,7 +511,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 9, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.MONTH, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_MONTH, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 7, 1, 18, 38);
@@ -532,7 +533,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.YEAR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_YEAR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -547,7 +548,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.YEAR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_YEAR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(114, 4, 1, 18, 38);
@@ -563,7 +564,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.YEAR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_YEAR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(115, 4, 1, 18, 38);
@@ -579,7 +580,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 9, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.UNTIL_DATE, Constants.YEAR, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_UNTIL_DATE, Reminder.REPEAT_PERIOD_YEAR, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(115, 4, 1, 18, 38);
@@ -603,7 +604,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -618,7 +619,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 20, 38);
@@ -634,7 +635,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 20, 38);
@@ -652,7 +653,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 12, 38);
@@ -670,7 +671,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.HOUR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_HOUR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 13, 38);
@@ -688,7 +689,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 1, 1, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.HOUR, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_HOUR, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 1, 7, 38);
@@ -710,7 +711,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -725,7 +726,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 5, 18, 38);
@@ -741,7 +742,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 5, 18, 38);
@@ -759,7 +760,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 18, 38);
@@ -777,7 +778,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.DAY, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_DAY, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38);
@@ -795,7 +796,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 1, 1, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.DAY, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_DAY, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 7, 1, 38);
@@ -817,10 +818,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miércoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38); // es viernes, debería ejecutarse este día
@@ -837,10 +838,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setMonday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { true, false, false, false, false, false, false };//on mondays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 7, 18, 38); // es lunes, debería ejecutarse este día
@@ -856,10 +857,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38); // es viernes, debería ejecutarse este día
@@ -875,10 +876,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.WEEK, 3);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_WEEK, 3);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 25, 18, 38); // es viernes, debería ejecutarse este día
@@ -894,10 +895,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 18, 18, 38); // es viernes, debería ejecutarse este día
@@ -913,10 +914,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 11, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 18, 18, 38);
@@ -932,10 +933,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 11, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.WEEK, 1);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_WEEK, 1);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 11, 18, 38);
@@ -958,7 +959,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.MONTH, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_MONTH, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -973,7 +974,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.MONTH, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_MONTH, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 5, 1, 18, 38);
@@ -989,7 +990,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.MONTH, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_MONTH, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 6, 1, 18, 38);
@@ -1005,7 +1006,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 9, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.MONTH, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_MONTH, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 7, 1, 18, 38);
@@ -1027,7 +1028,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.YEAR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_YEAR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -1042,7 +1043,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.YEAR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_YEAR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(114, 4, 1, 18, 38);
@@ -1058,7 +1059,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.YEAR, 1);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_YEAR, 1);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(115, 4, 1, 18, 38);
@@ -1074,7 +1075,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 9, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.NEVER_ENDS, Constants.YEAR, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_NEVER_ENDS, Reminder.REPEAT_PERIOD_YEAR, 3);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(115, 4, 1, 18, 38);
@@ -1098,7 +1099,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.HOUR, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_HOUR, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -1113,12 +1114,12 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.HOUR, 1, 2);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_HOUR, 1, 2);
 
 		try{
 			a.getNextTimeLapse(actualTime);
 			assertTrue(false);
-		}catch (NoDateFoundException ex){
+		}catch (AndroidCareDateFormatException ex){
 			assertTrue(true); // ha saltado la excepción que tenía que saltar
 		}
 	}
@@ -1132,7 +1133,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.HOUR, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_HOUR, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 20, 38);
@@ -1148,7 +1149,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.HOUR, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_HOUR, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 20, 38);
@@ -1166,7 +1167,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.HOUR, 1, 30);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_HOUR, 1, 30);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 12, 38);
@@ -1184,7 +1185,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.HOUR, 1, 30);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_HOUR, 1, 30);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 13, 38);
@@ -1202,7 +1203,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 1, 1, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.HOUR, 3, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_HOUR, 3, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 1, 7, 38);
@@ -1225,12 +1226,12 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.DAY, 1, 3);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_DAY, 1, 3);
 
 		try{
 			a.getNextTimeLapse(actualTime);
 			assertTrue(false);
-		}catch (NoDateFoundException ex){
+		}catch (AndroidCareDateFormatException ex){
 			assertTrue(true); // ha saltado la excepción que tenía que saltar
 		}
 	}
@@ -1244,7 +1245,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.DAY, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_DAY, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -1259,7 +1260,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.DAY, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_DAY, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 5, 18, 38);
@@ -1275,7 +1276,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 3, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.DAY, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_DAY, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 5, 18, 38);
@@ -1293,7 +1294,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.DAY, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_DAY, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 3, 18, 38);
@@ -1311,7 +1312,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 2, 18, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.DAY, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_DAY, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38);
@@ -1329,7 +1330,7 @@ public class AlertTest extends TestCase {
 		
 		Date startTime = new Date(112, 4, 1, 1, 38);
 		
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.DAY, 3, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_DAY, 3, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 7, 1, 38);
@@ -1351,10 +1352,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miércoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 1, 10);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 1, 10);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);;
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38); // es viernes, debería ejecutarse este día
@@ -1367,15 +1368,15 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miércoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 1, 3);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 1, 3);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		try{
 			a.getNextTimeLapse(actualTime);
 			assertTrue(false);
-		}catch (NoDateFoundException ex){
+		}catch (AndroidCareDateFormatException ex){
 			assertTrue(true); // ha saltado la excepción que tenía que saltar
 		}
 	}
@@ -1390,10 +1391,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 1, 10);
-		Week w = new Week();
-		w.setMonday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 1, 10);
+		boolean[] dayIsSelected = { true, false, false, false, true, false, false };//on mondays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 7, 18, 38); // es lunes, debería ejecutarse este día
@@ -1409,10 +1410,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 1, 10);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 1, 10);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 4, 18, 38); // es viernes, debería ejecutarse este día
@@ -1428,10 +1429,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 3, 10);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 3, 10);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 25, 18, 38); // es viernes, debería ejecutarse este día
@@ -1447,10 +1448,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 2, 18, 38); // miercoles
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 1, 10);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 1, 10);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 18, 18, 38); // es viernes, debería ejecutarse este día
@@ -1466,10 +1467,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 11, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 1, 10);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 1, 10);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 18, 18, 38);
@@ -1485,10 +1486,10 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 4, 12, 31);
 		Date startTime = new Date(112, 4, 11, 18, 38);
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.WEEK, 1, 10);
-		Week w = new Week();
-		w.setFriday(true);
-		a.setWeek(w);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_WEEK, 1, 10);
+		boolean[] dayIsSelected = { false, false, false, false, true, false, false };//on fridays
+        DaysOfWeekInWhichShouldTrigger w = new DaysOfWeekInWhichShouldTrigger(dayIsSelected);
+        a.setDaysOfWeekInWhichShouldTrigger(w);
 		
 		Date nextWeek = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 4, 11, 18, 38);
@@ -1511,7 +1512,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.MONTH, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_MONTH, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -1523,12 +1524,12 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(113, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.MONTH, 1, 2);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_MONTH, 1, 2);
 		
 		try{
 			a.getNextTimeLapse(actualTime);
 			assertTrue(false);
-		}catch (NoDateFoundException ex){
+		}catch (AndroidCareDateFormatException ex){
 			assertTrue(true); // ha saltado la excepción que tenía que saltar
 		}
 	}
@@ -1542,7 +1543,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.MONTH, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_MONTH, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 5, 1, 18, 38);
@@ -1558,7 +1559,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.MONTH, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_MONTH, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 6, 1, 18, 38);
@@ -1574,7 +1575,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 9, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.MONTH, 3, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_MONTH, 3, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(112, 7, 1, 18, 38);
@@ -1596,7 +1597,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.YEAR, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_YEAR, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		assertEquals(startTime.getTime(), nextHour.getTime());
@@ -1607,12 +1608,12 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(112, 5, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.YEAR, 1, 2);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_YEAR, 1, 2);
 		
 		try{
 			a.getNextTimeLapse(actualTime);
 			assertTrue(false);
-		}catch (NoDateFoundException ex){
+		}catch (AndroidCareDateFormatException ex){
 			assertTrue(true); // ha saltado la excepción que tenía que saltar
 		}
 	}
@@ -1626,7 +1627,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.YEAR, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_YEAR, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(114, 4, 1, 18, 38);
@@ -1642,7 +1643,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 6, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.YEAR, 1, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_YEAR, 1, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(115, 4, 1, 18, 38);
@@ -1658,7 +1659,7 @@ public class AlertTest extends TestCase {
 		Date endTime = new Date(130, 9, 3, 12, 31);
 		Date startTime = new Date(112, 4, 1, 18, 38); 
 
-		Alert a = new Alert("", "", startTime, endTime, true, Constants.ITERATIONS, Constants.YEAR, 3, 10);
+		Reminder a = new Reminder("", "", startTime, endTime, true, Reminder.END_TYPE_ITERATIONS, Reminder.REPEAT_PERIOD_YEAR, 3, 10);
 		
 		Date nextHour = a.getNextTimeLapse(actualTime);
 		Date result = new Date(115, 4, 1, 18, 38);
