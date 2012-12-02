@@ -13,6 +13,9 @@ import javax.jdo.annotations.*;
  *
  */
 @PersistenceCapable
+
+//@Comentario tenemos que  cambiar nombres tanto a la clase Alert por Reminder, como a los campos
+//para usar los mismos nombres que  en la aplicación android
 public class Alert implements Serializable{
 
 	/**

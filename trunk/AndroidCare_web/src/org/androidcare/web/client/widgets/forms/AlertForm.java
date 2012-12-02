@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.TextBox;
  * @author Alejandro Escario MŽndez
  *
  */
+//@Comentario para construir estas cosas ¿hay una herramienta gráfica o a 100% a mano? 
 public class AlertForm extends ObservableForm{
 	private static final int TITLE_ROW = 0;
 	private static final int DESCRIPTION_ROW = 1;
