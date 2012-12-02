@@ -16,7 +16,7 @@
 
 package org.androidcare.android.view;
 
-import java.io.IOException;
+import org.androidcare.android.reminders.Reminder;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,59 +28,56 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.androidcare.android.reminders.*;
-
 /**
- * Alarm receiver handles the events related to alerts/alarms 
+ * Handles the events related to Reminders
+ * 
  * @author Alejandro Escario MŽndez
  */
 public class ReminderReceiver extends BroadcastReceiver {
-	 
-	/**
-	 * On alarm receive handler
-	 */
-	 @Override
-	 public void onReceive(Context context, Intent intent) {
-	   try {
-		   //1 - extracting the data from the 'messenger'
-		   Bundle bundle = intent.getExtras();
-		   Reminder r = (Reminder)bundle.getSerializable("reminder");
-		   //2 - display the detail dialog 
-		   displayDialog(context, r);
-		   //3 - getting user's attention
-		   playSound(context);
-		   
-		   Log.i("AlarmReceiver", r.toString());
-	    } catch (Exception e) { // we must catch the exception
-	    	Log.i("AlarmReceiver", "There was an error somewhere, but we still received an alarm");
-	    	e.printStackTrace();
-    	}
-	 }
 
-	 private void displayDialog(Context ctx, Reminder a) {
-		//1 - setting up the intent
-		Intent intent = new Intent("android.intent.action.MAIN");
-		intent.setClass(ctx, ReminderDialogReceiver.class);
-		intent.putExtra("reminder", a);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		//2 - displaying the activity
-		ctx.startActivity(intent);    
-	 }	
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Bundle bundle = intent.getExtras();
+        Reminder reminder = (Reminder) bundle.getSerializable("reminder");
+        displayDialog(context, reminder);
+        playSound(context);
+        // @comentario @todo que el teléfono vibre
+        Log.i("ReminderReceiver", reminder.toString());
+    }
 
-	 public void playSound(Context context) throws IllegalArgumentException, SecurityException, IllegalStateException,
-	    											IOException {
-		//1 - getting the sound 
-		Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-		MediaPlayer mMediaPlayer = new MediaPlayer();
-		mMediaPlayer.setDataSource(context, soundUri);
-		//2 - setting up the audio manager
-		final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		//3 - playing the sound
-		if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
-		    mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-		    mMediaPlayer.setLooping(false);
-		    mMediaPlayer.prepare();
-		    mMediaPlayer.start();
-		}
-	}
+    private void displayDialog(Context ctx, Reminder reminder) {
+        // 1 - setting up the intent
+        Intent intent = new Intent("android.intent.action.MAIN");
+        intent.setClass(ctx, ReminderDialogReceiver.class);
+        intent.putExtra("reminder", reminder);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // 2 - displaying the activity
+        ctx.startActivity(intent);
+    }
+
+    // @comentario mejor gestionar aquí la excepción, sobre todo cuando es una excepción respecto a la
+    // que no vamos a hacer nada, en vez de gestionarla en onReceive, como tu la tenías
+    public void playSound(Context context) {
+        
+      //@Comentario ¿todo esto de hacer solitos no debería ir en un thread diferente del main?
+        try {
+            // 1 - getting the sound
+            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            MediaPlayer mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setDataSource(context, soundUri);
+            // 2 - setting up the audio manager
+            final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            // 3 - playing the sound
+            if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                mMediaPlayer.setLooping(false);
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            }
+        }
+        catch (Exception e) { // we must catch the exception
+            Log.i("ReminderReceiver", "Could not play the sound when reminder was received");
+            e.printStackTrace();
+        }
+    }
 }

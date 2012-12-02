@@ -14,69 +14,47 @@
  * 
  */
 
-package org.androidcare.common;
+package org.androidcare.android.reminders;
 
 /**
  * 
  * @author Alejandro Escario MŽndez
- *
+ * 
  */
+// @comentario por su funcionalidad tiene sentido que esté en el paquete de reminders; la he movido
 public enum ReminderStatusCode {
 
-	ALERT_DISPLAYED(0, "ALERT DISPLAYED"),
-	ALERT_DONE(1, "ALERT CHECKED AS DONE"),
-	ALERT_IGNORED(2, "ALERT IGNORED");
-	
-	final int code;
+    ALERT_DISPLAYED(0, "ALERT DISPLAYED"), ALERT_DONE(1, "ALERT CHECKED AS DONE"), ALERT_IGNORED(2,
+            "ALERT IGNORED");
+
+    final int code;
     final String description;
 
-    /**
-     * 
-     * @param code
-     * @param description
-     */
     private ReminderStatusCode(int code, String description) {
-	    this.code = code;
-	    this.description = description;
+        this.code = code;
+        this.description = description;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String getDescription() {
-    	return description;
+        return description;
     }
 
-    /**
-     * 
-     * @return
-     */
     public int getCode() {
-    	return code;
+        return code;
     }
 
-    /**
-     * 
-     */
     @Override
     public String toString() {
-    	return code + ": " + description;
+        return code + ": " + description;
     }
-    
-    /**
-     * 
-     * @param codeValue
-     * @return
-     */
-    public static ReminderStatusCode getByCode(int codeValue)
-    {
-        for (ReminderStatusCode  type : ReminderStatusCode.values()) {
-            if(type.code == codeValue){
-            	return type;
+
+    public static ReminderStatusCode getByCode(int codeValue) {
+        for (ReminderStatusCode type : ReminderStatusCode.values()) {
+            if (type.code == codeValue) {
+                return type;
             }
         }
-		return null;
+        return null;
     }
 
 }

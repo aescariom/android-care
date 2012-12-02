@@ -19,5 +19,7 @@
     <!-- Network -->
     <string name="not_reachable">Server not responding</string>
     <string name="check_internet_connection">Please, check yout Internet connection</string>
+    <string name="delay_reminder">Delay Reminder</string>
+   
     
 </resources>

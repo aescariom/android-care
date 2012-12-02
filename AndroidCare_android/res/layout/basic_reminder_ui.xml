@@ -13,6 +13,7 @@
               android:layout_height="wrap_content"
               android:layout_below="@id/txtReminderTitle"
               android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+
     <LinearLayout
         android:id="@+id/ButtonLayout"
         android:layout_width="fill_parent"
@@ -20,20 +21,34 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:baselineAligned="false" >
-	    <Button android:id="@+id/btnOk"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@android:string/ok"
-	            android:layout_weight="3" />
-	
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+	    <Button
+	        android:id="@+id/btnOk"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="3"
+	        android:includeFontPadding="false"
+	        android:text="@android:string/ok"
+	        android:textSize="@dimen/button_fomt_size" />
+
 	    <Button
 	        android:id="@+id/btnCancel"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
 	        android:text="@string/cancel"
-	        android:layout_weight="1" />
+	        android:textSize="@dimen/button_fomt_size" />
+
+	    <Button
+	        android:id="@+id/btnDelay"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="3"
+	        android:text="@string/delay_reminder"
+	        android:textSize="@dimen/button_fomt_size" />
+
     </LinearLayout>
 
 </RelativeLayout>

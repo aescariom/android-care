@@ -20,8 +20,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -46,8 +44,8 @@ public abstract class ConnectionService extends Service {
     private static final int NOTIFICATION_NO_CONNECTION = 2;
 
     // auth settings
-    protected Account googleUser = null;
-    protected String authToken = "";
+    private Account googleUser = null;
+    private String authToken = "";
     private Cookie authCookie = null;
 
     // communcation
@@ -55,27 +53,21 @@ public abstract class ConnectionService extends Service {
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
     private BroadcastReceiver mNetworkStateIntentReceiver;
-    
-    //intent broadcast receiver
-    private ConnectionServiceBroadcastReceiver connectionServiceReceiver = new ConnectionServiceBroadcastReceiver(this);
+
+    // intent broadcast receiver
+    private ConnectionServiceBroadcastReceiver connectionServiceReceiver = 
+                                                            new ConnectionServiceBroadcastReceiver(this);
     private IntentFilter filter = new IntentFilter(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
 
     private int maxPendingMessages = 10;
     private long maxTimeSiceFirstMessage = 900000; // 15 min in milliseconds
 
     @Override
+    //@Comentario deberíamos usar onStartCommand; Este método está deprecated
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
         registerReceiver(connectionServiceReceiver, filter);
         setConnectionStateListener();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mNetworkStateIntentReceiver);
-        unregisterReceiver(connectionServiceReceiver);
-        this.processMessageQueue();
     }
 
     private void setConnectionStateListener() {
@@ -87,7 +79,7 @@ public abstract class ConnectionService extends Service {
                 if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                     NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
                     if (info.isAvailable()) {
-                        ConnectionService.this.processMessageQueue();
+                        processMessageQueue();
                         Log.i(tag, "Connection is back!");
                     }
                 }
@@ -96,13 +88,23 @@ public abstract class ConnectionService extends Service {
         registerReceiver(mNetworkStateIntentReceiver, mNetworkStateChangedFilter);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mNetworkStateIntentReceiver);
+        unregisterReceiver(connectionServiceReceiver);
+        processMessageQueue();
+    }
+  //@Comentario las acciones que realiza este método a cojones tienen que ir en un thread diferente del main
+    //lo contrario sería  un descalabro de rendimiento en la aplicación y haría muy probable que
+    //el entorno mate este servicio por tardar demasiado
     public void processMessageQueue() {
         synchronized (pendingMessages) {
             Message message;
             if (this.pendingMessages.size() == 0 || !isSessionCookieValid()) {
                 return;
             }
-            if (!isConnectionAvailable()) {
+            if ( !isConnectionAvailable()) {
                 triggerConnectionErrorNotification();
                 return;
             }
@@ -117,14 +119,9 @@ public abstract class ConnectionService extends Service {
                     pendingMessages.poll();
                 }
             }
-            catch (ClientProtocolException e) {
-                e.printStackTrace();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (InvalidMessageResponseException e) {
-                triggerConnectionErrorNotification();
+            catch (Exception e) {// @comentario no es muy elegante, pero tampoco lo es tener tres catch
+                                 // iguales
+                Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
             }
         }
     }
@@ -135,8 +132,10 @@ public abstract class ConnectionService extends Service {
                 getOauthCookie();
             }
             catch (ConnectionServiceException e) {
-                e.printStackTrace();
+                Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
+                // @comentario aaquí no deberíamos devolver false?
             }
+            // @comentario y aquí devolver true?
             return false;
         }
         return true;
@@ -179,10 +178,7 @@ public abstract class ConnectionService extends Service {
 
         // 4 - getting the auth token
         Log.i(tag, "Selected account: " + this.googleUser.toString());
-        accountManager.getAuthToken(this.googleUser, "ah", // this is the
-                                                           // "authTokenType"
-                                                           // for google app
-                                                           // engine
+        accountManager.getAuthToken(this.googleUser, "ah", // this is the "authTokenType" for google appengine
                 true, // notifyAuthFailure
                 new GetAuthTokenCallback(), // callback
                 null); // a null handler means that it will be handled by the
@@ -194,7 +190,7 @@ public abstract class ConnectionService extends Service {
         CharSequence contentTitle = getResources().getString(R.string.zero_accounts);
         CharSequence contentText = getResources().getString(R.string.setup_google_account);
 
-        this.displayNotification(tickerText, contentTitle, contentText,
+        displayNotification(tickerText, contentTitle, contentText,
                 ConnectionService.NOTIFICATION_SELECT_ACCOUNT, PreferencesActivity.class);
     }
 
@@ -203,7 +199,7 @@ public abstract class ConnectionService extends Service {
         CharSequence contentTitle = getResources().getString(R.string.zero_accounts);
         CharSequence contentText = getResources().getString(R.string.setup_google_account);
 
-        this.displayNotification(tickerText, contentTitle, contentText,
+        displayNotification(tickerText, contentTitle, contentText,
                 ConnectionService.NOTIFICATION_ADD_ACCOUNT, Settings.ACTION_SYNC_SETTINGS);
     }
 
@@ -212,7 +208,7 @@ public abstract class ConnectionService extends Service {
         CharSequence contentTitle = getResources().getString(R.string.not_reachable);
         CharSequence contentText = getResources().getString(R.string.check_internet_connection);
 
-        this.displayNotification(tickerText, contentTitle, contentText,
+        displayNotification(tickerText, contentTitle, contentText,
                 ConnectionService.NOTIFICATION_NO_CONNECTION, Settings.ACTION_WIFI_SETTINGS);
     }
 
@@ -250,11 +246,10 @@ public abstract class ConnectionService extends Service {
         }
         NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
         if (networkInfo == null) return false;
-        if (!networkInfo.isConnected()) return false;
-        if (!networkInfo.isAvailable()) return false;
+        if ( !networkInfo.isConnected()) return false;
+        if ( !networkInfo.isAvailable()) return false;
         return true;
     }
-
 
     public void pushMessage(Message message) {
         synchronized (pendingMessages) {
@@ -288,19 +283,8 @@ public abstract class ConnectionService extends Service {
                     ConnectionService.this.getOauthCookie(bundle);
                 }
             }
-            
-            //nno piloto todavía del tema de log en Android pero ¿no deberíamos usar Log.e?
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (OperationCanceledException e) {
-                e.printStackTrace();
-            }
-            catch (AuthenticatorException e) {
-                e.printStackTrace();
-            }
-            catch (ConnectionServiceException e) {
-                e.printStackTrace();
+            catch (Exception e) {
+                Log.e(tag, "Error when getting the Oauth cookie: " + e.getMessage(), e);
             }
         }
     }
@@ -308,10 +292,10 @@ public abstract class ConnectionService extends Service {
     /**
      * Callback methid for GetAuthTokenCallback
      */
-    public void getOauthCookie(Bundle bundle) throws ConnectionServiceException {
-        // 1 - get the auth token
-        this.authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
-        if (this.authToken.isEmpty()) {
+    public void getOauthCookie(Bundle bundle) throws ConnectionServiceException, ClientProtocolException,
+            IOException {
+        authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
+        if (authToken.isEmpty()) {
             throw new ConnectionServiceException("AuthToken could not be fetched");
         }
 
@@ -321,35 +305,23 @@ public abstract class ConnectionService extends Service {
         // we don't want to follow redirects
         client.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
 
-        // the localhost statement in the url, means that we want to talk with
-        // our
-        // android device
+        // the localhost statement in the url, means that we want to talk with our android device
         HttpGet httpGet = new HttpGet(ConnectionService.APP_URL
-                + "_ah/login?continue=http://localhost/&auth=" + this.authToken);
+                + "_ah/login?continue=http://localhost/&auth=" + authToken);
 
-        try {
-            response = client.execute(httpGet);
-            // the response shuld be a redirect
-            if (response.getStatusLine().getStatusCode() != 302) {
-                //comentario ¿no deberíamos avisar/hacer algo con el problema en vez de "callar"?
-               // return;
-                throw new ConnectionServiceException("Response was not a redirection");
-            }
+        response = client.execute(httpGet);
+        // the response shuld be a redirect
+        if (response.getStatusLine().getStatusCode() != 302) {
+            throw new ConnectionServiceException("Response was not a redirection");
+        }
 
-            for (Cookie cookoe : client.getCookieStore().getCookies()) {
-                // we are looking for the authentication cookie
-                if (cookoe.getName().equals("ACSID")) {
-                    this.authCookie = cookoe;
-                    processMessageQueue();
-                    break;
-                }
+        for (Cookie cookoe : client.getCookieStore().getCookies()) {
+            // we are looking for the authentication cookie
+            if (cookoe.getName().equals("ACSID")) {
+                this.authCookie = cookoe;
+                processMessageQueue();
+                break;
             }
-        }
-        catch (ClientProtocolException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

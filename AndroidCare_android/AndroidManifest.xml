@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk 
-        android:targetSdkVersion="9"
-        android:minSdkVersion="9" />
+        android:targetSdkVersion="11"
+        android:minSdkVersion="11" />
 
 	<!-- Permisos -->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- obtención de las cuentas de google -->
@@ -42,10 +42,10 @@
         <receiver  android:process=":remote" android:name=".view.ReminderReceiver">
         </receiver>
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
-        <service 	android:enabled="true" android:name=".service.ReminderService" /> 
+        <service 	android:enabled="true" android:name=".service.reminders.ReminderService" /> 
         
         <!--  start the service on boot -->
-        <receiver android:name=".service.StartupIntentReceiver">
+        <receiver android:name=".service.StartServicesOnBootCompleteBroadcastReceiver">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<category android:name="android.intent.category.HOME" />

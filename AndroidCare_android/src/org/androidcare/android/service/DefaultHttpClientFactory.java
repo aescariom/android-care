@@ -7,7 +7,6 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 public class DefaultHttpClientFactory {
 

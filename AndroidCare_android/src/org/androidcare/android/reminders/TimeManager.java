@@ -5,468 +5,477 @@ import java.util.Date;
 
 abstract class TimeManager {
 
-	/**
-	 * returns the next date and time in which the alert should be triggered
-	 * @param time
-	 * @return if there is no future dates
-	 */
-	public static Date getNextTimeLapse(Reminder reminder, Date time) {
-		time.setSeconds(0);
-		if(reminder.getSince() != null){
-			if(time.before(reminder.getSince().getTime()) && reminder.getRepeatPeriod() != Reminder.WEEK){ 
-				//If we are before the start date, let's select the start date as the next execution time
-				return reminder.getSince().getTime();
-			}else if(reminder.isRepeat()){
-				// let's look for the next occurrence
-				switch (reminder.getEndType()){
-				case Reminder.NEVER_ENDS:
-					return TimeManager.getNextTimeLapseWithNoEnd(reminder, time);
-				case Reminder.UNTIL_DATE:
-					return TimeManager.getNextTimeLapseByDate(reminder, time);
-				case Reminder.ITERATIONS:
-					return TimeManager.getNextTimeLapseByIterations(reminder, time);
-				}
-			}
-		}
-		return null;
-	}
+    /**
+     * returns the next date in which the alert should be triggered
+     * 
+     * @param timeScheduleRequested
+     *            when it was triggered for the last time
+     * @return if there is no future dates it returns null
+     */
+    public static Date getNextTimeLapse(Reminder reminder, Date timeScheduleRequested) {
+        timeScheduleRequested.setSeconds(0);
+        if (reminder.getActiveFrom() != null) {
+            if (timeScheduleRequested.before(reminder.getActiveFrom().getTime()) &&
+            // @comentario no lo pillo ¿por qué esta segunda condición?
+                    reminder.getRepeatPeriod() != Reminder.REPEAT_PERIOD_WEEK) {
+                // If we are before the start date, let's select the start date as the next execution time
+                return reminder.getActiveFrom().getTime();
+            } else if (reminder.isRepeat()) {
+                // let's look for the next occurrence
+                switch (reminder.getEndType()) {
+                case Reminder.END_TYPE_NEVER_ENDS:
+                    return TimeManager.getNextTimeLapseEndTypeNeverEnds(reminder, timeScheduleRequested);
+                case Reminder.END_TYPE_UNTIL_DATE:
+                    return TimeManager.getNextTimeLapseByDate(reminder, timeScheduleRequested);
+                case Reminder.END_TYPE_ITERATIONS:
+                    return TimeManager.getNextTimeLapseByIterations(reminder, timeScheduleRequested);
+                }
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Returns the next execution time based on the limitation of the number of executions
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextTimeLapseByIterations(Reminder reminder, Date time) {
-		switch(reminder.getRepeatPeriod()){
-		case Reminder.HOUR:
-			Date nextHour = TimeManager.getNextHourByTimeLapse(reminder, time);
-			if(TimeManager.executedTimesUntilByHour(reminder, nextHour) < reminder.getUntilIterations()){
-				return nextHour;
-			}
-			break;
-		case Reminder.DAY:
-			Date nextDay = TimeManager.getNextDayByTimeLapse(reminder, time);
-			if(TimeManager.executedTimesUntilByDay(reminder, nextDay) < reminder.getUntilIterations()){
-				return nextDay;
-			}
-			break;
-		case Reminder.WEEK:
-			Date nextDayOfTheWeek = TimeManager.getNextWeekDayByTimeLapse(reminder, time);
-			if(TimeManager.executedTimesUntilByWeek(reminder, nextDayOfTheWeek) < reminder.getUntilIterations()){
-				return nextDayOfTheWeek;
-			}
-			break;
-		case Reminder.MONTH:
-			Date nextMonth = TimeManager.getNextMonthByTimeLapse(reminder, time);
-			if(TimeManager.executedTimesUntilByMonth(reminder, nextMonth) < reminder.getUntilIterations()){
-				return nextMonth;
-			}
-			break;
-		case Reminder.YEAR:
-			Date nextYear = TimeManager.getNextYearByTimeLapse(reminder, time);
-			if(TimeManager.executedTimesUntilByYear(reminder, nextYear) < reminder.getUntilIterations()){
-				return nextYear;
-			}
-			break;
-		}
-		return null;
-	}
+    private static Date getNextTimeLapseEndTypeNeverEnds(Reminder reminder, Date timeScheduleRequested) {
+        // 1 - let's calculate the next ocurrence
+        switch (reminder.getRepeatPeriod()) {
+        case Reminder.REPEAT_PERIOD_HOUR:
+            return TimeManager.getNextHourByTimeLapse(reminder, timeScheduleRequested);
+        case Reminder.REPEAT_PERIOD_DAY:
+            return TimeManager.getNextDayByTimeLapse(reminder, timeScheduleRequested);
+        case Reminder.REPEAT_PERIOD_WEEK:
+            return TimeManager.getNextWeekDayByTimeLapse(reminder, timeScheduleRequested);
+        case Reminder.REPEAT_PERIOD_MONTH:
+            return TimeManager.getNextMonthByTimeLapse(reminder, timeScheduleRequested);
+        default:// Reminder.REPEAT_PERIOD_YEAR:
+            return TimeManager.getNextYearByTimeLapse(reminder, timeScheduleRequested);
+        }// @comentario esto devolvían null si no se cumplía ningun case, pero entiendo que eso no puede ser
+         // salvo bug
+    }
 
-	/**
-	 * number of times that the alert has been executed (in hours)
-	 * @param time
-	 * @return
-	 */
-	private static int executedTimesUntilByHour(Reminder reminder, Date time) {
-		//1 - number of milliseconds in an hour
-		long factor = 1000*60*60;
+    private static Date getNextTimeLapseByDate(Reminder reminder, Date timeScheduleRequested) {
+        // 1 - is this alert still active? or, on the other hand, the end date is in the past
+        if (timeScheduleRequested.after(reminder.getActiveUntil().getTime())) {
+            return null;
+        }
 
-		//2 - calculating the number of days in this lapse of time
-		long diff = (time.getTime() - reminder.getSince().getTimeInMillis());
-		int hours = (int)(diff/factor);
+        // 2 - let's calculate the next ocurrence
+        switch (reminder.getRepeatPeriod()) {
+        case Reminder.REPEAT_PERIOD_HOUR:
+            Date nextHour = TimeManager.getNextHourByTimeLapse(reminder, timeScheduleRequested);
+            if (nextHour.before(reminder.getActiveUntil().getTime())) {
+                return nextHour;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_DAY:
+            Date nextDay = TimeManager.getNextDayByTimeLapse(reminder, timeScheduleRequested);
+            if (nextDay.before(reminder.getActiveUntil().getTime())) {
+                return nextDay;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_WEEK:
+            Date nextDayOfTheWeek = TimeManager.getNextWeekDayByTimeLapse(reminder, timeScheduleRequested);
+            if (nextDayOfTheWeek.before(reminder.getActiveUntil().getTime())) {
+                return nextDayOfTheWeek;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_MONTH:
+            Date nextMonth = TimeManager.getNextMonthByTimeLapse(reminder, timeScheduleRequested);
+            if (nextMonth.before(reminder.getActiveUntil().getTime())) {
+                return nextMonth;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_YEAR:
+            Date nextYear = TimeManager.getNextYearByTimeLapse(reminder, timeScheduleRequested);
+            if (nextYear.before(reminder.getActiveUntil().getTime())) {
+                return nextYear;
+            }
+            break;
+        }
+        return null;
+    }
 
-		return hours / reminder.getRepeatEach();
-	}
-	
-	/**
-	 * number of times that the alert has been executed (in days)
-	 * @param time
-	 * @return
-	 */
-	private static int executedTimesUntilByDay(Reminder reminder, Date time) {
-		//1 - number of milliseconds in a day
-		long factor = 1000*60*60*24;
+    private static Date getNextTimeLapseByIterations(Reminder reminder, Date timeScheduleRequested) {
+        switch (reminder.getRepeatPeriod()) {
+        case Reminder.REPEAT_PERIOD_HOUR:
+            Date nextHour = TimeManager.getNextHourByTimeLapse(reminder, timeScheduleRequested);
+            if (TimeManager.executedTimesUntilByHour(reminder, nextHour) < reminder.getNumerOfRepetitions()) {
+                return nextHour;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_DAY:
+            Date nextDay = TimeManager.getNextDayByTimeLapse(reminder, timeScheduleRequested);
+            if (TimeManager.executedTimesUntilByDay(reminder, nextDay) < reminder.getNumerOfRepetitions()) {
+                return nextDay;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_WEEK:
+            Date nextDayOfTheWeek = TimeManager.getNextWeekDayByTimeLapse(reminder, timeScheduleRequested);
+            if (TimeManager.executedTimesUntilByWeek(reminder, nextDayOfTheWeek) < 
+                    reminder.getNumerOfRepetitions()) {
+                return nextDayOfTheWeek;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_MONTH:
+            Date nextMonth = TimeManager.getNextMonthByTimeLapse(reminder, timeScheduleRequested);
+            if (TimeManager.executedTimesUntilByMonth(reminder, nextMonth) < reminder.getNumerOfRepetitions()) {
+                return nextMonth;
+            }
+            break;
+        case Reminder.REPEAT_PERIOD_YEAR:
+            Date nextYear = TimeManager.getNextYearByTimeLapse(reminder, timeScheduleRequested);
+            if (TimeManager.executedTimesUntilByYear(reminder, nextYear) < reminder.getNumerOfRepetitions()) {
+                return nextYear;
+            }
+            break;
+        }
+        return null;
+    }
 
-		//2 - calculating the number of days in this lapse of time
-		long diff = (time.getTime() - reminder.getSince().getTimeInMillis());
-		int days = (int)(diff/factor);
+    // @comentario cuando leí tu función pensé que estaba bien. Después me puse a cambiar nombres
+    // como yo siempre hago. Después leí de nuevo la función. Ahora, o una de dos, o no entiendo que quieres hacer
+    //O esto está mal. ¿ves tú ahora problema?.
+    private static Date getNextHourByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
+        // 2 - getting the time lapse between the start date and today
+        long millsecSindeReminderActiveToScheduleRequested = (timeScheduleRequested.getTime() - 
+                reminder.getActiveFrom().getTimeInMillis());
+        // 3 - let's get the number of hours between those two times
+        int hoursSinceReminderActiveToScheduleRequested = (int) (millsecSindeReminderActiveToScheduleRequested 
+                / ONE_HOUR_IN_MILLISEC);
+        // 4 - how many hours have passed since the last executed interval?
+        int hoursSiceLastTrigger = hoursSinceReminderActiveToScheduleRequested
+                % reminder.getRepeatEachXPeriods();
+        /*
+         * 5 - getting the number of hours between the start date and the next execution time by adding to the
+         * number of hours betwen the start date and the last execution time to a new whole 'repeat period' in
+         * hours
+         */
+        int hoursToNextTrigger = hoursSinceReminderActiveToScheduleRequested
+                                      + reminder.getRepeatEachXPeriods() - hoursSiceLastTrigger;
+        // 6 - add the calculated hours to the start date
+        return new Date(reminder.getActiveFrom().getTimeInMillis() + hoursToNextTrigger * ONE_HOUR_IN_MILLISEC);
+    }
 
-		return days / reminder.getRepeatEach();
-	}
-	
-	/**
-	 * number of times that the alert has been executed (in weeks)
-	 * @param time
-	 * @return
-	 */
-	private static int executedTimesUntilByWeek(Reminder reminder, Date time) {
-		//1 - number of milliseconds in a week
-		long factor = 1000*60*60*24*7; 
-		
-		//2 - calculating the number of weeks in this lapse of time
-		long diff = (time.getTime() - reminder.getSince().getTimeInMillis());
-		int weeks = (int)(diff/factor);
+    private static Date getNextDayByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
+        // 2 - getting the time lapse between the start date and today
+        long millsecSindeReminderActiveToScheduleRequested = timeScheduleRequested.getTime()
+                - reminder.getActiveFrom().getTimeInMillis();
+        // 3 - let's get the number of hours between those two times
+        int daysSinceReminderActiveToScheduleRequested = (int) (millsecSindeReminderActiveToScheduleRequested 
+                / ONE_DAY_IN_MILLISEC);
+        // 4 - how many days passed since the last executed interval?
+        int daysSiceLastTrigger = daysSinceReminderActiveToScheduleRequested
+                % reminder.getRepeatEachXPeriods();
+        /*
+         * 5 - getting the number of days between the start date and the next execution time by adding to the
+         * number of days betwen the start date and the last execution time to a new whole 'repeat period' in
+         * days
+         */
+        int daysToNextTrigger = daysSinceReminderActiveToScheduleRequested
+                                    + reminder.getRepeatEachXPeriods() - daysSiceLastTrigger;
+        // 6 - add the calculated hours to the start date
+        return new Date(reminder.getActiveFrom().getTimeInMillis() + daysToNextTrigger * ONE_DAY_IN_MILLISEC);
+    }
 
-		return weeks / reminder.getRepeatEach();
-	}
-	
-	/**
-	 * number of times that the alert has been executed (in months)
-	 * @param time
-	 * @return
-	 */
-	private static int executedTimesUntilByMonth(Reminder reminder, Date time) {
-		Calendar cTime = Calendar.getInstance();
-		cTime.setTime(time);
+    /**
+     * Having a reference time, this method will return the next time the alert should be triggered based on
+     * the number of weeks or days of the week between alarms
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    // @comentario quiero mirar este método junto contigo; no sé si me entero
+    private static Date getNextWeekDayByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
+        /*
+         * NOTES: - the first day of the week is monday
+         */
+        int nextDayOfWeekInWhichTrigger = 0;
+        // @comentario hay que darle un nombre adecuado a esto, pero no sé cuál
+        Date reference = null;
 
-		int diff = (time.getYear() * 12 + time.getMonth()) - (reminder.getSince().getTime().getYear() * 12 + reminder.getSince().getTime().getMonth());
+        // 2 - getting the time lapse between the start date and today
+        long millisecSinceReminderActiveToScheduleRequested = timeScheduleRequested.getTime()
+                                                                - reminder.getActiveFrom().getTimeInMillis();
+        // 3 - let's get the number of weeks between those two times
+        int weeksSindeReminderActiveToScheduleRequested = 
+                (int) (millisecSinceReminderActiveToScheduleRequested / ONE_WEEK_IN_MILLISEC);
+        // 4 - how many weeks passed since the last executed interval?
+        int weeksSiceLastTrigger = weeksSindeReminderActiveToScheduleRequested
+                                                    % reminder.getRepeatEachXPeriods();
 
-		if(!TimeManager.isBeforeInYear(reminder, cTime)){
-			diff++;
-		}
-		
-		return diff / reminder.getRepeatEach();
-	}
-	
-	/**
-	 * number of times that the alert has been executed (in years)
-	 * @param time
-	 * @return
-	 */
-	private static int executedTimesUntilByYear(Reminder reminder, Date time) {
-		Calendar cTime = Calendar.getInstance();
-		cTime.setTime(time);
+        // 5 - check if it's the first time that the alarm will be triggered
+        if (timeScheduleRequested.after(reminder.getActiveFrom().getTime())) {
+            // @comentario donde el siguiente comentario dice "end date" debería decir "start date" ¿no?
+            // the alarm could have been already triggered, because today is after the end date
+            // 6 - Wich is the next 'week day' that the alarm should be triggered?
+            nextDayOfWeekInWhichTrigger = reminder.getDaysOfWeekInWhichShouldTrigger()
+                                                  .getNextSelectedDayAfter(timeScheduleRequested);
+            /*
+             * 7 - if aux is equals to 0, then we are at the beginning of the week, so we can just get the
+             * next time just by calculating the difference also, if we are before the time of the day in wich
+             * the alarm should be triggered then, the next alarm should be scheduled using the same
+             * operations
+             */
+            boolean nextDayOfWeekInWhichTriggerIsBeforeToday = nextDayOfWeekInWhichTrigger < 0;
+            boolean atLeastOneWeekHasPassedSiceLastTrigger = weeksSiceLastTrigger != 0;
+            if (nextDayOfWeekInWhichTriggerIsBeforeToday
+                    || atLeastOneWeekHasPassedSiceLastTrigger
+                    || shouldTriggerTodaySomeTimeAfterNow(reminder, timeScheduleRequested,
+                                                          nextDayOfWeekInWhichTrigger)) {
+                weeksSindeReminderActiveToScheduleRequested = reminder.getRepeatEachXPeriods()
+                        - weeksSiceLastTrigger;
+            } else {
+                // 7 - elsewhere, we will work with the following week
+                weeksSindeReminderActiveToScheduleRequested = 0;
+            }
 
-		int diff = time.getYear() - reminder.getSince().getTime().getYear();
+            // 8 - otherwise we are in the same week
+            reference = new Date(timeScheduleRequested.getTime());
+            // 9 - The time of the day should be the same of the start date
+            reference.setHours(reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY));
+            reference.setMinutes(reminder.getActiveFrom().get(Calendar.MINUTE));
+        } else {// we are before the first time the alarm should be triggered
+                // 6 - Wich is the next 'week day' that the alarm should be triggered?
+            nextDayOfWeekInWhichTrigger = reminder.getDaysOfWeekInWhichShouldTrigger()
+                                                  .getNextSelectedDayAfter(reminder.getActiveFrom().getTime());
 
-		if(!TimeManager.isBeforeInMonth(reminder, cTime)){
-			diff++;
-		}
-		
-		return diff / reminder.getRepeatEach();
-	}
+            // 7 - if the number of days is > 0 then we are in the same week but, if it's < 0 then we have to
+            // move to the next week
+            if (nextDayOfWeekInWhichTrigger < 0
+            // @comentario ¿es esto un bug? Más bien la función debería tener el nombre
+            // shouldNotTriggerTodaySomeTimeAfterNow pero la condición era la misma que en el anterior caso
+                    || shouldTriggerTodaySomeTimeAfterNow(reminder, timeScheduleRequested,
+                                                          nextDayOfWeekInWhichTrigger)) {
+                // 7 - this week has no more 'active' days, let's move to the next week
+                weeksSindeReminderActiveToScheduleRequested = reminder.getRepeatEachXPeriods();
+            } else {// 7 - we still have work this week
+                weeksSindeReminderActiveToScheduleRequested = 0;
+            }
 
-	/**
-	 * returns the next triggering date
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextTimeLapseWithNoEnd(Reminder reminder, Date time) {
-		//1 - let's calculate the next ocurrence
-		switch(reminder.getRepeatPeriod()){
-		case Reminder.HOUR:
-			Date nextHour = TimeManager.getNextHourByTimeLapse(reminder, time);
-			return nextHour;
-		case Reminder.DAY:
-			Date nextDay = TimeManager.getNextDayByTimeLapse(reminder, time);
-			return nextDay;
-		case Reminder.WEEK:
-			Date nextDayOfTheWeek = TimeManager.getNextWeekDayByTimeLapse(reminder, time);
-			return nextDayOfTheWeek;
-		case Reminder.MONTH:
-			Date nextMonth = TimeManager.getNextMonthByTimeLapse(reminder, time);
-			return nextMonth;
-		case Reminder.YEAR:
-			Date nextYear = TimeManager.getNextYearByTimeLapse(reminder, time);
-			return nextYear;
-		}
-		return null;
-	}
+            // 8 - calculating the reference time
+            reference = reminder.getActiveFrom().getTime();
+        }
+        // 9/10 - getting the next execution time
+        return new Date(reference.getTime() + weeksSindeReminderActiveToScheduleRequested
+                * ONE_WEEK_IN_MILLISEC + nextDayOfWeekInWhichTrigger * ONE_DAY_IN_MILLISEC);
+    }
 
-	/**
-	 * returns the next triggering date
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextTimeLapseByDate(Reminder reminder, Date time) {
-		//1 - is this alert still active? or, on the other hand, the end date is in the past
-		if(time.after(reminder.getUntilDate().getTime())){
-			return null;
-		}
+    private static boolean shouldTriggerTodaySomeTimeAfterNow(Reminder reminder, Date timeScheduleRequested,
+            int nextDayOfWeekInWhichTrigger) {
+        boolean triggerTodaySomeTimeAfterNow;
+        boolean triggerToday = nextDayOfWeekInWhichTrigger == 0;
+        boolean triggerTimeIsAfterScheduleRequestedTime = timeScheduleRequested.getHours() > 
+                        reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY)
+                || ((timeScheduleRequested.getHours() == reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY) 
+                        && timeScheduleRequested.getMinutes() > reminder.getActiveFrom()
+                                                                                                                                                            .get(Calendar.MINUTE)));
+        triggerTodaySomeTimeAfterNow = triggerToday && triggerTimeIsAfterScheduleRequestedTime;
+        return triggerTodaySomeTimeAfterNow;
+    }
 
-		//2 - let's calculate the next ocurrence
-		switch(reminder.getRepeatPeriod()){
-		case Reminder.HOUR:
-			Date nextHour = TimeManager.getNextHourByTimeLapse(reminder, time);
-			if(nextHour.before(reminder.getUntilDate().getTime())){
-				return nextHour;
-			}
-			break;
-		case Reminder.DAY:
-			Date nextDay = TimeManager.getNextDayByTimeLapse(reminder, time);
-			if(nextDay.before(reminder.getUntilDate().getTime())){
-				return nextDay;
-			}
-			break;
-		case Reminder.WEEK:
-			Date nextDayOfTheWeek = TimeManager.getNextWeekDayByTimeLapse(reminder, time);
-			if(nextDayOfTheWeek.before(reminder.getUntilDate().getTime())){
-				return nextDayOfTheWeek;
-			}
-			break;
-		case Reminder.MONTH:
-			Date nextMonth = TimeManager.getNextMonthByTimeLapse(reminder, time);
-			if(nextMonth.before(reminder.getUntilDate().getTime())){
-				return nextMonth;
-			}
-			break;
-		case Reminder.YEAR:
-			Date nextYear = TimeManager.getNextYearByTimeLapse(reminder, time);
-			if(nextYear.before(reminder.getUntilDate().getTime())){
-				return nextYear;
-			}
-			break;
-		}
-		return null;
-	}
+    /**
+     * Having a reference time, this method will return the next time the alert should be triggered based on
+     * the number of months or days of the week between alarms
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    private static Date getNextMonthByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
+        int monthOfNextTrigger, totalTimeInMonths, yearOfNextTrigger;
 
-	/**
-	 * Having a reference time, this method will return the next time the alert should be triggered
-	 * based on the number of months or days of the week between alarms
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextYearByTimeLapse(Reminder reminder, Date time) {
-		int year;
+        // 1 - calculating the reference times
+        Date dateReminderIsActiveFrom = new Date(reminder.getActiveFrom().getTimeInMillis());
+        Calendar timeScheduleRequestedAsACalendar = Calendar.getInstance();
+        timeScheduleRequestedAsACalendar.setTime(timeScheduleRequested);
 
-		//1 - calculating the reference times
-		Date auxDate = new Date(reminder.getSince().getTimeInMillis());
-		Calendar cTime = Calendar.getInstance();
-		cTime.setTime(time);
-		
-		//2 - get the difference (in months) between today and the start date
-		int diff = cTime.get(Calendar.YEAR) - reminder.getSince().get(Calendar.YEAR);
-		//3 - how many weeks passed since the last executed interval? 
-		int aux = diff % reminder.getRepeatEach(); 
-		
-		if(aux == 0){
-			//4 - this is an active year, let's check if we are before or after the trigger moment
-			if(TimeManager.isBeforeInYear(reminder, cTime)){
-				year = diff;
-			}else{
-				year = (diff + reminder.getRepeatEach() - aux);
-			}
-		}else{
-			//4 - this is not an active year, let's jump to the next one
-			year = (diff + reminder.getRepeatEach() - aux);
-		}
-		
-		//5 - adding years to the start date
-		year += auxDate.getYear();
-		
-		auxDate.setYear(year);
-		
-		return auxDate;
-	}
+        // 2 - get the difference (in months) between today and the start date
+        int monthsSindeReminderActiveToScheduleRequested = 
+                (timeScheduleRequestedAsACalendar.get(Calendar.YEAR) * 12
+                                + timeScheduleRequestedAsACalendar.get(Calendar.MONTH))
+                 - (reminder.getActiveFrom().get(Calendar.YEAR) * 12 
+                             + reminder.getActiveFrom().get(Calendar.MONTH));
+        // 3 - how many months passed since the last executed interval?
+        int monthsSiceLastTrigger = monthsSindeReminderActiveToScheduleRequested
+                % reminder.getRepeatEachXPeriods();
 
-	/**
-	 * Determines if we are before or after a 'moment' (day, hour, minute) inside a year 
-	 * @param cTime
-	 * @return
-	 */
-	private static boolean isBeforeInYear(Reminder reminder, Calendar cTime) {
-		return cTime.get(Calendar.MONTH) < reminder.getSince().get(Calendar.MONTH) || 
-				(cTime.get(Calendar.MONTH) == reminder.getSince().get(Calendar.MONTH) &&
-					TimeManager.isBeforeInMonth(reminder, cTime));
-	}
+        if (monthsSiceLastTrigger == 0) {
+            // 4 - this is an active month, let's check if we are before or after the trigger moment
+            if (TimeManager.isBeforeInMonth(reminder, timeScheduleRequestedAsACalendar)) {
+                monthOfNextTrigger = monthsSindeReminderActiveToScheduleRequested;
+            } else {
+                monthOfNextTrigger = (monthsSindeReminderActiveToScheduleRequested
+                        + reminder.getRepeatEachXPeriods() - monthsSiceLastTrigger);
+            }
+        } else {
+            // 4 - this month is not active, let's jump to the next one
+            monthOfNextTrigger = (monthsSindeReminderActiveToScheduleRequested
+                    + reminder.getRepeatEachXPeriods() - monthsSiceLastTrigger);
+        }
 
-	/**
-	 * Having a reference time, this method will return the next time the alert should be triggered
-	 * based on the number of months or days of the week between alarms
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextMonthByTimeLapse(Reminder reminder, Date time) {
-		int months, monthsAux, year;
-		
-		//1 - calculating the reference times
-		Date auxDate = new Date(reminder.getSince().getTimeInMillis());
-		Calendar cTime = Calendar.getInstance();
-		cTime.setTime(time);
+        // 5 - calculating the new month and year
+        totalTimeInMonths = dateReminderIsActiveFrom.getMonth() + monthOfNextTrigger;
+        yearOfNextTrigger = dateReminderIsActiveFrom.getYear() + totalTimeInMonths / 12;
+        monthOfNextTrigger = totalTimeInMonths % 12;
 
-		//2 - get the difference (in months) between today and the start date
-		int diff = (cTime.get(Calendar.YEAR) * 12 + cTime.get(Calendar.MONTH)) - 
-				(reminder.getSince().get(Calendar.YEAR) * 12 + reminder.getSince().get(Calendar.MONTH));
-		//3 - how many weeks passed since the last executed interval? 
-		int aux = diff % reminder.getRepeatEach(); 
-		
-		if(aux == 0){
-			//4 - this is an active month, let's check if we are before or after the trigger moment
-			if(TimeManager.isBeforeInMonth(reminder, cTime)){
-				months = diff;
-			}else{
-				months = (diff + reminder.getRepeatEach() - aux);
-			}
-		}else{
-			//4 - this month is not active, let's jump to the next one
-			months = (diff + reminder.getRepeatEach() - aux);
-		}
-		
-		//5 - calculating the new month and year
-		monthsAux = auxDate.getMonth() + months;
-		year = auxDate.getYear() + monthsAux / 12;
-		months = monthsAux % 12;
-		
-		//6 - setting up the next date
-		auxDate.setMonth(months);
-		auxDate.setYear(year);
-		
-		return auxDate;
-	}
+        // 6 - setting up the next date
+        dateReminderIsActiveFrom.setMonth(monthOfNextTrigger);
+        dateReminderIsActiveFrom.setYear(yearOfNextTrigger);
 
-	/**
-	 * Determines if we are before or after a 'moment' (day, hour, minute) inside a month 
-	 * @param cTime
-	 * @return
-	 */
-	private static boolean isBeforeInMonth(Reminder reminder, Calendar cTime) {
-		return cTime.get(Calendar.DAY_OF_MONTH) < reminder.getSince().get(Calendar.DAY_OF_MONTH) ||
-				(cTime.get(Calendar.DAY_OF_MONTH) == reminder.getSince().get(Calendar.DAY_OF_MONTH)  && 
-					(cTime.get(Calendar.HOUR_OF_DAY) < reminder.getSince().get(Calendar.HOUR_OF_DAY) || 
-						(cTime.get(Calendar.HOUR_OF_DAY) == reminder.getSince().get(Calendar.HOUR_OF_DAY) && 
-								cTime.get(Calendar.MINUTE) < reminder.getSince().get(Calendar.MINUTE) )));
-	}
+        return dateReminderIsActiveFrom;
+    }
 
-	/**
-	 * Having a reference time, this method will return the next time the alert should be triggered
-	 * based on the number of weeks or days of the week between alarms
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextWeekDayByTimeLapse(Reminder reminder, Date time) {
-		/*
-		 * NOTES:
-		 * 		- the first day of the week is monday
-		 */
-		int nextDay = 0;		
-		Date reference = null;
+    /**
+     * Having a reference time, this method will return the next time the alert should be triggered based on
+     * the number of months or days of the week between alarms
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    private static Date getNextYearByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
+        int yearOfNextTrigger;
 
-		//1 - milliseconds in a day and in a whole week
-		long dayFactor = 1000*60*60*24;	
-		long factor = 1000*60*60*24*7; 
-		//2 - getting the time lapse between the start date and today
-		long diff = (time.getTime() - reminder.getSince().getTimeInMillis()); 
-		//3 - let's get the number of weeks between those two times
-		int weeks = (int)(diff/factor);
-		//4 - how many weeks passed since the last executed interval? 
-		int aux = weeks % reminder.getRepeatEach();
-		
-		//5 - check if it's the first time that the alarm will be triggered
-		if(time.after(reminder.getSince().getTime())){ 
-			/*
-			 * the alarm could have been already triggered, because today is after the end date
-			 */
+        // 1 - calculating the reference times
+        Date dateReminderIsActiveFrom = new Date(reminder.getActiveFrom().getTimeInMillis());
+        Calendar timeScheduleRequestedAsACalendar = Calendar.getInstance();
+        timeScheduleRequestedAsACalendar.setTime(timeScheduleRequested);
 
-			//6 - Wich is the next 'week day' that the alarm should be triggered?
-			nextDay = reminder.getWeek().getDayAfterInWeek(time);
-			
-			/*
-			 *7 - if aux is equals to 0, then we are at the beginning of the week, so we can just get the next time just by calculating the difference
-			 * also, if we are before the time of the day in wich the alarm should be triggered then, the next alarm should be scheduled using the same operations
-			 */
-			if(nextDay < 0 || aux != 0 || 
-					(nextDay == 0 && 
-								(time.getHours() > reminder.getSince().get(Calendar.HOUR_OF_DAY) || 
-									(time.getHours() == reminder.getSince().get(Calendar.HOUR_OF_DAY) && 
-										time.getMinutes() > reminder.getSince().get(Calendar.MINUTE))))){
-				weeks = reminder.getRepeatEach() - aux; 
-			}else{
-				/*
-				 * 7 - elsewhere, we will work with the following week
-				 */
-				weeks = 0;
-			}
-			
-			//8 - otherwise we are in the same week
-			reference = time;
-			//9 - The time of the day should be the same of the start date
-			reference.setHours(reminder.getSince().get(Calendar.HOUR_OF_DAY));
-			reference.setMinutes(reminder.getSince().get(Calendar.MINUTE));
-		}else{
-			/*
-			 * this is the first time that the alarm should be triggered
-			 */
+        // 2 - get the difference (in months) between today and the start date
+        int yearsSindeReminderActiveToScheduleRequested = timeScheduleRequestedAsACalendar.get(Calendar.YEAR)
+                - reminder.getActiveFrom().get(Calendar.YEAR);
+        // 3 - how many weeks passed since the last executed interval?
+        int yearsSiceLastTrigger = yearsSindeReminderActiveToScheduleRequested
+                % reminder.getRepeatEachXPeriods();
+        if (yearsSiceLastTrigger == 0) {
+            // 4 - this is an active year, let's check if we are before or after the trigger moment
+            if (TimeManager.isBeforeInYear(reminder, timeScheduleRequestedAsACalendar)) {
+                yearOfNextTrigger = yearsSindeReminderActiveToScheduleRequested;
+            } else {
+                yearOfNextTrigger = (yearsSindeReminderActiveToScheduleRequested
+                        + reminder.getRepeatEachXPeriods() - yearsSiceLastTrigger);
+            }
+        } else {
+            // 4 - this is not an active year, let's jump to the next one
+            yearOfNextTrigger = (yearsSindeReminderActiveToScheduleRequested
+                    + reminder.getRepeatEachXPeriods() - yearsSiceLastTrigger);
+        }
 
-			//6 - Wich is the next 'week day' that the alarm should be triggered?
-			nextDay = reminder.getWeek().getDayAfterInWeek(reminder.getSince().getTime());
-			
-			//7 - if the nomber of days is > 0 then we are in the same week but, if it's < 0 then we have to move to the next week 
-			if(nextDay < 0 ||
-					(nextDay == 0 && 
-						(time.getHours() > reminder.getSince().get(Calendar.HOUR_OF_DAY) || 
-								(time.getHours() == reminder.getSince().get(Calendar.HOUR_OF_DAY) && 
-									time.getMinutes() > reminder.getSince().get(Calendar.MINUTE))))){
-				// 7 - this week has no more 'active' days, let's move to the next week
-				weeks = reminder.getRepeatEach();  
-			}else{ 
-				// 7 - we still have work this week
-				weeks = 0;
-			}
-			
-			//8 - calculating the reference time
-			reference = reminder.getSince().getTime();
-		}
-		//9/10 - getting the next execution time
-		return new Date(reference.getTime() + weeks*factor + nextDay*dayFactor);
-	}
+        // 5 - adding years to the start date
+        yearOfNextTrigger += dateReminderIsActiveFrom.getYear();
+        dateReminderIsActiveFrom.setYear(yearOfNextTrigger);
+        return dateReminderIsActiveFrom;
+    }
 
-	/**
-	 * Having a reference time, this method will return the next time the alert should be triggered
-	 * based on the number of days between alarms
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextDayByTimeLapse(Reminder reminder, Date time) {
-		//1 - milliseconds in a day
-		long factor = 1000*60*60*24;// d’a en ms
-		//2 - getting the time lapse between the start date and today
-		long diff = (time.getTime() - reminder.getSince().getTimeInMillis()); 
-		//3 - let's get the number of hours between those two times
-		int days = (int)(diff/factor);
-		//4 - how many days passed since the last executed interval? 
-		int aux = days % reminder.getRepeatEach();// calculamos los d’as del intervalo que ya han pasado 
-		/*
-		 * 5 - getting the number of days between the start date and the next execution time
-		 * by adding to the number of days betwen the start date and the last execution time
-		 * to a new whole 'repeat period'  in days
-		 */
-		days = (days + reminder.getRepeatEach() - aux);
-		//6 - add the calculated hours to the start date
-		return new Date(reminder.getSince().getTimeInMillis() + days*factor);
-	}
+    /**
+     * number of times that the alert has been executed (in hours)
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    private static int executedTimesUntilByHour(Reminder reminder, Date timeScheduleRequested) {
 
-	/**
-	 * Having a reference time, this method will return the next time the alert should be triggered
-	 * based on the number of hours between alarms
-	 * @param time
-	 * @return
-	 */
-	private static Date getNextHourByTimeLapse(Reminder reminder, Date time) {
-		//1 - milliseconds in an hour
-		long factor = 1000*60*60; 		
-		//2 - getting the time lapse between the start date and today
-		long diff = (time.getTime() - reminder.getSince().getTimeInMillis());
-		//3 - let's get the number of hours between those two times
-		int hours = (int)(diff/factor);
-		//4 - how many hours have passed since the last executed interval? 
-		int aux = hours % reminder.getRepeatEach();
-		/*
-		 * 5 - getting the number of hours between the start date and the next execution time
-		 * by adding to the number of hours betwen the start date and the last execution time
-		 * to a new whole 'repeat period' in hours
-		 */
-		hours = (hours + reminder.getRepeatEach() - aux); 
-		//6 - add the calculated hours to the start date
-		return new Date(reminder.getSince().getTimeInMillis() + hours*factor);
-	}
+        // 2 - calculating the number of days in this lapse of time
+        long millsecSindeReminderActiveToScheduleRequested = timeScheduleRequested.getTime()
+                - reminder.getActiveFrom().getTimeInMillis();
+        int hours = (int) (millsecSindeReminderActiveToScheduleRequested / ONE_HOUR_IN_MILLISEC);
+        return hours / reminder.getRepeatEachXPeriods();
+    }
+
+    /**
+     * number of times that the alert has been executed (in days)
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    private static int executedTimesUntilByDay(Reminder reminder, Date timeScheduleRequested) {
+        // 2 - calculating the number of days in this lapse of time
+        long millsecSindeReminderActiveToScheduleRequested = timeScheduleRequested.getTime()
+                - reminder.getActiveFrom().getTimeInMillis();
+        int days = (int) (millsecSindeReminderActiveToScheduleRequested / ONE_DAY_IN_MILLISEC);
+
+        return days / reminder.getRepeatEachXPeriods();
+    }
+
+    /**
+     * number of times that the alert has been executed (in weeks)
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    private static int executedTimesUntilByWeek(Reminder reminder, Date timeScheduleRequested) {
+        // 2 - calculating the number of weeks in this lapse of time
+        long millsecSindeReminderActiveToScheduleRequested = timeScheduleRequested.getTime()
+                - reminder.getActiveFrom().getTimeInMillis();
+        int weeks = (int) (millsecSindeReminderActiveToScheduleRequested / ONE_WEEK_IN_MILLISEC);
+
+        return weeks / reminder.getRepeatEachXPeriods();
+    }
+
+    /**
+     * number of times that the alert has been executed (in months)
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    private static int executedTimesUntilByMonth(Reminder reminder, Date timeScheduleRequested) {
+        Calendar cTime = Calendar.getInstance();
+        cTime.setTime(timeScheduleRequested);
+
+        int diff = (timeScheduleRequested.getYear() * 12 + timeScheduleRequested.getMonth())
+                - (reminder.getActiveFrom().getTime().getYear() * 12 + reminder.getActiveFrom().getTime()
+                                                                               .getMonth());
+
+        if ( !TimeManager.isBeforeInYear(reminder, cTime)) {
+            diff++;
+        }
+
+        return diff / reminder.getRepeatEachXPeriods();
+    }
+
+    /**
+     * number of times that the alert has been executed (in years)
+     * 
+     * @param timeScheduleRequested
+     * @return
+     */
+    private static int executedTimesUntilByYear(Reminder reminder, Date timeScheduleRequested) {
+        Calendar cTime = Calendar.getInstance();
+        cTime.setTime(timeScheduleRequested);
+
+        int diff = timeScheduleRequested.getYear() - reminder.getActiveFrom().getTime().getYear();
+
+        if ( !TimeManager.isBeforeInMonth(reminder, cTime)) {
+            diff++;
+        }
+
+        return diff / reminder.getRepeatEachXPeriods();
+    }
+
+    /**
+     * Determines if we are before or after a 'moment' (day, hour, minute) inside a year
+     * 
+     * @param cTime
+     * @return
+     */
+    private static boolean isBeforeInYear(Reminder reminder, Calendar cTime) {
+        return cTime.get(Calendar.MONTH) < reminder.getActiveFrom().get(Calendar.MONTH)
+                || (cTime.get(Calendar.MONTH) == reminder.getActiveFrom().get(Calendar.MONTH) 
+                                && TimeManager.isBeforeInMonth(reminder, cTime));
+    }
+
+    /**
+     * Determines if we are before or after a 'moment' (day, hour, minute) inside a month
+     * 
+     * @param cTime
+     * @return
+     */
+    private static boolean isBeforeInMonth(Reminder reminder, Calendar cTime) {
+        return cTime.get(Calendar.DAY_OF_MONTH) < reminder.getActiveFrom().get(Calendar.DAY_OF_MONTH)
+                || (cTime.get(Calendar.DAY_OF_MONTH) == reminder.getActiveFrom().get(Calendar.DAY_OF_MONTH) 
+                     && (cTime.get(Calendar.HOUR_OF_DAY) < reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY) 
+                     || (cTime.get(Calendar.HOUR_OF_DAY) == reminder.getActiveFrom() .get(Calendar.HOUR_OF_DAY) 
+                     && cTime.get(Calendar.MINUTE) < reminder.getActiveFrom() .get(Calendar.MINUTE))));
+    }
+
+    private static final long ONE_WEEK_IN_MILLISEC = 1000 * 60 * 60 * 24 * 7;
+    private static final long ONE_DAY_IN_MILLISEC = 1000 * 60 * 60 * 24;
+    private static final long ONE_HOUR_IN_MILLISEC = 1000 * 60 * 60;
 }

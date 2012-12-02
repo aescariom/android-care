@@ -3,17 +3,15 @@ package org.androidcare.common;
 /**
  * 
  * @author Alejandro Escario Méndez
- *
+ * 
  */
+// @comentario si no se usa para nada borrar
 public enum RequestCode {
 
-	OK(0, "OK"),
-	ERROR(1, "ERROR"),
-	WARNING(2, "WARNING"),
-	INVALID_INPUT(3, "INVALID INPUT DATA"),
-	MISSING_ARGUMENTS(4, "MISSING ARGUMENTS");
-	
-	final int code;
+    OK(0, "OK"), ERROR(1, "ERROR"), WARNING(2, "WARNING"), INVALID_INPUT(3, "INVALID INPUT DATA"), 
+            MISSING_ARGUMENTS(4, "MISSING ARGUMENTS");
+
+    final int code;
     final String description;
 
     /**
@@ -22,8 +20,8 @@ public enum RequestCode {
      * @param description
      */
     private RequestCode(int code, String description) {
-	    this.code = code;
-	    this.description = description;
+        this.code = code;
+        this.description = description;
     }
 
     /**
@@ -31,7 +29,7 @@ public enum RequestCode {
      * @return
      */
     public String getDescription() {
-    	return description;
+        return description;
     }
 
     /**
@@ -39,7 +37,7 @@ public enum RequestCode {
      * @return
      */
     public int getCode() {
-    	return code;
+        return code;
     }
 
     /**
@@ -47,21 +45,20 @@ public enum RequestCode {
      */
     @Override
     public String toString() {
-    	return code + ": " + description;
+        return code + ": " + description;
     }
-    
+
     /**
      * 
      * @param codeValue
      * @return
      */
-    public static RequestCode getByCode(int codeValue)
-    {
-        for (RequestCode  type : RequestCode.values()) {
-            if(type.code == codeValue){
-            	return type;
+    public static RequestCode getByCode(int codeValue) {
+        for (RequestCode type : RequestCode.values()) {
+            if (type.code == codeValue) {
+                return type;
             }
         }
-		return null;
+        return null;
     }
 }
