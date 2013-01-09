@@ -22,13 +22,6 @@ public abstract class Message implements Serializable, Comparable<Message> {
     }
 
     public void onPostSend(HttpResponse response) throws InvalidMessageResponseException {
-        // @comentario la idea de esto es añadir una serie de valiaciones para la respuesta?
-        // tan siquiera tengo claro que esto pueda ser null nunca
-        // si no hay respuesta del servidor se lanzará seguramente una IOException
-        // si esto tiene algún sentido, explícamelo, sino borramos InvalidMessageResponseException
-        if (response == null) {
-            throw new InvalidMessageResponseException("Response from server is null");
-        }
     }
 
     public final int compareTo(Message m) {

@@ -13,10 +13,6 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-/**
- * @author Alejandro Escario MŽndez
- * 
- */
 public class Reminder implements Serializable {
 
     private static final long serialVersionUID = -8087552729716719434L;
@@ -30,7 +26,7 @@ public class Reminder implements Serializable {
     private Calendar activeFrom;
     private Calendar activeUntil;
     private int numerOfRepetitions;
-    // @comentario observa que sin poner ningun comentario dejo claro como funciona esto
+
     private int endType;
     public static final int END_TYPE_NEVER_ENDS = 0;
     public static final int END_TYPE_UNTIL_DATE = 1;
@@ -61,21 +57,7 @@ public class Reminder implements Serializable {
         id = Integer.parseInt(jsonObj.getString("id"));
         title = jsonObj.getString("title");
         setActiveFrom(dateFormat.parse(jsonObj.getString("since")));
-        // @comentario yo entiendo que esta situación nunca se puede dar; la línea anterior podría
-        // lanzar una escepcion, pero si no la danza, tenemos un activeFrom != null seguro
-        // si no estoy equivocado borra estas tres líneas
-        // if (activeFrom == null) {
-        // throw new NoDateFoundException("No start date found");
-        // }
         repeat = jsonObj.getBoolean("repeat");
-        // @comentario tú tenías puesto:
-        // this.setRequestConfirmation(jsonObj.getBoolean("requestConfirmation"));
-        // a mí no me gusta, primero porque es más largo, y segundo porque al ver un set
-        // aa uno siempre le queda la duda de si al cambiar esa propiedad haya algún efecto secundario
-        // del cual se encarga el set, y por tanto para estar seguro de lo que está sucediendo en tu línea
-        // a uno no le queda más remedio que ir a ver el código del método set. En la línea de abajo no hay
-        // dudas.
-        // como esta, bastantes más.
         requestConfirmation = jsonObj.getBoolean("requestConfirmation");
 
         // Optional fields
@@ -93,17 +75,10 @@ public class Reminder implements Serializable {
                 numerOfRepetitions = jsonObj.getInt("untilIterations");
             } else if (endType == Reminder.END_TYPE_UNTIL_DATE) {
                 setUntilDate(dateFormat.parse(jsonObj.getString("untilDate")));
-                // @comentario lo mismo que en el caso anterior; no concibo cómo puede ser
-                // que activeUntil sea null aquí
-                // if (activeUntil == null) {
-                // throw new NoDateFoundException("No end date found");
-                // }
             } else {
                 // if is not one of the above values, it must be the following one
                 endType = Reminder.END_TYPE_NEVER_ENDS;
             }
-            // @comentario en vez de validar aquí mismo saco la lógica de validación para fuera (en el set)
-            // así queda un constructor un poco más sencillo
             setRepeatPeriod(jsonObj.getInt("repeatPeriod"));
             if (repeatPeriod == Reminder.REPEAT_PERIOD_WEEK) {
                 daysOfWeekInWhichShouldTrigger = new DaysOfWeekInWhichShouldTrigger(
@@ -112,6 +87,14 @@ public class Reminder implements Serializable {
         }
     }
 
+    public Reminder(String title, String description, Date startTime){
+        this.title = title;
+        this.description = description;
+        Calendar cStart = Calendar.getInstance();
+        cStart.setTime(startTime);
+        setActiveFrom(cStart);
+    }
+    
     public Reminder(String title, String description, Date startTime, Date endTime, boolean repeat,
             int endType, int repeatPeriod, int repeatEach) {
         this.title = title;
@@ -134,8 +117,6 @@ public class Reminder implements Serializable {
         numerOfRepetitions = iterations;
     }
 
-    // @comentario primero los getter y los setter que tienen algo de chicha (seguir leyendo siguiente
-    // comentario)
     public Calendar getActiveFrom() {
         return activeFrom;
     }
@@ -157,7 +138,7 @@ public class Reminder implements Serializable {
     public int getRepeatPeriod() {
         return repeatPeriod;
     }
-
+    
     /**
      * @param repeatPeriod
      * @throws AndroidCareDateFormatException
@@ -205,11 +186,10 @@ public class Reminder implements Serializable {
 
     @Override
     public String toString() {
-        return "Reminder: " + getTitle() + " active from " + activeFrom.getTime().toString() + " active to "
-                + activeUntil.getTime().toString();
+        return "Reminder: " + getTitle() + " active from " + activeFrom.getTime().toString() + 
+                ((activeUntil != null) ? " active to " + activeUntil.getTime().toString() : "");
     }
 
-    // @comentario y al final de todos los que no aportan nada pero hacen falta para ser un JavaBean
     public int getEndType() {
         return endType;
     }
@@ -277,4 +257,4 @@ public class Reminder implements Serializable {
     public void setRepeatEachXPeriods(int epeatEachXPeriods) {
         this.repeatEachXPeriods = epeatEachXPeriods;
     }
-}// @comentario solían ser 389 líneas, y cuando borres mis comentarios serán unas 250
+}

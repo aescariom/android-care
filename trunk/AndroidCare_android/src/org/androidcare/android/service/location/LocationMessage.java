@@ -14,14 +14,14 @@ import org.apache.http.message.BasicNameValuePair;
 import android.location.Location;
 
 @SuppressWarnings("serial")
-public class GeoMessage extends Message {
+public class LocationMessage extends Message {
     public static final String POSITION_LOG_URL = ConnectionService.APP_URL + "api/addPosition";
 
     Location location;
 
-    public GeoMessage(Location location) {
+    public LocationMessage(Location location) {
         super();
-        this.url = GeoMessage.POSITION_LOG_URL;
+        this.url = LocationMessage.POSITION_LOG_URL;
         this.location = location;
     }
 

@@ -24,7 +24,7 @@ public class ReminderServiceBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle extras = intent.getExtras();
         Reminder r = (Reminder) extras.getSerializable(ReminderServiceBroadcastReceiver.EXTRA_REMINDER);
-        reminderService.schedule(r);
+        //reminderService.schedule(r);
     }
 
 }
