@@ -5,10 +5,6 @@ import org.androidcare.android.reminders.Reminder;
 import android.app.Activity;
 import android.os.Bundle;
 
-/*
- * @author Alejandro Escario MŽndez
- *
- */
 public class ReminderDialogReceiver extends Activity {
 
     @Override

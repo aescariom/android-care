@@ -6,6 +6,7 @@ import org.androidcare.android.reminders.ReminderStatusCode;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
 
 import android.content.Context;
+import android.media.RingtoneManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,7 +19,6 @@ public class UIReminderBasicView extends UIReminderView {
     protected TextView lblTitle;
     protected TextView lblDescription;
 
-    // @comentario @todo implementar funcionalidad para "rrecordar más tarde" (delayed)
     public UIReminderBasicView(Context context, Reminder reminder) {
         super(context, reminder);
 
@@ -53,7 +53,11 @@ public class UIReminderBasicView extends UIReminderView {
         lblTitle = (TextView) findViewById(R.id.txtReminderTitle);
         lblTitle.setText(this.reminder.getTitle());
         lblDescription = (TextView) findViewById(R.id.txtReminderDescription);
-        lblTitle.setText(this.reminder.getDescription());
+        lblDescription.setText(this.reminder.getDescription());
+        
+        // Noise + vibration
+        playSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        vibrate(1500);
 
         // 5 - notifying
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DISPLAYED));

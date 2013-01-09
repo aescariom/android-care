@@ -16,7 +16,6 @@ abstract class TimeManager {
         timeScheduleRequested.setSeconds(0);
         if (reminder.getActiveFrom() != null) {
             if (timeScheduleRequested.before(reminder.getActiveFrom().getTime()) &&
-            // @comentario no lo pillo ¿por qué esta segunda condición?
                     reminder.getRepeatPeriod() != Reminder.REPEAT_PERIOD_WEEK) {
                 // If we are before the start date, let's select the start date as the next execution time
                 return reminder.getActiveFrom().getTime();
@@ -36,7 +35,7 @@ abstract class TimeManager {
     }
 
     private static Date getNextTimeLapseEndTypeNeverEnds(Reminder reminder, Date timeScheduleRequested) {
-        // 1 - let's calculate the next ocurrence
+        // 1 - let's calculate the next occurrence
         switch (reminder.getRepeatPeriod()) {
         case Reminder.REPEAT_PERIOD_HOUR:
             return TimeManager.getNextHourByTimeLapse(reminder, timeScheduleRequested);
@@ -48,8 +47,7 @@ abstract class TimeManager {
             return TimeManager.getNextMonthByTimeLapse(reminder, timeScheduleRequested);
         default:// Reminder.REPEAT_PERIOD_YEAR:
             return TimeManager.getNextYearByTimeLapse(reminder, timeScheduleRequested);
-        }// @comentario esto devolvían null si no se cumplía ningun case, pero entiendo que eso no puede ser
-         // salvo bug
+        }
     }
 
     private static Date getNextTimeLapseByDate(Reminder reminder, Date timeScheduleRequested) {
@@ -58,7 +56,7 @@ abstract class TimeManager {
             return null;
         }
 
-        // 2 - let's calculate the next ocurrence
+        // 2 - let's calculate the next occurrence
         switch (reminder.getRepeatPeriod()) {
         case Reminder.REPEAT_PERIOD_HOUR:
             Date nextHour = TimeManager.getNextHourByTimeLapse(reminder, timeScheduleRequested);
@@ -146,7 +144,7 @@ abstract class TimeManager {
                 % reminder.getRepeatEachXPeriods();
         /*
          * 5 - getting the number of hours between the start date and the next execution time by adding to the
-         * number of hours betwen the start date and the last execution time to a new whole 'repeat period' in
+         * number of hours between the start date and the last execution time to a new whole 'repeat period' in
          * hours
          */
         int hoursToNextTrigger = hoursSinceReminderActiveToScheduleRequested
@@ -167,7 +165,7 @@ abstract class TimeManager {
                 % reminder.getRepeatEachXPeriods();
         /*
          * 5 - getting the number of days between the start date and the next execution time by adding to the
-         * number of days betwen the start date and the last execution time to a new whole 'repeat period' in
+         * number of days between the start date and the last execution time to a new whole 'repeat period' in
          * days
          */
         int daysToNextTrigger = daysSinceReminderActiveToScheduleRequested
@@ -183,7 +181,6 @@ abstract class TimeManager {
      * @param timeScheduleRequested
      * @return
      */
-    // @comentario quiero mirar este método junto contigo; no sé si me entero
     private static Date getNextWeekDayByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
         /*
          * NOTES: - the first day of the week is monday
@@ -206,7 +203,7 @@ abstract class TimeManager {
         if (timeScheduleRequested.after(reminder.getActiveFrom().getTime())) {
             // @comentario donde el siguiente comentario dice "end date" debería decir "start date" ¿no?
             // the alarm could have been already triggered, because today is after the end date
-            // 6 - Wich is the next 'week day' that the alarm should be triggered?
+            // 6 - Which is the next 'week day' that the alarm should be triggered?
             nextDayOfWeekInWhichTrigger = reminder.getDaysOfWeekInWhichShouldTrigger()
                                                   .getNextSelectedDayAfter(timeScheduleRequested);
             /*
@@ -215,7 +212,7 @@ abstract class TimeManager {
              * the alarm should be triggered then, the next alarm should be scheduled using the same
              * operations
              */
-            boolean nextDayOfWeekInWhichTriggerIsBeforeToday = nextDayOfWeekInWhichTrigger < 0;
+            boolean nextDayOfWeekInWhichTriggerIsBeforeToday = nextDayOfWeekInWhichTrigger + reminder.getActiveFrom().get(Calendar.DAY_OF_WEEK) > 7;
             boolean atLeastOneWeekHasPassedSiceLastTrigger = weeksSiceLastTrigger != 0;
             if (nextDayOfWeekInWhichTriggerIsBeforeToday
                     || atLeastOneWeekHasPassedSiceLastTrigger
@@ -234,7 +231,7 @@ abstract class TimeManager {
             reference.setHours(reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY));
             reference.setMinutes(reminder.getActiveFrom().get(Calendar.MINUTE));
         } else {// we are before the first time the alarm should be triggered
-                // 6 - Wich is the next 'week day' that the alarm should be triggered?
+                // 6 - Which is the next 'week day' that the alarm should be triggered?
             nextDayOfWeekInWhichTrigger = reminder.getDaysOfWeekInWhichShouldTrigger()
                                                   .getNextSelectedDayAfter(reminder.getActiveFrom().getTime());
 
@@ -255,6 +252,7 @@ abstract class TimeManager {
             reference = reminder.getActiveFrom().getTime();
         }
         // 9/10 - getting the next execution time
+        nextDayOfWeekInWhichTrigger %= 7;
         return new Date(reference.getTime() + weeksSindeReminderActiveToScheduleRequested
                 * ONE_WEEK_IN_MILLISEC + nextDayOfWeekInWhichTrigger * ONE_DAY_IN_MILLISEC);
     }
@@ -267,7 +265,7 @@ abstract class TimeManager {
                         reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY)
                 || ((timeScheduleRequested.getHours() == reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY) 
                         && timeScheduleRequested.getMinutes() > reminder.getActiveFrom()
-                                                                                                                                                            .get(Calendar.MINUTE)));
+                            .get(Calendar.MINUTE)));
         triggerTodaySomeTimeAfterNow = triggerToday && triggerTimeIsAfterScheduleRequestedTime;
         return triggerTodaySomeTimeAfterNow;
     }

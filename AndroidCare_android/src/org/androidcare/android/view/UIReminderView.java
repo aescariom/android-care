@@ -10,6 +10,12 @@ import org.androidcare.android.service.reminders.ReminderServiceBroadcastReceive
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Vibrator;
+import android.util.Log;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
@@ -32,7 +38,6 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     public void delayed() {
-        // @comentario @todo falta por implementar
     }
 
     public void displayed() {
@@ -59,5 +64,35 @@ public abstract class UIReminderView extends RelativeLayout {
         Intent intent = new Intent(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
         intent.putExtra(ConnectionServiceBroadcastReceiver.EXTRA_MESSAGE, message);
         this.getContext().sendBroadcast(intent);
+    }
+
+    protected void playSound(Uri soundUri) {        
+        try {
+            Context context = getContext();
+            // 1 - getting the sound
+            MediaPlayer mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setDataSource(context, soundUri);
+            // 2 - setting up the audio manager
+            final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            // 3 - playing the sound
+            if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                mMediaPlayer.setLooping(false);
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            }
+        }
+        catch (Exception e) { // we must catch the exception
+            Log.i("ReminderReceiver", "Could not play the sound when reminder was received");
+            e.printStackTrace();
+        }
+    }
+    
+    protected void vibrate(int length){
+        // Get instance of Vibrator from current Context
+        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+         
+        // Vibrate for 'length' milliseconds
+        v.vibrate(length);
     }
 }

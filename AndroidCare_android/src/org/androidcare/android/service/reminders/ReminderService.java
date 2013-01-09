@@ -7,11 +7,12 @@ import java.util.List;
 
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.ConnectionService;
-import org.androidcare.android.service.location.GeoMessage;
+import org.androidcare.android.service.location.LocationMessage;
 import org.androidcare.android.view.ReminderReceiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -24,11 +25,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-/**
- * @author Alejandro Escario MÃ©ndez
- * 
- * 
- */
 // @comentario Romper este servicio en dos; uno que se encargue de los reminders y otro de la localización;
 // el de la localización va al paquete location
 public class ReminderService extends ConnectionService {
@@ -46,54 +42,22 @@ public class ReminderService extends ConnectionService {
             this);
     private IntentFilter filter = new IntentFilter(ReminderServiceBroadcastReceiver.ACTION_SCHEDULE_REMINDER);
 
-    // location
-    private LocationManager locationManager;
-    private int minSeconds = 300000; // 5 min
-    private int minDistance = 20; // 20 meters
-    private LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            ReminderService.this.pushLowPriorityMessage(new GeoMessage(location));
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onProviderDisabled(String provider) {
-        }
-    };
-
     @Override
-  //@Comentario deberíamos usar onStartCommand; Este método está deprecated
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
-        Log.i(tag, "Service started");
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        int result = super.onStartCommand(intent, flags, startId);
+        Log.i(tag, "Reminder service started");
 
         this.pushMessage(new GetRemindersMessage(this));
 
-        // Acquire a reference to the system Location Manager
-        this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        // Register the listener with the Location Manager to receive location updates
-      //@Comentario no tengo claro que LocationManager.NETWORK_PROVIDER sea la mejor opción para
-        //nuestro problema  en todos los escenarios; creo que habría que definir más dinámicamente
-        //el mecanismo de localización a utilizar a través de un Criteria, y que deberíamos estar
-        //monitorizar no cambios  en proveedores de mecanismos de localización y reaccionando a ellos
-        //es decir, reaccionar a que active/desactive la Wifi o el GPS
-        //pero con esto ponte una vez que hayamos roto esta clase en dos
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, this.minSeconds,
-                this.minDistance, locationListener);
-
         registerReceiver(reminderServiceReceiver, filter);
+        
+        return result;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(reminderServiceReceiver);
-        // @comentario ¿Aquí habría que haber añadido también la línea que he puesto debajo?
-        // locationManager.removeUpdates(locationListener)
     }
 
     @Override

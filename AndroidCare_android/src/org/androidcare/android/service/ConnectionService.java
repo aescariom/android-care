@@ -31,6 +31,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -48,7 +49,7 @@ public abstract class ConnectionService extends Service {
     private String authToken = "";
     private Cookie authCookie = null;
 
-    // communcation
+    // Communication
     private final Queue<Message> pendingMessages = new PriorityQueue<Message>(); // service info
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
@@ -61,13 +62,16 @@ public abstract class ConnectionService extends Service {
 
     private int maxPendingMessages = 10;
     private long maxTimeSiceFirstMessage = 900000; // 15 min in milliseconds
+    
+    private boolean isMock = false;
 
     @Override
-    //@Comentario deberíamos usar onStartCommand; Este método está deprecated
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        int result = super.onStartCommand(intent, flags, startId);
         registerReceiver(connectionServiceReceiver, filter);
         setConnectionStateListener();
+        isMock = getApplicationContext().getResources().getBoolean(R.bool.mock);
+        return result;
     }
 
     private void setConnectionStateListener() {
@@ -95,55 +99,25 @@ public abstract class ConnectionService extends Service {
         unregisterReceiver(connectionServiceReceiver);
         processMessageQueue();
     }
-  //@Comentario las acciones que realiza este método a cojones tienen que ir en un thread diferente del main
-    //lo contrario sería  un descalabro de rendimiento en la aplicación y haría muy probable que
-    //el entorno mate este servicio por tardar demasiado
+
     public void processMessageQueue() {
-        synchronized (pendingMessages) {
-            Message message;
-            if (this.pendingMessages.size() == 0 || !isSessionCookieValid()) {
-                return;
-            }
-            if ( !isConnectionAvailable()) {
-                triggerConnectionErrorNotification();
-                return;
-            }
-            try {
-                while ((message = pendingMessages.peek()) != null) {
-                    HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
-                            this.getApplicationContext(), authCookie);
-                    HttpRequestBase request = message.getHttpRequestBase();
-                    message.onPreSend(request);
-                    HttpResponse response = client.execute(request);
-                    message.onPostSend(response);
-                    pendingMessages.poll();
-                }
-            }
-            catch (Exception e) {// @comentario no es muy elegante, pero tampoco lo es tener tres catch
-                                 // iguales
-                Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
-            }
-        }
+        new MessageQueueProcessor().execute((Void)null);
     }
 
     private boolean isSessionCookieValid() {
-        if (this.authCookie == null || this.authCookie.getExpiryDate().compareTo(new Date()) <= 0) {
+        if (!isMock && (this.authCookie == null || this.authCookie.getExpiryDate().compareTo(new Date()) <= 0)) {
             try {
                 getOauthCookie();
             }
             catch (ConnectionServiceException e) {
                 Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
-                // @comentario aaquí no deberíamos devolver false?
             }
-            // @comentario y aquí devolver true?
-            return false;
+            // this is always false, because we need to get the authCookie before we can send more messages
+            return false;  
         }
         return true;
     }
 
-    // comentario hacer mock para no necesitar cuenta en el emulador;
-    // Yo usaría una variable distinta que la usada para el HttpClient para poder
-    // hacer mock de cualquiera de ellos o de ambos
     private void getOauthCookie() throws ConnectionServiceException {
         // 1 - fetching the selected Google account
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -178,7 +152,7 @@ public abstract class ConnectionService extends Service {
 
         // 4 - getting the auth token
         Log.i(tag, "Selected account: " + this.googleUser.toString());
-        accountManager.getAuthToken(this.googleUser, "ah", // this is the "authTokenType" for google appengine
+        accountManager.getAuthToken(this.googleUser, "ah", // this is the "authTokenType" for google App Engine
                 true, // notifyAuthFailure
                 new GetAuthTokenCallback(), // callback
                 null); // a null handler means that it will be handled by the
@@ -280,7 +254,7 @@ public abstract class ConnectionService extends Service {
                 if (intent != null) { // user input required
                     startActivity(intent);
                 } else {
-                    ConnectionService.this.getOauthCookie(bundle);
+                    new GetCookieTask().execute(bundle);
                 }
             }
             catch (Exception e) {
@@ -288,6 +262,7 @@ public abstract class ConnectionService extends Service {
             }
         }
     }
+
 
     /**
      * Callback methid for GetAuthTokenCallback
@@ -315,13 +290,62 @@ public abstract class ConnectionService extends Service {
             throw new ConnectionServiceException("Response was not a redirection");
         }
 
-        for (Cookie cookoe : client.getCookieStore().getCookies()) {
+        for (Cookie cookie : client.getCookieStore().getCookies()) {
             // we are looking for the authentication cookie
-            if (cookoe.getName().equals("ACSID")) {
-                this.authCookie = cookoe;
+            if (cookie.getName().equals("ACSID")) {
+                this.authCookie = cookie;
                 processMessageQueue();
                 break;
             }
         }
+    }
+    
+    private class GetCookieTask extends AsyncTask<Bundle, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Bundle... params) {
+            Bundle bundle = params[0];
+            try {
+                ConnectionService.this.getOauthCookie(bundle);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+    }
+    
+
+    private class MessageQueueProcessor extends AsyncTask<Void, Object, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            synchronized (pendingMessages) {
+                Message message;
+                if (ConnectionService.this.pendingMessages.size() == 0 || !isSessionCookieValid()) {
+                    return false;
+                }
+                if ( !isConnectionAvailable()) {
+                    triggerConnectionErrorNotification();
+                    return false;
+                }
+                try {
+                    while ((message = pendingMessages.peek()) != null) {
+                        HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
+                                ConnectionService.this.getApplicationContext(), authCookie);
+                        HttpRequestBase request = message.getHttpRequestBase();
+                        message.onPreSend(request);
+                        HttpResponse response = client.execute(request);
+                        message.onPostSend(response);
+                        pendingMessages.poll();
+                    }
+                }
+                catch (Exception e) {
+                    Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
+                }
+                return true;
+            }
+        }
+        
     }
 }

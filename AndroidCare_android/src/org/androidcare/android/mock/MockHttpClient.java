@@ -27,10 +27,6 @@ import org.apache.http.protocol.HttpContext;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-//@comentario bien hecho. De hacer falta, esto puede extenderse en el futuro para tener un mapa que contenga
-//URLs  y archivos con el JSON asociado a una petición a esa URL, de tal modo que se pueda
-//programáticamente añadir  URLs e indicar cuál debe ser la respuesta,  para facilitar el hacer
-//test
 public class MockHttpClient implements HttpClient {
     protected HttpResponse injectedResponse = null;
     protected Context context = null;

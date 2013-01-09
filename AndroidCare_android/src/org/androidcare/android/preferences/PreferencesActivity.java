@@ -1,7 +1,7 @@
 package org.androidcare.android.preferences;
 
 import org.androidcare.android.R;
-import org.androidcare.android.service.reminders.ReminderService;
+import org.androidcare.android.service.ServiceManager;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -19,11 +19,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.widget.Toast;
 
-/**
- * 
- * * @author Alejandro Escario Méndez
- * 
- */
 public class PreferencesActivity extends PreferenceActivity {
 
     protected AccountManager accountManager;
@@ -57,8 +52,7 @@ public class PreferencesActivity extends PreferenceActivity {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Toast.makeText(getApplicationContext(), R.string.restarting_service, Toast.LENGTH_SHORT)
                             .show();
-                    Intent serviceIntent = new Intent(getApplicationContext(), ReminderService.class);
-                    startService(serviceIntent);
+                    ServiceManager.startAllServices(getApplicationContext());
                     accountList.setSummary(newValue.toString());
                     return true;
                 }
