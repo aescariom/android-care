@@ -50,7 +50,7 @@ public abstract class ConnectionService extends Service {
     private Cookie authCookie = null;
 
     // Communication
-    private final Queue<Message> pendingMessages = new PriorityQueue<Message>(); // service info
+    private static final Queue<Message> pendingMessages = new PriorityQueue<Message>(); // service info
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
     private BroadcastReceiver mNetworkStateIntentReceiver;
