@@ -1,8 +1,6 @@
 package org.androidcare.android.service.location;
 
 import org.androidcare.android.service.ConnectionService;
-import org.androidcare.android.service.reminders.GetRemindersMessage;
-import org.androidcare.android.service.reminders.ReminderService;
 
 import android.content.Context;
 import android.content.Intent;
@@ -56,7 +54,6 @@ public class LocationService extends ConnectionService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO Auto-generated method stub
         return null;
     }
 

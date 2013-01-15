@@ -7,26 +7,17 @@ import java.util.List;
 
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.ConnectionService;
-import org.androidcare.android.service.location.LocationMessage;
 import org.androidcare.android.view.ReminderReceiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-// @comentario Romper este servicio en dos; uno que se encargue de los reminders y otro de la localización;
-// el de la localización va al paquete location
 public class ReminderService extends ConnectionService {
 
     private static final int REMINDER_REQUEST_CODE = 0;
@@ -107,10 +98,6 @@ public class ReminderService extends ConnectionService {
             sender.cancel();
             this.reminderIntents.remove(intent);
         }
-    }
-  //@Comentario creo que no estamos usando binding para nada ¿no? Si es así, borrar.
-    public IBinder getBinder() {
-        return binder;
     }
 
     /**

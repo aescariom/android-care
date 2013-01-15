@@ -5,7 +5,9 @@ import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.RingtoneManager;
 import android.view.View;
 import android.view.WindowManager;
@@ -55,8 +57,7 @@ public class UIReminderBasicView extends UIReminderView {
         btnDelayed.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                delayed(600000); // 10 minutes 
-                finish();
+                showDelayModal(v);
             }
         });
 
@@ -71,5 +72,29 @@ public class UIReminderBasicView extends UIReminderView {
 
         // 5 - notifying
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DISPLAYED));
+    }
+    
+    public void showDelayModal(View v){
+        final CharSequence[] items = {
+                "3 min",
+                "5 min",
+                "10 min",
+                "15 min",
+                "30 min",
+                "60 min",
+                };
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("titulo");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                int min = Integer.parseInt(items[item].toString().split(" ")[0]);
+
+                delayed(min * 60000);
+                finish();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
