@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
 import android.util.Log;
@@ -26,22 +25,25 @@ public abstract class UIReminderView extends RelativeLayout {
     public UIReminderView(Context context, Reminder reminder) {
         super(context);
         this.reminder = reminder;
-        reschedule(reminder);
     }
 
     public void performed() {
-        postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DONE));
+        reschedule(reminder);
+        postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DONE));
     }
 
     public void notPerformed() {
-        postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_IGNORED));
+        reschedule(reminder);
+        postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_IGNORED));
     }
 
-    public void delayed() {
+    public void delayed(int ms) {
+        postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DELAYED));
+        reschedule(reminder, ms);
     }
 
     public void displayed() {
-        postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DISPLAYED));
+        postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DISPLAYED));
     }
 
     public void finish() {
@@ -54,9 +56,14 @@ public abstract class UIReminderView extends RelativeLayout {
         return parent.getWindow();
     }
 
-    protected void reschedule(Reminder reminderr) {
+    protected void reschedule(Reminder reminder) {
+        reschedule(reminder, 0);
+    }
+
+    protected void reschedule(Reminder reminder, int ms) {
         Intent intent = new Intent(ReminderServiceBroadcastReceiver.ACTION_SCHEDULE_REMINDER);
-        intent.putExtra(ReminderServiceBroadcastReceiver.EXTRA_REMINDER, reminderr);
+        intent.putExtra(ReminderServiceBroadcastReceiver.EXTRA_REMINDER, reminder);
+        intent.putExtra(ReminderServiceBroadcastReceiver.EXTRA_DELAY, ms);
         this.getContext().sendBroadcast(intent);
     }
 

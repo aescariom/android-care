@@ -10,8 +10,8 @@ import org.json.JSONException;
 public class DaysOfWeekInWhichShouldTrigger implements Serializable {
     private static final long serialVersionUID = -32589040262037485L;
 
-    // mon tue wed thu fri sat sun
-    // 0 1 2 3 4 5 6 7
+    // sun mon tue wed thu fri sat 
+    // 0 1 2 3 4 5 6
     private boolean[] dayIsSelected = { false, false, false, false, false, false, false };
 
     DaysOfWeekInWhichShouldTrigger(JSONArray jSONArray) throws AndroidCareDateFormatException, JSONException {
@@ -44,7 +44,6 @@ public class DaysOfWeekInWhichShouldTrigger implements Serializable {
         int today = cal.get(Calendar.DAY_OF_WEEK); // each week starts on Sunday
                                                     // sun mon tue wed thu fri sat
                                                     // 1 2 3 4 5 6 7
-       
         // let's loop over the entire week
         for (int i = today, j = 1; i <= 7 + today; i++, j++) {
             // what if we are beyond the end of the week? let's go back to a valid weekday

@@ -79,6 +79,11 @@ public class ReminderService extends ConnectionService {
             return;
         }
         cal.setTime(date);
+        
+        scheduleTo(reminder, cal);
+    }
+    
+    public void scheduleTo(Reminder reminder, Calendar cal) {
 
         Intent intent = new Intent(this.getApplicationContext(), ReminderReceiver.class);
         intent.setData(Uri.parse("androidCare://" + reminder.getId() + ".- " + reminder.getTitle()));
@@ -89,7 +94,7 @@ public class ReminderService extends ConnectionService {
 
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
-
+        
         Log.i(tag, "Reminder scheduled: " + reminder.getTitle() + " @ " + cal.getTime().toString());
     }
 
