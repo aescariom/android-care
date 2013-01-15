@@ -134,10 +134,10 @@ abstract class TimeManager {
     //O esto está mal. ¿ves tú ahora problema?.
     private static Date getNextHourByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
         // 2 - getting the time lapse between the start date and today
-        long millsecSindeReminderActiveToScheduleRequested = (timeScheduleRequested.getTime() - 
+        long millsecSinceReminderActiveToScheduleRequested = (timeScheduleRequested.getTime() - 
                 reminder.getActiveFrom().getTimeInMillis());
         // 3 - let's get the number of hours between those two times
-        int hoursSinceReminderActiveToScheduleRequested = (int) (millsecSindeReminderActiveToScheduleRequested 
+        int hoursSinceReminderActiveToScheduleRequested = (int) (millsecSinceReminderActiveToScheduleRequested 
                 / ONE_HOUR_IN_MILLISEC);
         // 4 - how many hours have passed since the last executed interval?
         int hoursSiceLastTrigger = hoursSinceReminderActiveToScheduleRequested
@@ -183,32 +183,31 @@ abstract class TimeManager {
      */
     private static Date getNextWeekDayByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
         /*
-         * NOTES: - the first day of the week is monday
+         * NOTES: - the first day of the week is sunday
          */
         int nextDayOfWeekInWhichTrigger = 0;
-        // @comentario hay que darle un nombre adecuado a esto, pero no sé cuál
-        Date reference = null;
+
+        Date referenceDateThatPreservesHoursMinutesAndSeconds = null;
 
         // 2 - getting the time lapse between the start date and today
         long millisecSinceReminderActiveToScheduleRequested = timeScheduleRequested.getTime()
                                                                 - reminder.getActiveFrom().getTimeInMillis();
         // 3 - let's get the number of weeks between those two times
-        int weeksSindeReminderActiveToScheduleRequested = 
+        int weeksSinceReminderActiveToScheduleRequested = 
                 (int) (millisecSinceReminderActiveToScheduleRequested / ONE_WEEK_IN_MILLISEC);
         // 4 - how many weeks passed since the last executed interval?
-        int weeksSiceLastTrigger = weeksSindeReminderActiveToScheduleRequested
+        int weeksSiceLastTrigger = weeksSinceReminderActiveToScheduleRequested
                                                     % reminder.getRepeatEachXPeriods();
 
         // 5 - check if it's the first time that the alarm will be triggered
         if (timeScheduleRequested.after(reminder.getActiveFrom().getTime())) {
-            // @comentario donde el siguiente comentario dice "end date" debería decir "start date" ¿no?
-            // the alarm could have been already triggered, because today is after the end date
+            // the alarm could have been already triggered, because today is after the start date
             // 6 - Which is the next 'week day' that the alarm should be triggered?
             nextDayOfWeekInWhichTrigger = reminder.getDaysOfWeekInWhichShouldTrigger()
                                                   .getNextSelectedDayAfter(timeScheduleRequested);
             /*
              * 7 - if aux is equals to 0, then we are at the beginning of the week, so we can just get the
-             * next time just by calculating the difference also, if we are before the time of the day in wich
+             * next time just by calculating the difference also, if we are before the time of the day in which
              * the alarm should be triggered then, the next alarm should be scheduled using the same
              * operations
              */
@@ -218,18 +217,18 @@ abstract class TimeManager {
                     || atLeastOneWeekHasPassedSiceLastTrigger
                     || shouldTriggerTodaySomeTimeAfterNow(reminder, timeScheduleRequested,
                                                           nextDayOfWeekInWhichTrigger)) {
-                weeksSindeReminderActiveToScheduleRequested = reminder.getRepeatEachXPeriods()
+                weeksSinceReminderActiveToScheduleRequested = reminder.getRepeatEachXPeriods()
                         - weeksSiceLastTrigger;
             } else {
                 // 7 - elsewhere, we will work with the following week
-                weeksSindeReminderActiveToScheduleRequested = 0;
+                weeksSinceReminderActiveToScheduleRequested = 0;
             }
 
             // 8 - otherwise we are in the same week
-            reference = new Date(timeScheduleRequested.getTime());
+            referenceDateThatPreservesHoursMinutesAndSeconds = new Date(timeScheduleRequested.getTime());
             // 9 - The time of the day should be the same of the start date
-            reference.setHours(reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY));
-            reference.setMinutes(reminder.getActiveFrom().get(Calendar.MINUTE));
+            referenceDateThatPreservesHoursMinutesAndSeconds.setHours(reminder.getActiveFrom().get(Calendar.HOUR_OF_DAY));
+            referenceDateThatPreservesHoursMinutesAndSeconds.setMinutes(reminder.getActiveFrom().get(Calendar.MINUTE));
         } else {// we are before the first time the alarm should be triggered
                 // 6 - Which is the next 'week day' that the alarm should be triggered?
             nextDayOfWeekInWhichTrigger = reminder.getDaysOfWeekInWhichShouldTrigger()
@@ -237,23 +236,20 @@ abstract class TimeManager {
 
             // 7 - if the number of days is > 0 then we are in the same week but, if it's < 0 then we have to
             // move to the next week
-            if (nextDayOfWeekInWhichTrigger < 0
-            // @comentario ¿es esto un bug? Más bien la función debería tener el nombre
-            // shouldNotTriggerTodaySomeTimeAfterNow pero la condición era la misma que en el anterior caso
-                    || shouldTriggerTodaySomeTimeAfterNow(reminder, timeScheduleRequested,
+            if (shouldTriggerTodaySomeTimeAfterNow(reminder, timeScheduleRequested,
                                                           nextDayOfWeekInWhichTrigger)) {
                 // 7 - this week has no more 'active' days, let's move to the next week
-                weeksSindeReminderActiveToScheduleRequested = reminder.getRepeatEachXPeriods();
+                weeksSinceReminderActiveToScheduleRequested = reminder.getRepeatEachXPeriods();
             } else {// 7 - we still have work this week
-                weeksSindeReminderActiveToScheduleRequested = 0;
+                weeksSinceReminderActiveToScheduleRequested = 0;
             }
 
             // 8 - calculating the reference time
-            reference = reminder.getActiveFrom().getTime();
+            referenceDateThatPreservesHoursMinutesAndSeconds = reminder.getActiveFrom().getTime();
         }
         // 9/10 - getting the next execution time
         nextDayOfWeekInWhichTrigger %= 7;
-        return new Date(reference.getTime() + weeksSindeReminderActiveToScheduleRequested
+        return new Date(referenceDateThatPreservesHoursMinutesAndSeconds.getTime() + weeksSinceReminderActiveToScheduleRequested
                 * ONE_WEEK_IN_MILLISEC + nextDayOfWeekInWhichTrigger * ONE_DAY_IN_MILLISEC);
     }
 

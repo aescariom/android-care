@@ -16,6 +16,7 @@ public class UIReminderBasicView extends UIReminderView {
 
     protected Button btnPerformed;
     protected Button btnNotPerformed;
+    protected Button btnDelayed;
     protected TextView lblTitle;
     protected TextView lblDescription;
 
@@ -49,6 +50,15 @@ public class UIReminderBasicView extends UIReminderView {
                 finish();
             }
         });
+        
+        btnDelayed = (Button) findViewById(R.id.btnDelay);
+        btnDelayed.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                delayed(600000); // 10 minutes 
+                finish();
+            }
+        });
 
         lblTitle = (TextView) findViewById(R.id.txtReminderTitle);
         lblTitle.setText(this.reminder.getTitle());
@@ -60,6 +70,6 @@ public class UIReminderBasicView extends UIReminderView {
         vibrate(1500);
 
         // 5 - notifying
-        postData(new ReminderLogMessage(reminder, ReminderStatusCode.ALERT_DISPLAYED));
+        postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DISPLAYED));
     }
 }

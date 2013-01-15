@@ -2,8 +2,8 @@ package org.androidcare.android.reminders;
 
 public enum ReminderStatusCode {
 
-    ALERT_DISPLAYED(0, "ALERT DISPLAYED"), ALERT_DONE(1, "ALERT CHECKED AS DONE"), ALERT_IGNORED(2,
-            "ALERT IGNORED");
+    REMINDER_DISPLAYED(0, "REMINDER DISPLAYED"), REMINDER_DONE(1, "REMINDER DONE"), REMINDER_IGNORED(2,
+            "REMINDER IGNORED"), REMINDER_DELAYED(3, "REMINDER DELAYED");
 
     final int code;
     final String description;
