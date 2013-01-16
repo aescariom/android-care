@@ -21,7 +21,8 @@ public class AddPosition extends HttpServlet {
 	public void process(HttpServletRequest req, HttpServletResponse resp)  
 			   throws IOException, ServletException { 
 		
-		resp.setContentType("text/plain");  
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("application/json");  
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 			     

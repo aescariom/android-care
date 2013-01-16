@@ -30,8 +30,9 @@ public class RetrieveReminders extends HttpServlet {
 			   throws IOException, ServletException, JSONException {  
 	
 		JSONArray jsonArray = null;
-		
-		resp.setContentType("text/plain");  
+
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("application/json");
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 			     

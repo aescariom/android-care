@@ -1,17 +1,17 @@
-<!-- Indices written at Wed, 16 Jan 2013 16:34:14 CET -->
+<!-- Indices written at Wed, 16 Jan 2013 16:44:07 CET -->
 
 <datastore-indexes>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Position" ancestor="false" source="auto">
-        <property name="owner" direction="asc"/>
-        <property name="date" direction="desc"/>
-    </datastore-index>
 
     <!-- Used 1 time in query history -->
     <datastore-index kind="Reminder" ancestor="false" source="auto">
         <property name="owner" direction="asc"/>
         <property name="title" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Position" ancestor="false" source="auto">
+        <property name="owner" direction="asc"/>
+        <property name="date" direction="desc"/>
     </datastore-index>
 
 </datastore-indexes>
