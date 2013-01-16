@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.androidcare.web.server.PMF;
-import org.androidcare.web.shared.persistent.Alert;
+import org.androidcare.web.shared.persistent.Reminder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,28 +19,13 @@ import org.json.JSONObject;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.labs.repackaged.org.json.JSONString;
 
-/**
- * 
- * @author Alejandro Escario MŽndez
- *
- */
 public class RetrieveReminders extends HttpServlet {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -4706823493170719155L;
 
-	/**
-	 * 
-	 * @param req
-	 * @param resp
-	 * @throws IOException
-	 * @throws ServletException
-	 * @throws JSONException 
-	 */
+
 	public void process(HttpServletRequest req, HttpServletResponse resp)  
 			   throws IOException, ServletException, JSONException {  
 	
@@ -55,24 +40,24 @@ public class RetrieveReminders extends HttpServlet {
 		ArrayList<JSONObject> list = new ArrayList<JSONObject>();
 		if(user != null){
 
-			Query query = pm.newQuery(Alert.class);
+			Query query = pm.newQuery(Reminder.class);
 			query.setOrdering("id asc");
-			List<Alert> alerts = new ArrayList<Alert>();
+			List<Reminder> reminders = new ArrayList<Reminder>();
 			if(req.getParameter("reminderId") != null){
 				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString());
-				Alert a = (Alert)pm.getObjectById(Alert.class, reminderId);
+				Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminderId);
 				if(a != null){
 					if(a.getOwner().compareToIgnoreCase(user.getUserId()) == 0){
-						alerts.add(a);
+						reminders.add(a);
 					}
 				}
 			}else{
 				query.setFilter("owner == reminderOwner");
 				query.declareParameters("String reminderOwner");
-				alerts = (List<Alert>) query.execute(user.getUserId());
+				reminders = (List<Reminder>) query.execute(user.getUserId());
 			}
 	
-			for(Alert a : alerts) {   
+			for(Reminder a : reminders) {   
 				a.cleanForAPI();
 				list.add(new JSONObject(a));  
 			}  
@@ -83,11 +68,8 @@ public class RetrieveReminders extends HttpServlet {
 		jsonArray = new JSONArray(list);   
 		//Then output the JSON string to the servlet response  
 		resp.getWriter().println(jsonArray.toString()); 
-	}  
-	
-	/**
-	 * 
-	 */
+	}
+
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)  
 		throws IOException, ServletException {  
 		try {
@@ -97,10 +79,7 @@ public class RetrieveReminders extends HttpServlet {
 			e.printStackTrace();
 		}  
 	}  
-	
-	/**
-	 * 
-	 */
+
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)  
 	    throws IOException, ServletException {  
 	    try {

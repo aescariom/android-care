@@ -9,17 +9,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-/**
- * 
- * @author Alejandro Escario MŽndez
- *
- */
 @PersistenceCapable
 public class Position implements Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -8108731095389801231L;
 
 	@PrimaryKey

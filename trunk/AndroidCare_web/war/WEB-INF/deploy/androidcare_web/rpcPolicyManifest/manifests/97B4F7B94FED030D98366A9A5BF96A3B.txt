@@ -1,2 +1,0 @@
-serviceClass: org.androidcare.web.client.AlertService
-path: 52017C105245CC24BB300C387A8A1B5A.gwt.rpc

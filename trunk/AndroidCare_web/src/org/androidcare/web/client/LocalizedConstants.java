@@ -2,10 +2,6 @@ package org.androidcare.web.client;
 
 import com.google.gwt.i18n.client.Constants;
 
-/**
- * This is the default localization file
- * @author Alejandro Escario MŽndez
- */
 public interface LocalizedConstants extends Constants {
 	
 	/**
@@ -28,19 +24,19 @@ public interface LocalizedConstants extends Constants {
 	 * Warnings
 	 */
 	@DefaultStringValue("You are about to delete the alert titled \"%s\". This action can not be undone. Do you want to delete it anyway?")
-	String aboutToDeleteAlertWarning();
+	String aboutToDeleteReminderWarning();
 	
 	/**
 	 * Labels
 	 */
-	@DefaultStringValue("Add new alert")
-	String addNewAlert();
+	@DefaultStringValue("Add new reminder")
+	String addNewReminder();
 	
 	@DefaultStringValue("Display log")
 	String displayLog();
 	
-	@DefaultStringValue("Remove alert")
-	String removeAlert();
+	@DefaultStringValue("Remove reminder")
+	String removeReminder();
 	
 	@DefaultStringValue("Title")
 	String title();

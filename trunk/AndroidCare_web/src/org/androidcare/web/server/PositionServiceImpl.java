@@ -15,10 +15,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import javax.jdo.Query;
 
-/**
- * The server side implementation of the RPC service.
- * @author Alejandro Escario MŽndez
- */
 @SuppressWarnings("serial")
 public class PositionServiceImpl extends RemoteServiceServlet implements
 		PositionService {
