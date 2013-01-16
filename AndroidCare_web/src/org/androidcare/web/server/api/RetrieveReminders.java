@@ -57,17 +57,17 @@ public class RetrieveReminders extends HttpServlet {
 				reminders = (List<Reminder>) query.execute(user.getUserId());
 			}
 	
-			for(Reminder a : reminders) {   
-				a.cleanForAPI();
-				list.add(new JSONObject(a));  
+			for(Reminder reminder : reminders) {   
+				reminder.cleanForAPI();
+				list.add(new JSONObject(reminder));  
 			}  
 		}else{
-			// user not logged in
+			//TODO: user not logged in
 		}
 		//Create a JSONArray based from the list of JSONObejcts  
 		jsonArray = new JSONArray(list);   
 		//Then output the JSON string to the servlet response  
-		resp.getWriter().println(jsonArray.toString()); 
+		resp.getWriter().println(jsonArray.toString());
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)  

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
+import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.ReminderService;
 import org.androidcare.web.shared.PeriodOfTime;
 import org.androidcare.web.shared.persistent.Reminder;
@@ -14,6 +15,7 @@ import org.androidcare.web.shared.persistent.ReminderLog;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import javax.jdo.Query;
@@ -104,7 +106,7 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
  
             pm.close();
         }
-		return "OKKK";
+		return "OK";
 	}
 
 	public List<Reminder> fetchReminders() {

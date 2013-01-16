@@ -3,6 +3,7 @@ package org.androidcare.web.client.widgets;
 import java.util.Date;
 import java.util.List;
 
+import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.PositionService;
 import org.androidcare.web.client.PositionServiceAsync;
 import org.androidcare.web.shared.persistent.Position;
@@ -21,6 +22,8 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class UserLocationMap extends FlowPanel {
+	
+	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
 
 	private final PositionServiceAsync positionService = GWT
 			.create(PositionService.class);
@@ -77,7 +80,7 @@ public class UserLocationMap extends FlowPanel {
 		positionService.getLastPositions(1,
 			new AsyncCallback<List<Position>>() {
 				public void onFailure(Throwable caught) {
-					Window.alert("Error en el servidor!!!");
+					Window.alert(LocalizedConstants.serverError());
 					caught.printStackTrace();
 				}
 

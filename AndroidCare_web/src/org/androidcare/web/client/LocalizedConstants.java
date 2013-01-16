@@ -108,4 +108,14 @@ public interface LocalizedConstants extends Constants {
 	String toggleToAdvanced();
 	@DefaultStringValue("+ Show basic form")
 	String toggleToBasic();
+	
+	/**
+	 * return Messages
+	 */
+	@DefaultStringValue("OK")
+	String ok();
+	@DefaultStringValue("Error")
+	String error();
+	@DefaultStringValue("Server error")
+	String serverError();
 }

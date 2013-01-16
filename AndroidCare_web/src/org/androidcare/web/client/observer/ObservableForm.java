@@ -1,4 +1,4 @@
-package org.androidcare.web.client.util;
+package org.androidcare.web.client.observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,10 @@ public class ObservableForm extends FormPanel{
 		super();
 	}
 	
-	//@Comentario ya te he comentado una ocasión que  no me gusta sincronizar  a nivel de método
-    public synchronized void deleteObservers() { 
-    	getObservers().clear(); 
+    public void deleteObservers() { 
+    	synchronized(observers){
+    		getObservers().clear();
+    	}
     } 
     
     public synchronized void addObserver(Observer o) { 

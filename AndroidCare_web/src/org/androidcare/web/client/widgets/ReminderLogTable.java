@@ -2,9 +2,10 @@ package org.androidcare.web.client.widgets;
 
 import java.util.List;
 
+import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.ReminderService;
 import org.androidcare.web.client.ReminderServiceAsync;
-import org.androidcare.web.client.util.ObservableForm;
+import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
@@ -19,13 +20,15 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 public class ReminderLogTable extends ObservableForm {
+	
+	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
     
 	private Reminder reminder;
 	private CellTable<ReminderLog> table;
 	private SimplePager pager;
 	private AsyncDataProvider<ReminderLog> provider;
 	
-	private final ReminderServiceAsync alertService = GWT
+	private final ReminderServiceAsync reminderService = GWT
 			.create(ReminderService.class);
 	
     public ReminderLogTable(Reminder r){
@@ -68,10 +71,10 @@ public class ReminderLogTable extends ObservableForm {
 	public void getLogs() {
 
 		final Reminder alert = this.reminder;
-		alertService.ReminderLogCount(alert,
+		reminderService.ReminderLogCount(alert,
 				new AsyncCallback<Integer>() {
 					public void onFailure(Throwable caught) {
-						Window.alert("Error en el servidor!!!");
+						Window.alert(LocalizedConstants.serverError());
 						caught.printStackTrace();
 					}
 
@@ -98,7 +101,7 @@ public class ReminderLogTable extends ObservableForm {
 		          }
 		        };
 		        // The remote service that should be implemented
-		        alertService.fetchReminderLogPage(alert, start, length, callback);
+		        reminderService.fetchReminderLogPage(alert, start, length, callback);
 		      }
 		    };
 		    
