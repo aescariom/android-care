@@ -2,11 +2,11 @@ package org.androidcare.web.client.widgets;
 
 import java.util.List;
 
+import org.androidcare.web.client.DialogBoxClose;
 import org.androidcare.web.client.ReminderService;
 import org.androidcare.web.client.ReminderServiceAsync;
 import org.androidcare.web.client.LocalizedConstants;
-import org.androidcare.web.client.ui.DialogBoxClose;
-import org.androidcare.web.client.util.Observer;
+import org.androidcare.web.client.observer.Observer;
 import org.androidcare.web.client.widgets.forms.ReminderForm;
 import org.androidcare.web.client.widgets.forms.RemoveReminderForm;
 import org.androidcare.web.shared.persistent.Reminder;
@@ -121,7 +121,7 @@ public class ReminderTable extends FlexTable implements Observer {
 		reminderService.fetchReminders(
 			new AsyncCallback<List<Reminder>>() {
 				public void onFailure(Throwable caught) {
-					Window.alert("Error en el servidor!!!");
+					Window.alert(LocalizedConstants.serverError());
 					caught.printStackTrace();
 				}
 

@@ -1,4 +1,4 @@
-package org.androidcare.web.client.ui;
+package org.androidcare.web.client;
 
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Panel;
 
-//@Comentario yo movería esta clase a org.androidcare.web.client
 public class DialogBoxClose extends DialogBox {
 
 	private Anchor closeAnchor;

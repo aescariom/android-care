@@ -1,10 +1,10 @@
 package org.androidcare.web.client.widgets.forms;
 
+import org.androidcare.web.client.DialogBoxClose;
 import org.androidcare.web.client.ReminderService;
 import org.androidcare.web.client.ReminderServiceAsync;
 import org.androidcare.web.client.LocalizedConstants;
-import org.androidcare.web.client.ui.DialogBoxClose;
-import org.androidcare.web.client.util.ObservableForm;
+import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.shared.Strings;
 import org.androidcare.web.shared.persistent.Reminder;
 
