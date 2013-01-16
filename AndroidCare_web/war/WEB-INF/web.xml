@@ -7,8 +7,8 @@
   
   <!-- Servlets -->
   <servlet>
-    <servlet-name>alertServlet</servlet-name>
-    <servlet-class>org.androidcare.web.server.AlertServiceImpl</servlet-class>
+    <servlet-name>reminderServlet</servlet-name>
+    <servlet-class>org.androidcare.web.server.ReminderServiceImpl</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>positionServlet</servlet-name>
@@ -28,8 +28,8 @@
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>alertServlet</servlet-name>
-    <url-pattern>/androidcare_web/alert</url-pattern>
+    <servlet-name>reminderServlet</servlet-name>
+    <url-pattern>/androidcare_web/reminder</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>positionServlet</servlet-name>

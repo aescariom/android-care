@@ -1,10 +1,5 @@
 package org.androidcare.web.shared;
 
-/**
- * 
- * @author Alejandro Escario MŽndez
- *
- */
 public enum RequestCode {
 
 	OK(0, "OK"),
@@ -16,45 +11,24 @@ public enum RequestCode {
 	final int code;
     final String description;
 
-    /**
-     * 
-     * @param code
-     * @param description
-     */
     private RequestCode(int code, String description) {
 	    this.code = code;
 	    this.description = description;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String getDescription() {
     	return description;
     }
 
-    /**
-     * 
-     * @return
-     */
     public int getCode() {
     	return code;
     }
 
-    /**
-     * 
-     */
     @Override
     public String toString() {
     	return code + ": " + description;
     }
-    
-    /**
-     * 
-     * @param codeValue
-     * @return
-     */
+
     public static RequestCode getByCode(int codeValue)
     {
         for (RequestCode  type : RequestCode.values()) {

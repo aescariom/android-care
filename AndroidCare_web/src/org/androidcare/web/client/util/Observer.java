@@ -2,11 +2,6 @@
 //org.androidcare.web.client.observer
 package org.androidcare.web.client.util;
 
-/**
- * Observer interface
- * @author Alejandro Escario MŽndez
- *
- */
 public interface Observer {
     
   //@Comentario es bastante habitual (aunque no siempre se hace, a lo mejor esto es la mejor solución en tu caso)

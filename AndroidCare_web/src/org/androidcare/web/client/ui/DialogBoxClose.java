@@ -12,21 +12,11 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Panel;
 
-/**
- * This class overrides the default DialogBox to allow us to close by clicking on the 'x' that is on the top-right corner
- * @author Alejandro Escario MŽndez
- *
- */
 //@Comentario yo movería esta clase a org.androidcare.web.client
 public class DialogBoxClose extends DialogBox {
 
 	private Anchor closeAnchor;
 
-	/**
-	 * 
-	 * @param title
-	 * @param panel
-	 */
 	public DialogBoxClose(String title, Panel panel) {
         super(true);
         closeAnchor = new Anchor("x");
@@ -66,11 +56,7 @@ public class DialogBoxClose extends DialogBox {
         this.setPopupPosition(this.getPopupLeft() - 150, 50);
     }
 	
-	/**
-	 * close handler behaviour
-	 * @param handler
-	 */
-    public void addCloseHandler(ClickHandler handler) {
+	public void addCloseHandler(ClickHandler handler) {
         closeAnchor.addClickHandler(handler);
     }	    
-  }
+}

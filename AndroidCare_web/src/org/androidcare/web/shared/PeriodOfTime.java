@@ -1,10 +1,5 @@
 package org.androidcare.web.shared;
 
-/**
- * 
- * @author Alejandro Escario MŽndez
- *
- */
 //@Comentario actualizar para usar los mismos nombres que en el código android
 public abstract class PeriodOfTime {
 	public static final int HOUR = 0;

@@ -11,11 +11,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.Format;
 
-/**
- * 
- * @author Alejandro Escario MŽndez
- *
- */
 public class DateTimeBox extends HorizontalPanel {
 
 	private static final Format dateFormat = new DateBox.DefaultFormat(DateTimeFormat.getFormat("d/M/y"));
@@ -28,28 +23,17 @@ public class DateTimeBox extends HorizontalPanel {
 	protected DateBox txtTime;
 	protected boolean showTime;
 	
-	/**
-	 * 
-	 */
 	public DateTimeBox(){
 		super();
 		init(true);
 	}
-	
-	/**
-	 * 
-	 * @param time
-	 */
+
 	public DateTimeBox(boolean time){
 		super();
 		
 		init(time);
 	}
 
-	/**
-	 * 
-	 * @param time
-	 */
 	private void init(boolean time) {
 		showTime = time;
 		
@@ -69,10 +53,6 @@ public class DateTimeBox extends HorizontalPanel {
 		this.add(txtTime);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public Date getDate() {
 		Date date = txtDate.getValue();
 		if(date == null){
@@ -84,19 +64,11 @@ public class DateTimeBox extends HorizontalPanel {
 		return date;
 	}
 
-	/**
-	 * 
-	 * @param d
-	 */
 	public void setValue(Date d) {
 		txtDate.setValue(d);
 		txtTime.setValue(d);
 	}
 
-	/**
-	 * 
-	 * @param b
-	 */
 	public void setEnabled(boolean b) {
 		txtDate.setEnabled(b);
 		txtTime.setEnabled(b);

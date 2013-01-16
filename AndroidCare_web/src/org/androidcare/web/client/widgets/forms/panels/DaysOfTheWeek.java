@@ -7,20 +7,15 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 
-/**
- * 
- * @author Alejandro Escario MŽndez
- *
- */
 public class DaysOfTheWeek extends HorizontalPanel {
-	
-	public static final int MONDAY = 0;
-	public static final int TUESDAY = 1;
-	public static final int WEDNESDAY = 2;
-	public static final int THURSDAY = 3;
-	public static final int FRIDAY = 4;
-	public static final int SATURDAY = 5;
-	public static final int SUNDAY = 6;
+
+	public static final int SUNDAY = 0;
+	public static final int MONDAY = 1;
+	public static final int TUESDAY = 2;
+	public static final int WEDNESDAY = 3;
+	public static final int THURSDAY = 4;
+	public static final int FRIDAY = 5;
+	public static final int SATURDAY = 6;
 
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
 
@@ -45,9 +40,6 @@ public class DaysOfTheWeek extends HorizontalPanel {
 	protected Label lblSunday = new Label(LocalizedConstants.sundayShort());
 	protected CheckBox chkSunday = new CheckBox();
 	
-	/**
-	 * 
-	 */
 	public DaysOfTheWeek(){
 		super();
 		
@@ -73,10 +65,6 @@ public class DaysOfTheWeek extends HorizontalPanel {
 		this.add(lblSunday);		
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public boolean[] getDaysArray() {
 		boolean[] days = new boolean[7];
 		days[DaysOfTheWeek.MONDAY] = chkMonday.getValue();
@@ -89,10 +77,6 @@ public class DaysOfTheWeek extends HorizontalPanel {
 		return days;
 	}
 
-	/**
-	 * 
-	 * @param days
-	 */
 	public void setValue(boolean[] days) {
 		if(days.length >= 7){
 			chkMonday.setValue(days[DaysOfTheWeek.MONDAY]);
