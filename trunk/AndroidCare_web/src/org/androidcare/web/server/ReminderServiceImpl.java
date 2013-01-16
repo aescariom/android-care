@@ -8,7 +8,6 @@ import javax.jdo.Transaction;
 
 import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.ReminderService;
-import org.androidcare.web.shared.PeriodOfTime;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
@@ -46,19 +45,19 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			if(reminder.getUntilDate() != null){
 				a.setUntilDate(reminder.getUntilDate());
 				a.setUntilIterations(null);
-				a.setEndType(PeriodOfTime.UNTIL_DATE);
+				a.setEndType(Reminder.END_TYPE_UNTIL_DATE);
 			}else if(reminder.getUntilIterations() != null){
 				a.setUntilIterations(reminder.getUntilIterations());
-				a.setEndType(PeriodOfTime.ITERATIONS);
+				a.setEndType(Reminder.END_TYPE_ITERATIONS);
 				a.setUntilDate(null);
 			}else{
 				a.setUntilIterations(null);
 				a.setUntilDate(null);
-				a.setEndType(PeriodOfTime.NEVER_ENDS);
+				a.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			}
 			a.setRepeatPeriod(reminder.getRepeatPeriod());
-			a.setWeekDays(reminder.getWeekDays());
-			a.setRepeatEach(reminder.getRepeatEach());
+			a.setDaysOfWeekInWhichShouldTrigger(reminder.getDaysOfWeekInWhichShouldTrigger());
+			a.setRepeatEachXPeriods(reminder.getRepeatEachXPeriods());
 			a.setRequestConfirmation(reminder.isRequestConfirmation());
 			
 			//setting the owner
@@ -91,11 +90,11 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			
 
 			if(reminder.getUntilDate() != null){
-				reminder.setEndType(PeriodOfTime.UNTIL_DATE);
+				reminder.setEndType(Reminder.END_TYPE_UNTIL_DATE);
 			}else if(reminder.getUntilIterations() != null){
-				reminder.setEndType(PeriodOfTime.ITERATIONS);
+				reminder.setEndType(Reminder.END_TYPE_ITERATIONS);
 			}else{
-				reminder.setEndType(PeriodOfTime.NEVER_ENDS);
+				reminder.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			}
 			
             pm.makePersistent(reminder);

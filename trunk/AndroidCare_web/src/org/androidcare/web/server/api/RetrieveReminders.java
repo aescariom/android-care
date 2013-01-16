@@ -45,10 +45,10 @@ public class RetrieveReminders extends HttpServlet {
 			List<Reminder> reminders = new ArrayList<Reminder>();
 			if(req.getParameter("reminderId") != null){
 				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString());
-				Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminderId);
-				if(a != null){
-					if(a.getOwner().compareToIgnoreCase(user.getUserId()) == 0){
-						reminders.add(a);
+				Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminderId);
+				if(r != null){
+					if(r.getOwner().compareToIgnoreCase(user.getUserId()) == 0){
+						reminders.add(r);
 					}
 				}
 			}else{
