@@ -1,0 +1,2 @@
+serviceClass: org.androidcare.web.client.ReminderService
+path: 997C34C218225742ABB0E32E38F3AE2B.gwt.rpc

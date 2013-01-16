@@ -11,7 +11,6 @@ import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.client.widgets.forms.panels.DateTimeBox;
 import org.androidcare.web.client.widgets.forms.panels.DaysOfTheWeek;
-import org.androidcare.web.shared.PeriodOfTime;
 import org.androidcare.web.shared.persistent.Reminder;
 
 import com.google.gwt.core.client.GWT;
@@ -31,7 +30,6 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
-//@Comentario para construir estas cosas ¿hay una herramienta gráfica o a 100% a mano? 
 public class ReminderForm extends ObservableForm{
 	private static final int TITLE_ROW = 0;
 	private static final int DESCRIPTION_ROW = 1;
@@ -129,10 +127,10 @@ public class ReminderForm extends ObservableForm{
 			// let's repeat the task every day since now by default
 			reminder.setRepeat(true);
 			reminder.setSince(new Date());
-			reminder.setRepeatPeriod(PeriodOfTime.DAY);
-			reminder.setRepeatEach(1);
+			reminder.setRepeatPeriod(Reminder.REPEAT_PERIOD_DAY);
+			reminder.setRepeatEachXPeriods(1);
 			reminder.setRequestConfirmation(true);
-			reminder.setEndType(PeriodOfTime.NEVER_ENDS);
+			reminder.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			this.setReminderValues(reminder);
 		}
 	}
@@ -161,14 +159,14 @@ public class ReminderForm extends ObservableForm{
 				break;
 			}
 		}
-		String each = String.valueOf(reminder.getRepeatEach());
+		String each = String.valueOf(reminder.getRepeatEachXPeriods());
 		for(int i = 0; i < ddlRepeatEach.getItemCount(); i++){
 			if(ddlRepeatEach.getValue(i).compareToIgnoreCase(each) == 0){
 				ddlRepeatEach.setSelectedIndex(i);
 				break;
 			}
 		}
-		pnlDaysOfTheWeek.setValue(reminder.getWeekDays());
+		pnlDaysOfTheWeek.setValue(reminder.getDaysOfWeekInWhichShouldTrigger());
 		chkRequestConfirmation.setValue(reminder.isRequestConfirmation());
 	
 	    showHideRepeatRows();
@@ -176,11 +174,11 @@ public class ReminderForm extends ObservableForm{
 	}
 
 	private void setUpRepeatPeriod() {
-		ddlRepeatPeriod.addItem(LocalizedConstants.hour(), String.valueOf(PeriodOfTime.HOUR));
-		ddlRepeatPeriod.addItem(LocalizedConstants.day(), String.valueOf(PeriodOfTime.DAY));
-		ddlRepeatPeriod.addItem(LocalizedConstants.week(), String.valueOf(PeriodOfTime.WEEK));
-		ddlRepeatPeriod.addItem(LocalizedConstants.month(), String.valueOf(PeriodOfTime.MONTH));
-		ddlRepeatPeriod.addItem(LocalizedConstants.year(), String.valueOf(PeriodOfTime.YEAR));
+		ddlRepeatPeriod.addItem(LocalizedConstants.hour(), String.valueOf(Reminder.REPEAT_PERIOD_HOUR));
+		ddlRepeatPeriod.addItem(LocalizedConstants.day(), String.valueOf(Reminder.REPEAT_PERIOD_DAY));
+		ddlRepeatPeriod.addItem(LocalizedConstants.week(), String.valueOf(Reminder.REPEAT_PERIOD_WEEK));
+		ddlRepeatPeriod.addItem(LocalizedConstants.month(), String.valueOf(Reminder.REPEAT_PERIOD_MONTH));
+		ddlRepeatPeriod.addItem(LocalizedConstants.year(), String.valueOf(Reminder.REPEAT_PERIOD_YEAR));
 
 		setRepeatEachPeriod();
 		
@@ -366,7 +364,7 @@ public class ReminderForm extends ObservableForm{
 			reminder.setDescription(txtDescription.getText());
 			reminder.setRepeat(chkRepeat.getValue());
 			reminder.setRepeatPeriod(Integer.valueOf(ddlRepeatPeriod.getValue(ddlRepeatPeriod.getSelectedIndex())));
-			reminder.setWeekDays(pnlDaysOfTheWeek.getDaysArray());
+			reminder.setDaysOfWeekInWhichShouldTrigger(pnlDaysOfTheWeek.getDaysArray());
 			reminder.setSince(txtSince.getDate());
 			if(txtUntilIterations.getText().trim().compareToIgnoreCase("") != 0){
 				reminder.setUntilIterations(Integer.parseInt(txtUntilIterations.getText()));
@@ -374,7 +372,7 @@ public class ReminderForm extends ObservableForm{
 				reminder.setUntilDate(txtUntil.getDate());
 			}
 			reminder.setUntilDate(txtUntil.getDate());
-			reminder.setRepeatEach(Integer.valueOf(ddlRepeatEach.getValue(ddlRepeatEach.getSelectedIndex())));
+			reminder.setRepeatEachXPeriods(Integer.valueOf(ddlRepeatEach.getValue(ddlRepeatEach.getSelectedIndex())));
 			reminder.setRequestConfirmation(chkRequestConfirmation.getValue());
 		}catch(Exception ex){
 			return;
@@ -421,7 +419,7 @@ public class ReminderForm extends ObservableForm{
 
 	private void showHideWeekDays(){
 		int item = Integer.parseInt(ddlRepeatPeriod.getValue(ddlRepeatPeriod.getSelectedIndex()));
-		if(item == PeriodOfTime.WEEK && !this.basicMode){
+		if(item == Reminder.REPEAT_PERIOD_WEEK && !this.basicMode){
 			grid.getRowFormatter().setVisible(DAYS_ROW, true);
 		}else{
 			grid.getRowFormatter().setVisible(DAYS_ROW, false);

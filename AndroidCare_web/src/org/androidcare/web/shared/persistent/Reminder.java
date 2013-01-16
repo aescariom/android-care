@@ -8,47 +8,54 @@ import java.util.List;
 import javax.jdo.annotations.*;
 
 @PersistenceCapable
-//@Comentario tenemos que  cambiar nombres tanto a la clase Alert por Reminder, como a los campos
-//para usar los mismos nombres que  en la aplicación android
 public class Reminder implements Serializable{
 
-	private static final long serialVersionUID = 1284613212687698L;
-
+	private static final long serialVersionUID = 7505965004539903183L;
+	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
-	
+	private Long id;	
 	@Persistent
-	private String title;
-	
+	private String title;	
 	@Persistent
 	private String description;
 	
 	@Persistent
-	private boolean repeat;
-	
+	private boolean repeat;	
 	@Persistent
-	private Date since;
+	private Date activeFrom;	
+	@Persistent
+	private Date activeUntil;
+	@Persistent
+	private Integer numerOfRepetitions;
 	
 	@Persistent
 	private Integer endType;
-	
-	@Persistent
-	private Date untilDate;
-	@Persistent
-	private Integer untilIterations;
-	
-	@Persistent
-	private Integer iterations;
+	@NotPersistent
+	public static final int END_TYPE_NEVER_ENDS = 0;
+	@NotPersistent
+	public static final int END_TYPE_UNTIL_DATE = 1;
+	@NotPersistent
+	public static final int END_TYPE_ITERATIONS = 2;
 	
 	@Persistent
 	private int repeatPeriod;
+	@NotPersistent
+	public static final int REPEAT_PERIOD_HOUR = 0;
+	@NotPersistent
+	public static final int REPEAT_PERIOD_DAY = 1;
+	@NotPersistent
+	public static final int REPEAT_PERIOD_WEEK = 2;
+	@NotPersistent
+	public static final int REPEAT_PERIOD_MONTH = 3;
+	@NotPersistent
+	public static final int REPEAT_PERIOD_YEAR = 4;
 	
 	@Persistent
-	private boolean[] weekDays;
+	private boolean[] daysOfWeekInWhichShouldTrigger;
 	
 	@Persistent
-	private int repeatEach;
+	private Integer repeatEachXPeriods;
 	
 	@Persistent
 	private boolean requestConfirmation;
@@ -93,19 +100,19 @@ public class Reminder implements Serializable{
 	}
 
 	public Date getSince() {
-		return since;
+		return activeFrom;
 	}
 
 	public void setSince(Date since) {
-		this.since = since;
+		this.activeFrom = since;
 	}
 
 	public Date getUntilDate() {
-		return untilDate;
+		return activeUntil;
 	}
 
 	public void setUntilDate(Date until) {
-		this.untilDate = until;
+		this.activeUntil = until;
 	}
 
 	public int getRepeatPeriod() {
@@ -116,24 +123,24 @@ public class Reminder implements Serializable{
 		this.repeatPeriod = repeatPeriod;
 	}
 
-	public boolean[] getWeekDays() {
-		if(weekDays == null){
+	public boolean[] getDaysOfWeekInWhichShouldTrigger() {
+		if(daysOfWeekInWhichShouldTrigger == null){
 			return new boolean[7];
 		}else{
-			return weekDays;
+			return daysOfWeekInWhichShouldTrigger;
 		}
 	}
 
-	public void setWeekDays(boolean[] weekDays) {
-		this.weekDays = weekDays;
+	public void setDaysOfWeekInWhichShouldTrigger(boolean[] weekDays) {
+		this.daysOfWeekInWhichShouldTrigger = weekDays;
 	}
 
-	public int getRepeatEach() {
-		return repeatEach;
+	public int getRepeatEachXPeriods() {
+		return repeatEachXPeriods;
 	}
 
-	public void setRepeatEach(int repeatEach) {
-		this.repeatEach = repeatEach;
+	public void setRepeatEachXPeriods(int repeatEach) {
+		this.repeatEachXPeriods = repeatEach;
 	}
 
 	public boolean isRequestConfirmation() {
@@ -153,19 +160,11 @@ public class Reminder implements Serializable{
 	}
 
 	public Integer getUntilIterations() {
-		return untilIterations;
+		return numerOfRepetitions;
 	}
 
 	public void setUntilIterations(Integer untilIterations) {
-		this.untilIterations = untilIterations;
-	}
-
-	public Integer getIterations() {
-		return iterations;
-	}
-
-	public void setIterations(Integer iterations) {
-		this.iterations = iterations;
+		this.numerOfRepetitions = untilIterations;
 	}
 
 	public String getOwner() {
