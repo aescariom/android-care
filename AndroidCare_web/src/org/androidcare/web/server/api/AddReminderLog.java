@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.androidcare.web.server.PMF;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
-import org.json.JSONArray;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -30,8 +29,9 @@ public class AddReminderLog extends HttpServlet {
 
 	public void process(HttpServletRequest req, HttpServletResponse resp)  
 			   throws IOException, ServletException {  
-		
-		resp.setContentType("text/plain");  
+
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("application/json"); 
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 			     
