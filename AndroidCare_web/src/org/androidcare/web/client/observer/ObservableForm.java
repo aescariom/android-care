@@ -17,7 +17,7 @@ public class ObservableForm extends FormPanel{
     		getObservers().clear();
     	}
     } 
-    
+  //@ comentario ojo, estás tomando lock sobre un objeto diferente que el método anterior!
     public synchronized void addObserver(Observer o) { 
     	getObservers().add(o); 
     } 
@@ -29,14 +29,15 @@ public class ObservableForm extends FormPanel{
     public synchronized void deleteObserver(Observer o) { 
     	getObservers().remove(o); 
     } 
-    
+  //@ comentario yo cogería el lock dde nuevo, no vaya a ser que el día de mañana llames a este método es de otro lado
+ //De todos modos, como que todo queda más fácil si construyes la lista en el constructor
     private List<Observer> getObservers() { 
     	if(observers == null) {
     		observers = new ArrayList<Observer>(); 
     	}
     	return observers; 
     } 
-    
+  //@ comentario no coger ningún lock
     protected void broadcastObservers(){ 
     	for(Observer o: getObservers()) 
     		o.update(); 

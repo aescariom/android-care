@@ -63,6 +63,7 @@ public class RetrieveReminders extends HttpServlet {
 				list.add(new JSONObject(reminder));  
 			}  
 		}else{
+		  //@ comentario ¿no se gestiona como del resto de los casos?
 			//TODO: user not logged in
 		}
 		//Create a JSONArray based from the list of JSONObejcts  

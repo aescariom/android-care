@@ -192,7 +192,7 @@ public class Reminder implements Serializable{
 	public List<ReminderLog> getLog(){
 		return this.log;
 	}
-
+	//@ comentario transient?
 	public void cleanForAPI() {
 		owner = null;
 		log = null;

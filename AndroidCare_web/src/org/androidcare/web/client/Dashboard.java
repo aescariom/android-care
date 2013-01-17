@@ -18,14 +18,14 @@ import com.google.gwt.user.client.ui.TabPanel;
 public class Dashboard implements EntryPoint, ClickHandler {
 	
 	// this variable will allow us to work with dynamic literals
-	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
+	private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
 	
 	//main panels
 	private TabPanel mainPanel = new TabPanel();
 	private ReminderTable reminderTable = new ReminderTable();
 	private UserLocationMap map = new UserLocationMap();
 	
-    Button btnAddReminder = new Button(LocalizedConstants.addNew());
+    Button btnAddReminder = new Button(localizedConstants.addNew());
 
 	public void onModuleLoad() {
 		
@@ -65,6 +65,6 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	public void onClick(ClickEvent event) {
 		ReminderForm reminderForm = new ReminderForm();
 		reminderForm.addObserver(reminderTable);
-		new DialogBoxClose(LocalizedConstants.addNewReminder(), reminderForm).show();
+		new DialogBoxClose(localizedConstants.addNewReminder(), reminderForm).show();
 	}
 }
