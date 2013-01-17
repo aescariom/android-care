@@ -56,7 +56,7 @@ public class Reminder implements Serializable {
         // Mandatory fields
         id = Integer.parseInt(jsonObj.getString("id"));
         title = jsonObj.getString("title");
-        setActiveFrom(dateFormat.parse(jsonObj.getString("since")));
+        setActiveFrom(dateFormat.parse(jsonObj.getString("activeFrom")));
         repeat = jsonObj.getBoolean("repeat");
         requestConfirmation = jsonObj.getBoolean("requestConfirmation");
 
@@ -69,12 +69,12 @@ public class Reminder implements Serializable {
         }
 
         if (repeat) {
-            repeatEachXPeriods = jsonObj.getInt("repeatEach");
+            repeatEachXPeriods = jsonObj.getInt("repeatEachXPeriods");
             endType = jsonObj.getInt("endType");
             if (endType == Reminder.END_TYPE_ITERATIONS) {
-                numerOfRepetitions = jsonObj.getInt("untilIterations");
+                numerOfRepetitions = jsonObj.getInt("numerOfRepetitions");
             } else if (endType == Reminder.END_TYPE_UNTIL_DATE) {
-                setUntilDate(dateFormat.parse(jsonObj.getString("untilDate")));
+                setUntilDate(dateFormat.parse(jsonObj.getString("activeUntil")));
             } else {
                 // if is not one of the above values, it must be the following one
                 endType = Reminder.END_TYPE_NEVER_ENDS;
@@ -82,7 +82,7 @@ public class Reminder implements Serializable {
             setRepeatPeriod(jsonObj.getInt("repeatPeriod"));
             if (repeatPeriod == Reminder.REPEAT_PERIOD_WEEK) {
                 daysOfWeekInWhichShouldTrigger = new DaysOfWeekInWhichShouldTrigger(
-                        jsonObj.getJSONArray("weekDays"));
+                        jsonObj.getJSONArray("daysOfWeekInWhichShouldTrigger"));
             }
         }
     }

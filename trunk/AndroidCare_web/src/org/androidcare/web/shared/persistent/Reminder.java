@@ -99,19 +99,19 @@ public class Reminder implements Serializable{
 		this.repeat = repeat;
 	}
 
-	public Date getSince() {
+	public Date getActiveFrom() {
 		return activeFrom;
 	}
 
-	public void setSince(Date since) {
+	public void setActiveFrom(Date since) {
 		this.activeFrom = since;
 	}
 
-	public Date getUntilDate() {
+	public Date getActiveUntil() {
 		return activeUntil;
 	}
 
-	public void setUntilDate(Date until) {
+	public void setActiveUntil(Date until) {
 		this.activeUntil = until;
 	}
 
@@ -159,11 +159,11 @@ public class Reminder implements Serializable{
 		this.endType = endType;
 	}
 
-	public Integer getUntilIterations() {
+	public Integer getNumerOfRepetitions() {
 		return numerOfRepetitions;
 	}
 
-	public void setUntilIterations(Integer untilIterations) {
+	public void setNumerOfRepetitions(Integer untilIterations) {
 		this.numerOfRepetitions = untilIterations;
 	}
 
