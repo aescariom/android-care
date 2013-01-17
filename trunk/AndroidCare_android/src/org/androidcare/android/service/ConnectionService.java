@@ -50,7 +50,8 @@ public abstract class ConnectionService extends Service {
     private Cookie authCookie = null;
 
     // Communication
-    private static final Queue<Message> pendingMessages = new PriorityQueue<Message>(); // service info
+ // @comentario por que static?
+    private static final Queue<Message> PENDING_MESSAGES_QUEUE = new PriorityQueue<Message>(); // service info
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
     private BroadcastReceiver mNetworkStateIntentReceiver;
@@ -226,17 +227,17 @@ public abstract class ConnectionService extends Service {
     }
 
     public void pushMessage(Message message) {
-        synchronized (pendingMessages) {
-            this.pendingMessages.add(message);
+        synchronized (PENDING_MESSAGES_QUEUE) {
+            PENDING_MESSAGES_QUEUE.add(message);
             this.processMessageQueue();
         }
     }
 
     public void pushLowPriorityMessage(Message message) {
-        synchronized (pendingMessages) {
-            this.pendingMessages.add(message);
-            long timeDiff = (new Date()).getTime() - this.pendingMessages.peek().getCreationDate().getTime();
-            if (this.pendingMessages.size() > maxPendingMessages || timeDiff > maxTimeSiceFirstMessage) {
+        synchronized (PENDING_MESSAGES_QUEUE) {
+            PENDING_MESSAGES_QUEUE.add(message);
+            long timeDiff = (new Date()).getTime() - PENDING_MESSAGES_QUEUE.peek().getCreationDate().getTime();
+            if (PENDING_MESSAGES_QUEUE.size() > maxPendingMessages || timeDiff > maxTimeSiceFirstMessage) {
                 this.processMessageQueue();
             }
         }
@@ -320,9 +321,9 @@ public abstract class ConnectionService extends Service {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            synchronized (pendingMessages) {
+            synchronized (PENDING_MESSAGES_QUEUE) {
                 Message message;
-                if (ConnectionService.this.pendingMessages.size() == 0 || !isSessionCookieValid()) {
+                if (ConnectionService.PENDING_MESSAGES_QUEUE.size() == 0 || !isSessionCookieValid()) {
                     return false;
                 }
                 if ( !isConnectionAvailable()) {
@@ -330,14 +331,14 @@ public abstract class ConnectionService extends Service {
                     return false;
                 }
                 try {
-                    while ((message = pendingMessages.peek()) != null) {
+                    while ((message = PENDING_MESSAGES_QUEUE.peek()) != null) {
                         HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
                                 ConnectionService.this.getApplicationContext(), authCookie);
                         HttpRequestBase request = message.getHttpRequestBase();
                         message.onPreSend(request);
                         HttpResponse response = client.execute(request);
                         message.onPostSend(response);
-                        pendingMessages.poll();
+                        PENDING_MESSAGES_QUEUE.poll();
                     }
                 }
                 catch (Exception e) {
