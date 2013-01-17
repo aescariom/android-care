@@ -126,7 +126,7 @@ public class ReminderForm extends ObservableForm{
 			Reminder reminder = new Reminder();
 			// let's repeat the task every day since now by default
 			reminder.setRepeat(true);
-			reminder.setSince(new Date());
+			reminder.setActiveFrom(new Date());
 			reminder.setRepeatPeriod(Reminder.REPEAT_PERIOD_DAY);
 			reminder.setRepeatEachXPeriods(1);
 			reminder.setRequestConfirmation(true);
@@ -139,15 +139,15 @@ public class ReminderForm extends ObservableForm{
 		txtTitle.setValue(reminder.getTitle());
 		txtDescription.setValue(reminder.getDescription());
 		chkRepeat.setValue(reminder.isRepeat());
-		txtSince.setValue(reminder.getSince());
-		if(reminder.getUntilDate() != null){
+		txtSince.setValue(reminder.getActiveFrom());
+		if(reminder.getActiveUntil() != null){
 			rdbUntilDate.setValue(true);
 			untilManager();
-			txtUntil.setValue(reminder.getUntilDate());
-		}else if(reminder.getUntilIterations() != null){
+			txtUntil.setValue(reminder.getActiveUntil());
+		}else if(reminder.getNumerOfRepetitions() != null){
 			rdbUntilIterations.setValue(true);
 			untilManager();
-			txtUntilIterations.setValue(String.valueOf(reminder.getUntilIterations()));
+			txtUntilIterations.setValue(String.valueOf(reminder.getNumerOfRepetitions()));
 		}else{
 			rdbUntilNever.setValue(true);
 			untilManager();
@@ -365,13 +365,12 @@ public class ReminderForm extends ObservableForm{
 			reminder.setRepeat(chkRepeat.getValue());
 			reminder.setRepeatPeriod(Integer.valueOf(ddlRepeatPeriod.getValue(ddlRepeatPeriod.getSelectedIndex())));
 			reminder.setDaysOfWeekInWhichShouldTrigger(pnlDaysOfTheWeek.getDaysArray());
-			reminder.setSince(txtSince.getDate());
+			reminder.setActiveFrom(txtSince.getDate());
 			if(txtUntilIterations.getText().trim().compareToIgnoreCase("") != 0){
-				reminder.setUntilIterations(Integer.parseInt(txtUntilIterations.getText()));
+				reminder.setNumerOfRepetitions(Integer.parseInt(txtUntilIterations.getText()));
 			}else if(txtUntil.getDate() != null){
-				reminder.setUntilDate(txtUntil.getDate());
+				reminder.setActiveUntil(txtUntil.getDate());
 			}
-			reminder.setUntilDate(txtUntil.getDate());
 			reminder.setRepeatEachXPeriods(Integer.valueOf(ddlRepeatEach.getValue(ddlRepeatEach.getSelectedIndex())));
 			reminder.setRequestConfirmation(chkRequestConfirmation.getValue());
 		}catch(Exception ex){

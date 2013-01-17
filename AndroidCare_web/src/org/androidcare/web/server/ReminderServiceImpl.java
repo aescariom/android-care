@@ -41,18 +41,18 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			a.setTitle(reminder.getTitle());
 			a.setDescription(reminder.getDescription());
 			a.setRepeat(reminder.isRepeat());
-			a.setSince(reminder.getSince());
-			if(reminder.getUntilDate() != null){
-				a.setUntilDate(reminder.getUntilDate());
-				a.setUntilIterations(null);
+			a.setActiveFrom(reminder.getActiveFrom());
+			if(reminder.getActiveUntil() != null){
+				a.setActiveUntil(reminder.getActiveUntil());
+				a.setNumerOfRepetitions(null);
 				a.setEndType(Reminder.END_TYPE_UNTIL_DATE);
-			}else if(reminder.getUntilIterations() != null){
-				a.setUntilIterations(reminder.getUntilIterations());
+			}else if(reminder.getNumerOfRepetitions() != null){
+				a.setNumerOfRepetitions(reminder.getNumerOfRepetitions());
 				a.setEndType(Reminder.END_TYPE_ITERATIONS);
-				a.setUntilDate(null);
+				a.setActiveUntil(null);
 			}else{
-				a.setUntilIterations(null);
-				a.setUntilDate(null);
+				a.setNumerOfRepetitions(null);
+				a.setActiveUntil(null);
 				a.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			}
 			a.setRepeatPeriod(reminder.getRepeatPeriod());
@@ -89,9 +89,9 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			reminder.setId(null);
 			
 
-			if(reminder.getUntilDate() != null){
+			if(reminder.getActiveUntil() != null){
 				reminder.setEndType(Reminder.END_TYPE_UNTIL_DATE);
-			}else if(reminder.getUntilIterations() != null){
+			}else if(reminder.getNumerOfRepetitions() != null){
 				reminder.setEndType(Reminder.END_TYPE_ITERATIONS);
 			}else{
 				reminder.setEndType(Reminder.END_TYPE_NEVER_ENDS);
