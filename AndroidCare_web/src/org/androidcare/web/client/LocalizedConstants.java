@@ -19,6 +19,8 @@ public interface LocalizedConstants extends Constants {
 	String edit();
 	@DefaultStringValue("Log")
 	String log();
+	@DefaultStringValue("Delete")
+	String delete();
 	
 	/**
 	 * Warnings

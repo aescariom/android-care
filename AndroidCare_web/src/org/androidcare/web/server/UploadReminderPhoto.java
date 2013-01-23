@@ -58,9 +58,13 @@ public class UploadReminderPhoto extends HttpServlet{
 //				throw new RuntimeException("Users don't match");
 //			}
 			
-			if(r.getBlobKey() != null || r.getBlobKey() != ""){
-				BlobKey blobKeys = new BlobKey(r.getBlobKey());
-			    blobstoreService.delete(blobKeys);
+			try{
+				if(r.getBlobKey() != null && r.getBlobKey() != ""){
+					BlobKey blobKeys = new BlobKey(r.getBlobKey());
+				    blobstoreService.delete(blobKeys);
+				}
+			}catch(RuntimeException e){
+				// imagen no borrada
 			}
 		    
 			r.setBlobKey(photo.getKeyString());
