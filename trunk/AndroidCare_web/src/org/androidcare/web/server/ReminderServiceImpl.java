@@ -39,37 +39,37 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		try{
 			txn.begin();
 
-			Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-			a.setTitle(reminder.getTitle());
-			a.setDescription(reminder.getDescription());
-			a.setRepeat(reminder.isRepeat());
-			a.setActiveFrom(reminder.getActiveFrom());
+			Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
+			r.setTitle(reminder.getTitle());
+			r.setDescription(reminder.getDescription());
+			r.setRepeat(reminder.isRepeat());
+			r.setActiveFrom(reminder.getActiveFrom());
 			if(reminder.getActiveUntil() != null){
-				a.setActiveUntil(reminder.getActiveUntil());
-				a.setNumerOfRepetitions(null);
-				a.setEndType(Reminder.END_TYPE_UNTIL_DATE);
+				r.setActiveUntil(reminder.getActiveUntil());
+				r.setNumerOfRepetitions(null);
+				r.setEndType(Reminder.END_TYPE_UNTIL_DATE);
 			}else if(reminder.getNumerOfRepetitions() != null){
-				a.setNumerOfRepetitions(reminder.getNumerOfRepetitions());
-				a.setEndType(Reminder.END_TYPE_ITERATIONS);
-				a.setActiveUntil(null);
+				r.setNumerOfRepetitions(reminder.getNumerOfRepetitions());
+				r.setEndType(Reminder.END_TYPE_ITERATIONS);
+				r.setActiveUntil(null);
 			}else{
-				a.setNumerOfRepetitions(null);
-				a.setActiveUntil(null);
-				a.setEndType(Reminder.END_TYPE_NEVER_ENDS);
+				r.setNumerOfRepetitions(null);
+				r.setActiveUntil(null);
+				r.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			}
-			a.setRepeatPeriod(reminder.getRepeatPeriod());
-			a.setDaysOfWeekInWhichShouldTrigger(reminder.getDaysOfWeekInWhichShouldTrigger());
-			a.setRepeatEachXPeriods(reminder.getRepeatEachXPeriods());
-			a.setRequestConfirmation(reminder.isRequestConfirmation());
+			r.setRepeatPeriod(reminder.getRepeatPeriod());
+			r.setDaysOfWeekInWhichShouldTrigger(reminder.getDaysOfWeekInWhichShouldTrigger());
+			r.setRepeatEachXPeriods(reminder.getRepeatEachXPeriods());
+			r.setRequestConfirmation(reminder.isRequestConfirmation());
 			
 			//setting the owner
 			UserService userService = UserServiceFactory.getUserService();
 		    User user = userService.getCurrentUser();
-			a.setOwner(user.getUserId());
+			r.setOwner(user.getUserId());
 		    
 			txn.commit();
 			
-			return a;
+			return r;
 		} catch(Exception ex){
 			ex.printStackTrace();
 	    } finally {
