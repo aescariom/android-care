@@ -3,12 +3,14 @@ package org.androidcare.web.client.widgets.forms;
 import java.util.Date;
 
 import org.androidcare.web.client.DialogBoxClose;
-import org.androidcare.web.client.ReminderService;
-import org.androidcare.web.client.ReminderServiceAsync;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.observer.ObservableForm;
+import org.androidcare.web.client.rpc.ReminderService;
+import org.androidcare.web.client.rpc.ReminderServiceAsync;
+import org.androidcare.web.client.rpc.UploadReminderPhotoService;
+import org.androidcare.web.client.rpc.UploadReminderPhotoServiceAsync;
 import org.androidcare.web.client.widgets.forms.panels.DateTimeBox;
 import org.androidcare.web.client.widgets.forms.panels.DaysOfTheWeek;
 import org.androidcare.web.shared.persistent.Reminder;
@@ -21,6 +23,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
@@ -40,7 +44,7 @@ public class ReminderForm extends ObservableForm{
 	private static final int DAYS_ROW = 6;
 	private static final int REPEAT_EACH_ROW = 7;
 	private static final int CONFIRMATION_ROW = 8;
-	//private static final int BRIEF_ROW = 9;
+	private static final int UPLOAD_ROW = 9;
 	private static final int BASIC_ADVANCED_ROW = 10;
 	private static final int SEND_ROW = 11;
 	
@@ -57,12 +61,16 @@ public class ReminderForm extends ObservableForm{
 	//Form fields
 	private Label lblTitle = new Label(LocalizedConstants.title());
 	private TextBox txtTitle = new TextBox();
+	private TextBox txtId = new TextBox();
     
     private Label lblDescription = new Label(LocalizedConstants.description());
     private TextArea txtDescription = new TextArea();
 
     private Label lblSince = new Label(LocalizedConstants.since());
     private DateTimeBox txtSince = new DateTimeBox();
+
+    private Label lblUpload = new Label(LocalizedConstants.photo());
+    private FileUpload fupPhoto = new FileUpload();
     
     private Label lblUntil = new Label(LocalizedConstants.until());
     private RadioButton rdbUntilDate = new RadioButton(grpName, LocalizedConstants.date());
@@ -96,6 +104,7 @@ public class ReminderForm extends ObservableForm{
     
 	//Create a remote service proxy to talk to the server-side Greeting service.
 	private final ReminderServiceAsync alertService = GWT.create(ReminderService.class);
+	private UploadReminderPhotoServiceAsync rpc = GWT.create(UploadReminderPhotoService.class);
 
     public ReminderForm() {
     	super();
@@ -110,6 +119,23 @@ public class ReminderForm extends ObservableForm{
     }
     
     public void setUpReminderForm(){
+
+    	this.setAction("/reminderUpload");
+    	this.setEncoding(FormPanel.ENCODING_MULTIPART);
+    	this.setMethod(FormPanel.METHOD_POST);
+    	
+    	this.addSubmitHandler(new SubmitHandler() {
+            public void onSubmit(SubmitEvent event) {
+            	//TODO: indicar que se est‡ subiendo la imagen
+            }
+    	});
+    	
+    	this.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+            public void onSubmitComplete(SubmitCompleteEvent event) {
+            	closeForm();
+            }
+    	});
+        
         addItemsToRepeatEach(30);
         setUpRepeatPeriod();
         
@@ -171,6 +197,7 @@ public class ReminderForm extends ObservableForm{
 	
 	    showHideRepeatRows();
 	    showHideWeekDays();
+	    setRepeatEachPeriod();
 	}
 
 	private void setUpRepeatPeriod() {
@@ -295,6 +322,12 @@ public class ReminderForm extends ObservableForm{
 			}
         	
         });
+
+        grid.setWidget(UPLOAD_ROW, 0, lblUpload);
+        fupPhoto.setName("photo");
+        getFormUrl();
+        grid.setWidget(UPLOAD_ROW, 1, fupPhoto);
+        
         grid.setWidget(SEND_ROW, 0, submit);
         
         //basic-advanced
@@ -311,6 +344,26 @@ public class ReminderForm extends ObservableForm{
 		toggleBasicAdvanced();
 		lblBasicAdvanced.setStyleName("hyperlink_style_label");
         grid.setWidget(BASIC_ADVANCED_ROW, 1, lblBasicAdvanced);
+
+    	txtId.setName("reminderId");
+    	txtId.setVisible(false);
+        grid.setWidget(BASIC_ADVANCED_ROW, 0, txtId);
+	}
+
+	private void getFormUrl() {
+		rpc.getBlobStoreUrl(new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Error!!!!");
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				ReminderForm.this.setAction(result);
+			}
+			
+		});
 	}
 
 	protected void toggleBasicAdvanced() {
@@ -379,23 +432,37 @@ public class ReminderForm extends ObservableForm{
 		// Then, we send the input to the server.
 		submit.setEnabled(false);
 		alertService.saveReminder(reminder,
-				new AsyncCallback<String>() {
+				new AsyncCallback<Reminder>() {
 					public void onFailure(Throwable caught) {
 						Window.alert("Error en el servidor!!!");
 						submit.setEnabled(true);
 					}
 
-					public void onSuccess(final String result) {
-						Object d = (Object)getParent().getParent();
-						submit.setEnabled(true);
+					public void onSuccess(final Reminder reminder) {
+						txtId.setText(reminder.getId().toString());
 						
-						broadcastObservers();
-						
-						if(d instanceof DialogBoxClose){
-							((DialogBoxClose)d).hide();
+						if(fupPhoto.getFilename().length() == 0){
+							closeForm();
+						}else{
+							ReminderForm.this.uploadImage();
 						}
 					}
 				});
+	}
+
+	private void closeForm() {
+		Object d = (Object)getParent().getParent();
+		submit.setEnabled(true);
+		
+		broadcastObservers();
+		
+		if(d instanceof DialogBoxClose){
+			((DialogBoxClose)d).hide();
+		}
+	}
+
+	private void uploadImage() {
+		this.submit();
 	}
 
 	private void showHideRepeatRows(){

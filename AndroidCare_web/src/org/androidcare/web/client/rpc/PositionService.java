@@ -1,4 +1,4 @@
-package org.androidcare.web.client;
+package org.androidcare.web.client.rpc;
 
 import java.util.List;
 

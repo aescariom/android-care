@@ -1,4 +1,4 @@
-package org.androidcare.web.client;
+package org.androidcare.web.client.rpc;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("reminder")
 public interface ReminderService extends RemoteService {
-	String saveReminder(Reminder reminder);
+	Reminder saveReminder(Reminder reminder);
 
 	List<Reminder> fetchReminders();
 	

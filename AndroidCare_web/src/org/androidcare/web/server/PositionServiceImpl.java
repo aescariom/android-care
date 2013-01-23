@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.jdo.PersistenceManager;
 
-import org.androidcare.web.client.PositionService;
+import org.androidcare.web.client.rpc.PositionService;
 import org.androidcare.web.shared.persistent.Position;
 
 import com.google.appengine.api.users.User;
