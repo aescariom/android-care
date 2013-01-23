@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.androidcare.web.shared.persistent.Reminder;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -44,6 +46,13 @@ public class UploadReminderPhoto extends HttpServlet{
 		}
 		
 		BlobKey photo = photos.get(0);
+		BlobInfoFactory bi = new BlobInfoFactory();
+		BlobInfo blobInfo = bi.loadBlobInfo(photo);
+		String mime = blobInfo.getContentType();
+		
+		if(!mime.equalsIgnoreCase("image/png") && !mime.equalsIgnoreCase("image/gif") && !mime.equalsIgnoreCase("image/bmp") && !mime.equalsIgnoreCase("image/jpeg")){
+			throw new RuntimeException("This is not an image");			
+		}
 		
 		int id = Integer.parseInt(request.getParameter("reminderId").toString());
 		
