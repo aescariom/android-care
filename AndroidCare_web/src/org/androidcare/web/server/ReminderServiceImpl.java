@@ -10,6 +10,9 @@ import org.androidcare.web.client.rpc.ReminderService;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -143,8 +146,15 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-			pm.deletePersistent(a);
+			Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
+
+			BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+			if(r.getBlobKey() != null || r.getBlobKey() != ""){
+				BlobKey blobKeys = new BlobKey(r.getBlobKey());
+			    blobstoreService.delete(blobKeys);
+			}
+			
+			pm.deletePersistent(r);
 		} catch(Exception ex){
 			ex.printStackTrace();
         	return false;
