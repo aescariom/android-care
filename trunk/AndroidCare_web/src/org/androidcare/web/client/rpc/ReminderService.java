@@ -13,8 +13,10 @@ public interface ReminderService extends RemoteService {
 	Reminder saveReminder(Reminder reminder);
 
 	List<Reminder> fetchReminders();
-	
+
 	Boolean deleteReminder(Reminder reminder);
+
+	Boolean deleteReminderPhoto(Reminder reminder);
 
 	List<ReminderLog> fetchReminderLogs(Reminder reminder);
 

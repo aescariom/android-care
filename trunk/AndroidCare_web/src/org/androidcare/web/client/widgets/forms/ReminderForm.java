@@ -27,7 +27,9 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Grid;
@@ -71,6 +73,9 @@ public class ReminderForm extends ObservableForm{
 
     private Label lblUpload = new Label(LocalizedConstants.photo());
     private FileUpload fupPhoto = new FileUpload();
+    private Button btnDeletePhoto = new Button(LocalizedConstants.delete());
+    private Panel pnlPhoto = new HorizontalPanel();
+    private Image imgPhoto = new Image();
     
     private Label lblUntil = new Label(LocalizedConstants.until());
     private RadioButton rdbUntilDate = new RadioButton(grpName, LocalizedConstants.date());
@@ -191,6 +196,14 @@ public class ReminderForm extends ObservableForm{
 				ddlRepeatEach.setSelectedIndex(i);
 				break;
 			}
+		}
+		if(reminder.getBlobKey() != null && reminder.getBlobKey() != ""){
+	        imgPhoto.setUrl("./api/reminderPhoto?id=" + reminder.getBlobKey());
+	        imgPhoto.setVisible(true);
+	        btnDeletePhoto.setVisible(true);
+		}else{
+			imgPhoto.setVisible(false);
+	        btnDeletePhoto.setVisible(false);
 		}
 		pnlDaysOfTheWeek.setValue(reminder.getDaysOfWeekInWhichShouldTrigger());
 		chkRequestConfirmation.setValue(reminder.isRequestConfirmation());
@@ -325,8 +338,34 @@ public class ReminderForm extends ObservableForm{
 
         grid.setWidget(UPLOAD_ROW, 0, lblUpload);
         fupPhoto.setName("photo");
+        pnlPhoto.add(fupPhoto);
+        imgPhoto.setHeight("50px");
+        pnlPhoto.add(imgPhoto);
+        btnDeletePhoto.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				btnDeletePhoto.setEnabled(false);
+				alertService.deleteReminderPhoto(reminder,
+						new AsyncCallback<Boolean>() {
+							public void onFailure(Throwable caught) {
+								Window.alert("Error en el servidor!!!");
+								btnDeletePhoto.setEnabled(true);
+							}
+
+							public void onSuccess(final Boolean reminder) {
+								if(reminder){
+									btnDeletePhoto.setVisible(false);
+									imgPhoto.setVisible(false);
+									broadcastObservers();
+								}
+								btnDeletePhoto.setEnabled(true);
+							}
+						});
+			}});
+        pnlPhoto.add(btnDeletePhoto);
         getFormUrl();
-        grid.setWidget(UPLOAD_ROW, 1, fupPhoto);
+        grid.setWidget(UPLOAD_ROW, 1, pnlPhoto);
         
         grid.setWidget(SEND_ROW, 0, submit);
         

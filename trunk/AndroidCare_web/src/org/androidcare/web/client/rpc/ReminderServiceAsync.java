@@ -20,4 +20,6 @@ public interface ReminderServiceAsync {
 	void fetchReminderLogPage(Reminder reminder, int start, int length, AsyncCallback<List<ReminderLog>> callback);
 
 	void ReminderLogCount(Reminder reminder, AsyncCallback<Integer> asyncCallback);
+
+	void deleteReminderPhoto(Reminder reminder, AsyncCallback<Boolean> callback);
 }

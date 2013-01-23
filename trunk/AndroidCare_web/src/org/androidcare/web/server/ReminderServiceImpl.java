@@ -149,9 +149,13 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
 
 			BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-			if(r.getBlobKey() != null || r.getBlobKey() != ""){
-				BlobKey blobKeys = new BlobKey(r.getBlobKey());
-			    blobstoreService.delete(blobKeys);
+			try{
+				if(r.getBlobKey() != null && r.getBlobKey() != ""){
+					BlobKey blobKeys = new BlobKey(r.getBlobKey());
+				    blobstoreService.delete(blobKeys);
+				}
+			}catch(RuntimeException e){
+				// imagen no borrada
 			}
 			
 			pm.deletePersistent(r);
@@ -224,5 +228,35 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
             pm.close();
         }
 		return 0;
+	}
+
+	@Override
+	public Boolean deleteReminderPhoto(Reminder reminder) {
+		PersistenceManager pm = PMF.get().getPersistenceManager(); 
+		final Transaction txn = pm.currentTransaction();
+		try{
+			txn.begin();
+			Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
+
+			BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+			try{
+				if(r.getBlobKey() != null && r.getBlobKey() != ""){
+					BlobKey blobKeys = new BlobKey(r.getBlobKey());
+				    blobstoreService.delete(blobKeys);
+				}
+			}catch(RuntimeException e){
+				// imagen no borrada
+			}
+			r.setBlobKey("");
+		    
+			txn.commit();
+		} catch(Exception ex){
+			ex.printStackTrace();
+        	return false;
+        } finally {
+            pm.close();
+        }
+		
+		return true;
 	}
 }
