@@ -52,6 +52,9 @@ public interface LocalizedConstants extends Constants {
 
 	@DefaultStringValue("Repeat period")
 	String repeatPeriod();
+
+	@DefaultStringValue("Photo")
+	String photo();
 	
 	@DefaultStringValue("Week days")
 	String weekDays();

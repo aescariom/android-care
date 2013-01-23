@@ -62,10 +62,13 @@ public class Reminder implements Serializable{
 	
 	@Persistent
 	private String owner;
-	
+
 	@Persistent(mappedBy = "reminder")
 	@Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="time desc"))
 	private List<ReminderLog> log;
+	
+	@Persistent
+	private Long imageId;
 
 	public Long getId() {
 		return id;
@@ -74,6 +77,7 @@ public class Reminder implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 
 	public String getTitle() {
 		return title;
@@ -174,6 +178,14 @@ public class Reminder implements Serializable{
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+	
+	public Long getImageId(){ 
+		return imageId; 
+	}
+	
+    public void setImageId(Long id){ 
+    	this.imageId = id; 
+    }
 	
 	public void addLog(ReminderLog log){
 		if(this.log == null){

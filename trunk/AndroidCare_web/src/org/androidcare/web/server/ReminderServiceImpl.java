@@ -6,15 +6,13 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
-import org.androidcare.web.client.LocalizedConstants;
-import org.androidcare.web.client.ReminderService;
+import org.androidcare.web.client.rpc.ReminderService;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import javax.jdo.Query;
@@ -23,15 +21,19 @@ import javax.jdo.Query;
 public class ReminderServiceImpl extends RemoteServiceServlet implements
 		ReminderService {
 	
-	public String saveReminder(Reminder reminder) {
+	public Reminder saveReminder(Reminder reminder) {
 		if(reminder.getId() > 0){
-			return editReminder(reminder);
+			reminder = editReminder(reminder);
+			reminder.cleanForAPI();
+			return reminder;
 		}else{
-			return saveNewReminder(reminder);
+			reminder = saveNewReminder(reminder);
+			reminder.cleanForAPI();
+			return reminder;
 		}
 	}
 
-	private String editReminder(Reminder reminder) {
+	private Reminder editReminder(Reminder reminder) {
 		final PersistenceManager pm = PMF.get().getPersistenceManager();  
 		final Transaction txn = pm.currentTransaction();
 		try{
@@ -66,22 +68,23 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			a.setOwner(user.getUserId());
 		    
 			txn.commit();
+			
+			return a;
 		} catch(Exception ex){
-	    	return ex.getMessage();
+			ex.printStackTrace();
 	    } finally {
 	    	if (txn.isActive()) {
 		        txn.rollback();
 		    }
 	    }
 		
-		return "OK";
+		return null;
 	}
 
-	private String saveNewReminder(Reminder reminder) {
+	private Reminder saveNewReminder(Reminder reminder) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		
         try {
-			
 			//setting the owner
 			UserService userService = UserServiceFactory.getUserService();
 		    User user = userService.getCurrentUser();
@@ -98,14 +101,14 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			}
 			
             pm.makePersistent(reminder);
+            return reminder;
         } catch(Exception ex){
 			ex.printStackTrace();
-        	return ex.getMessage();
         } finally {
  
             pm.close();
         }
-		return "OK";
+		return null;
 	}
 
 	public List<Reminder> fetchReminders() {

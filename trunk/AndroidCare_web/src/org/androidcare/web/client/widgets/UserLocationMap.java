@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.androidcare.web.client.LocalizedConstants;
-import org.androidcare.web.client.PositionService;
-import org.androidcare.web.client.PositionServiceAsync;
+import org.androidcare.web.client.rpc.PositionService;
+import org.androidcare.web.client.rpc.PositionServiceAsync;
 import org.androidcare.web.shared.persistent.Position;
 
 import com.google.gwt.core.client.GWT;

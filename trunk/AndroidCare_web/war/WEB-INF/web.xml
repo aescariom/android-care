@@ -11,6 +11,10 @@
     <servlet-class>org.androidcare.web.server.ReminderServiceImpl</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>uploadReminderPhotoServlet</servlet-name>
+    <servlet-class>org.androidcare.web.server.UploadReminderPhotoServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>positionServlet</servlet-name>
     <servlet-class>org.androidcare.web.server.PositionServiceImpl</servlet-class>
   </servlet>
@@ -26,7 +30,19 @@
     <servlet-name>addPosition</servlet-name>
     <servlet-class>org.androidcare.web.server.api.AddPosition</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>UploadReminderPhoto</servlet-name>
+    <servlet-class>org.androidcare.web.server.UploadReminderPhoto</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ReminderPhoto</servlet-name>
+    <servlet-class>org.androidcare.web.server.api.ReminderPhoto</servlet-class>
+  </servlet>
   
+  <servlet-mapping>
+    <servlet-name>uploadReminderPhotoServlet</servlet-name>
+    <url-pattern>/androidcare_web/uploadReminderPhoto</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>reminderServlet</servlet-name>
     <url-pattern>/androidcare_web/reminder</url-pattern>
@@ -47,6 +63,14 @@
   <servlet-mapping>
     <servlet-name>addPosition</servlet-name>
     <url-pattern>/api/addPosition</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UploadReminderPhoto</servlet-name>
+    <url-pattern>/reminderUpload</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReminderPhoto</servlet-name>
+    <url-pattern>/reminderPhoto</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

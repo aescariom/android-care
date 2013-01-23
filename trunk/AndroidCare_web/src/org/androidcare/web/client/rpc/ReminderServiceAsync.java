@@ -1,4 +1,4 @@
-package org.androidcare.web.client;
+package org.androidcare.web.client.rpc;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.androidcare.web.shared.persistent.ReminderLog;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ReminderServiceAsync {
-	void saveReminder(Reminder reminder, AsyncCallback<String> callback)
+	void saveReminder(Reminder reminder, AsyncCallback<Reminder> callback)
 			throws IllegalArgumentException;
 
 	void fetchReminders(AsyncCallback<List<Reminder>> callback);
