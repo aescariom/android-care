@@ -70,7 +70,7 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ReminderPhoto</servlet-name>
-    <url-pattern>/reminderPhoto</url-pattern>
+    <url-pattern>/api/reminderPhoto</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

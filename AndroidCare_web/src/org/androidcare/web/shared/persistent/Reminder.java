@@ -68,7 +68,7 @@ public class Reminder implements Serializable{
 	private List<ReminderLog> log;
 	
 	@Persistent
-	private Long imageId;
+	private String blobKey;
 
 	public Long getId() {
 		return id;
@@ -179,14 +179,6 @@ public class Reminder implements Serializable{
 		this.owner = owner;
 	}
 	
-	public Long getImageId(){ 
-		return imageId; 
-	}
-	
-    public void setImageId(Long id){ 
-    	this.imageId = id; 
-    }
-	
 	public void addLog(ReminderLog log){
 		if(this.log == null){
 			this.log = new ArrayList<ReminderLog>();
@@ -204,9 +196,18 @@ public class Reminder implements Serializable{
 	public List<ReminderLog> getLog(){
 		return this.log;
 	}
+	
 	//@ comentario transient?
 	public void cleanForAPI() {
 		owner = null;
 		log = null;
+	}
+
+	public void setBlobKey(String keyString) {
+		this.blobKey = keyString;
+	}
+	
+	public String getBlobKey(){
+		return this.blobKey;
 	}
 }
