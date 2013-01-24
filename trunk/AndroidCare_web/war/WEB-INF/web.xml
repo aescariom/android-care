@@ -88,5 +88,11 @@
             <role-name>*</role-name>
         </auth-constraint>
     </security-constraint>
+  	<security-constraint>
+        <web-resource-collection>
+            <web-resource-name>reminderPhoto</web-resource-name><!-- This item should be public -->
+    		<url-pattern>/api/reminderPhoto</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
 
 </web-app>
