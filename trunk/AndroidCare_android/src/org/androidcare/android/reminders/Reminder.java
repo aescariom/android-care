@@ -21,6 +21,8 @@ public class Reminder implements Serializable {
     private int id;
     private String title;
     private String description;
+    
+    private String blobKey;
 
     private boolean repeat;
     private Calendar activeFrom;
@@ -66,6 +68,12 @@ public class Reminder implements Serializable {
         }
         catch (JSONException e) {
             Log.w("Parsing alert", "No description found");
+        }
+        try {
+            this.setBlobKey(jsonObj.getString("blobKey"));
+        }
+        catch (JSONException e) {
+            Log.w("Parsing alert", "No image found");
         }
 
         if (repeat) {
@@ -224,6 +232,14 @@ public class Reminder implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setBlobKey(String blobKey) {
+        this.blobKey = blobKey;
+    }
+
+    public String getBlobKey() {
+        return blobKey;
     }
 
     public void setDescription(String description) {

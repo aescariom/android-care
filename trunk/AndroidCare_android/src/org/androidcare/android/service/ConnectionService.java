@@ -2,6 +2,7 @@ package org.androidcare.android.service;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -50,7 +51,6 @@ public abstract class ConnectionService extends Service {
     private Cookie authCookie = null;
 
     // Communication
- // @comentario por que static?
     private static final Queue<Message> PENDING_MESSAGES_QUEUE = new PriorityQueue<Message>(); // service info
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
@@ -106,7 +106,7 @@ public abstract class ConnectionService extends Service {
     }
 
     private boolean isSessionCookieValid() {
-        if (!isMock && (this.authCookie == null || this.authCookie.getExpiryDate().compareTo(new Date()) <= 0)) {
+        if (!isMock && (authCookie == null || authCookie.getExpiryDate().compareTo(new Date()) <= 0)) {
             try {
                 getOauthCookie();
             }
@@ -115,8 +115,9 @@ public abstract class ConnectionService extends Service {
             }
             // this is always false, because we need to get the authCookie before we can send more messages
             return false;  
+        }else{
+            return true;
         }
-        return true;
     }
 
     private void getOauthCookie() throws ConnectionServiceException {
@@ -266,7 +267,7 @@ public abstract class ConnectionService extends Service {
 
 
     /**
-     * Callback methid for GetAuthTokenCallback
+     * Callback method for GetAuthTokenCallback
      */
     public void getOauthCookie(Bundle bundle) throws ConnectionServiceException, ClientProtocolException,
             IOException {
@@ -286,15 +287,21 @@ public abstract class ConnectionService extends Service {
                 + "_ah/login?continue=http://localhost/&auth=" + authToken);
 
         response = client.execute(httpGet);
-        // the response shuld be a redirect
+        // the response should be a redirect
         if (response.getStatusLine().getStatusCode() != 302) {
             throw new ConnectionServiceException("Response was not a redirection");
         }
 
-        for (Cookie cookie : client.getCookieStore().getCookies()) {
+        List<Cookie> cookies = client.getCookieStore().getCookies();
+        if(cookies.size() == 0){
+            AccountManager accountManager = AccountManager.get(getApplicationContext());
+            accountManager.invalidateAuthToken("com.google", authToken);
+        }
+        for (Cookie cookie : cookies) {
             // we are looking for the authentication cookie
             if (cookie.getName().equals("ACSID")) {
-                this.authCookie = cookie;
+                Log.i(tag, "We are now logged in");
+                authCookie = cookie;
                 processMessageQueue();
                 break;
             }
