@@ -3,6 +3,7 @@ package org.androidcare.android.service;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Observable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;

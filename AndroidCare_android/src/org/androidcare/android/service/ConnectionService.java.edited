@@ -51,6 +51,7 @@ public abstract class ConnectionService extends Service {
     private Cookie authCookie = null;
 
     // Communication
+ // @comentario por que static?
     private static final Queue<Message> PENDING_MESSAGES_QUEUE = new PriorityQueue<Message>(); // service info
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
@@ -228,17 +229,29 @@ public abstract class ConnectionService extends Service {
     }
 
     public void pushMessage(Message message) {
+<<<<<<< .mine
+        synchronized (pendingMessages) {
+            ConnectionService.pendingMessages.add(message);
+=======
         synchronized (PENDING_MESSAGES_QUEUE) {
             PENDING_MESSAGES_QUEUE.add(message);
+>>>>>>> .r63
             this.processMessageQueue();
         }
     }
 
     public void pushLowPriorityMessage(Message message) {
+<<<<<<< .mine
+        synchronized (pendingMessages) {
+            ConnectionService.pendingMessages.add(message);
+            long timeDiff = (new Date()).getTime() - ConnectionService.pendingMessages.peek().getCreationDate().getTime();
+            if (ConnectionService.pendingMessages.size() > maxPendingMessages || timeDiff > maxTimeSiceFirstMessage) {
+=======
         synchronized (PENDING_MESSAGES_QUEUE) {
             PENDING_MESSAGES_QUEUE.add(message);
             long timeDiff = (new Date()).getTime() - PENDING_MESSAGES_QUEUE.peek().getCreationDate().getTime();
             if (PENDING_MESSAGES_QUEUE.size() > maxPendingMessages || timeDiff > maxTimeSiceFirstMessage) {
+>>>>>>> .r63
                 this.processMessageQueue();
             }
         }
@@ -330,7 +343,11 @@ public abstract class ConnectionService extends Service {
         protected Boolean doInBackground(Void... params) {
             synchronized (PENDING_MESSAGES_QUEUE) {
                 Message message;
+<<<<<<< .mine
+                if (ConnectionService.pendingMessages.size() == 0 || !isSessionCookieValid()) {
+=======
                 if (ConnectionService.PENDING_MESSAGES_QUEUE.size() == 0 || !isSessionCookieValid()) {
+>>>>>>> .r63
                     return false;
                 }
                 if ( !isConnectionAvailable()) {

@@ -38,9 +38,9 @@ public class ReminderService extends ConnectionService {
         int result = super.onStartCommand(intent, flags, startId);
         Log.i(tag, "Reminder service started");
 
-        this.pushMessage(new GetRemindersMessage(this));
-
         registerReceiver(reminderServiceReceiver, filter);
+
+        this.pushMessage(new GetRemindersMessage(this));
         
         return result;
     }

@@ -1,5 +1,8 @@
 package org.androidcare.android.view;
 
+import java.io.InputStream;
+import java.net.URI;
+
 import org.androidcare.android.R;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
@@ -8,10 +11,16 @@ import org.androidcare.android.service.reminders.ReminderLogMessage;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UIReminderBasicView extends UIReminderView {
@@ -21,6 +30,7 @@ public class UIReminderBasicView extends UIReminderView {
     protected Button btnDelayed;
     protected TextView lblTitle;
     protected TextView lblDescription;
+    protected ImageView imgPhoto;
 
     public UIReminderBasicView(Context context, Reminder reminder) {
         super(context, reminder);
@@ -65,6 +75,13 @@ public class UIReminderBasicView extends UIReminderView {
         lblTitle.setText(this.reminder.getTitle());
         lblDescription = (TextView) findViewById(R.id.txtReminderDescription);
         lblDescription.setText(this.reminder.getDescription());
+        imgPhoto = (ImageView) findViewById(R.id.imgReminder);
+        
+        if(reminder.getBlobKey() != null && reminder.getBlobKey() != ""){
+            String url = "http://androidcare2.appspot.com/api/reminderPhoto?id=" + reminder.getBlobKey();
+            //url="http://www.dipler.org/wp-content/themes/BnB2/images/logo.png";
+            new DownloadImageTask(imgPhoto).execute(url);
+        }
         
         // Noise + vibration
         playSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
@@ -96,5 +113,30 @@ public class UIReminderBasicView extends UIReminderView {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+    
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
