@@ -6,7 +6,7 @@
 
     <uses-sdk 
         android:targetSdkVersion="11"
-        android:minSdkVersion="11" />
+        android:minSdkVersion="10" />
 
 	<!-- Permisos -->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- obtención de las cuentas de google -->
