@@ -1,0 +1,12 @@
+ConnectionServiceBroadcastReceiver = recibido por cualquier ConnectionService. 
+Este BroadcastReciver tiene como misión recibir todos los mensajes que se tengan
+que enviar al servidor y encolarlos para procesarlos cuando el sistema crea 
+oportuno. Este intent es generado en UIReminderView
+
+
+StartServicesOnBootCompleteBroadcastReceiver = Broadcast recibido al iniciar el 
+sistema operativo. Este método invoca a la clase ServiceManager que se encargará 
+de iniciar dichos servicios
+
+ReminderServiceBroadcastReceiver = su recepción provoca la planificación de 
+una alerta seleccionada. Este intent es generado en UIReminderView
