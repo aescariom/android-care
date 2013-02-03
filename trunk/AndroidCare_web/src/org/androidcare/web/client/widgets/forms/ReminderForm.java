@@ -42,13 +42,12 @@ public class ReminderForm extends ObservableForm{
 	private static final int REPEAT_ROW = 2;
 	private static final int SINCE_ROW = 3;
 	private static final int UNTIL_ROW = 4;
-	private static final int REPEAT_PERIOD_ROW = 5;
+	private static final int REPEAT_EACH_ROW = 5;
 	private static final int DAYS_ROW = 6;
-	private static final int REPEAT_EACH_ROW = 7;
-	private static final int CONFIRMATION_ROW = 8;
-	private static final int UPLOAD_ROW = 9;
-	private static final int BASIC_ADVANCED_ROW = 10;
-	private static final int SEND_ROW = 11;
+	private static final int CONFIRMATION_ROW = 7;
+	private static final int UPLOAD_ROW = 8;
+	private static final int BASIC_ADVANCED_ROW = 9;
+	private static final int SEND_ROW = 10;
 	
 	private static final String grpName = "until";
 	
@@ -85,7 +84,6 @@ public class ReminderForm extends ObservableForm{
     private RadioButton rdbUntilNever = new RadioButton(grpName, LocalizedConstants.never());
     private DateTimeBox txtUntil = new DateTimeBox(false);
 
-    private Label lblRepeatPeriod = new Label(LocalizedConstants.repeatPeriod());
     private ListBox ddlRepeatPeriod = new ListBox();
     
     private Label lblWeekDays = new Label(LocalizedConstants.weekDays());
@@ -303,7 +301,6 @@ public class ReminderForm extends ObservableForm{
 
         untilManager();
         
-        grid.setWidget(REPEAT_PERIOD_ROW, 0, lblRepeatPeriod);
         ddlRepeatPeriod.addChangeHandler(new ChangeHandler(){
 
 			@Override
@@ -313,7 +310,6 @@ public class ReminderForm extends ObservableForm{
         	
         });
         showHideWeekDays();
-        grid.setWidget(REPEAT_PERIOD_ROW, 1, ddlRepeatPeriod);
         
         grid.setWidget(DAYS_ROW, 0, lblWeekDays);
         grid.setWidget(DAYS_ROW, 1, pnlDaysOfTheWeek);
@@ -321,7 +317,7 @@ public class ReminderForm extends ObservableForm{
         grid.setWidget(REPEAT_EACH_ROW, 0, lblRepeatEach);
         HorizontalPanel pnlRepeatEach = new HorizontalPanel();
         pnlRepeatEach.add(ddlRepeatEach);
-        pnlRepeatEach.add(lblRepeatEachPeriod);
+        pnlRepeatEach.add(ddlRepeatPeriod);
         grid.setWidget(REPEAT_EACH_ROW, 1, pnlRepeatEach);
         
         grid.setWidget(CONFIRMATION_ROW, 0, lblRequestConfirmation);
@@ -408,7 +404,6 @@ public class ReminderForm extends ObservableForm{
 	protected void toggleBasicAdvanced() {
 		grid.getRowFormatter().setVisible(REPEAT_ROW, basicMode);
 		grid.getRowFormatter().setVisible(UNTIL_ROW, basicMode);
-		grid.getRowFormatter().setVisible(REPEAT_PERIOD_ROW, basicMode);
 		grid.getRowFormatter().setVisible(DAYS_ROW, basicMode);
 		grid.getRowFormatter().setVisible(REPEAT_EACH_ROW, basicMode);
 		grid.getRowFormatter().setVisible(CONFIRMATION_ROW, basicMode);
@@ -507,7 +502,6 @@ public class ReminderForm extends ObservableForm{
 	private void showHideRepeatRows(){
 		boolean show = chkRepeat.getValue() && !this.basicMode;
 		grid.getRowFormatter().setVisible(UNTIL_ROW, show);
-		grid.getRowFormatter().setVisible(REPEAT_PERIOD_ROW, show);
 		grid.getRowFormatter().setVisible(REPEAT_EACH_ROW, show);
 		if(show){
 			showHideWeekDays();
