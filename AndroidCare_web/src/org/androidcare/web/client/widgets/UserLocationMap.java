@@ -48,7 +48,7 @@ public class UserLocationMap extends FlowPanel {
 	        new InfoWindowContent(
 	        		"Lat: " + this.center.getLatitude() + 
 	        		"<br/>Lng: " + this.center.getLongitude() + 
-	        		"<br/>" + this.date.toString()));
+	        		((this.date != null) ? "<br/>" + this.date.toString() : "")));
 	    
 		mapWidget.checkResize();
 	}

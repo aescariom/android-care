@@ -1,6 +1,5 @@
 package org.androidcare.web.client.widgets;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.androidcare.web.client.LocalizedConstants;
@@ -30,7 +29,7 @@ public class ReminderLogTable extends ObservableForm {
 	private SimplePager pager;
 	private AsyncDataProvider<ReminderLog> provider;
 	
-	private DateTimeFormat format = DateTimeFormat.getFormat("dd/MM/yyyy hh:mm:ss");
+	private DateTimeFormat format = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss");
 	
 	private final ReminderServiceAsync reminderService = GWT
 			.create(ReminderService.class);

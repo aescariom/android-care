@@ -16,7 +16,6 @@ import org.androidcare.web.shared.persistent.Position;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.ibm.icu.text.DateFormat;
 
 @SuppressWarnings("serial")
 public class AddPosition extends HttpServlet {
@@ -38,8 +37,11 @@ public class AddPosition extends HttpServlet {
 				}
 				float longitude = Float.parseFloat(req.getParameter("longitude").toString()); 
 				float latitude = Float.parseFloat(req.getParameter("latitude").toString());
-				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-				Date date = format.parse(req.getParameter("time").toString());
+				SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+				Date date = new Date();
+				if(req.getParameter("time") != null){
+					date = format.parse(req.getParameter("time").toString());
+				}
 				String owner = user.getUserId();
 				
 				Position p = new Position(latitude, longitude, owner, date);
