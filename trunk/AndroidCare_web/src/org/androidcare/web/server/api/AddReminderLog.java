@@ -48,8 +48,11 @@ public class AddReminderLog extends HttpServlet {
 				}
 				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString()); 
 				int statusCode = Integer.parseInt(req.getParameter("statusCode").toString()); 
-				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-				Date date = format.parse(req.getParameter("time").toString());
+				SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+				Date date = new Date();
+				if(req.getParameter("time") != null){
+					date = format.parse(req.getParameter("time").toString());
+				}
 				
 				Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminderId);
 

@@ -6,6 +6,7 @@ import org.androidcare.web.client.LocalizedConstants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -13,8 +14,12 @@ import com.google.gwt.user.datepicker.client.DateBox.Format;
 
 public class DateTimeBox extends HorizontalPanel {
 
-	private static final Format dateFormat = new DateBox.DefaultFormat(DateTimeFormat.getFormat("d/M/y"));
-	private static final Format timeFormat = new DateBox.DefaultFormat(DateTimeFormat.getFormat("HH:mm"));
+	private static final DateTimeFormat defaultDateFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
+	private static final DateTimeFormat defaultTimeFormat = DateTimeFormat.getFormat("HH:mm");
+	private static final Format dateFormat = new DateBox.DefaultFormat(defaultDateFormat);
+	private static final Format timeFormat = new DateBox.DefaultFormat(defaultTimeFormat);
+	
+	private static final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm z");
 
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
 
@@ -59,9 +64,8 @@ public class DateTimeBox extends HorizontalPanel {
 			return null;
 		}
 		Date time = txtTime.getValue();
-		date.setHours(time.getHours());
-		date.setMinutes(time.getMinutes());
-		return date;
+		String dateTime = defaultDateFormat.format(date) + " " + defaultTimeFormat.format(time) + " CET";
+		return dateTimeFormat.parse(dateTime);
 	}
 
 	public void setValue(Date d) {
