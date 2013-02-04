@@ -1,6 +1,8 @@
 package org.androidcare.web.server.api;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.jdo.JDOObjectNotFoundException;
@@ -46,6 +48,9 @@ public class AddReminderLog extends HttpServlet {
 				}
 				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString()); 
 				int statusCode = Integer.parseInt(req.getParameter("statusCode").toString()); 
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+				Date date = format.parse(req.getParameter("time").toString());
+				
 				Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminderId);
 
 				if(a.getOwner().compareToIgnoreCase(user.getUserId()) != 0){
@@ -53,7 +58,7 @@ public class AddReminderLog extends HttpServlet {
 				}
 				
 				ReminderLog log = new ReminderLog();
-				log.setTime(new Date());
+				log.setTime(date);
 				log.setCode(ReminderStatusCode.getByCode(statusCode));
 				
 				a.addLog(log);
@@ -63,6 +68,10 @@ public class AddReminderLog extends HttpServlet {
 	            resp.getWriter().write("{\"status\": 0}");
 			} catch (JDOObjectNotFoundException e){
 	            resp.getWriter().write("{\"status\": -1}");
+				e.printStackTrace();
+			} catch (ParseException e) {
+	            resp.getWriter().write("{\"status\": -1}");
+				e.printStackTrace();
 			}finally {
 			    if (txn.isActive()) {
 			        txn.rollback();

@@ -1,5 +1,6 @@
 package org.androidcare.web.client.widgets;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.androidcare.web.client.LocalizedConstants;
@@ -10,6 +11,7 @@ import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -27,6 +29,8 @@ public class ReminderLogTable extends ObservableForm {
 	private CellTable<ReminderLog> table;
 	private SimplePager pager;
 	private AsyncDataProvider<ReminderLog> provider;
+	
+	private DateTimeFormat format = DateTimeFormat.getFormat("dd/MM/yyyy hh:mm:ss");
 	
 	private final ReminderServiceAsync reminderService = GWT
 			.create(ReminderService.class);
@@ -49,7 +53,7 @@ public class ReminderLogTable extends ObservableForm {
 		TextColumn<ReminderLog> timeColumn = new TextColumn<ReminderLog>(){
 			@Override
 			public String getValue(ReminderLog a){
-				return a.getTime().toString();
+				return format.format(a.getTime());
 			}
 		};
 		TextColumn<ReminderLog> codeColumn = new TextColumn<ReminderLog>(){
@@ -58,9 +62,17 @@ public class ReminderLogTable extends ObservableForm {
 				return a.getCode().toString();
 			}
 		};
+		TextColumn<ReminderLog> serverTimeColumn = new TextColumn<ReminderLog>(){
+			@Override
+			public String getValue(ReminderLog a){
+				if(a.getServerTime() == null) return "";
+				return format.format(a.getServerTime());
+			}
+		};
 
-		this.table.addColumn(timeColumn, "Time");
 		this.table.addColumn(codeColumn, "Action");
+		this.table.addColumn(timeColumn, "Time");
+		this.table.addColumn(serverTimeColumn, "Server time");
 		
 	    VerticalPanel vp = new VerticalPanel();
 	    vp.add(table);
