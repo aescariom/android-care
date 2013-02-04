@@ -47,7 +47,7 @@ public class Reminder implements Serializable {
     private boolean requestConfirmation;
 
     // default date time format
-    private final static DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss 'UTC' yyyy",
+    private final static DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy",
             Locale.ENGLISH);
 
     public Reminder() {
