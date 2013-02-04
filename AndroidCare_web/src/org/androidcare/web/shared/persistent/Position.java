@@ -23,9 +23,12 @@ public class Position implements Serializable {
     private Float latitude;
 	@Persistent
     private Float longitude;
-	
+
 	@Persistent 
 	private Date date;
+	
+	@Persistent 
+	private Date serverDate;
 	
 	@Persistent
 	private String owner;
@@ -37,10 +40,7 @@ public class Position implements Serializable {
 		this.longitude = longitude;
 		this.owner = owner;
 		this.date = date;
-	}
-	
-	public Position(float latitude, float longitude, String owner){
-		this(latitude, longitude, owner, new Date());
+		this.serverDate = new Date();
 	}
 	
 	public float getLatitude(){
@@ -53,5 +53,9 @@ public class Position implements Serializable {
 	
 	public Date getDate(){
 		return date;
+	}
+	
+	public Date getServerDate(){
+		return serverDate;
 	}
 }

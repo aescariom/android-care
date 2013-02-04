@@ -1,6 +1,8 @@
 package org.androidcare.web.server.api;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import org.androidcare.web.shared.persistent.Position;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.ibm.icu.text.DateFormat;
 
 @SuppressWarnings("serial")
 public class AddPosition extends HttpServlet {
@@ -34,15 +37,18 @@ public class AddPosition extends HttpServlet {
 					return;
 				}
 				float longitude = Float.parseFloat(req.getParameter("longitude").toString()); 
-				float latitude = Float.parseFloat(req.getParameter("latitude").toString()); 
+				float latitude = Float.parseFloat(req.getParameter("latitude").toString());
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+				Date date = format.parse(req.getParameter("time").toString());
 				String owner = user.getUserId();
 				
-				Position p = new Position(latitude, longitude, owner);
+				Position p = new Position(latitude, longitude, owner, date);
 
 	            pm.makePersistent(p);
 	            resp.getWriter().write("{\"status\": 0}");
 			} catch(Exception ex){
-	            resp.getWriter().write("{\"status\": -1}");				
+	            resp.getWriter().write("{\"status\": -1}");	
+	            ex.printStackTrace();
 			}finally {
 				pm.close();
 	        } 

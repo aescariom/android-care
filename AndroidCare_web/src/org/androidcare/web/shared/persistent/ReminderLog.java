@@ -26,20 +26,32 @@ public class ReminderLog implements Serializable {
 	
 	@Persistent
 	private ReminderStatusCode code;
-	
+
 	@Persistent
 	private Date time;
 
+	@Persistent
+	private Date serverTime;
+
 	public ReminderLog(){
 		super();
+		this.serverTime = new Date();
 	}
 
 	public Date getTime() {
 		return time;
 	}
 
+	public Date getServerTime() {
+		return serverTime;
+	}
+
 	public void setTime(Date time) {
 		this.time = time;
+	}
+
+	public void setServerTime(Date time) {
+		this.serverTime = time;
 	}
 
 	public ReminderStatusCode getCode() {
