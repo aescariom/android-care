@@ -19,7 +19,7 @@ public class DateTimeBox extends HorizontalPanel {
 	private static final Format dateFormat = new DateBox.DefaultFormat(defaultDateFormat);
 	private static final Format timeFormat = new DateBox.DefaultFormat(defaultTimeFormat);
 	
-	private static final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm z");
+	private static final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm");
 
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
 
@@ -64,7 +64,7 @@ public class DateTimeBox extends HorizontalPanel {
 			return null;
 		}
 		Date time = txtTime.getValue();
-		String dateTime = defaultDateFormat.format(date) + " " + defaultTimeFormat.format(time) + " CET";
+		String dateTime = defaultDateFormat.format(date) + " " + defaultTimeFormat.format(time);
 		return dateTimeFormat.parse(dateTime);
 	}
 

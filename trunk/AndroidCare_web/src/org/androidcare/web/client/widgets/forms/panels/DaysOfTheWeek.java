@@ -65,8 +65,8 @@ public class DaysOfTheWeek extends HorizontalPanel {
 		this.add(lblSunday);		
 	}
 
-	public boolean[] getDaysArray() {
-		boolean[] days = new boolean[7];
+	public Boolean[] getDaysArray() {
+		Boolean[] days = new Boolean[7];
 		days[DaysOfTheWeek.MONDAY] = chkMonday.getValue();
 		days[DaysOfTheWeek.TUESDAY] = chkTuesday.getValue();
 		days[DaysOfTheWeek.WEDNESDAY] = chkWednesday.getValue();
@@ -77,7 +77,7 @@ public class DaysOfTheWeek extends HorizontalPanel {
 		return days;
 	}
 
-	public void setValue(boolean[] days) {
+	public void setValue(Boolean[] days) {
 		if(days.length >= 7){
 			chkMonday.setValue(days[DaysOfTheWeek.MONDAY]);
 			chkTuesday.setValue(days[DaysOfTheWeek.TUESDAY]);

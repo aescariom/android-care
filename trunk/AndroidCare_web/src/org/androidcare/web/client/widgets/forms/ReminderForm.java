@@ -461,6 +461,7 @@ public class ReminderForm extends ObservableForm{
 			reminder.setRepeatEachXPeriods(Integer.valueOf(ddlRepeatEach.getValue(ddlRepeatEach.getSelectedIndex())));
 			reminder.setRequestConfirmation(chkRequestConfirmation.getValue());
 		}catch(Exception ex){
+			ex.printStackTrace();
 			return;
 		}
 		// Then, we send the input to the server.
