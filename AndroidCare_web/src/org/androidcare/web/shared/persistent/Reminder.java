@@ -39,7 +39,7 @@ public class Reminder implements Serializable{
 	public static final int END_TYPE_ITERATIONS = 2;
 	
 	@Persistent
-	private int repeatPeriod;
+	private Integer repeatPeriod;
 	@NotPersistent
 	public static final int REPEAT_PERIOD_HOUR = 0;
 	@NotPersistent
@@ -52,13 +52,13 @@ public class Reminder implements Serializable{
 	public static final int REPEAT_PERIOD_YEAR = 4;
 	
 	@Persistent
-	private boolean[] daysOfWeekInWhichShouldTrigger;
+	private Boolean[] daysOfWeekInWhichShouldTrigger;
 	
 	@Persistent
 	private Integer repeatEachXPeriods;
 	
 	@Persistent
-	private boolean requestConfirmation;
+	private Boolean requestConfirmation;
 	
 	@Persistent
 	private String owner;
@@ -127,15 +127,15 @@ public class Reminder implements Serializable{
 		this.repeatPeriod = repeatPeriod;
 	}
 
-	public boolean[] getDaysOfWeekInWhichShouldTrigger() {
+	public Boolean[] getDaysOfWeekInWhichShouldTrigger() {
 		if(daysOfWeekInWhichShouldTrigger == null){
-			return new boolean[7];
+			return new Boolean[7];
 		}else{
 			return daysOfWeekInWhichShouldTrigger;
 		}
 	}
 
-	public void setDaysOfWeekInWhichShouldTrigger(boolean[] weekDays) {
+	public void setDaysOfWeekInWhichShouldTrigger(Boolean[] weekDays) {
 		this.daysOfWeekInWhichShouldTrigger = weekDays;
 	}
 
@@ -197,10 +197,19 @@ public class Reminder implements Serializable{
 		return this.log;
 	}
 	
-	//@ comentario transient?
 	public void cleanForAPI() {
 		owner = null;
 		log = null;
+		if(!repeat){
+			this.repeatEachXPeriods = null;
+			this.endType = null;
+			this.activeUntil = null;
+			this.daysOfWeekInWhichShouldTrigger = new Boolean[0];
+		}else{
+			if(this.repeatPeriod != Reminder.REPEAT_PERIOD_WEEK){
+				this.daysOfWeekInWhichShouldTrigger = new Boolean[0];
+			}
+		}
 	}
 
 	public void setBlobKey(String keyString) {
