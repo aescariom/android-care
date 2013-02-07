@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -22,13 +23,16 @@ import android.widget.Toast;
 public class PreferencesActivity extends PreferenceActivity {
 
     protected AccountManager accountManager;
+    protected boolean isMock;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        isMock = getApplicationContext().getResources().getBoolean(R.bool.mock);
+        
         addPreferencesFromResource(R.xml.preferences);
         addGoogleAccounts();
+        setResetButton();
     }
 
     private void addGoogleAccounts() {
@@ -68,7 +72,9 @@ public class PreferencesActivity extends PreferenceActivity {
             accountList.setEntries(accountNames);
             accountList.setEntryValues(accountNames);
         } else {
-            showNoAccountsDialog();
+            if(!isMock){
+                showNoAccountsDialog();
+            }
         }
     }
 
@@ -95,5 +101,19 @@ public class PreferencesActivity extends PreferenceActivity {
 
         alertDialog.setIcon(R.drawable.notification_icon);
         alertDialog.show();
+    }
+    
+    private void setResetButton(){
+        final Preference restart = (Preference) findPreference("restartServices");
+        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getApplicationContext(), R.string.restarting_service, Toast.LENGTH_SHORT)
+                .show();
+                ServiceManager.startAllServices(getApplicationContext());
+                return true;
+            }
+            
+        });
     }
 }
