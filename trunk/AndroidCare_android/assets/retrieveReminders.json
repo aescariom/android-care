@@ -1,23 +1,17 @@
 [
-{
-repeatEach: 1,
-id: 18001,
-title: "Hacer algo",
-repeatPeriod: 1,
-description: "descripción de hacer algo...",
-logSize: 0,
-endType: 0,
-requestConfirmation: true,
-since: "Fri Nov 02 21:30:00 UTC 2012",
-repeat: true,
-weekDays: [
-false,
-false,
-false,
-false,
-false,
-false,
-false
-]
-}
+	{
+		"id":50001,
+		"daysOfWeekInWhichShouldTrigger":[false,false,false,false,false,false,false],
+		"title":"Prueba uno",
+		"blobKey":"AMIfv97csSJmPzQexMc87ZZIJrkpqpbXx6huaj1P4cb3I1GpD7L4i0qz6CAB7Zxv3xWyrhLLetCt1e_BNhfiqIvgnMr4KAMuRPtiPS_k-zelNcuaU908aYEHNP6WGWRur8eer2KcZvbNkdOy40I--t81J5xPbBNQ1bTPOKuUqIz2dR17EBGDb5s",
+		"repeatPeriod":1,
+		"description":
+		"Con acentos ‡ –\nasdfasd\nfa\nsdf\nas\ndf\nas",
+		"logSize":0,
+		"endType":0,
+		"requestConfirmation":true,
+		"repeat":true,
+		"repeatEachXPeriods":1,
+		"activeFrom":"Thu Jan 17 11:20:00 UTC 2013"
+	}
 ]
