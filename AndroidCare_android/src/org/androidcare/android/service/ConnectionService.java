@@ -119,6 +119,7 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
                 getOauthCookie();
             }
             catch (ConnectionServiceException e) {
+                triggerAccountSelectorNotification();
                 Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
             }
             // this is always false, because we need to get the authCookie before we can send more messages
