@@ -11,29 +11,43 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.util.Log;
 
+@DatabaseTable(tableName = "reminders")
 public class Reminder implements Serializable {
 
     private static final long serialVersionUID = -8087552729716719434L;
 
-    // Alert data - the same than in the web
+    @DatabaseField(id = true)
     private int id;
+    @DatabaseField
     private String title;
+    @DatabaseField
     private String description;
-    
+
+    @DatabaseField
     private String blobKey;
 
+    @DatabaseField
     private boolean repeat;
-    private Calendar activeFrom;
-    private Calendar activeUntil;
+    @DatabaseField
+    private Date activeFrom;
+    @DatabaseField
+    private Date activeUntil;
+    @DatabaseField
     private int numerOfRepetitions;
 
+    @DatabaseField
     private int endType;
     public static final int END_TYPE_NEVER_ENDS = 0;
     public static final int END_TYPE_UNTIL_DATE = 1;
     public static final int END_TYPE_ITERATIONS = 2;
 
+    @DatabaseField
     private int repeatPeriod;
     public static final int REPEAT_PERIOD_HOUR = 0;
     public static final int REPEAT_PERIOD_DAY = 1;
@@ -41,17 +55,19 @@ public class Reminder implements Serializable {
     public static final int REPEAT_PERIOD_MONTH = 3;
     public static final int REPEAT_PERIOD_YEAR = 4;
     // How may HOURS/DAYS/... should we repeat
+    @DatabaseField
     private int repeatEachXPeriods;
 
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private DaysOfWeekInWhichShouldTrigger daysOfWeekInWhichShouldTrigger;
+    @DatabaseField
     private boolean requestConfirmation;
 
     // default date time format
     private final static DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy",
             Locale.ENGLISH);
 
-    public Reminder() {
-    }
+    public Reminder() { /* Needed by ormlite */ }
 
     public Reminder(JSONObject jsonObj) throws AndroidCareDateFormatException, NumberFormatException,
             JSONException, ParseException {
@@ -125,14 +141,14 @@ public class Reminder implements Serializable {
         numerOfRepetitions = iterations;
     }
 
-    public Calendar getActiveFrom() {
+    public Date getActiveFrom() {
         return activeFrom;
     }
 
     public void setActiveFrom(Calendar activeFrom) {
         activeFrom.set(Calendar.SECOND, 0);
         activeFrom.set(Calendar.MILLISECOND, 0);
-        this.activeFrom = activeFrom;
+        this.activeFrom = activeFrom.getTime();
     }
 
     public void setActiveFrom(Date activeFrom) {
@@ -140,7 +156,7 @@ public class Reminder implements Serializable {
         c.setTime(activeFrom);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        this.activeFrom = c;
+        this.activeFrom = c.getTime();
     }
 
     public int getRepeatPeriod() {
@@ -170,14 +186,14 @@ public class Reminder implements Serializable {
         }
     }
 
-    public Calendar getActiveUntil() {
+    public Date getActiveUntil() {
         return activeUntil;
     }
 
     public void setActiveUntil(Calendar activeUntil) {
         activeUntil.set(Calendar.SECOND, 0);
         activeUntil.set(Calendar.MILLISECOND, 0);
-        this.activeUntil = activeUntil;
+        this.activeUntil = activeUntil.getTime();
     }
 
     public void setUntilDate(Date until) {
@@ -185,7 +201,7 @@ public class Reminder implements Serializable {
         c.setTime(until);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        this.activeUntil = c;
+        this.activeUntil = c.getTime();
     }
 
     public Date getNextTimeLapse(Date time) {
@@ -194,8 +210,8 @@ public class Reminder implements Serializable {
 
     @Override
     public String toString() {
-        return "Reminder: " + getTitle() + " active from " + activeFrom.getTime().toString() + 
-                ((activeUntil != null) ? " active to " + activeUntil.getTime().toString() : "");
+        return "Reminder: " + getTitle() + " active from " + activeFrom.toString() + 
+                ((activeUntil != null) ? " active to " + activeUntil.toString() : "");
     }
 
     public int getEndType() {

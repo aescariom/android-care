@@ -1,12 +1,14 @@
 package org.androidcare.android.service;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.androidcare.android.R;
+import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.preferences.PreferencesActivity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -17,6 +19,8 @@ import org.apache.http.client.params.ClientPNames;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseService;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -24,7 +28,6 @@ import android.accounts.AccountManagerFuture;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,11 +37,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
-public abstract class ConnectionService extends Service {
+public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
     public static final String APP_URL = "http://androidcare2.appspot.com/";
 
     private static final int NOTIFICATION_ADD_ACCOUNT = 0;
@@ -49,6 +53,9 @@ public abstract class ConnectionService extends Service {
     private Account googleUser = null;
     private String authToken = "";
     private Cookie authCookie = null;
+    
+    // singleton
+    private static ConnectionService THIS;
 
     // Communication
     private static final Queue<Message> PENDING_MESSAGES_QUEUE = new PriorityQueue<Message>(); // service info
@@ -63,15 +70,17 @@ public abstract class ConnectionService extends Service {
 
     private int maxPendingMessages = 10;
     private long maxTimeSiceFirstMessage = 900000; // 15 min in milliseconds
-    
+
     private boolean isMock = false;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
+        Log.i(tag, "Connection service started");
         registerReceiver(connectionServiceReceiver, filter);
         setConnectionStateListener();
         isMock = getApplicationContext().getResources().getBoolean(R.bool.mock);
+        ConnectionService.THIS = this;
         return result;
     }
 
@@ -98,7 +107,6 @@ public abstract class ConnectionService extends Service {
         super.onDestroy();
         unregisterReceiver(mNetworkStateIntentReceiver);
         unregisterReceiver(connectionServiceReceiver);
-        processMessageQueue();
     }
 
     public void processMessageQueue() {
@@ -214,7 +222,7 @@ public abstract class ConnectionService extends Service {
         manager.notify(notificationId, notification);
     }
 
-    protected boolean isConnectionAvailable() {
+    protected boolean isConnectionAvailable() {        
         ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         if (conMgr == null) {
@@ -230,6 +238,12 @@ public abstract class ConnectionService extends Service {
     public void pushMessage(Message message) {
         synchronized (PENDING_MESSAGES_QUEUE) {
             PENDING_MESSAGES_QUEUE.add(message);
+            try {
+                getHelper().create(message);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
             this.processMessageQueue();
         }
     }
@@ -237,6 +251,12 @@ public abstract class ConnectionService extends Service {
     public void pushLowPriorityMessage(Message message) {
         synchronized (PENDING_MESSAGES_QUEUE) {
             PENDING_MESSAGES_QUEUE.add(message);
+            try {
+                getHelper().create(message);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
             long timeDiff = (new Date()).getTime() - PENDING_MESSAGES_QUEUE.peek().getCreationDate().getTime();
             if (PENDING_MESSAGES_QUEUE.size() > maxPendingMessages || timeDiff > maxTimeSiceFirstMessage) {
                 this.processMessageQueue();
@@ -251,7 +271,7 @@ public abstract class ConnectionService extends Service {
 
         public void run(AccountManagerFuture<Bundle> result) {
             try {
-                Bundle bundle = (Bundle) result.getResult();
+                Bundle bundle = result.getResult();
                 Intent intent = (Intent) bundle.get(AccountManager.KEY_INTENT);
                 if (intent != null) { // user input required
                     startActivity(intent);
@@ -337,23 +357,35 @@ public abstract class ConnectionService extends Service {
                     triggerConnectionErrorNotification();
                     return false;
                 }
-                try {
-                    while ((message = PENDING_MESSAGES_QUEUE.peek()) != null) {
+                while ((message = PENDING_MESSAGES_QUEUE.peek()) != null) {
+                    try {
                         HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
                                 ConnectionService.this.getApplicationContext(), authCookie);
                         HttpRequestBase request = message.getHttpRequestBase();
                         message.onPreSend(request);
                         HttpResponse response = client.execute(request);
                         message.onPostSend(response);
+                        getHelper().remove(message);
                         PENDING_MESSAGES_QUEUE.poll();
                     }
-                }
-                catch (Exception e) {
-                    Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
+                    catch (Exception e) {
+                        Log.e(tag, "Error when procesing the Message: " + message + " -> " + e.getMessage(), e);
+                        message.onError(e);
+                    }
                 }
                 return true;
             }
         }
         
+    }
+    
+    public static ConnectionService getInstance(){
+        return THIS;
+    }
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
