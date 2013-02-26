@@ -14,18 +14,30 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.util.Log;
 
 @SuppressWarnings("serial")
+@DatabaseTable(tableName = "GetRemindersMessage")
 public class GetRemindersMessage extends Message {
     public static final String REMINDERS_URL = ConnectionService.APP_URL + "api/retrieveReminders";
 
-    protected ReminderService reminderService;
+    protected static ReminderService reminderService;
 
+    public GetRemindersMessage(){
+        super();
+        this.url = GetRemindersMessage.REMINDERS_URL;
+    }
+    
     public GetRemindersMessage(ReminderService reminderService) {
         super();
         this.url = GetRemindersMessage.REMINDERS_URL;
-        this.reminderService = reminderService;
+        GetRemindersMessage.reminderService = reminderService;
+    }
+    
+    public void setReminderService(ReminderService reminderService){
+        GetRemindersMessage.reminderService = reminderService;
     }
 
     @Override
@@ -59,12 +71,18 @@ public class GetRemindersMessage extends Message {
                 JSONObject obj = array.getJSONObject(i);
                 reminders[i] = new Reminder(obj);
             }
-            this.reminderService.schedule(reminders);
+            GetRemindersMessage.reminderService.schedule(reminders);
         }
         catch (Exception e) {
             Log.e(this.getClass().getName(),
                     "Error when retrieving reminders from the server: " + e.getMessage(), e);
             throw new InvalidMessageResponseException("Error ocurend when parsing JSON String", e);
         }
+    }
+    
+    @Override
+    public void onError(Exception ex){
+        super.onError(ex);
+        GetRemindersMessage.reminderService.scheduleFromDatabase();
     }
 }

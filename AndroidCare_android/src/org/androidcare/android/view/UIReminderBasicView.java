@@ -1,7 +1,6 @@
 package org.androidcare.android.view;
 
 import java.io.InputStream;
-import java.net.URI;
 
 import org.androidcare.android.R;
 import org.androidcare.android.reminders.Reminder;
@@ -14,7 +13,6 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;

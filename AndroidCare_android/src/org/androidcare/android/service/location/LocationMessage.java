@@ -11,18 +11,31 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import android.location.Location;
 
 @SuppressWarnings("serial")
+@DatabaseTable(tableName = "LocationMessage")
 public class LocationMessage extends Message {
     public static final String POSITION_LOG_URL = ConnectionService.APP_URL + "api/addPosition";
 
-    Location location;
+    @DatabaseField
+    double latitude;
+    @DatabaseField
+    double longitude;
 
+    public LocationMessage(){
+        super();
+        this.url = LocationMessage.POSITION_LOG_URL;
+    }
+    
     public LocationMessage(Location location) {
         super();
         this.url = LocationMessage.POSITION_LOG_URL;
-        this.location = location;
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
     }
 
     @Override
@@ -30,8 +43,8 @@ public class LocationMessage extends Message {
         HttpPost httppost = new HttpPost(this.url);
 
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
-        nameValuePairs.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
+        nameValuePairs.add(new BasicNameValuePair("latitude", String.valueOf(latitude)));
+        nameValuePairs.add(new BasicNameValuePair("longitude", String.valueOf(longitude)));
 
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

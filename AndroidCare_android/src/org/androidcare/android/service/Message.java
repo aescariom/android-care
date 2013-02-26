@@ -3,14 +3,20 @@ package org.androidcare.android.service;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.Observable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 
+import com.j256.ormlite.field.DatabaseField;
+
 @SuppressWarnings("serial")
 public abstract class Message implements Serializable, Comparable<Message> {
+    
+    @DatabaseField(generatedId = true)
+    public int id;
+    @DatabaseField
     protected String url;
+    @DatabaseField
     protected Date creationDate;
 
     public Message() {
@@ -23,6 +29,9 @@ public abstract class Message implements Serializable, Comparable<Message> {
     }
 
     public void onPostSend(HttpResponse response) throws InvalidMessageResponseException {
+    }
+    
+    public void onError(Exception ex){
     }
 
     public final int compareTo(Message m) {

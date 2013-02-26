@@ -2,6 +2,7 @@ package org.androidcare.android.service.location;
 
 import org.androidcare.android.service.ConnectionService;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
@@ -12,15 +13,17 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-public class LocationService extends ConnectionService {
+public class LocationService extends Service {
     private final String tag = this.getClass().getName();
 
+    /* Location parameters */
     private LocationManager locationManager;
     private int minSeconds = 300000; // 5 min
     private int minDistance = 20; // 20 meters
+    
     private LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-            LocationService.this.pushLowPriorityMessage(new LocationMessage(location));
+            ConnectionService.getInstance().pushLowPriorityMessage(new LocationMessage(location));
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
