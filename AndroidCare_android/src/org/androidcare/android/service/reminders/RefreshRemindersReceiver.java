@@ -17,11 +17,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
         ConnectionService.getInstance().pushMessage(new GetRemindersMessage());
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) + 1); //+1 For Next day (24 hours or so...)
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 24);
 
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, RefreshRemindersReceiver.class);

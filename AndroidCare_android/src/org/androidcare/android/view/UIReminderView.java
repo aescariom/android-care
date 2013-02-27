@@ -22,7 +22,7 @@ public abstract class UIReminderView extends RelativeLayout {
 
     protected Reminder reminder;
 
-    public UIReminderView(Context context, Reminder reminder) {
+    public UIReminderView(ReminderDialogReceiver context, Reminder reminder) {
         super(context);
         this.reminder = reminder;
     }
