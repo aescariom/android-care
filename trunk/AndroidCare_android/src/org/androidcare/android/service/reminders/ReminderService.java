@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.service.RefreshRemindersReceiver;
 import org.androidcare.android.view.ReminderReceiver;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseService;
@@ -36,10 +35,6 @@ public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
                                                                 new ReminderServiceBroadcastReceiver(this);
     private IntentFilter reminderServiceBroadcastFilter = 
                                 new IntentFilter(ReminderServiceBroadcastReceiver.ACTION_SCHEDULE_REMINDER);
-    
-    private RefreshRemindersReceiver refreshRemindersReceiver = new RefreshRemindersReceiver();
-    private IntentFilter refreshRemindersReceiverFilter = 
-            new IntentFilter(RefreshRemindersReceiver.ACTION_GET_REMINDERS);
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -47,7 +42,6 @@ public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
         Log.i(tag, "Reminder service started");
 
         registerReceiver(reminderServiceReceiver, reminderServiceBroadcastFilter);
-        registerReceiver(refreshRemindersReceiver, refreshRemindersReceiverFilter);
 
         GetRemindersMessage.setReminderService(this);
         this.scheduleFromDatabase();
@@ -60,7 +54,6 @@ public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(reminderServiceReceiver);
-        unregisterReceiver(refreshRemindersReceiver);
     }
 
     @Override
@@ -72,7 +65,7 @@ public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
         Calendar cal = Calendar.getInstance();
 
         AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(RefreshRemindersReceiver.ACTION_GET_REMINDERS);
+        Intent intent = new Intent(getApplicationContext(), RefreshRemindersReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);

@@ -38,7 +38,10 @@
         </activity>
         
         <!-- reminder notification receiver -->
-        <receiver  android:process=":remote" android:name=".view.ReminderReceiver">
+        <receiver android:process=":remote" android:name=".view.ReminderReceiver">
+        </receiver>
+        <!-- get reminders receiver -->
+        <receiver android:name=".service.reminders.RefreshRemindersReceiver">
         </receiver>
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service 	android:enabled="true" android:name=".service.reminders.ReminderService" /> 

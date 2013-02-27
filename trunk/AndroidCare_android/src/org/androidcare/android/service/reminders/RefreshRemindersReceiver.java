@@ -1,8 +1,8 @@
-package org.androidcare.android.service;
+package org.androidcare.android.service.reminders;
 
 import java.util.Calendar;
 
-import org.androidcare.android.service.reminders.GetRemindersMessage;
+import org.androidcare.android.service.ConnectionService;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,8 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 
 public class RefreshRemindersReceiver extends BroadcastReceiver {
-
-    public final static String ACTION_GET_REMINDERS = "org.androidcare.android.service.GET_REMINDERS";
 
     @Override
     public void onReceive(Context context, Intent arg1) {
@@ -26,7 +24,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
         cal.set(Calendar.MILLISECOND, 0);
 
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(RefreshRemindersReceiver.ACTION_GET_REMINDERS);
+        Intent intent = new Intent(context, RefreshRemindersReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
