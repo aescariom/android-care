@@ -7,9 +7,11 @@ import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
@@ -30,10 +32,11 @@ public class UIReminderBasicView extends UIReminderView {
     protected TextView lblDescription;
     protected ImageView imgPhoto;
 
-    public UIReminderBasicView(Context context, Reminder reminder) {
-        super(context, reminder);
+    public UIReminderBasicView(ReminderDialogReceiver activity, Reminder reminder) {
+        super(activity, reminder);
 
-        inflate(context, R.layout.basic_reminder_ui, this);
+        inflate(activity, R.layout.basic_reminder_ui, this);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // 2 - turning on the screen, display the activity over the locked screen, keeping the screen on,
         // and unlocking the keyboard
