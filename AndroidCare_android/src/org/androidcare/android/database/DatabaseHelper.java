@@ -1,6 +1,8 @@
 package org.androidcare.android.database;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
@@ -112,6 +114,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             return getReminderLogMessageDao().delete((ReminderLogMessage)message);
         }
         return -1;
+    }
+
+    public List<Message> getMessages() throws SQLException {
+        List<Message> messages = new ArrayList<Message>();
+        messages.addAll(getGetRemindersMessageDao().queryForAll());
+        messages.addAll(getReminderLogMessageDao().queryForAll());
+        messages.addAll(getLocationMessageDao().queryForAll());
+        return messages;
     }
 
 }

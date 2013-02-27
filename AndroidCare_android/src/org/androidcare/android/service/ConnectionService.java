@@ -2,6 +2,7 @@ package org.androidcare.android.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -58,7 +59,6 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
     private static ConnectionService THIS;
 
     // Communication
-    private static final Queue<Message> PENDING_MESSAGES_QUEUE = new PriorityQueue<Message>(); // service info
     private final String tag = this.getClass().getName();
     private IntentFilter mNetworkStateChangedFilter;
     private BroadcastReceiver mNetworkStateIntentReceiver;
@@ -68,8 +68,7 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
                                                             new ConnectionServiceBroadcastReceiver(this);
     private IntentFilter filter = new IntentFilter(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
 
-    private int maxPendingMessages = 10;
-    private long maxTimeSiceFirstMessage = 900000; // 15 min in milliseconds
+    private long timeLapse = 900000; // 15 min in milliseconds
 
     private boolean isMock = false;
 
@@ -166,8 +165,7 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
         accountManager.getAuthToken(this.googleUser, "ah", // this is the "authTokenType" for google App Engine
                 true, // notifyAuthFailure
                 new GetAuthTokenCallback(), // callback
-                null); // a null handler means that it will be handled by the
-                       // main thread
+                null); // a null handler means that it will be handled by the main thread
     }
 
     protected void triggerAccountSelectorNotification() {
@@ -237,31 +235,21 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
     }
 
     public void pushMessage(Message message) {
-        synchronized (PENDING_MESSAGES_QUEUE) {
-            PENDING_MESSAGES_QUEUE.add(message);
-            try {
-                getHelper().create(message);
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-            this.processMessageQueue();
+        try {
+            getHelper().create(message);
         }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        this.processMessageQueue();
     }
 
     public void pushLowPriorityMessage(Message message) {
-        synchronized (PENDING_MESSAGES_QUEUE) {
-            PENDING_MESSAGES_QUEUE.add(message);
-            try {
-                getHelper().create(message);
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-            long timeDiff = (new Date()).getTime() - PENDING_MESSAGES_QUEUE.peek().getCreationDate().getTime();
-            if (PENDING_MESSAGES_QUEUE.size() > maxPendingMessages || timeDiff > maxTimeSiceFirstMessage) {
-                this.processMessageQueue();
-            }
+        try {
+            getHelper().create(message);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -343,39 +331,40 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
             return true;
         }
     }
-    
 
     private class MessageQueueProcessor extends AsyncTask<Void, Object, Boolean>{
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            synchronized (PENDING_MESSAGES_QUEUE) {
-                Message message;
-                if (ConnectionService.PENDING_MESSAGES_QUEUE.size() == 0 || !isSessionCookieValid()) {
+            try{
+                if (!isSessionCookieValid()) {
                     return false;
                 }
-                if ( !isConnectionAvailable()) {
+                if (!isConnectionAvailable()) {
                     triggerConnectionErrorNotification();
                     return false;
                 }
-                while ((message = PENDING_MESSAGES_QUEUE.peek()) != null) {
+                List<Message> messages = getHelper().getMessages();
+                for (Message m : messages) {
                     try {
                         HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
                                 ConnectionService.this.getApplicationContext(), authCookie);
-                        HttpRequestBase request = message.getHttpRequestBase();
-                        message.onPreSend(request);
+                        HttpRequestBase request = m.getHttpRequestBase();
+                        m.onPreSend(request);
                         HttpResponse response = client.execute(request);
-                        message.onPostSend(response);
-                        getHelper().remove(message);
-                        PENDING_MESSAGES_QUEUE.poll();
+                        m.onPostSend(response);
+                        getHelper().remove(m);
                     }
                     catch (Exception e) {
-                        Log.e(tag, "Error when procesing the Message: " + message + " -> " + e.getMessage(), e);
-                        message.onError(e);
+                        Log.e(tag, "Error when procesing the Message: " + m + " -> " + e.getMessage(), e);
+                        m.onError(e);
                     }
                 }
                 return true;
+            }catch(SQLException e){
+                Log.e(tag, "Error when procesing the Queue -> " + e.getMessage(), e);
             }
+            return false;
         }
         
     }
@@ -386,7 +375,6 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

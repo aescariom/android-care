@@ -4,9 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk 
-        android:targetSdkVersion="11"
-        android:minSdkVersion="10" />
+    <uses-sdk android:targetSdkVersion="11" android:minSdkVersion="10" />
 
 	<!-- Permisos -->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- obtención de las cuentas de google -->
@@ -27,7 +25,6 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
