@@ -36,7 +36,7 @@ public class GetRemindersMessage extends Message {
         GetRemindersMessage.reminderService = reminderService;
     }
     
-    public void setReminderService(ReminderService reminderService){
+    public static void setReminderService(ReminderService reminderService){
         GetRemindersMessage.reminderService = reminderService;
     }
 
