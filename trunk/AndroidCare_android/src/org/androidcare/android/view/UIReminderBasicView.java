@@ -1,6 +1,8 @@
 package org.androidcare.android.view;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import org.androidcare.android.R;
 import org.androidcare.android.reminders.Reminder;
@@ -125,15 +127,17 @@ public class UIReminderBasicView extends UIReminderView {
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
+            Bitmap bitmap = null;
             try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
+                URL url = new URL(urldisplay);
+                URLConnection connection = url.openConnection();
+                connection.setUseCaches(true);
+                bitmap = BitmapFactory.decodeStream((InputStream)connection.getContent());
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
-            return mIcon11;
+            return bitmap;
         }
 
         protected void onPostExecute(Bitmap result) {

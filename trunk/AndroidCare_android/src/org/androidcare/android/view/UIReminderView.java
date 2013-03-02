@@ -2,6 +2,7 @@ package org.androidcare.android.view;
 
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
+import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
@@ -13,6 +14,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.Window;
@@ -74,32 +77,51 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     protected void playSound(Uri soundUri) {        
-        try {
-            Context context = getContext();
-            // 1 - getting the sound
-            MediaPlayer mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setDataSource(context, soundUri);
-            // 2 - setting up the audio manager
-            final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            // 3 - playing the sound
-            if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
-                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                mMediaPlayer.setLooping(false);
-                mMediaPlayer.prepare();
-                mMediaPlayer.start();
-            }
-        }
-        catch (Exception e) { // we must catch the exception
-            Log.i("ReminderReceiver", "Could not play the sound when reminder was received");
-            e.printStackTrace();
-        }
+        new PlaySoundTask().execute(soundUri);
     }
     
     protected void vibrate(int length){
-        // Get instance of Vibrator from current Context
-        Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-         
-        // Vibrate for 'length' milliseconds
-        v.vibrate(length);
+        new VibrationTask().execute(length);
+    }
+    
+    private class PlaySoundTask extends AsyncTask<Uri, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Uri... params) {
+            try {
+                Context context = getContext();
+                // 1 - getting the sound
+                MediaPlayer mMediaPlayer = new MediaPlayer();
+                mMediaPlayer.setDataSource(context, params[0]);
+                // 2 - setting up the audio manager
+                final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                // 3 - playing the sound
+                if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                    mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                    mMediaPlayer.setLooping(false);
+                    mMediaPlayer.prepare();
+                    mMediaPlayer.start();
+                }
+            }
+            catch (Exception e) { // we must catch the exception
+                Log.i("ReminderReceiver", "Could not play the sound when reminder was received");
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+    
+    private class VibrationTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+
+            // Get instance of Vibrator from current Context
+            Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+             
+            // Vibrate for 'length' milliseconds
+            v.vibrate(params[0]);
+            return null;
+        }
     }
 }
