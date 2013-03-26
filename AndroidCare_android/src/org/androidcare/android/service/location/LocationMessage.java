@@ -45,6 +45,7 @@ public class LocationMessage extends Message {
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("latitude", String.valueOf(latitude)));
         nameValuePairs.add(new BasicNameValuePair("longitude", String.valueOf(longitude)));
+        nameValuePairs.add(new BasicNameValuePair("time", format.format(creationDate)));
 
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

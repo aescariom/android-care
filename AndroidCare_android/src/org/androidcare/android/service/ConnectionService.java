@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 import org.androidcare.android.R;
 import org.androidcare.android.database.DatabaseHelper;
@@ -20,15 +18,17 @@ import org.apache.http.client.params.ClientPNames;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseService;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,13 +37,14 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
-public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
+public class ConnectionService extends Service {
     public static final String APP_URL = "http://androidcare2.appspot.com/";
 
     private static final int NOTIFICATION_ADD_ACCOUNT = 0;
@@ -54,9 +55,6 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
     private Account googleUser = null;
     private String authToken = "";
     private Cookie authCookie = null;
-    
-    // singleton
-    private static ConnectionService THIS;
 
     // Communication
     private final String tag = this.getClass().getName();
@@ -68,9 +66,14 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
                                                             new ConnectionServiceBroadcastReceiver(this);
     private IntentFilter filter = new IntentFilter(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
 
-    private long timeLapse = 900000; // 15 min in milliseconds
+    private long timeLapse = 180000;//300000; // 5 min in milliseconds
 
+    // Binder given to clients
+    private final IBinder mBinder = new ConnectionServiceBinder();
+    
     private boolean isMock = false;
+
+    private DatabaseHelper databaseHelper = null;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -79,7 +82,9 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
         registerReceiver(connectionServiceReceiver, filter);
         setConnectionStateListener();
         isMock = getApplicationContext().getResources().getBoolean(R.bool.mock);
-        ConnectionService.THIS = this;
+        
+        scheduleNextSynchronization();
+        
         return result;
     }
 
@@ -106,6 +111,8 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
         super.onDestroy();
         unregisterReceiver(mNetworkStateIntentReceiver);
         unregisterReceiver(connectionServiceReceiver);
+        
+        closeDatabaseConnection();
     }
 
     public void processMessageQueue() {
@@ -369,12 +376,39 @@ public class ConnectionService extends OrmLiteBaseService<DatabaseHelper> {
         
     }
     
-    public static ConnectionService getInstance(){
-        return THIS;
-    }
-
     @Override
     public IBinder onBind(Intent arg0) {
-        return null;
+        return mBinder;
+    }
+    
+    public class ConnectionServiceBinder extends Binder {
+        public ConnectionService getService() {
+            return ConnectionService.this;
+        }
+    }
+
+
+    public void scheduleNextSynchronization() {
+        Calendar cal = Calendar.getInstance();
+
+        AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), PushMessagesReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        am.cancel(pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + this.timeLapse, pendingIntent);
+    }
+    
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+    
+    private void closeDatabaseConnection() {
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
     }
 }

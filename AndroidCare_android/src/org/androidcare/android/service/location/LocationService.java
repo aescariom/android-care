@@ -1,10 +1,13 @@
 package org.androidcare.android.service.location;
 
 import org.androidcare.android.service.ConnectionService;
+import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
 
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,27 +16,29 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-public class LocationService extends Service {
+public class LocationService extends Service implements LocationListener {
     private final String tag = this.getClass().getName();
 
     /* Location parameters */
     private LocationManager locationManager;
     private int minSeconds = 300000; // 5 min
-    private int minDistance = 20; // 20 meters
-    
-    private LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            ConnectionService.getInstance().pushLowPriorityMessage(new LocationMessage(location));
+    private int minDistance = 50; // 50 meters
+
+    private ConnectionService connectionService;
+    boolean mBound = false;
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ConnectionServiceBinder binder = (ConnectionServiceBinder) service;
+            connectionService = binder.getService();
+            
+            mBound = true;
         }
 
-        public void onStatusChanged(String provider, int status, Bundle extras) {
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
         }
 
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onProviderDisabled(String provider) {
-        }
     };
     
     @Override
@@ -56,15 +61,22 @@ public class LocationService extends Service {
         String bestProvider = locationManager.getBestProvider(criteria, true);
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(bestProvider, this.minSeconds,
-                this.minDistance, locationListener);
+                this.minDistance, this);
         
+        bindConnectionService();
         return result;
+    }
+
+    private void bindConnectionService() {
+        getApplicationContext().bindService(
+                           new Intent(getApplicationContext(), ConnectionService.class),
+                           mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        locationManager.removeUpdates(locationListener);
+        locationManager.removeUpdates(this);
     }
 
     @Override
@@ -72,4 +84,20 @@ public class LocationService extends Service {
         return null;
     }
 
+    public void onLocationChanged(Location location) {
+        if(mBound){
+            connectionService.pushLowPriorityMessage(new LocationMessage(location));
+        }else{
+            bindConnectionService();
+        }
+    }
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    public void onProviderEnabled(String provider) {
+    }
+
+    public void onProviderDisabled(String provider) {
+    }
 }

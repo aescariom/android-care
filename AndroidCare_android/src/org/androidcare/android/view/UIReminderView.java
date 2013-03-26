@@ -2,7 +2,6 @@ package org.androidcare.android.view;
 
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
-import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
@@ -15,7 +14,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.Window;

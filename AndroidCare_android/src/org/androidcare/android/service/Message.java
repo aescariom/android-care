@@ -2,6 +2,7 @@ package org.androidcare.android.service;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
@@ -19,6 +20,9 @@ public abstract class Message implements Serializable, Comparable<Message> {
     @DatabaseField
     protected Date creationDate;
 
+
+    protected static final SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+    
     public Message() {
         creationDate = new Date();
     }
@@ -28,7 +32,7 @@ public abstract class Message implements Serializable, Comparable<Message> {
     public void onPreSend(HttpRequestBase request) {
     }
 
-    public void onPostSend(HttpResponse response) throws InvalidMessageResponseException {
+    public void onPostSend(HttpResponse response) throws InvalidMessageResponseException { 
     }
     
     public void onError(Exception ex){

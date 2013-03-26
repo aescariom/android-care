@@ -45,6 +45,7 @@ public class ReminderLogMessage extends Message {
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("reminderId", String.valueOf(reminderId)));
         nameValuePairs.add(new BasicNameValuePair("statusCode", String.valueOf(statusCode)));
+        nameValuePairs.add(new BasicNameValuePair("time", format.format(creationDate)));
 
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
