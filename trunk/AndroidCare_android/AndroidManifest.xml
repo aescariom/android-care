@@ -43,6 +43,9 @@
         <!-- get reminders receiver -->
         <receiver android:name=".service.reminders.RefreshRemindersReceiver">
         </receiver>
+        <!-- sync receiver -->
+        <receiver android:name=".service.PushMessagesReceiver">
+        </receiver>
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service 	android:enabled="true" android:name=".service.reminders.ReminderService" /> 
         <service 	android:enabled="true" android:name=".service.location.LocationService" /> 

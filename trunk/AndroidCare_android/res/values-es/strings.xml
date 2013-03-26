@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidCare</string>
+
+    <!-- General -->
+    <string name="error">Error</string>
+    <string name="open_account_settings">Abrir ajustes</string>
+    <string name="restarting_service">Reiniciando servicios</string>
+    <string name="cancel">Cancelar</string>
+    
+    <!-- Accounts -->
+    <string name="account">Cuentas</string>
+    <string name="restart_services">Reiniciar</string>
+    <string name="account_settings">Ajustes de la cuenta</string>
+    <string name="account_summary">Seleccione una cuenta de google</string>
+    <string name="zero_accounts">Ninguna cuenta configurada</string>
+    <string name="setup_google_account">Por favor, configure una cuenta de Google</string>
+    
+    <!-- Network -->
+    <string name="not_reachable">El servidor no responde</string>
+    <string name="check_internet_connection">Por favor, compruebe su conexión a Internet</string>
+    <string name="delay_reminder">Retrasar recordatorio</string>
+</resources>

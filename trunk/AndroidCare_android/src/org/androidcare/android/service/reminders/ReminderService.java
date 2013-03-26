@@ -1,7 +1,6 @@
 package org.androidcare.android.service.reminders;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,31 +9,30 @@ import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.view.ReminderReceiver;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseService;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
+public class ReminderService extends Service {
 
     private static final int REMINDER_REQUEST_CODE = 0;
     private final String tag = this.getClass().getName();
-
-    // Communication
-    private final IBinder binder = new ReminderServiceBinder();
 
     // intent broadcast receiver
     private ReminderServiceBroadcastReceiver reminderServiceReceiver = 
                                                                 new ReminderServiceBroadcastReceiver(this);
     private IntentFilter reminderServiceBroadcastFilter = 
                                 new IntentFilter(ReminderServiceBroadcastReceiver.ACTION_SCHEDULE_REMINDER);
+
+    private DatabaseHelper databaseHelper = null;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -54,11 +52,12 @@ public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(reminderServiceReceiver);
+        closeDatabaseConnection();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return binder;
+        return null;
     }
     
     private void refreshReminders() {
@@ -109,7 +108,7 @@ public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
                 intent, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        manager.set(AlarmManager.RTC_WAKEUP, /*cal.getTimeInMillis()*/Calendar.getInstance().getTimeInMillis() + 10000, sender);
+        manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis()/*Calendar.getInstance().getTimeInMillis() + 10000*/, sender);
         
         Log.i(tag, "Reminder scheduled: " + reminder.getTitle() + " @ " + cal.getTime().toString());
     }
@@ -153,13 +152,18 @@ public class ReminderService extends OrmLiteBaseService<DatabaseHelper> {
             e.printStackTrace();
         }
     }
-
-    /**
-     * this class will allow us to connect activities with the running instance of this service
-     */
-    public class ReminderServiceBinder extends Binder {
-        public ReminderService getService() {
-            return ReminderService.this;
+    
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+    
+    private void closeDatabaseConnection() {
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
         }
     }
 }
