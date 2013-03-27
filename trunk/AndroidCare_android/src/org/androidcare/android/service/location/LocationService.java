@@ -15,8 +15,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
-public class LocationService extends Service implements LocationListener {
+public class LocationService extends Service {
     private final String tag = this.getClass().getName();
 
     /* Location parameters */
@@ -41,11 +42,28 @@ public class LocationService extends Service implements LocationListener {
 
     };
     
+    private LocationListener locationListener = new LocationListener(){
+        public void onLocationChanged(Location location) {
+            if(mBound){
+                connectionService.pushLowPriorityMessage(new LocationMessage(location));
+            }else{
+                bindConnectionService();
+            }
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        public void onProviderEnabled(String provider) {}
+
+        public void onProviderDisabled(String provider) {}
+    };
+    
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
         Log.i(tag, "Location service started");
 
+        bindConnectionService();
         // setting the criteria
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
@@ -61,9 +79,8 @@ public class LocationService extends Service implements LocationListener {
         String bestProvider = locationManager.getBestProvider(criteria, true);
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(bestProvider, this.minSeconds,
-                this.minDistance, this);
+                this.minDistance, locationListener);
         
-        bindConnectionService();
         return result;
     }
 
@@ -76,28 +93,11 @@ public class LocationService extends Service implements LocationListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        locationManager.removeUpdates(this);
+        locationManager.removeUpdates(locationListener);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    public void onLocationChanged(Location location) {
-        if(mBound){
-            connectionService.pushLowPriorityMessage(new LocationMessage(location));
-        }else{
-            bindConnectionService();
-        }
-    }
-
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public void onProviderEnabled(String provider) {
-    }
-
-    public void onProviderDisabled(String provider) {
     }
 }
