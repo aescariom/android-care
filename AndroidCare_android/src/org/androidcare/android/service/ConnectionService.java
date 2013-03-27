@@ -66,7 +66,7 @@ public class ConnectionService extends Service {
                                                             new ConnectionServiceBroadcastReceiver(this);
     private IntentFilter filter = new IntentFilter(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
 
-    private long timeLapse = 180000;//300000; // 5 min in milliseconds
+    private long timeLapse = 300000; // 5 min in milliseconds
 
     // Binder given to clients
     private final IBinder mBinder = new ConnectionServiceBinder();
