@@ -81,8 +81,8 @@ public class ReminderLogTable extends ObservableForm {
 
 	public void getLogs() {
 
-		final Reminder alert = this.reminder;
-		reminderService.ReminderLogCount(alert,
+		final Reminder reminder = this.reminder;
+		reminderService.ReminderLogCount(reminder,
 				new AsyncCallback<Integer>() {
 					public void onFailure(Throwable caught) {
 						Window.alert(LocalizedConstants.serverError());
@@ -101,18 +101,16 @@ public class ReminderLogTable extends ObservableForm {
 		      protected void onRangeChanged(HasData<ReminderLog> display) {
 		        final int start = display.getVisibleRange().getStart();
 		        int length = display.getVisibleRange().getLength();
-		        AsyncCallback<List<ReminderLog>> callback = new AsyncCallback<List<ReminderLog>>() {
-		          @Override
-		          public void onFailure(Throwable caught) {
-		            Window.alert(caught.getMessage());
-		          }
-		          @Override
-		          public void onSuccess(List<ReminderLog> result) {
-		            updateRowData(start, result);
-		          }
-		        };
-		        // The remote service that should be implemented
-		        reminderService.fetchReminderLogPage(alert, start, length, callback);
+		        reminderService.fetchReminderLogPage(reminder, start, length, new AsyncCallback<List<ReminderLog>>() {
+			          @Override
+			          public void onFailure(Throwable caught) {
+			            Window.alert(caught.getMessage());
+			          }
+			          @Override
+			          public void onSuccess(List<ReminderLog> result) {
+			            updateRowData(start, result);
+			          }
+			        });
 		      }
 		    };
 		    

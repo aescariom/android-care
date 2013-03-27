@@ -70,6 +70,28 @@ public class Reminder implements Serializable{
 	@Persistent
 	private String blobKey;
 
+
+	public Reminder() {}
+	
+	public Reminder(Reminder r) {
+		this.id = r.getId();
+		this.title = r.getTitle();
+		this.description = r.getDescription();
+		this.repeat = r.isRepeat();
+		this.activeFrom = new Date(r.getActiveFrom().getTime());
+		if(this.activeUntil != null){ 
+			this.activeUntil = new Date(r.getActiveUntil().getTime());
+		}
+		this.numerOfRepetitions = r.getNumerOfRepetitions();
+		this.endType = r.getEndType();
+		this.repeatPeriod = r.getRepeatPeriod();
+		this.daysOfWeekInWhichShouldTrigger = r.getDaysOfWeekInWhichShouldTrigger();
+		this.repeatEachXPeriods = r.getRepeatEachXPeriods();
+		this.requestConfirmation = r.isRequestConfirmation();
+		this.owner = r.getOwner();
+		this.blobKey = r.getBlobKey();
+	}
+
 	public Long getId() {
 		return id;
 	}
