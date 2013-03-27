@@ -58,9 +58,8 @@ public class RetrieveReminders extends HttpServlet {
 				reminders = (List<Reminder>) query.execute(user.getUserId());
 			}
 	
-			for(Reminder reminder : reminders) {   
-				reminder.cleanForAPI();
-				list.add(new JSONObject(reminder));  
+			for(Reminder reminder : reminders){
+				list.add(new JSONObject(new Reminder(reminder)));  
 			}  
 		}else{
 		  //@ comentario ¿no se gestiona como del resto de los casos?

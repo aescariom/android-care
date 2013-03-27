@@ -12,11 +12,12 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 public class ReminderPhoto extends HttpServlet {
         
-        private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+	private static final long serialVersionUID = -1036350173054180307L;
+	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
-        public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-                BlobKey blobKey = new BlobKey(req.getParameter("id"));
-                blobstoreService.serve(blobKey, res);
-        }
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+            BlobKey blobKey = new BlobKey(req.getParameter("id"));
+            blobstoreService.serve(blobKey, res);
+    }
         
 }

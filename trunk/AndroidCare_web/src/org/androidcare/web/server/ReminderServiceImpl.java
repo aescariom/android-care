@@ -27,13 +27,10 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 	public Reminder saveReminder(Reminder reminder) {
 		if(reminder.getId() > 0){
 			reminder = editReminder(reminder);
-			reminder.cleanForAPI();
-			return reminder;
 		}else{
 			reminder = saveNewReminder(reminder);
-			reminder.cleanForAPI();
-			return reminder;
 		}
+		return new Reminder(reminder);
 	}
 
 	private Reminder editReminder(Reminder reminder) {
@@ -124,14 +121,14 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		Query query = pm.newQuery(Reminder.class);
 	    query.setFilter("owner == reminderOwner");
 	    query.declareParameters("String reminderOwner");
-	    //query.setRange(0, 1000);
 	    query.setOrdering("title asc");
 
 	    try {
 	        List<Reminder> rs = (List<Reminder>) query.execute(user.getUserId());
 	        if(rs != null){
-		        for (Reminder a : rs) {
-		            list.add(a);
+		        for (Reminder r : rs) {
+		        	Reminder rem = new Reminder(r);
+		            list.add(rem);
 		        }
 	        }
 	    } catch(Exception ex){
@@ -179,7 +176,7 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			List<ReminderLog> rs = a.getLog();	
 		    if(rs != null){
 				for (ReminderLog log : rs) {
-		            list.add(log);
+		            list.add(new ReminderLog(log));
 		        }
 	        }
 		} catch(Exception ex){
@@ -203,7 +200,7 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		    		int end = start + length;
 		    		end = Math.min(end, rs.size());
 		    		for(int i = start; i < end; i++){
-		    			list.add(rs.get(i));
+		    			list.add(new ReminderLog(rs.get(i)));
 		    		}
 		    	}
 	        }
