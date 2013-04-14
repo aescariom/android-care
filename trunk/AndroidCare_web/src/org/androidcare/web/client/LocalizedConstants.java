@@ -5,6 +5,14 @@ import com.google.gwt.i18n.client.Constants;
 public interface LocalizedConstants extends Constants {
 	
 	/**
+	 * Tabs
+	 */
+	@DefaultStringValue("Reminders")
+	String reminders();
+	@DefaultStringValue("Map")
+	String map();
+	
+	/**
 	 * Buttons
 	 */
 	@DefaultStringValue("New")
@@ -21,13 +29,7 @@ public interface LocalizedConstants extends Constants {
 	String log();
 	@DefaultStringValue("Delete")
 	String delete();
-	
-	/**
-	 * Warnings
-	 */
-	@DefaultStringValue("You are about to delete the alert titled \"%s\". This action can not be undone. Do you want to delete it anyway?")
-	String aboutToDeleteReminderWarning();
-	
+		
 	/**
 	 * Labels
 	 */
@@ -66,7 +68,7 @@ public interface LocalizedConstants extends Constants {
 
 	@DefaultStringValue("Starts on")
 	String since();
-	@DefaultStringValue("Date and Time")
+	@DefaultStringValue("Date and time")
 	String dateTime();
 	@DefaultStringValue("Ends")
 	String until();
@@ -111,7 +113,7 @@ public interface LocalizedConstants extends Constants {
 
 	@DefaultStringValue("+ Show advanced form")
 	String toggleToAdvanced();
-	@DefaultStringValue("+ Show basic form")
+	@DefaultStringValue("- Show basic form")
 	String toggleToBasic();
 	
 	/**
