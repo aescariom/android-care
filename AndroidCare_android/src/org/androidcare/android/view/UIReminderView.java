@@ -22,25 +22,31 @@ import android.widget.RelativeLayout;
 public abstract class UIReminderView extends RelativeLayout {
 
     protected Reminder reminder;
+    protected long sleepSoundTime = 5000;
+    protected long sleepVibrationTime = 5000;
+    protected PlaySoundTask playSoundTask;
+    protected VibrationTask vibrationTask;
 
     public UIReminderView(ReminderDialogReceiver context, Reminder reminder) {
         super(context);
         this.reminder = reminder;
+        playSoundTask = new PlaySoundTask();
+        vibrationTask = new VibrationTask();
     }
 
     public void performed() {
-        reschedule(reminder);
+        //reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DONE));
     }
 
     public void notPerformed() {
-        reschedule(reminder);
+        //reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_IGNORED));
     }
 
     public void delayed(int ms) {
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DELAYED));
-        reschedule(reminder, ms);
+        //reschedule(reminder, ms);
     }
 
     public void displayed() {
@@ -48,6 +54,9 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     public void finish() {
+        playSoundTask.cancel(true);
+        vibrationTask.cancel(true);
+        
         Activity parent = (Activity) getContext();
         parent.finish();
     }
@@ -75,11 +84,11 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     protected void playSound(Uri soundUri) {        
-        new PlaySoundTask().execute(soundUri);
+        playSoundTask.execute(soundUri);
     }
     
     protected void vibrate(int length){
-        new VibrationTask().execute(length);
+        vibrationTask.execute(length);
     }
     
     private class PlaySoundTask extends AsyncTask<Uri, Void, Void> {
@@ -98,7 +107,13 @@ public abstract class UIReminderView extends RelativeLayout {
                     mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
                     mMediaPlayer.setLooping(false);
                     mMediaPlayer.prepare();
-                    mMediaPlayer.start();
+                    while(true){
+                        mMediaPlayer.start();
+                        Thread.sleep(sleepSoundTime);
+                        if(sleepSoundTime < 120000){
+                            sleepSoundTime += 5000;
+                        }
+                    }
                 }
             }
             catch (Exception e) { // we must catch the exception
@@ -118,7 +133,18 @@ public abstract class UIReminderView extends RelativeLayout {
             Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
              
             // Vibrate for 'length' milliseconds
-            v.vibrate(params[0]);
+            try {
+                while(true){
+                    v.vibrate(params[0]);
+                    Thread.sleep(sleepVibrationTime);
+                    if(sleepVibrationTime < 120000){
+                        sleepVibrationTime += 5000;
+                    }
+                }
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
             return null;
         }
     }

@@ -72,6 +72,7 @@ public class ConnectionService extends Service {
     private final IBinder mBinder = new ConnectionServiceBinder();
     
     private boolean isMock = false;
+    private boolean loggingIn = false;
 
     private DatabaseHelper databaseHelper = null;
 
@@ -121,12 +122,15 @@ public class ConnectionService extends Service {
 
     private boolean isSessionCookieValid() {
         if (!isMock && (authCookie == null || authCookie.getExpiryDate().compareTo(new Date()) <= 0)) {
-            try {
-                getOauthCookie();
-            }
-            catch (ConnectionServiceException e) {
-                triggerAccountSelectorNotification();
-                Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
+            if(!loggingIn){
+                loggingIn = true;
+                try {
+                    getOauthCookie();
+                }
+                catch (ConnectionServiceException e) {
+                    triggerAccountSelectorNotification();
+                    Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
+                }
             }
             // this is always false, because we need to get the authCookie before we can send more messages
             return false;  
@@ -271,6 +275,7 @@ public class ConnectionService extends Service {
                 Intent intent = (Intent) bundle.get(AccountManager.KEY_INTENT);
                 if (intent != null) { // user input required
                     startActivity(intent);
+                    loggingIn = false;
                 } else {
                     new GetCookieTask().execute(bundle);
                 }
@@ -322,6 +327,7 @@ public class ConnectionService extends Service {
                 break;
             }
         }
+        loggingIn = false;
     }
     
     private class GetCookieTask extends AsyncTask<Bundle, Void, Boolean> {
