@@ -96,6 +96,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public int create(Message message) throws SQLException {
         if(message.getClass() == GetRemindersMessage.class){
+            // only one message of this type should exists
+            TableUtils.clearTable(connectionSource, GetRemindersMessage.class);
             return getGetRemindersMessageDao().create((GetRemindersMessage)message);
         }else if(message.getClass() == LocationMessage.class){
             return getLocationMessageDao().create((LocationMessage)message);

@@ -98,7 +98,7 @@ public class ReminderService extends Service {
             return;
         }
         cal.setTime(date);
-        
+
         scheduleTo(reminder, cal);
     }
     

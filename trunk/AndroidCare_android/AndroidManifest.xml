@@ -38,7 +38,7 @@
         </activity>
         
         <!-- reminder notification receiver -->
-        <receiver android:process=":remote" android:name=".view.ReminderReceiver">
+        <receiver android:name=".view.ReminderReceiver">
         </receiver>
         <!-- get reminders receiver -->
         <receiver android:name=".service.reminders.RefreshRemindersReceiver">
