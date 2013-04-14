@@ -34,10 +34,10 @@ public class PositionServiceImpl extends RemoteServiceServlet implements
 	    query.setOrdering("date descending");
 
 	    try {
-	        List<Position> rs = (List<Position>) query.execute(user.getUserId());
+	        List<?> rs = (List<?>) query.execute(user.getUserId());
 	        if(rs != null){
-		        for (Position p : rs) {
-		            list.add(p);
+		        for (Object p : rs) {
+		            list.add((Position)p);
 		        }
 	        }
 	    } catch(Exception ex){

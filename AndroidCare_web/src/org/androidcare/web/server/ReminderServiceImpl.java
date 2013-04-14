@@ -124,10 +124,10 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 	    query.setOrdering("title asc");
 
 	    try {
-	        List<Reminder> rs = (List<Reminder>) query.execute(user.getUserId());
+	        List<?> rs = (List<?>) query.execute(user.getUserId());
 	        if(rs != null){
-		        for (Reminder r : rs) {
-		        	Reminder rem = new Reminder(r);
+		        for (Object r : rs) {
+		        	Reminder rem = new Reminder((Reminder)r);
 		            list.add(rem);
 		        }
 	        }

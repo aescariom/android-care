@@ -38,13 +38,13 @@ public class RetrieveReminders extends HttpServlet {
 			     
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser(); 
-		ArrayList<JSONObject> list = new ArrayList<JSONObject>();
+		List<JSONObject> list = null;
 		if(user != null){
 
 			Query query = pm.newQuery(Reminder.class);
 			query.setOrdering("id asc");
-			List<Reminder> reminders = new ArrayList<Reminder>();
 			if(req.getParameter("reminderId") != null){
+				List<Reminder> reminders = new ArrayList<Reminder>();
 				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString());
 				Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminderId);
 				if(r != null){
@@ -52,18 +52,14 @@ public class RetrieveReminders extends HttpServlet {
 						reminders.add(r);
 					}
 				}
+				list = getReminderList(reminders);
 			}else{
 				query.setFilter("owner == reminderOwner");
 				query.declareParameters("String reminderOwner");
-				reminders = (List<Reminder>) query.execute(user.getUserId());
-			}
-	
-			for(Reminder reminder : reminders){
-				list.add(new JSONObject(new Reminder(reminder)));  
+				list = getReminderList((List<?>) query.execute(user.getUserId()));
 			}  
 		}else{
-		  //@ comentario ¿no se gestiona como del resto de los casos?
-			//TODO: user not logged in
+			resp.getWriter().write("{\"status\": -2}");
 		}
 		//Create a JSONArray based from the list of JSONObejcts  
 		jsonArray = new JSONArray(list);   
@@ -76,7 +72,6 @@ public class RetrieveReminders extends HttpServlet {
 		try {
 			process(req, resp);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 	}  
@@ -86,8 +81,15 @@ public class RetrieveReminders extends HttpServlet {
 	    try {
 			process(req, resp);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 	}  
+	
+	public List<JSONObject> getReminderList(List<?> reminders){		
+		ArrayList<JSONObject> list = new ArrayList<JSONObject>();
+		for(Object reminder : reminders){
+			list.add(new JSONObject(new Reminder((Reminder)reminder)));  
+		}
+		return list;
+	}
 }

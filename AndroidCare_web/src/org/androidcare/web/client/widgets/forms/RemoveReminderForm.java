@@ -2,10 +2,10 @@ package org.androidcare.web.client.widgets.forms;
 
 import org.androidcare.web.client.DialogBoxClose;
 import org.androidcare.web.client.LocalizedConstants;
+import org.androidcare.web.client.LocalizedMessages;
 import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.client.rpc.ReminderService;
 import org.androidcare.web.client.rpc.ReminderServiceAsync;
-import org.androidcare.web.shared.Strings;
 import org.androidcare.web.shared.persistent.Reminder;
 
 import com.google.gwt.core.client.GWT;
@@ -21,10 +21,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class RemoveReminderForm extends ObservableForm {
 
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
+	private LocalizedMessages LocalizedMessages = GWT.create(LocalizedMessages.class);
 
     Button btnProceed = new Button(LocalizedConstants.proceed());
     Button btnCancel = new Button(LocalizedConstants.cancel());
-    Label lblWarn = new Label(LocalizedConstants.aboutToDeleteReminderWarning());
+    Label lblWarn = new Label();
 
     VerticalPanel generalPanel = new VerticalPanel();
     HorizontalPanel buttonPanel = new HorizontalPanel();
@@ -59,7 +60,7 @@ public class RemoveReminderForm extends ObservableForm {
         buttonPanel.add(btnCancel);
         buttonPanel.add(btnProceed);
         
-        lblWarn.setText(Strings.format(LocalizedConstants.aboutToDeleteReminderWarning(), reminder.getTitle()));
+        lblWarn.setText(LocalizedMessages.aboutToDeleteReminderWarning(reminder.getTitle()));
         
         generalPanel.add(lblWarn);
         generalPanel.add(buttonPanel);
@@ -67,8 +68,6 @@ public class RemoveReminderForm extends ObservableForm {
     }
 
 	protected void delete(Reminder reminder) {
-
-		// Then, we send the input to the server.
 		btnProceed.setEnabled(false);
 		btnCancel.setEnabled(false);
 		alertService.deleteReminder(reminder,

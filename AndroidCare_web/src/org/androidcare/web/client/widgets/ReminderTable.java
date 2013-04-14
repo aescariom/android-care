@@ -31,8 +31,8 @@ public class ReminderTable extends FlexTable implements Observer {
 	public ReminderTable(){
 		super();
 		
-		this.setText(0, 0, "Title");
-		this.setText(0, 1, "Description");
+		this.setText(0, 0, LocalizedConstants.title());
+		this.setText(0, 1, LocalizedConstants.description());
 		
 		getReminders();
 	}
@@ -83,7 +83,7 @@ public class ReminderTable extends FlexTable implements Observer {
 	      });
 		this.setWidget(row, 4, btnEdit);
 		
-		Button btnRemove = new Button("Delete");
+		Button btnRemove = new Button(LocalizedConstants.delete());
 		btnRemove.addClickHandler(new ClickHandler() {
 	        public void onClick(ClickEvent event) {
 	            int removeIndex = reminders.indexOf(reminder);

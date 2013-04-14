@@ -21,6 +21,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -72,6 +73,7 @@ public class ReminderForm extends ObservableForm{
 
     private Label lblUpload = new Label(LocalizedConstants.photo());
     private FileUpload fupPhoto = new FileUpload();
+    private Image imgLoading = new Image("./images/loading.gif");
     private Button btnDeletePhoto = new Button(LocalizedConstants.delete());
     private Panel pnlPhoto = new HorizontalPanel();
     private Image imgPhoto = new Image();
@@ -129,13 +131,14 @@ public class ReminderForm extends ObservableForm{
     	
     	this.addSubmitHandler(new SubmitHandler() {
             public void onSubmit(SubmitEvent event) {
-            	//TODO: indicar que se est‡ subiendo la imagen
+            	ReminderForm.this.imgLoading.setVisible(true);
             }
     	});
     	
     	this.addSubmitCompleteHandler(new SubmitCompleteHandler() {
             public void onSubmitComplete(SubmitCompleteEvent event) {
             	closeForm();
+            	ReminderForm.this.imgLoading.setVisible(false);
             }
     	});
         
@@ -335,6 +338,8 @@ public class ReminderForm extends ObservableForm{
         grid.setWidget(UPLOAD_ROW, 0, lblUpload);
         fupPhoto.setName("photo");
         pnlPhoto.add(fupPhoto);
+        pnlPhoto.add(imgLoading);
+        imgLoading.setVisible(false);
         imgPhoto.setHeight("50px");
         pnlPhoto.add(imgPhoto);
         btnDeletePhoto.addClickHandler(new ClickHandler(){
@@ -366,8 +371,8 @@ public class ReminderForm extends ObservableForm{
         grid.setWidget(SEND_ROW, 0, submit);
         
         //basic-advanced
-
-		lblBasicAdvanced.addClickHandler(new ClickHandler(){
+        Anchor basicAdvancedAnchor = new Anchor();
+        basicAdvancedAnchor.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(final ClickEvent event) {
@@ -375,6 +380,8 @@ public class ReminderForm extends ObservableForm{
 			}
 			
 		});
+        this.add(basicAdvancedAnchor);
+        
 		this.basicMode = false;
 		toggleBasicAdvanced();
 		lblBasicAdvanced.setStyleName("hyperlink_style_label");
