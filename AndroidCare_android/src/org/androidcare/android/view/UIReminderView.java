@@ -35,18 +35,18 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     public void performed() {
-        //reschedule(reminder);
+        reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DONE));
     }
 
     public void notPerformed() {
-        //reschedule(reminder);
+        reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_IGNORED));
     }
 
     public void delayed(int ms) {
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DELAYED));
-        //reschedule(reminder, ms);
+        reschedule(reminder, ms);
     }
 
     public void displayed() {

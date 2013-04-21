@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,8 +65,11 @@ public class Reminder implements Serializable {
     private boolean requestConfirmation;
 
     // default date time format
-    private final static DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy",
-            Locale.ENGLISH);
+    private final static DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy",
+                                                                      Locale.UK);
+   // android 2.3.3 and below 
+   private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
+                                                                      Locale.UK);
 
     public Reminder() { /* Needed by ormlite */ }
 
@@ -74,7 +78,7 @@ public class Reminder implements Serializable {
         // Mandatory fields
         id = Integer.parseInt(jsonObj.getString("id"));
         title = jsonObj.getString("title");
-        setActiveFrom(dateFormat.parse(jsonObj.getString("activeFrom")));
+        setActiveFrom(parseDate(jsonObj.getString("activeFrom")));
         repeat = jsonObj.getBoolean("repeat");
         requestConfirmation = jsonObj.getBoolean("requestConfirmation");
 
@@ -98,7 +102,7 @@ public class Reminder implements Serializable {
             if (endType == Reminder.END_TYPE_ITERATIONS) {
                 numerOfRepetitions = jsonObj.getInt("numerOfRepetitions");
             } else if (endType == Reminder.END_TYPE_UNTIL_DATE) {
-                setUntilDate(dateFormat.parse(jsonObj.getString("activeUntil")));
+                setUntilDate(parseDate(jsonObj.getString("activeUntil")));
             } else {
                 // if is not one of the above values, it must be the following one
                 endType = Reminder.END_TYPE_NEVER_ENDS;
@@ -108,6 +112,15 @@ public class Reminder implements Serializable {
                 daysOfWeekInWhichShouldTrigger = new DaysOfWeekInWhichShouldTrigger(
                         jsonObj.getJSONArray("daysOfWeekInWhichShouldTrigger"));
             }
+        }
+    }
+
+    private Date parseDate(String str) throws ParseException {
+        try{
+            return dateFormat.parse(str);
+        }catch(ParseException ex){
+            dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return dateFormatUTC.parse(str);
         }
     }
 
