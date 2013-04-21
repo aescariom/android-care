@@ -282,6 +282,7 @@ public class ConnectionService extends Service {
             }
             catch (Exception e) {
                 Log.e(tag, "Error when getting the Oauth cookie: " + e.getMessage(), e);
+                loggingIn = false;
             }
         }
     }
@@ -294,6 +295,7 @@ public class ConnectionService extends Service {
             IOException {
         authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
         if (authToken.isEmpty()) {
+            loggingIn = false;
             throw new ConnectionServiceException("AuthToken could not be fetched");
         }
 
@@ -310,6 +312,7 @@ public class ConnectionService extends Service {
         response = client.execute(httpGet);
         // the response should be a redirect
         if (response.getStatusLine().getStatusCode() != 302) {
+            loggingIn = false;
             throw new ConnectionServiceException("Response was not a redirection");
         }
 
@@ -323,6 +326,7 @@ public class ConnectionService extends Service {
             if (cookie.getName().equals("ACSID")) {
                 Log.i(tag, "We are now logged in");
                 authCookie = cookie;
+                loggingIn = false;
                 processMessageQueue();
                 break;
             }
