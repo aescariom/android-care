@@ -371,16 +371,13 @@ public class ReminderForm extends ObservableForm{
         grid.setWidget(SEND_ROW, 0, submit);
         
         //basic-advanced
-        Anchor basicAdvancedAnchor = new Anchor();
-        basicAdvancedAnchor.addClickHandler(new ClickHandler(){
+        this.lblBasicAdvanced.addClickHandler(new ClickHandler() {
 
-			@Override
-			public void onClick(final ClickEvent event) {
-				toggleBasicAdvanced();
-			}
-			
-		});
-        this.add(basicAdvancedAnchor);
+            @Override
+            public void onClick(ClickEvent event) {
+            	toggleBasicAdvanced();
+            }
+        });
         
 		this.basicMode = false;
 		toggleBasicAdvanced();
