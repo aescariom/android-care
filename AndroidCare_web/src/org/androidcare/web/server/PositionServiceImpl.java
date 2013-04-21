@@ -37,7 +37,7 @@ public class PositionServiceImpl extends RemoteServiceServlet implements
 	        List<?> rs = (List<?>) query.execute(user.getUserId());
 	        if(rs != null){
 		        for (Object p : rs) {
-		            list.add((Position)p);
+		            list.add(new Position((Position)p));
 		        }
 	        }
 	    } catch(Exception ex){
