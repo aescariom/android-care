@@ -98,6 +98,7 @@ public class ConnectionService extends Service {
                 if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                     NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
                     if (info.isAvailable()) {
+                        removeConnectionErrorNotification();
                         processMessageQueue();
                         Log.i(tag, "Connection is back!");
                     }
@@ -204,6 +205,15 @@ public class ConnectionService extends Service {
 
         displayNotification(tickerText, contentTitle, contentText,
                 ConnectionService.NOTIFICATION_NO_CONNECTION, Settings.ACTION_WIFI_SETTINGS);
+    }
+
+    protected void removeConnectionErrorNotification() {
+        cancelNotification(ConnectionService.NOTIFICATION_NO_CONNECTION);
+    }
+    
+    protected void cancelNotification(int notifyId) {
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(notifyId);
     }
 
     protected void displayNotification(CharSequence tickerText, CharSequence contentTitle,
@@ -354,11 +364,11 @@ public class ConnectionService extends Service {
         @Override
         protected Boolean doInBackground(Void... params) {
             try{
-                if (!isSessionCookieValid()) {
-                    return false;
-                }
                 if (!isConnectionAvailable()) {
                     triggerConnectionErrorNotification();
+                    return false;
+                }
+                if (!isSessionCookieValid()) {
                     return false;
                 }
                 List<Message> messages = getHelper().getMessages();
