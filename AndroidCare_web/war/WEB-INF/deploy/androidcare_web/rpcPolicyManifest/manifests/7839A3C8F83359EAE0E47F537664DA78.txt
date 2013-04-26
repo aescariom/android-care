@@ -1,0 +1,2 @@
+serviceClass: org.androidcare.web.client.rpc.UploadReminderPhotoService
+path: E792AF54E15EBAA8BC5E5EFA1BA37C92.gwt.rpc
