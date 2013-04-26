@@ -1,2 +1,0 @@
-serviceClass: org.androidcare.web.client.PositionService
-path: B760645C542E6DAEC8FBABD3D48D0215.gwt.rpc
