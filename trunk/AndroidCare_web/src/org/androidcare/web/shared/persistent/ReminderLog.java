@@ -10,6 +10,8 @@ import javax.jdo.annotations.PrimaryKey;
 
 import org.androidcare.web.shared.*;
 
+import com.google.appengine.api.datastore.Key;
+
 @PersistenceCapable
 public class ReminderLog implements Serializable {
 
@@ -17,7 +19,7 @@ public class ReminderLog implements Serializable {
 
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private transient Long id;
+    private transient Key key;
 	
 	@Persistent
 	private Reminder reminder;

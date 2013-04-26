@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
@@ -48,7 +49,7 @@ public class AddReminderLog extends HttpServlet {
 				}
 				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString()); 
 				int statusCode = Integer.parseInt(req.getParameter("statusCode").toString()); 
-				SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+				SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
 				Date date = new Date();
 				if(req.getParameter("time") != null){
 					date = format.parse(req.getParameter("time").toString());
