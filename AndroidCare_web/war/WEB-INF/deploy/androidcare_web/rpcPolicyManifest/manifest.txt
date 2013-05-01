@@ -1,5 +1,2 @@
 # Module androidcare_web
 # RPC service class, partial path of RPC policy file
-org.androidcare.web.client.rpc.PositionService, A4DC7807DD8A2132B493FE0635F48DDA.gwt.rpc
-org.androidcare.web.client.rpc.UploadReminderPhotoService, E792AF54E15EBAA8BC5E5EFA1BA37C92.gwt.rpc
-org.androidcare.web.client.rpc.ReminderService, D16C1A8B8472200F75610F45C62FA9DB.gwt.rpc

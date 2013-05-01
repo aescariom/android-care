@@ -6,7 +6,7 @@
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/json.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/adapter4appengine-1.0M2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-maps.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/v2"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/gwt-2.5.0"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/appengine-java-sdk-1.7.5/v2"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

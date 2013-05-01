@@ -39,16 +39,28 @@ public class Position implements Serializable {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.owner = owner;
-		this.date = new Date(date.getTime());
-		//this.serverDate = new Date();
+		if(date != null){
+			this.date = new Date(date.getTime());
+		}else{
+			this.date = new Date();
+		}
+		this.serverDate = new Date();
 	}
 	
 	public Position(Position p){
 		this.latitude = p.getLatitude();
 		this.longitude = p.getLongitude();
 		this.owner = p.getOwner();
-		this.date = new Date(p.getDate().getTime());
-		this.serverDate = new Date(p.getServerDate().getTime());
+		if(p.getDate() != null){
+			this.date = new Date(p.getDate().getTime());
+		}else{
+			this.date = new Date();
+		}
+		if(p.getServerDate() != null){
+			this.serverDate = new Date(p.getServerDate().getTime());
+		}else{
+			this.serverDate = new Date();
+		}
 	}
 	
 	private String getOwner() {
