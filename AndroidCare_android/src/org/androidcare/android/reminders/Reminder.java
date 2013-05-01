@@ -87,13 +87,13 @@ public class Reminder implements Serializable {
             this.setDescription(jsonObj.getString("description"));
         }
         catch (JSONException e) {
-            Log.w("Parsing alert", "No description found");
+            Log.w("Parsing reminder", "No description found");
         }
         try {
             this.setBlobKey(jsonObj.getString("blobKey"));
         }
         catch (JSONException e) {
-            Log.w("Parsing alert", "No image found");
+            Log.w("Parsing reminder", "No image found");
         }
 
         if (repeat) {

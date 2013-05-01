@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -21,7 +22,7 @@ public abstract class Message implements Serializable, Comparable<Message> {
     protected Date creationDate;
 
 
-    protected static final SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+    protected static final SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
     
     public Message() {
         creationDate = new Date();
