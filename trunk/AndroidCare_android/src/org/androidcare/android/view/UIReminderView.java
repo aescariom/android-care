@@ -45,8 +45,8 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     public void delayed(int ms) {
-        postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DELAYED));
         reschedule(reminder, ms);
+        postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DELAYED));
     }
 
     public void displayed() {

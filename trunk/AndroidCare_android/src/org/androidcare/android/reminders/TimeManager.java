@@ -6,7 +6,7 @@ import java.util.Date;
 abstract class TimeManager {
 
     /**
-     * returns the next date in which the alert should be triggered
+     * returns the next date in which the reminder should be triggered
      * 
      * @param timeScheduleRequested
      *            when it was triggered for the last time
@@ -51,7 +51,7 @@ abstract class TimeManager {
     }
 
     private static Date getNextTimeLapseByDate(Reminder reminder, Date timeScheduleRequested) {
-        // 1 - is this alert still active? or, on the other hand, the end date is in the past
+        // 1 - is this reminder still active? or, on the other hand, the end date is in the past
         if (timeScheduleRequested.after(reminder.getActiveUntil())) {
             return null;
         }
@@ -175,7 +175,7 @@ abstract class TimeManager {
     }
 
     /**
-     * Having a reference time, this method will return the next time the alert should be triggered based on
+     * Having a reference time, this method will return the next time the reminder should be triggered based on
      * the number of weeks or days of the week between alarms
      * 
      * @param timeScheduleRequested
@@ -270,7 +270,7 @@ abstract class TimeManager {
     }
 
     /**
-     * Having a reference time, this method will return the next time the alert should be triggered based on
+     * Having a reference time, this method will return the next time the reminder should be triggered based on
      * the number of months or days of the week between alarms
      * 
      * @param timeScheduleRequested
@@ -323,7 +323,7 @@ abstract class TimeManager {
     }
 
     /**
-     * Having a reference time, this method will return the next time the alert should be triggered based on
+     * Having a reference time, this method will return the next time the reminder should be triggered based on
      * the number of months or days of the week between alarms
      * 
      * @param timeScheduleRequested
@@ -366,7 +366,7 @@ abstract class TimeManager {
     }
 
     /**
-     * number of times that the alert has been executed (in hours)
+     * number of times that the reminder has been executed (in hours)
      * 
      * @param timeScheduleRequested
      * @return
@@ -381,7 +381,7 @@ abstract class TimeManager {
     }
 
     /**
-     * number of times that the alert has been executed (in days)
+     * number of times that the reminder has been executed (in days)
      * 
      * @param timeScheduleRequested
      * @return
@@ -396,7 +396,7 @@ abstract class TimeManager {
     }
 
     /**
-     * number of times that the alert has been executed (in weeks)
+     * number of times that the reminder has been executed (in weeks)
      * 
      * @param timeScheduleRequested
      * @return
@@ -411,7 +411,7 @@ abstract class TimeManager {
     }
 
     /**
-     * number of times that the alert has been executed (in months)
+     * number of times that the reminder has been executed (in months)
      * 
      * @param timeScheduleRequested
      * @return
@@ -431,7 +431,7 @@ abstract class TimeManager {
     }
 
     /**
-     * number of times that the alert has been executed (in years)
+     * number of times that the reminder has been executed (in years)
      * 
      * @param timeScheduleRequested
      * @return
