@@ -8,11 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.PowerManager;
 
 public class PushMessagesReceiver extends BroadcastReceiver {
 
     private ConnectionService connectionService;
     boolean mBound = false;
+    
+    private static PowerManager.WakeLock wakeLock = null;
+    private static final String LOCK_TAG = "org.androidcare.android.service";
     
     private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -38,9 +42,27 @@ public class PushMessagesReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent arg1) {
+        acquireLock(context);
         context.getApplicationContext().bindService(
                            new Intent(context.getApplicationContext(), ConnectionService.class),
                            mConnection, Context.BIND_AUTO_CREATE);
+    }
+    
+
+    
+    public static synchronized void acquireLock(Context ctx){
+        if(wakeLock == null){
+            PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
+            wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
+            wakeLock.setReferenceCounted(true);
+        }
+        wakeLock.acquire();
+    }
+    
+    public static synchronized void releaseLock(){
+        if(wakeLock != null){
+            wakeLock.release();
+        }
     }
 
 

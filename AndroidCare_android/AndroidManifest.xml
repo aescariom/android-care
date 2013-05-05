@@ -14,6 +14,7 @@
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- permitir la localización por red y gps -->
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- permitir obtener el estado de la conexión de red -->
 	<uses-permission android:name="android.permission.VIBRATE"/> <!-- hacer que el teléfono vibre -->
+	<uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- evitar que la CPU se desactive -->
 		
     <application
         android:icon="@drawable/ic_launcher"
