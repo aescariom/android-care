@@ -14,12 +14,14 @@ import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.geom.Point;
 import com.google.gwt.maps.client.geom.Size;
 import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -37,8 +39,15 @@ public class UserLocationMap extends FlowPanel {
 	private Date date;
 	private int zoom = 14;
 	
+	protected Timer timer = new Timer() {
+        public void run() {
+        	getPositions();
+		    }
+		};
+		
+	protected int refreshTime = 5*60*1000; // 5 min
+	
 	public UserLocationMap(){
-		getPositions();
 	}
 
 	public void centerMap() {
@@ -65,11 +74,11 @@ public class UserLocationMap extends FlowPanel {
 		    center = LatLng.newInstance(40.416667, -3.70355);
 		}else{
 			int i = 0;
-			for(Position p : rs){
-				LatLng point = LatLng.newInstance(p.getLatitude(), p.getLongitude());
+			for(final Position p : rs){
+				final LatLng point = LatLng.newInstance(p.getLatitude(), p.getLongitude());
 			    // Add a marker
 				MarkerOptions markerOptions = MarkerOptions.newInstance();
-				Icon icon = Icon.newInstance("http://www.google.com/mapfiles/marker" + (char)(i+65) + ".png");
+				Icon icon = Icon.newInstance("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + (i+1) + "|FE6256|000000");
 				icon.setShadowURL("http://labs.google.com/ridefinder/images/mm_20_shadow.png");
 				icon.setIconSize(Size.newInstance(18, 30));
 				icon.setShadowSize(Size.newInstance(33, 30));
@@ -78,6 +87,19 @@ public class UserLocationMap extends FlowPanel {
 				markerOptions.setIcon(icon);
 				
 				Marker m = new Marker(point, markerOptions);
+				m.addMarkerClickHandler(new MarkerClickHandler(){
+
+					@Override
+					public void onClick(MarkerClickEvent event) {
+						mapWidget.getInfoWindow().open(point,
+						        new InfoWindowContent(
+				        		"Lat: " + point.getLatitude() + 
+				        		"<br/>Lng: " + point.getLongitude()+ 
+				        		((p.getDate() != null) ? "<br/>" + p.getDate().toString() : "")));
+					}
+					
+				});
+				
 			    mapWidget.addOverlay(m);
 			    i++;
 			}
@@ -87,15 +109,16 @@ public class UserLocationMap extends FlowPanel {
 		}
 
 	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-	        dock.addNorth(mapWidget, 500);
+	    dock.addNorth(mapWidget, 500);
 		mapWidget.checkResize();
 		
-	    this.add(dock);	    
+	    this.add(dock);	
+	    this.centerMap();
 	}
 	
-	private void getPositions(){
+	public void getPositions(){
 		// Then, we send the input to the server.
-		positionService.getLastPositions(26,
+		positionService.getLastPositions(30,
 			new AsyncCallback<List<Position>>() {
 				public void onFailure(Throwable caught) {
 					Window.alert(LocalizedConstants.serverError());
@@ -115,5 +138,13 @@ public class UserLocationMap extends FlowPanel {
 	        	mapSetup(rs);
 	        }
 	      });
+	}
+	
+	public void setAutorefresh(boolean value){
+		if(value){
+			timer.scheduleRepeating(refreshTime);
+		}else{
+			timer.cancel();
+		}
 	}
 }

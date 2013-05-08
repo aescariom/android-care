@@ -50,9 +50,10 @@ public class Dashboard implements EntryPoint, ClickHandler {
 			@Override
 			public void onSelection(SelectionEvent<Integer> event) {
 				if(event.getSelectedItem() == 1){
-					// when the map tab is shown...
-					// this will remove the gray areas of the map area
-					map.centerMap();
+					map.getPositions();
+					map.setAutorefresh(true);
+				}else{
+					map.setAutorefresh(false);
 				}
 			}
 	    	
