@@ -6,11 +6,13 @@ import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.client.rpc.ReminderService;
 import org.androidcare.web.client.rpc.ReminderServiceAsync;
+import org.androidcare.web.shared.ReminderStatusCode;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -58,7 +60,8 @@ public class ReminderLogTable extends ObservableForm {
 		TextColumn<ReminderLog> codeColumn = new TextColumn<ReminderLog>(){
 			@Override
 			public String getValue(ReminderLog a){
-				return a.getCode().toString();
+				LocaleInfo loc = com.google.gwt.i18n.client.LocaleInfo.getCurrentLocale();
+				return a.getCode().getDescription(loc.getLocaleName());
 			}
 		};
 		TextColumn<ReminderLog> serverTimeColumn = new TextColumn<ReminderLog>(){
