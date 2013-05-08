@@ -79,11 +79,16 @@ public class UserLocationMap extends FlowPanel {
 			    // Add a marker
 				MarkerOptions markerOptions = MarkerOptions.newInstance();
 				Icon icon = Icon.newInstance("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + (i+1) + "|FE6256|000000");
+				if(i == 0){
+					icon.setIconSize(Size.newInstance(27, 45));
+					icon.setShadowSize(Size.newInstance(49, 45));
+					icon.setIconAnchor(Point.newInstance(27, 45));
+				}else{
+					icon.setIconSize(Size.newInstance(18, 30));
+					icon.setShadowSize(Size.newInstance(33, 30));
+					icon.setIconAnchor(Point.newInstance(18, 30));
+				}
 				icon.setShadowURL("http://labs.google.com/ridefinder/images/mm_20_shadow.png");
-				icon.setIconSize(Size.newInstance(18, 30));
-				icon.setShadowSize(Size.newInstance(33, 30));
-				icon.setIconAnchor(Point.newInstance(12, 30));
-				icon.setInfoWindowAnchor(Point.newInstance(5, 1));
 				markerOptions.setIcon(icon);
 				
 				Marker m = new Marker(point, markerOptions);
