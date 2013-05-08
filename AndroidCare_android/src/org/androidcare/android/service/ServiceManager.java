@@ -8,7 +8,7 @@ import android.content.Intent;
 
 public abstract class ServiceManager {
 
-    public static void startAllServices(Context context){   
+    public static void startAllServices(Context context){  
         Intent i = new Intent(context, ConnectionService.class);
         context.startService(i);
 

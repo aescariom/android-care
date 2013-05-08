@@ -15,6 +15,7 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- permitir obtener el estado de la conexión de red -->
 	<uses-permission android:name="android.permission.VIBRATE"/> <!-- hacer que el teléfono vibre -->
 	<uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- evitar que la CPU se desactive -->
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 		
     <application
         android:icon="@drawable/ic_launcher"
@@ -53,7 +54,7 @@
         <service 	android:enabled="true" android:name=".service.ConnectionService" /> 
         
         <!--  start the service on boot -->
-        <receiver android:name=".service.StartServicesOnBootCompleteBroadcastReceiver">
+        <receiver android:name=".service.StartServicesOnBootCompleteBroadcastReceiver" android:enabled="true" android:exported="false">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<category android:name="android.intent.category.HOME" />

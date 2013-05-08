@@ -61,7 +61,11 @@ public class PushMessagesReceiver extends BroadcastReceiver {
     
     public static synchronized void releaseLock(){
         if(wakeLock != null){
-            wakeLock.release();
+            try{
+                wakeLock.release();
+            } catch (Throwable th) {
+                // ignoring this exception, probably wakeLock was already released
+            }
         }
     }
 
