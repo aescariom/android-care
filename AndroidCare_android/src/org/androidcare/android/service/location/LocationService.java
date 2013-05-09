@@ -15,15 +15,14 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 public class LocationService extends Service {
     private final String tag = this.getClass().getName();
 
     /* Location parameters */
     private LocationManager locationManager;
-    private int minSeconds = 300000; // 5 min
-    private int minDistance = 50; // 50 meters
+    private final int minSeconds = 5*60*1000; // 5 min
+    private final int minDistance = 100; // 100 meters
 
     private ConnectionService connectionService;
     boolean mBound = false;
@@ -61,7 +60,7 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
-        Log.i(tag, "Location service started");
+        Log.i(tag, "Location service started: " + this.hashCode());
 
         bindConnectionService();
         // setting the criteria

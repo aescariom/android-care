@@ -3,7 +3,6 @@ package org.androidcare.android.preferences;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.androidcare.android.R;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.reminders.Reminder;
 
