@@ -2,9 +2,13 @@ package org.androidcare.web.server.api;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import javax.jdo.Transaction;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,11 +34,18 @@ public class AddPosition extends HttpServlet {
 			     
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
+		
+		final Transaction txn = pm.currentTransaction();
+		
 		if(user != null){
 			try {
 				if(req.getParameter("longitude") == null || req.getParameter("latitude") == null){
 					return;
 				}
+
+				txn.begin();
+				
+				Position last = getLastPosition();
 				float longitude = Float.parseFloat(req.getParameter("longitude").toString()); 
 				float latitude = Float.parseFloat(req.getParameter("latitude").toString());
 				SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
@@ -44,9 +55,16 @@ public class AddPosition extends HttpServlet {
 				}
 				String owner = user.getUserId();
 				
-				Position p = new Position(latitude, longitude, owner, date);
+				if(last != null && last.getLatitude() == latitude && last.getLongitude() == longitude){
+					last.setDate(date);
+					last.setServerDate();
+				}else{
+					Position p = new Position(latitude, longitude, owner, date);
+					pm.makePersistent(p);
+				}
+				
+				txn.commit();
 
-	            pm.makePersistent(p);
 	            resp.getWriter().write("{\"status\": 0}");
 			} catch(Exception ex){
 	            resp.getWriter().write("{\"status\": -1}");	
@@ -59,6 +77,33 @@ public class AddPosition extends HttpServlet {
 		} 
 	}  
 			 
+	private Position getLastPosition() {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+
+		UserService userService = UserServiceFactory.getUserService();
+	    User user = userService.getCurrentUser();
+		
+		Query query = pm.newQuery(Position.class);
+	    query.setFilter("owner == reminderOwner");
+	    query.declareParameters("String reminderOwner");
+	    query.setRange(0, 1);
+	    query.setOrdering("date descending");
+
+	    try {
+	        List<?> rs = (List<?>) query.execute(user.getUserId());
+	        if(rs != null){
+		        for (Object p : rs) {
+		            return (Position)p;
+		        }
+	        }
+	    } catch(Exception ex){
+			ex.printStackTrace();
+	    }finally {
+	        query.closeAll();
+	    }
+	    return null;
+	}
+
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)  
 		throws IOException, ServletException {  
 		process(req, resp);  
