@@ -46,8 +46,8 @@ public class AddPosition extends HttpServlet {
 				txn.begin();
 				
 				Position last = getLastPosition();
-				float longitude = Float.parseFloat(req.getParameter("longitude").toString()); 
-				float latitude = Float.parseFloat(req.getParameter("latitude").toString());
+				float longitude = round(Float.parseFloat(req.getParameter("longitude").toString())); 
+				float latitude = round(Float.parseFloat(req.getParameter("latitude").toString()));
 				SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
 				Date date = new Date();
 				if(req.getParameter("time") != null){
@@ -67,6 +67,7 @@ public class AddPosition extends HttpServlet {
 
 	            resp.getWriter().write("{\"status\": 0}");
 			} catch(Exception ex){
+				txn.rollback();
 	            resp.getWriter().write("{\"status\": -1}");	
 	            ex.printStackTrace();
 			}finally {
@@ -77,6 +78,11 @@ public class AddPosition extends HttpServlet {
 		} 
 	}  
 			 
+	private float round(float num){
+		long aux = Math.round(num * 100000);
+		return (float) aux / 100000;
+	}
+
 	private Position getLastPosition() {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
