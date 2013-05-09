@@ -1,6 +1,7 @@
 package org.androidcare.android.service;
 
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
+import org.androidcare.android.service.location.LocationService;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -43,6 +44,9 @@ public class PushMessagesReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent arg1) {
         acquireLock(context);
+        // waking up the location Service just in case it felt asleep
+        context.startService(new Intent(context, LocationService.class));
+        // binding the connection Service
         context.getApplicationContext().bindService(
                            new Intent(context.getApplicationContext(), ConnectionService.class),
                            mConnection, Context.BIND_AUTO_CREATE);
