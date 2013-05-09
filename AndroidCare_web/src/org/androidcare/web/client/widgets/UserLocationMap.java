@@ -78,7 +78,12 @@ public class UserLocationMap extends FlowPanel {
 				final LatLng point = LatLng.newInstance(p.getLatitude(), p.getLongitude());
 			    // Add a marker
 				MarkerOptions markerOptions = MarkerOptions.newInstance();
-				Icon icon = Icon.newInstance("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + (i+1) + "|FE6256|000000");
+				String bgColor = "FE6256";
+				String foreColor = "000000";
+				if(i == 0){
+					bgColor = "C0FF31";
+				}
+				Icon icon = Icon.newInstance("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + (i+1) + "|" + bgColor + "|" + foreColor);
 				if(i == 0){
 					icon.setIconSize(Size.newInstance(27, 45));
 					icon.setShadowSize(Size.newInstance(49, 45));
