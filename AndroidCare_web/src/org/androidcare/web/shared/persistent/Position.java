@@ -82,4 +82,12 @@ public class Position implements Serializable {
 	public Date getServerDate(){
 		return serverDate;
 	}
+	
+	public void setDate(Date d){
+		this.date = d;
+	}
+	
+	public void setServerDate(){
+		this.serverDate = new Date();
+	}
 }
