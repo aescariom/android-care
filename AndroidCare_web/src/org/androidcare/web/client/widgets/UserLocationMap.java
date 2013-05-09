@@ -52,12 +52,6 @@ public class UserLocationMap extends FlowPanel {
 
 	public void centerMap() {
 	    mapWidget.setCenter(center, zoom);
-	    // Add an info window to highlight a point of interest
-	    mapWidget.getInfoWindow().open(mapWidget.getCenter(),
-	        new InfoWindowContent(
-	        		"Lat: " + this.center.getLatitude() + 
-	        		"<br/>Lng: " + this.center.getLongitude() + 
-	        		((this.date != null) ? "<br/>" + this.date.toString() : "")));
 	    
 		mapWidget.checkResize();
 	}
@@ -103,8 +97,8 @@ public class UserLocationMap extends FlowPanel {
 					public void onClick(MarkerClickEvent event) {
 						mapWidget.getInfoWindow().open(point,
 						        new InfoWindowContent(
-				        		"Lat: " + point.getLatitude() + 
-				        		"<br/>Lng: " + point.getLongitude()+ 
+				        		"Lat: " + round(point.getLatitude()) + 
+				        		"<br/>Lng: " + round(point.getLongitude()) + 
 				        		((p.getDate() != null) ? "<br/>" + p.getDate().toString() : "")));
 					}
 					
@@ -156,5 +150,11 @@ public class UserLocationMap extends FlowPanel {
 		}else{
 			timer.cancel();
 		}
+	}
+	  
+	 
+	private float round(double d){
+		long aux = Math.round(d * 10000);
+		return (float) aux / 10000;
 	}
 }
