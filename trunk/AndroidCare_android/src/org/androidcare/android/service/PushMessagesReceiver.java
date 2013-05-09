@@ -43,16 +43,14 @@ public class PushMessagesReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent arg1) {
-        acquireLock(context);
         // waking up the location Service just in case it felt asleep
         context.startService(new Intent(context, LocationService.class));
         // binding the connection Service
+        acquireLock(context); // we will have to wait until the service is attached
         context.getApplicationContext().bindService(
                            new Intent(context.getApplicationContext(), ConnectionService.class),
                            mConnection, Context.BIND_AUTO_CREATE);
     }
-    
-
     
     public static synchronized void acquireLock(Context ctx){
         if(wakeLock == null){
@@ -72,6 +70,7 @@ public class PushMessagesReceiver extends BroadcastReceiver {
             }
         }
     }
+    
 
 
 }
