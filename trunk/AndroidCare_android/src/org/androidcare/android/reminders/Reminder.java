@@ -223,8 +223,8 @@ public class Reminder implements Serializable {
 
     @Override
     public String toString() {
-        return "Reminder: " + getTitle() + " active from " + activeFrom.toString() + 
-                ((activeUntil != null) ? " active to " + activeUntil.toString() : "");
+        return getTitle() + " - from: " + activeFrom.toString() + 
+                ((activeUntil != null) ? " - to " + activeUntil.toString() : "");
     }
 
     public int getEndType() {

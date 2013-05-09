@@ -13,6 +13,8 @@
     <string name="account">Cuentas</string>
     <string name="restart_services">Reiniciar</string>
     <string name="account_settings">Ajustes de la cuenta</string>
+    <string name="others">Otros</string>
+    <string name="view_reminders">Lista de recordatorios</string>
     <string name="account_summary">Seleccione una cuenta de google</string>
     <string name="zero_accounts">Ninguna cuenta configurada</string>
     <string name="setup_google_account">Por favor, configure una cuenta de Google</string>

@@ -38,6 +38,10 @@
             android:name=".AccountSelectorActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+        <activity
+            android:name=".preferences.ReminderList"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
         
         <!-- reminder notification receiver -->
         <receiver android:name=".view.ReminderReceiver">

@@ -33,6 +33,20 @@ public class PreferencesActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
         addGoogleAccounts();
         setResetButton();
+        setDisplayRemindersButton();
+    }
+    
+    private void setDisplayRemindersButton(){
+        final Preference restart = (Preference) findPreference("viewReminders");
+        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(PreferencesActivity.this, ReminderList.class);
+                startActivity(intent);
+                return true;
+            }
+            
+        });
     }
 
     private void addGoogleAccounts() {
