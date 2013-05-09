@@ -108,7 +108,7 @@ public class ReminderService extends Service {
                 intent, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis()/*Calendar.getInstance().getTimeInMillis() + 10000*/, sender);
+        manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis()/*Calendar.getInstance().getTimeInMillis() + 30000*/, sender);
         
         Log.i(tag, "Reminder scheduled: " + reminder.getTitle() + " @ " + cal.getTime().toString());
     }

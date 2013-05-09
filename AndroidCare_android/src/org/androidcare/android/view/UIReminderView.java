@@ -53,10 +53,7 @@ public abstract class UIReminderView extends RelativeLayout {
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DISPLAYED));
     }
 
-    public void finish() {
-        playSoundTask.cancel(true);
-        vibrationTask.cancel(true);
-        
+    public void finish() {        
         Activity parent = (Activity) getContext();
         parent.finish();
     }
@@ -96,7 +93,8 @@ public abstract class UIReminderView extends RelativeLayout {
         @Override
         protected Void doInBackground(Uri... params) {
             try {
-                Context context = getContext();
+                Activity context = (Activity)getContext();
+                
                 // 1 - getting the sound
                 MediaPlayer mMediaPlayer = new MediaPlayer();
                 mMediaPlayer.setDataSource(context, params[0]);
@@ -108,6 +106,10 @@ public abstract class UIReminderView extends RelativeLayout {
                     mMediaPlayer.setLooping(false);
                     mMediaPlayer.prepare();
                     while(true){
+                        boolean finish = context.isFinishing();
+                        if(finish){
+                            break;
+                        }
                         mMediaPlayer.start();
                         Thread.sleep(sleepSoundTime);
                         if(sleepSoundTime < 120000){
@@ -128,13 +130,18 @@ public abstract class UIReminderView extends RelativeLayout {
 
         @Override
         protected Void doInBackground(Integer... params) {
+            Activity context = (Activity)getContext();
 
             // Get instance of Vibrator from current Context
-            Vibrator v = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+            Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
              
             // Vibrate for 'length' milliseconds
             try {
                 while(true){
+                    boolean finish = context.isFinishing();
+                    if(finish){
+                        break;
+                    }
                     v.vibrate(params[0]);
                     Thread.sleep(sleepVibrationTime);
                     if(sleepVibrationTime < 120000){
