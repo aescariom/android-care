@@ -413,6 +413,7 @@ public class ConnectionService extends Service {
                         }
                         m.onPostSend(response);
                         getHelper().remove(m);
+                        Log.d("HTTP client", "Message processed: " + m);
                     }
                     catch (Exception e) {
                         Log.e(tag, "Error when procesing the Message: " + m + " -> " + e.getMessage(), e);
