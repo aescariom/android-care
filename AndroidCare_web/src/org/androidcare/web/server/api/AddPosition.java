@@ -79,8 +79,8 @@ public class AddPosition extends HttpServlet {
 	}  
 			 
 	private float round(float num){
-		long aux = Math.round(num * 100000);
-		return (float) aux / 100000;
+		long aux = Math.round(num * 10000);
+		return (float) aux / 10000;
 	}
 
 	private Position getLastPosition() {
