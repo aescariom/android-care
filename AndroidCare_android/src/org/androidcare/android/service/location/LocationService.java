@@ -14,15 +14,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 
 public class LocationService extends Service {
     private final String tag = this.getClass().getName();
+    private static PowerManager.WakeLock wakeLock = null;
+    private static final String LOCK_TAG = "org.androidcare.android.service.location";
 
     /* Location parameters */
     private LocationManager locationManager;
-    private final int minSeconds = 5*60*1000; // 5 min
-    private final int minDistance = 100; // 100 meters
 
     private ConnectionService connectionService;
     boolean mBound = false;
@@ -48,6 +49,7 @@ public class LocationService extends Service {
             }else{
                 bindConnectionService();
             }
+            releaseLock();
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -63,40 +65,63 @@ public class LocationService extends Service {
         Log.i(tag, "Location service started: " + this.hashCode());
 
         bindConnectionService();
-        // setting the criteria
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setSpeedRequired(false);
-        criteria.setCostAllowed(true);
-
-        // Acquire a reference to the system Location Manager
-        this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(bestProvider, this.minSeconds,
-                this.minDistance, locationListener);
+        getLocation();
         
         return result;
     }
 
-    private void bindConnectionService() {
-        getApplicationContext().bindService(
+   private void getLocation() {
+       acquireLock();
+       // setting the criteria
+       Criteria criteria = new Criteria();
+       criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+       criteria.setPowerRequirement(Criteria.POWER_LOW);
+       criteria.setAltitudeRequired(false);
+       criteria.setBearingRequired(false);
+       criteria.setSpeedRequired(false);
+       criteria.setCostAllowed(true);
+
+       // Acquire a reference to the system Location Manager
+       this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+       locationManager.requestSingleUpdate(criteria, locationListener, null);
+    }
+
+   private void bindConnectionService() {
+       if(!mBound){
+           getApplicationContext().bindService(
                            new Intent(getApplicationContext(), ConnectionService.class),
                            mConnection, Context.BIND_AUTO_CREATE);
+       }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        locationManager.removeUpdates(locationListener);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+    
+
+    public synchronized void acquireLock(){
+        if(wakeLock == null){
+            PowerManager mgr = (PowerManager)getSystemService(Context.POWER_SERVICE);
+            wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
+            wakeLock.setReferenceCounted(true);
+        }
+        wakeLock.acquire();
+    }
+    
+    public synchronized void releaseLock(){
+        if(wakeLock != null){
+            try{
+                wakeLock.release();
+            } catch (Throwable th) {
+                // ignoring this exception, probably wakeLock was already released
+            }
+        }
     }
 }
