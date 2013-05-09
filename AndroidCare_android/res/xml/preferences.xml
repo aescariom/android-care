@@ -12,4 +12,12 @@
                 android:title="@string/restart_services"
                 android:summary="" />
 	 </PreferenceCategory>
+	 
+ 	<PreferenceCategory
+	   android:title="@string/others" >
+		  <Preference 
+		      android:key="viewReminders"
+		      android:title="@string/view_reminders"
+		      android:summary=""/>
+	</PreferenceCategory>
 </PreferenceScreen>
