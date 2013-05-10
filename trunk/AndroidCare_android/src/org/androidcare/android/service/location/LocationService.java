@@ -83,7 +83,6 @@ public class LocationService extends Service {
 
        // Acquire a reference to the system Location Manager
        this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
        locationManager.requestSingleUpdate(criteria, locationListener, null);
     }
 
@@ -113,14 +112,17 @@ public class LocationService extends Service {
             wakeLock.setReferenceCounted(true);
         }
         wakeLock.acquire();
+        Log.d(LocationService.class.getName(), "PowerManager lock acquired by LocationService");
     }
     
     public synchronized void releaseLock(){
-        if(wakeLock != null){
+        if(wakeLock != null && wakeLock.isHeld()){
             try{
                 wakeLock.release();
+                Log.d(LocationService.class.getName(), "PowerManager lock acquired by LocationService");
             } catch (Throwable th) {
                 // ignoring this exception, probably wakeLock was already released
+                Log.e(LocationService.class.getName(), "PowerManager lock acquired by LocationService");
             }
         }
     }

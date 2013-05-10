@@ -72,6 +72,7 @@ public class GetRemindersMessage extends Message {
                 reminders[i] = new Reminder(obj);
             }
             GetRemindersMessage.reminderService.schedule(reminders);
+            Log.i(GetRemindersMessage.class.getName(), "Reminders updated from the server");
         }
         catch (Exception e) {
             Log.e(this.getClass().getName(),
@@ -84,5 +85,6 @@ public class GetRemindersMessage extends Message {
     public void onError(Exception ex){
         super.onError(ex);
         GetRemindersMessage.reminderService.scheduleFromDatabase();
+        Log.e(this.getClass().getName(), "No reminders could be retrieved from the server: ");
     }
 }

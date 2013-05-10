@@ -10,6 +10,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 public class ReminderList extends ListActivity {
@@ -23,10 +24,12 @@ public class ReminderList extends ListActivity {
         
         try {
             List<Reminder> reminders = getHelper().getReminderDao().queryForAll();
-            this.setListAdapter(new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, reminders));
+            this.setListAdapter(new ArrayAdapter<Reminder>(this, android.R.layout.simple_expandable_list_item_1, reminders));
         }
         catch (SQLException e) {
-            throw new RuntimeException("Could not read the reminders from the local database", e);
+            Log.e(DatabaseHelper.class.getName(), "Could not read the reminders from the local database", e);
+            this.setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,
+                    new String[]{"Could not read the reminders from the local database"}));
         }
     }
     

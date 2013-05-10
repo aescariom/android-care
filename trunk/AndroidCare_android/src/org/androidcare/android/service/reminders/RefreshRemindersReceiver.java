@@ -47,13 +47,13 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
                            mConnection, Context.BIND_AUTO_CREATE);
         
         Calendar cal = Calendar.getInstance();
-        long day = 86400000; // 24h
+        long fourHours = 4*60*60*1000; // 24h
 
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, RefreshRemindersReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
-        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + day, pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + fourHours, pendingIntent);        
     }
 
 }
