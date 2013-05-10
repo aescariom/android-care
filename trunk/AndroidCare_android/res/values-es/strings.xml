@@ -14,6 +14,9 @@
     <string name="restart_services">Reiniciar</string>
     <string name="account_settings">Ajustes de la cuenta</string>
     <string name="others">Otros</string>
+    <string name="sync_options">Opciones de sincronización</string>
+    <string name="location_updates">Actualización de la localización (minutos)</string>
+    <string name="reminder_updates">Actualización de recordatorios (horas)</string>
     <string name="view_reminders">Lista de recordatorios</string>
     <string name="account_summary">Seleccione una cuenta de google</string>
     <string name="zero_accounts">Ninguna cuenta configurada</string>
