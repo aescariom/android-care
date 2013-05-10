@@ -92,6 +92,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public void truncateReminderTable() throws SQLException {
         TableUtils.clearTable(connectionSource, Reminder.class);
+
+        Log.i(DatabaseHelper.class.getName(), "Reminders table successfully cleared");
     }
 
     public int create(Message message) throws SQLException {

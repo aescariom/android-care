@@ -18,16 +18,9 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="3"
+	        android:height="80dp"
 	        android:includeFontPadding="false"
 	        android:text="@android:string/ok"
-	        android:textSize="@dimen/button_fomt_size" />
-
-	    <Button
-	        android:id="@+id/btnCancel"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/cancel"
 	        android:textSize="@dimen/button_fomt_size" />
 
 	    <Button
@@ -36,6 +29,14 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="3"
 	        android:text="@string/delay_reminder"
+	        android:textSize="@dimen/button_fomt_size" />
+
+	    <Button
+	        android:id="@+id/btnCancel"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="3"
+	        android:text="@string/cancel"
 	        android:textSize="@dimen/button_fomt_size" />
 
     </LinearLayout>

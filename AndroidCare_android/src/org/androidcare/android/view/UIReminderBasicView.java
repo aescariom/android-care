@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -54,6 +55,16 @@ public class UIReminderBasicView extends UIReminderView {
                 finish();
             }
         });
+        btnPerformed.setBackgroundColor(Color.GREEN);
+        
+        btnDelayed = (Button) findViewById(R.id.btnDelay);
+        btnDelayed.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                showDelayModal(v);
+            }
+        });
+        btnDelayed.setBackgroundColor(Color.YELLOW);
 
         btnNotPerformed = (Button) findViewById(R.id.btnCancel);
         btnNotPerformed.setOnClickListener(new OnClickListener() {
@@ -63,14 +74,7 @@ public class UIReminderBasicView extends UIReminderView {
                 finish();
             }
         });
-        
-        btnDelayed = (Button) findViewById(R.id.btnDelay);
-        btnDelayed.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                showDelayModal(v);
-            }
-        });
+        btnNotPerformed.setBackgroundColor(Color.RED);
 
         lblTitle = (TextView) findViewById(R.id.txtReminderTitle);
         lblTitle.setText(this.reminder.getTitle());
@@ -85,7 +89,7 @@ public class UIReminderBasicView extends UIReminderView {
         }
         
         // Noise + vibration
-        playSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        playSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
         vibrate(1500);
 
         // 5 - notifying

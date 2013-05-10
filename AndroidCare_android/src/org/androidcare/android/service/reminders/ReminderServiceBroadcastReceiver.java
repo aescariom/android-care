@@ -9,6 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+/**
+ * Used to reeschedule reminders from the user interface 
+ *
+ */
 public class ReminderServiceBroadcastReceiver extends BroadcastReceiver {
 
     public final static String ACTION_SCHEDULE_REMINDER = "org.androidcare.android.service.SCHEDULE_REMINDER";

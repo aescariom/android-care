@@ -10,7 +10,6 @@ import org.androidcare.android.R;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.mock.MockHttpClient;
 import org.androidcare.android.preferences.PreferencesActivity;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -18,15 +17,11 @@ import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.ClientPNames;
-import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
-
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -44,7 +39,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Proxy;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Bundle;
@@ -52,6 +46,8 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
+
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 public class ConnectionService extends Service {
     public static final String APP_URL = "http://androidcare2.appspot.com/";

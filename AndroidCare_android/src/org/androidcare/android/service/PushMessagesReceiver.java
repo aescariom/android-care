@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 
+//Receives explicit intents from the AlarmManager of the system. Intents are created by the ConnectionService
 public class PushMessagesReceiver extends BroadcastReceiver {
 
     private ConnectionService connectionService;
@@ -57,16 +59,18 @@ public class PushMessagesReceiver extends BroadcastReceiver {
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
             wakeLock.setReferenceCounted(true);
+            Log.d(PushMessagesReceiver.class.getName(), "PowerManager lock acquired by PushMessagesReceiver");
         }
         wakeLock.acquire();
     }
     
-    public static synchronized void releaseLock(){
-        if(wakeLock != null){
+    public static synchronized void releaseLock(){        
+        if(wakeLock != null && wakeLock.isHeld()){
             try{
                 wakeLock.release();
+                Log.d(PushMessagesReceiver.class.getName(), "PowerManager lock released by PushMessagesReceiver");
             } catch (Throwable th) {
-                // ignoring this exception, probably wakeLock was already released
+                Log.e(PushMessagesReceiver.class.getName(), "PowerManager lock could not be released by PushMessagesReceiver");
             }
         }
     }

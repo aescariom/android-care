@@ -7,6 +7,7 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.util.Log;
 
 public class DefaultHttpClientFactory {
 
@@ -15,6 +16,7 @@ public class DefaultHttpClientFactory {
         boolean isMock = context.getResources().getBoolean(R.bool.mock);
         if (isMock) {
             client = new MockHttpClient(context);
+            Log.w(DefaultHttpClientFactory.class.getName(), "Using MockHttpClient");
         } else {
             client = new DefaultHttpClient();
             ((DefaultHttpClient) client).getCookieStore().addCookie(authCookie);
