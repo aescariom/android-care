@@ -115,7 +115,9 @@ public interface LocalizedConstants extends Constants {
 	String toggleToAdvanced();
 	@DefaultStringValue("- Show basic form")
 	String toggleToBasic();
-	
+
+	@DefaultStringValue("Number of positions")
+	String positionNumber();
 	/**
 	 * return Messages
 	 */
@@ -125,4 +127,6 @@ public interface LocalizedConstants extends Constants {
 	String error();
 	@DefaultStringValue("Server error")
 	String serverError();
+	@DefaultStringValue("The range must be between 1 and 100")
+	String mustBeBetween1and100();
 }
