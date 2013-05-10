@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.smartgwt.client.widgets.Slider;
 
 public class UserLocationMap extends FlowPanel {
 	
@@ -59,7 +60,7 @@ public class UserLocationMap extends FlowPanel {
 	public UserLocationMap(){
 		initRefreshButton();
 	}
-
+	
 	public void centerMap() {
 	    mapWidget.setCenter(center, zoom);
 	    
