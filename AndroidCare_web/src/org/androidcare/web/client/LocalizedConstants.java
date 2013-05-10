@@ -118,6 +118,13 @@ public interface LocalizedConstants extends Constants {
 
 	@DefaultStringValue("Number of positions")
 	String positionNumber();
+
+	@DefaultStringValue("Latitude")
+	String latitude();
+	@DefaultStringValue("Longitude")
+	String longitude();
+	@DefaultStringValue("Time")
+	String time();
 	/**
 	 * return Messages
 	 */
