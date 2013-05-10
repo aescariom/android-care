@@ -14,6 +14,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
@@ -35,6 +36,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.ibm.icu.text.SimpleDateFormat;
 
 public class UserLocationMap extends FlowPanel {
 	
@@ -42,6 +44,8 @@ public class UserLocationMap extends FlowPanel {
 
 	private final PositionServiceAsync positionService = GWT
 			.create(PositionService.class);
+
+	private final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss");
 	
 	private List<Overlay> overlays;
 
@@ -58,7 +62,7 @@ public class UserLocationMap extends FlowPanel {
 		
 	protected int refreshTime = 5*60*1000; // 5 min
 	
-	public UserLocationMap(){
+	public UserLocationMap(){		
 		horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setSpacing(5);
 		initRefreshButton();
@@ -139,9 +143,9 @@ public class UserLocationMap extends FlowPanel {
 	protected void showWindow(LatLng point, Date date) {
 		mapWidget.getInfoWindow().open(point,
 		        new InfoWindowContent(
-        		"Lat: " + round(point.getLatitude()) + 
-        		"<br/>Lng: " + round(point.getLongitude()) + 
-        		((date != null) ? "<br/>" + date.toString() : "")));
+        		LocalizedConstants.latitude() + ": " + round(point.getLatitude()) + 
+        		"<br/>" + LocalizedConstants.longitude() + ": " + round(point.getLongitude()) + 
+        		((date != null) ? "<br/>" + LocalizedConstants.time() + ": " + dateTimeFormat.format(date) : "")));
 	}
 
 	private void setupMapWidget() {
