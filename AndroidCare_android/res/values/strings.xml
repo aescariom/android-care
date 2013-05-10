@@ -14,6 +14,9 @@
     <string name="restart_services">Restart</string>
     <string name="account_settings">Account settings</string>
     <string name="others">Others</string>
+    <string name="sync_options">Sync Options</string>
+    <string name="location_updates">Location updates (minutes)</string>
+    <string name="reminder_updates">Reminder updates (hours)</string>
     <string name="view_reminders">Reminder list</string>
     <string name="account_summary">Select a Google account</string>
     <string name="zero_accounts">Zero accounts found</string>

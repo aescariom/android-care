@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -18,6 +19,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.InputType;
 import android.widget.Toast;
 
 public class PreferencesActivity extends PreferenceActivity {
@@ -34,8 +36,20 @@ public class PreferencesActivity extends PreferenceActivity {
         addGoogleAccounts();
         setResetButton();
         setDisplayRemindersButton();
+        //setLocationUpdates();
+        setReminderUpdates();
     }
     
+    private void setLocationUpdates() {
+        EditTextPreference pref = (EditTextPreference)findPreference("locationUpdatesInterval");
+        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
+    }
+    
+    private void setReminderUpdates() {
+        EditTextPreference pref = (EditTextPreference)findPreference("reminderResquestInterval");
+        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
+    }
+
     private void setDisplayRemindersButton(){
         final Preference restart = (Preference) findPreference("viewReminders");
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){

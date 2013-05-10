@@ -14,6 +14,19 @@
 	 </PreferenceCategory>
 	 
  	<PreferenceCategory
+	   android:title="@string/sync_options" >
+ 		<!-- <EditTextPreference 
+ 		    android:key="locationUpdatesInterval"
+ 		    android:title="@string/location_updates"
+ 		    android:defaultValue="5"/> --> 
+ 		    
+ 		<EditTextPreference 
+ 		    android:key="reminderResquestInterval"
+ 		    android:title="@string/reminder_updates"
+ 		    android:defaultValue="24"/>    
+ 	</PreferenceCategory>
+ 	
+ 	<PreferenceCategory
 	   android:title="@string/others" >
 		  <Preference 
 		      android:key="viewReminders"
