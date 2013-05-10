@@ -1,5 +1,6 @@
 package org.androidcare.web.client.widgets;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import org.androidcare.web.shared.persistent.Position;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
@@ -21,11 +24,18 @@ import com.google.gwt.maps.client.geom.Size;
 import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UserLocationMap extends FlowPanel {
 	
@@ -34,20 +44,20 @@ public class UserLocationMap extends FlowPanel {
 	private final PositionServiceAsync positionService = GWT
 			.create(PositionService.class);
 	
+	private List<Overlay> overlays;
+
+    private DockLayoutPanel dock;
 	private MapWidget mapWidget;
+	private Image imgRefresh;
+	private Image imgLoading;
+	private Button btnRefresh;
 	private LatLng center;
-	private Date date;
 	private int zoom = 14;
-	
-	protected Timer timer = new Timer() {
-        public void run() {
-        	getPositions();
-		    }
-		};
 		
 	protected int refreshTime = 5*60*1000; // 5 min
 	
 	public UserLocationMap(){
+		initRefreshButton();
 	}
 
 	public void centerMap() {
@@ -56,18 +66,15 @@ public class UserLocationMap extends FlowPanel {
 		mapWidget.checkResize();
 	}
 
-	private void mapSetup(List<Position> rs) {	    
-	    mapWidget = new MapWidget();
-	    mapWidget.setCenter(center, zoom);
-	    mapWidget.setSize("100%", "100%");
-	    // Add some controls for the zoom level
-	    mapWidget.addControl(new LargeMapControl());
+	private void mapSetup(List<Position> rs) {
+		setupMapWidget();
 	    
 		if(rs.size() <= 0){
 			// Open a map centered on Madrid, Spain
 		    center = LatLng.newInstance(40.416667, -3.70355);
 		}else{
 			int i = 0;
+			overlays = new ArrayList<Overlay>();
 			for(final Position p : rs){
 				final LatLng point = LatLng.newInstance(p.getLatitude(), p.getLongitude());
 			    // Add a marker
@@ -105,21 +112,62 @@ public class UserLocationMap extends FlowPanel {
 				});
 				
 			    mapWidget.addOverlay(m);
+			    overlays.add(m);
 			    i++;
 			}
 			Position p = rs.get(0);
 			center = LatLng.newInstance(p.getLatitude(), p.getLongitude());
-			date = p.getDate();
 		}
-
-	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-	    dock.addNorth(mapWidget, 500);
 		mapWidget.checkResize();
 		
-	    this.add(dock);	
 	    this.centerMap();
 	}
 	
+	private void setupMapWidget() {
+		if(mapWidget == null){
+		    mapWidget = new MapWidget();
+		    mapWidget.setCenter(center, zoom);
+		    mapWidget.setSize("100%", "100%");
+		    // Add some controls for the zoom level
+		    mapWidget.addControl(new LargeMapControl());
+	
+			setLayout();
+		}else{
+			removeOverlays();
+		}
+	}
+
+	private void removeOverlays() {
+		for(Overlay o : overlays){
+			mapWidget.removeOverlay(o);
+		}
+	}
+
+	private void setLayout() {		
+		dock = new DockLayoutPanel(Unit.PX);
+	    dock.addNorth(mapWidget, 570);
+		dock.addNorth(btnRefresh, 30);
+	    this.add(dock);	
+	}
+
+	private void initRefreshButton() {
+		imgRefresh = new Image("./images/refresh.png");
+		imgRefresh.setSize("20px", "20px");
+		imgLoading = new Image("./images/loading.gif");
+		imgLoading.setSize("20px", "20px");
+		btnRefresh = new Button();
+		btnRefresh.getElement().appendChild(imgRefresh.getElement());
+		btnRefresh.getElement().appendChild(imgLoading.getElement());
+		btnRefresh.addClickHandler(new ClickHandler() {
+	        public void onClick(ClickEvent event) {
+	        	imgRefresh.setVisible(false);
+	        	imgLoading.setVisible(true);
+	        	btnRefresh.setEnabled(false);
+	        	getPositions();
+	        }
+	      });
+	}
+
 	public void getPositions(){
 		// Then, we send the input to the server.
 		positionService.getLastPositions(30,
@@ -127,13 +175,21 @@ public class UserLocationMap extends FlowPanel {
 				public void onFailure(Throwable caught) {
 					Window.alert(LocalizedConstants.serverError());
 					caught.printStackTrace();
+					setRefreshButtonIdle();
 				}
 
 				@Override
 				public void onSuccess(List<Position> rs) {
 					fill(rs);
+					setRefreshButtonIdle();
 				}
 			});
+	}
+
+	private void setRefreshButtonIdle() {
+		imgRefresh.setVisible(true);
+    	imgLoading.setVisible(false);
+    	btnRefresh.setEnabled(true);
 	}
 
 	private void fill(final List<Position> rs) {
@@ -142,14 +198,6 @@ public class UserLocationMap extends FlowPanel {
 	        	mapSetup(rs);
 	        }
 	      });
-	}
-	
-	public void setAutorefresh(boolean value){
-		if(value){
-			timer.scheduleRepeating(refreshTime);
-		}else{
-			timer.cancel();
-		}
 	}
 	  
 	 
