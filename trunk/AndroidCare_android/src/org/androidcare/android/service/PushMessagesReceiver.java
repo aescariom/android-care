@@ -1,7 +1,6 @@
 package org.androidcare.android.service;
 
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
-import org.androidcare.android.service.location.LocationService;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;

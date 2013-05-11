@@ -3,7 +3,6 @@ package org.androidcare.android.service.location;
 import java.util.Calendar;
 
 import org.androidcare.android.service.ConnectionService;
-import org.androidcare.android.service.PushMessagesReceiver;
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
 
 import android.app.AlarmManager;
@@ -21,15 +20,11 @@ import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class LocationService extends Service {
     private final String tag = this.getClass().getName();
-    private static PowerManager.WakeLock wakeLock = null;
-    private static final String LOCK_TAG = "org.androidcare.android.service.location";
-
     /* Location parameters */
     private LocationManager locationManager;
     // Binder given to clients

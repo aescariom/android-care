@@ -1,7 +1,5 @@
 package org.androidcare.android.service.location;
 
-import org.androidcare.android.service.ConnectionService;
-import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
 import org.androidcare.android.service.location.LocationService;
 import org.androidcare.android.service.location.LocationService.LocationServiceBinder;
 
@@ -21,7 +19,7 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
     boolean mBound = false;
     
     private static PowerManager.WakeLock wakeLock = null;
-    private static final String LOCK_TAG = "org.androidcare.android.service";
+    private static final String LOCK_TAG = "org.androidcare.android.service.location";
         
     private ServiceConnection mConnection = new ServiceConnection() {
 
