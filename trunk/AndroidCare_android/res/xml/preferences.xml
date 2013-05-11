@@ -15,10 +15,14 @@
 	 
  	<PreferenceCategory
 	   android:title="@string/sync_options" >
- 		<!-- <EditTextPreference 
+ 		<EditTextPreference 
  		    android:key="locationUpdatesInterval"
  		    android:title="@string/location_updates"
- 		    android:defaultValue="5"/> --> 
+ 		    android:defaultValue="15"/>
+ 		<EditTextPreference 
+ 		    android:key="synchronizationInterval"
+ 		    android:title="@string/synchronization_interval"
+ 		    android:defaultValue="15"/>
  		    
  		<EditTextPreference 
  		    android:key="reminderResquestInterval"

@@ -61,6 +61,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
         }catch(NumberFormatException ex){
             Log.d("RefreshReminders", "Error converting: " + strHours + ". We will use the default value...");
         }
+        if(hours <= 0) hours = 1;
         
         Log.d("RefreshReminders", "The reminders will be reloaded in " + hours + " hours");
         

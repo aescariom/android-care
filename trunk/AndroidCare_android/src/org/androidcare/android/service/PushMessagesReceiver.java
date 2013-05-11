@@ -45,8 +45,6 @@ public class PushMessagesReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent arg1) {
-        // waking up the location Service just in case it felt asleep
-        context.startService(new Intent(context, LocationService.class));
         // binding the connection Service
         acquireLock(context); // we will have to wait until the service is attached
         context.getApplicationContext().bindService(
