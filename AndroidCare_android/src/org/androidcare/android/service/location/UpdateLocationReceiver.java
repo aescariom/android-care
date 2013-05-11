@@ -1,7 +1,9 @@
-package org.androidcare.android.service;
+package org.androidcare.android.service.location;
 
+import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
 import org.androidcare.android.service.location.LocationService;
+import org.androidcare.android.service.location.LocationService.LocationServiceBinder;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -13,22 +15,22 @@ import android.os.PowerManager;
 import android.util.Log;
 
 //Receives explicit intents from the AlarmManager of the system. Intents are created by the ConnectionService
-public class PushMessagesReceiver extends BroadcastReceiver {
+public class UpdateLocationReceiver extends BroadcastReceiver {
 
-    private ConnectionService connectionService;
+    private LocationService locationService;
     boolean mBound = false;
     
     private static PowerManager.WakeLock wakeLock = null;
     private static final String LOCK_TAG = "org.androidcare.android.service";
-    
+        
     private ServiceConnection mConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder service) {
-            ConnectionServiceBinder binder = (ConnectionServiceBinder) service;
-            connectionService = binder.getService();
+            LocationServiceBinder binder = (LocationServiceBinder) service;
+            locationService = binder.getService();
 
-            connectionService.processMessageQueue();
-            connectionService.scheduleNextSynchronization();
+            locationService.getLocation();
+            locationService.scheduleNextUpdate();
             
             mBound = true;
         }
@@ -39,7 +41,7 @@ public class PushMessagesReceiver extends BroadcastReceiver {
 
     };
     
-    public PushMessagesReceiver(){
+    public UpdateLocationReceiver(){
         super();
     }
     
@@ -48,7 +50,7 @@ public class PushMessagesReceiver extends BroadcastReceiver {
         // binding the connection Service
         acquireLock(context); // we will have to wait until the service is attached
         context.getApplicationContext().bindService(
-                           new Intent(context.getApplicationContext(), ConnectionService.class),
+                           new Intent(context.getApplicationContext(), LocationService.class),
                            mConnection, Context.BIND_AUTO_CREATE);
     }
     
@@ -57,7 +59,7 @@ public class PushMessagesReceiver extends BroadcastReceiver {
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
             wakeLock.setReferenceCounted(true);
-            Log.d(PushMessagesReceiver.class.getName(), "PowerManager lock acquired by PushMessagesReceiver");
+            Log.d(UpdateLocationReceiver.class.getName(), "PowerManager lock acquired by UpdateLocationReceiver");
         }
         wakeLock.acquire();
     }
@@ -66,9 +68,9 @@ public class PushMessagesReceiver extends BroadcastReceiver {
         if(wakeLock != null && wakeLock.isHeld()){
             try{
                 wakeLock.release();
-                Log.d(PushMessagesReceiver.class.getName(), "PowerManager lock released by PushMessagesReceiver");
+                Log.d(UpdateLocationReceiver.class.getName(), "PowerManager lock released by UpdateLocationReceiver");
             } catch (Throwable th) {
-                Log.e(PushMessagesReceiver.class.getName(), "PowerManager lock could not be released by PushMessagesReceiver");
+                Log.e(UpdateLocationReceiver.class.getName(), "PowerManager lock could not be released by UpdateLocationReceiver");
             }
         }
     }

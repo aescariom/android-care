@@ -13,14 +13,19 @@
     <string name="account">Cuentas</string>
     <string name="restart_services">Reiniciar</string>
     <string name="account_settings">Ajustes de la cuenta</string>
-    <string name="others">Otros</string>
-    <string name="sync_options">Opciones de sincronización</string>
-    <string name="location_updates">Actualización de la localización (minutos)</string>
-    <string name="reminder_updates">Actualización de recordatorios (horas)</string>
     <string name="view_reminders">Lista de recordatorios</string>
     <string name="account_summary">Seleccione una cuenta de google</string>
     <string name="zero_accounts">Ninguna cuenta configurada</string>
     <string name="setup_google_account">Por favor, configure una cuenta de Google</string>
+    
+    <!-- Preferences -->
+    <string name="others">Otros</string>
+    <string name="sync_options">Opciones de sincronización</string>
+    <string name="location_updates">Actualización de la localización</string>
+    <string name="reminder_updates">Actualización de recordatorios</string>
+    <string name="synchronization_interval">Frec. envío eventos</string>
+    <string name="hminute_s">minuto(s)</string>
+    <string name="hour_s">hora(s)</string>
     
     <!-- Network -->
     <string name="not_reachable">El servidor no responde</string>

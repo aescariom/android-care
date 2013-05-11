@@ -1,20 +1,28 @@
 package org.androidcare.android.service.location;
 
+import java.util.Calendar;
+
 import org.androidcare.android.service.ConnectionService;
+import org.androidcare.android.service.PushMessagesReceiver;
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class LocationService extends Service {
@@ -24,6 +32,8 @@ public class LocationService extends Service {
 
     /* Location parameters */
     private LocationManager locationManager;
+    // Binder given to clients
+    private final IBinder mBinder = new LocationServiceBinder();
 
     private ConnectionService connectionService;
     boolean mBound = false;
@@ -49,7 +59,7 @@ public class LocationService extends Service {
             }else{
                 bindConnectionService();
             }
-            releaseLock();
+            UpdateLocationReceiver.releaseLock();
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -66,12 +76,20 @@ public class LocationService extends Service {
 
         bindConnectionService();
         getLocation();
+        scheduleNextUpdate();
         
         return result;
     }
 
-   private void getLocation() {
-       acquireLock();
+   public void getLocation() {
+       Criteria criteria = getCriteria();
+
+       // Acquire a reference to the system Location Manager
+       this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+       locationManager.requestSingleUpdate(criteria, locationListener, null);
+    }
+
+   private Criteria getCriteria() {
        // setting the criteria
        Criteria criteria = new Criteria();
        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
@@ -80,13 +98,10 @@ public class LocationService extends Service {
        criteria.setBearingRequired(false);
        criteria.setSpeedRequired(false);
        criteria.setCostAllowed(true);
+       return criteria;
+   }
 
-       // Acquire a reference to the system Location Manager
-       this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-       locationManager.requestSingleUpdate(criteria, locationListener, null);
-    }
-
-   private void bindConnectionService() {
+    private void bindConnectionService() {
        if(!mBound){
            getApplicationContext().bindService(
                            new Intent(getApplicationContext(), ConnectionService.class),
@@ -98,32 +113,39 @@ public class LocationService extends Service {
     public void onDestroy() {
         super.onDestroy();
     }
-
+    
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public IBinder onBind(Intent arg0) {
+        return mBinder;
     }
     
+    public class LocationServiceBinder extends Binder {
+        public LocationService getService() {
+            return LocationService.this;
+        }
+    }
 
-    public synchronized void acquireLock(){
-        if(wakeLock == null){
-            PowerManager mgr = (PowerManager)getSystemService(Context.POWER_SERVICE);
-            wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
-            wakeLock.setReferenceCounted(true);
+    public void scheduleNextUpdate() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String strMin = prefs.getString("locationUpdatesInterval", "15");        
+        int min = 15;
+        try{
+            min = Integer.parseInt(strMin);
+        }catch(NumberFormatException ex){
+            Log.d("RefreshReminders", "Error converting: " + strMin + ". We will use the default value...");
         }
-        wakeLock.acquire();
-        Log.d(LocationService.class.getName(), "PowerManager lock acquired by LocationService");
-    }
-    
-    public synchronized void releaseLock(){
-        if(wakeLock != null && wakeLock.isHeld()){
-            try{
-                wakeLock.release();
-                Log.d(LocationService.class.getName(), "PowerManager lock acquired by LocationService");
-            } catch (Throwable th) {
-                // ignoring this exception, probably wakeLock was already released
-                Log.e(LocationService.class.getName(), "PowerManager lock acquired by LocationService");
-            }
-        }
+        if(min <= 0) min = 1;
+        
+        Log.d("PushMessages", "Next location update will take place in " + min + " minutes");
+        
+        int timeLapse = min*60*1000;
+        
+        Calendar cal = Calendar.getInstance();
+
+        AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), UpdateLocationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        am.cancel(pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + timeLapse, pendingIntent);
     }
 }

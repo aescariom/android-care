@@ -23,8 +23,7 @@
         android:allowBackup="true" >
         
         <activity
-            android:name=".preferences.PreferencesActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:name=".preferences.PreferencesActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,6 +49,9 @@
         </receiver>
         <!-- sync receiver -->
         <receiver android:name=".service.PushMessagesReceiver">
+        </receiver>
+        <!-- get location receiver -->
+        <receiver android:name=".service.location.UpdateLocationReceiver">
         </receiver>
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service 	android:enabled="true" android:name=".service.reminders.ReminderService" /> 

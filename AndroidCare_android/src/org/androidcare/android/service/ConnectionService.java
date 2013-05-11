@@ -71,8 +71,6 @@ public class ConnectionService extends Service {
                                                             new ConnectionServiceBroadcastReceiver(this);
     private IntentFilter filter = new IntentFilter(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
 
-    private long timeLapse = 5*60*1000; // 5 min in milliseconds
-
     // Binder given to clients
     private final IBinder mBinder = new ConnectionServiceBinder();
     
@@ -442,13 +440,27 @@ public class ConnectionService extends Service {
 
 
     public void scheduleNextSynchronization() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String strMin = prefs.getString("synchronizationInterval", "15");        
+        int min = 15;
+        try{
+            min = Integer.parseInt(strMin);
+        }catch(NumberFormatException ex){
+            Log.d("RefreshReminders", "Error converting: " + strMin + ". We will use the default value...");
+        }
+        if(min <= 0) min = 1;
+        
+        Log.d("PushMessages", "Low priority messages will be sent in " + min + " minutes");
+        
+        int timeLapse = min*60*1000;
+        
         Calendar cal = Calendar.getInstance();
 
         AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), PushMessagesReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
-        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + this.timeLapse, pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + timeLapse, pendingIntent);
     }
     
     private DatabaseHelper getHelper() {
