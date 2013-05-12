@@ -23,8 +23,7 @@ public class ReminderTable extends FlexTable implements Observer {
 	
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
 	
-	private final ReminderServiceAsync reminderService = GWT
-			.create(ReminderService.class);
+	private final ReminderServiceAsync reminderService = GWT.create(ReminderService.class);
 
 	private List<Reminder> reminders;
 	
@@ -36,16 +35,33 @@ public class ReminderTable extends FlexTable implements Observer {
 		
 		getReminders();
 	}
+	
+	public void getReminders() {
 
-	public void fill(List<Reminder> rs) {
+		// Then, we send the input to the server.
+		reminderService.fetchReminders(
+			new AsyncCallback<List<Reminder>>() {
+				public void onFailure(Throwable caught) {
+					Window.alert(LocalizedConstants.serverError());
+					caught.printStackTrace();
+				}
+
+				@Override
+				public void onSuccess(List<Reminder> reminders) {
+					fill(reminders);
+				}
+			});
+	}
+
+	public void fill(List<Reminder> reminders) {
 
 		if(this.getRowCount() > 1) {
 			cleanTable();
 		}
 		
-		reminders = rs;
-		for(Reminder r : rs){
-			addReminder(r);
+		this.reminders = reminders;
+		for(Reminder reminder : reminders){
+			addReminder(reminder);
 		}
 	}
 
@@ -53,6 +69,7 @@ public class ReminderTable extends FlexTable implements Observer {
 		int rows = this.getRowCount();
 		for(int i = 1; i < rows; i++){
 			this.removeRow(1);
+			//@comentario y en vez de esta historia tan rara ¿no sería lo mismo hacer this.removeAllRows()?
 		}
 	}
 	
@@ -113,23 +130,6 @@ public class ReminderTable extends FlexTable implements Observer {
 		RemoveReminderForm form = new RemoveReminderForm(reminder);
 		form.addObserver(this);
 		new DialogBoxClose(LocalizedConstants.removeReminder(), form).show();
-	}
-	
-	public void getReminders() {
-
-		// Then, we send the input to the server.
-		reminderService.fetchReminders(
-			new AsyncCallback<List<Reminder>>() {
-				public void onFailure(Throwable caught) {
-					Window.alert(LocalizedConstants.serverError());
-					caught.printStackTrace();
-				}
-
-				@Override
-				public void onSuccess(List<Reminder> rs) {
-					fill(rs);
-				}
-			});
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class ReminderForm extends ObservableForm{
 	private static final String grpName = "until";
 	
 	//Localizer
-	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
+	private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
 	
 	//Container
 	private Grid grid = new Grid(SEND_ROW + 1, 2);
@@ -60,47 +60,47 @@ public class ReminderForm extends ObservableForm{
 	private Hyperlink lblBasicAdvanced = new Hyperlink();
 	
 	//Form fields
-	private Label lblTitle = new Label(LocalizedConstants.title());
+	private Label lblTitle = new Label(localizedConstants.title());
 	private TextBox txtTitle = new TextBox();
 	private TextBox txtId = new TextBox();
     
-    private Label lblDescription = new Label(LocalizedConstants.description());
+    private Label lblDescription = new Label(localizedConstants.description());
     private TextArea txtDescription = new TextArea();
 
-    private Label lblSince = new Label(LocalizedConstants.since());
+    private Label lblSince = new Label(localizedConstants.since());
     private DateTimeBox txtSince = new DateTimeBox();
 
-    private Label lblUpload = new Label(LocalizedConstants.photo());
+    private Label lblUpload = new Label(localizedConstants.photo());
     private FileUpload fupPhoto = new FileUpload();
     private Image imgLoading = new Image("./images/loading.gif");
-    private Button btnDeletePhoto = new Button(LocalizedConstants.delete());
+    private Button btnDeletePhoto = new Button(localizedConstants.delete());
     private Panel pnlPhoto = new HorizontalPanel();
     private Image imgPhoto = new Image();
     
-    private Label lblUntil = new Label(LocalizedConstants.until());
-    private RadioButton rdbUntilDate = new RadioButton(grpName, LocalizedConstants.date());
-    private RadioButton rdbUntilIterations = new RadioButton(grpName, LocalizedConstants.after());
+    private Label lblUntil = new Label(localizedConstants.until());
+    private RadioButton rdbUntilDate = new RadioButton(grpName, localizedConstants.date());
+    private RadioButton rdbUntilIterations = new RadioButton(grpName, localizedConstants.after());
     private TextBox txtUntilIterations = new TextBox();
-    private Label lblIterations = new Label(LocalizedConstants.iterations());
-    private RadioButton rdbUntilNever = new RadioButton(grpName, LocalizedConstants.never());
+    private Label lblIterations = new Label(localizedConstants.iterations());
+    private RadioButton rdbUntilNever = new RadioButton(grpName, localizedConstants.never());
     private DateTimeBox txtUntil = new DateTimeBox(false);
 
     private ListBox ddlRepeatPeriod = new ListBox();
     
-    private Label lblWeekDays = new Label(LocalizedConstants.weekDays());
+    private Label lblWeekDays = new Label(localizedConstants.weekDays());
     private DaysOfTheWeek pnlDaysOfTheWeek = new DaysOfTheWeek();
     
-    private Label lblRepeat = new Label(LocalizedConstants.repeat());
+    private Label lblRepeat = new Label(localizedConstants.repeat());
     private CheckBox chkRepeat = new CheckBox();
 
-    private Label lblRepeatEach = new Label(LocalizedConstants.repeatEach());
+    private Label lblRepeatEach = new Label(localizedConstants.repeatEach());
     private Label lblRepeatEachPeriod = new Label("");
     private ListBox ddlRepeatEach = new ListBox();
     
-    private Label lblRequestConfirmation = new Label(LocalizedConstants.requestConfirmation());
+    private Label lblRequestConfirmation = new Label(localizedConstants.requestConfirmation());
     private CheckBox chkRequestConfirmation = new CheckBox();
     
-    private Button submit = new Button(LocalizedConstants.submit());
+    private Button submit = new Button(localizedConstants.submit());
     
     //Persistent data
     private Reminder reminder;
@@ -112,7 +112,7 @@ public class ReminderForm extends ObservableForm{
 
     public ReminderForm() {
     	super();
-    	this.reminder = null;
+    	reminder = null;
         setUpReminderForm();
     }
     
@@ -124,11 +124,11 @@ public class ReminderForm extends ObservableForm{
     
     public void setUpReminderForm(){
 
-    	this.setAction("/reminderUpload");
-    	this.setEncoding(FormPanel.ENCODING_MULTIPART);
-    	this.setMethod(FormPanel.METHOD_POST);
+    	setAction("/reminderUpload");
+    	setEncoding(FormPanel.ENCODING_MULTIPART);
+    	setMethod(FormPanel.METHOD_POST);
     	
-    	this.addSubmitHandler(new SubmitHandler() {
+    	addSubmitHandler(new SubmitHandler() {
             public void onSubmit(SubmitEvent event) {
             	ReminderForm.this.imgLoading.setVisible(true);
             }
@@ -152,7 +152,7 @@ public class ReminderForm extends ObservableForm{
 
 	private void setFormValues() {
 		if(reminder != null){ // we have an alert to be loaded
-			this.setReminderValues(this.reminder);
+			setReminderValues(reminder);
 		}else{ // let's configure the default behavior
 			Reminder reminder = new Reminder();
 			// let's repeat the task every day since now by default
@@ -162,7 +162,7 @@ public class ReminderForm extends ObservableForm{
 			reminder.setRepeatEachXPeriods(1);
 			reminder.setRequestConfirmation(true);
 			reminder.setEndType(Reminder.END_TYPE_NEVER_ENDS);
-			this.setReminderValues(reminder);
+			setReminderValues(reminder);
 		}
 	}
 
@@ -214,11 +214,11 @@ public class ReminderForm extends ObservableForm{
 	}
 
 	private void setUpRepeatPeriod() {
-		ddlRepeatPeriod.addItem(LocalizedConstants.hour(), String.valueOf(Reminder.REPEAT_PERIOD_HOUR));
-		ddlRepeatPeriod.addItem(LocalizedConstants.day(), String.valueOf(Reminder.REPEAT_PERIOD_DAY));
-		ddlRepeatPeriod.addItem(LocalizedConstants.week(), String.valueOf(Reminder.REPEAT_PERIOD_WEEK));
-		ddlRepeatPeriod.addItem(LocalizedConstants.month(), String.valueOf(Reminder.REPEAT_PERIOD_MONTH));
-		ddlRepeatPeriod.addItem(LocalizedConstants.year(), String.valueOf(Reminder.REPEAT_PERIOD_YEAR));
+		ddlRepeatPeriod.addItem(localizedConstants.hour(), String.valueOf(Reminder.REPEAT_PERIOD_HOUR));
+		ddlRepeatPeriod.addItem(localizedConstants.day(), String.valueOf(Reminder.REPEAT_PERIOD_DAY));
+		ddlRepeatPeriod.addItem(localizedConstants.week(), String.valueOf(Reminder.REPEAT_PERIOD_WEEK));
+		ddlRepeatPeriod.addItem(localizedConstants.month(), String.valueOf(Reminder.REPEAT_PERIOD_MONTH));
+		ddlRepeatPeriod.addItem(localizedConstants.year(), String.valueOf(Reminder.REPEAT_PERIOD_YEAR));
 
 		setRepeatEachPeriod();
 		
@@ -278,27 +278,27 @@ public class ReminderForm extends ObservableForm{
 		        untilManager();
 			}
         });
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.add(rdbUntilIterations);
+        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.add(rdbUntilIterations);
         rdbUntilIterations.addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
 		        untilManager();
 			}
         });
-        hp.add(txtUntilIterations);
-        hp.add(lblIterations);
-        grdUntil.setWidget(1, 0, hp);
-        hp = new HorizontalPanel();
-        hp.add(rdbUntilDate);
+        horizontalPanel.add(txtUntilIterations);
+        horizontalPanel.add(lblIterations);
+        grdUntil.setWidget(1, 0, horizontalPanel);
+        horizontalPanel = new HorizontalPanel();
+        horizontalPanel.add(rdbUntilDate);
         rdbUntilDate.addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
 		        untilManager();
 			}
         });
-        hp.add(txtUntil);
-        grdUntil.setWidget(2, 0, hp);
+        horizontalPanel.add(txtUntil);
+        grdUntil.setWidget(2, 0, horizontalPanel);
         grid.setWidget(UNTIL_ROW, 1, grdUntil);
 
         untilManager();
@@ -412,9 +412,9 @@ public class ReminderForm extends ObservableForm{
 		grid.getRowFormatter().setVisible(CONFIRMATION_ROW, basicMode);
 		this.basicMode = !this.basicMode;
 		if(this.basicMode){
-			this.lblBasicAdvanced.setText(LocalizedConstants.toggleToAdvanced());
+			this.lblBasicAdvanced.setText(localizedConstants.toggleToAdvanced());
 		}else{
-			this.lblBasicAdvanced.setText(LocalizedConstants.toggleToBasic());
+			this.lblBasicAdvanced.setText(localizedConstants.toggleToBasic());
 		}
 		showHideRepeatRows();
 		showHideWeekDays();
@@ -514,9 +514,9 @@ public class ReminderForm extends ObservableForm{
 		}
 		
 		if(show){
-			lblSince.setText(LocalizedConstants.since());
+			lblSince.setText(localizedConstants.since());
 		}else{
-			lblSince.setText(LocalizedConstants.dateTime());
+			lblSince.setText(localizedConstants.dateTime());
 		}
 	}
 

@@ -12,7 +12,6 @@ import org.androidcare.web.client.rpc.ReminderService;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
-import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.users.User;
