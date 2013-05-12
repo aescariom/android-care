@@ -19,12 +19,15 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
-public abstract class UIReminderView extends RelativeLayout {
+public abstract class UIReminderView extends RelativeLayout {    
+
+    private static final String TAG = UIReminderView.class.getName();
 
     protected Reminder reminder;
     protected long sleepSoundTime = 500;
     protected long sleepVibrationTime = 1000;
     protected static final long TOO_MUCH_TIME_MAKING_SOUND = 2*60*1000; //2 min
+    protected static final long TOO_MUCH_TIME_BIBRATING = 2*60*1000; //2 min
     protected PlaySoundTask playSoundTask;
     protected VibrationTask vibrationTask;
 
@@ -103,7 +106,7 @@ public abstract class UIReminderView extends RelativeLayout {
         @Override
         protected Void doInBackground(Uri... params) {
             try {
-                Log.e(UIReminderView.class.getName(), "Entrando");
+                Log.e(TAG, "Entrando");
                 Activity context = (Activity)getContext();
                 
                 // 1 - getting the sound
@@ -129,7 +132,7 @@ public abstract class UIReminderView extends RelativeLayout {
                 }
             }
             catch (Exception e) { 
-                Log.e(UIReminderView.class.getName(), "Could not play the sound when reminder was received", e);
+                Log.e(TAG, "Could not play the sound when reminder was received", e);
                 e.printStackTrace();
             }
             return null;
@@ -137,27 +140,30 @@ public abstract class UIReminderView extends RelativeLayout {
     }
     
     private class VibrationTask extends AsyncTask<Integer, Void, Void> {
+        private int timeVibrating=0;
 
         @Override
         protected Void doInBackground(Integer... params) {
             Activity context = (Activity)getContext();
+            int timeOfEachVibration = params[0];
 
             // Get instance of Vibrator from current Context
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
              
             // Vibrate for 'length' milliseconds
             try {
-                while(!isCancelled()){
+                while(!isCancelled() && timeVibrating < TOO_MUCH_TIME_BIBRATING){
                     boolean finish = context.isFinishing();
                     if(finish){
                         break;
                     }
-                    vibrator.vibrate(params[0]);
-                    Thread.sleep(2*params[0]);
+                    vibrator.vibrate(timeOfEachVibration);
+                    Thread.sleep(2*timeOfEachVibration);
+                    timeVibrating +=3*timeOfEachVibration;
                 }
                 vibrator.cancel();                
             }catch (InterruptedException e) {
-                Log.e(UIReminderView.class.getName(), "Could not play the sound when reminder was received", e);
+                Log.e(TAG, "Could not play the sound when reminder was received", e);
                 e.printStackTrace();
             }
             return null;

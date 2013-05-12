@@ -31,7 +31,7 @@ public class UIReminderBasicView extends UIReminderView {
     protected Button btnDelayed;
     protected TextView lblTitle;
     protected TextView lblDescription;
-    protected ImageView imgPhoto;
+    protected ImageView imgResizable;
 
     public UIReminderBasicView(ReminderDialogReceiver activity, Reminder reminder) {
         super(activity, reminder);
@@ -80,12 +80,12 @@ public class UIReminderBasicView extends UIReminderView {
         lblTitle.setText(this.reminder.getTitle());
         lblDescription = (TextView) findViewById(R.id.txtReminderDescription);
         lblDescription.setText(this.reminder.getDescription());
-        imgPhoto = (ImageView) findViewById(R.id.imgReminder);
+        imgResizable = (ImageView) findViewById(R.id.imgReminder);
         
         if(reminder.getBlobKey() != null && reminder.getBlobKey() != ""){
             String url = "http://androidcare2.appspot.com/api/reminderPhoto?id=" + reminder.getBlobKey();
             //url="http://www.dipler.org/wp-content/themes/BnB2/images/logo.png";
-            new DownloadImageTask(imgPhoto).execute(url);
+            new DownloadImageTask(imgResizable).execute(url);
         }
         
         // Noise + vibration
@@ -121,10 +121,10 @@ public class UIReminderBasicView extends UIReminderView {
     }
     
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
+        ImageView imgResizbl;
 
         public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
+            this.imgResizbl = bmImage;
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -143,7 +143,7 @@ public class UIReminderBasicView extends UIReminderView {
         }
 
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            imgResizbl.setImageBitmap(result);
         }
     }
 }
