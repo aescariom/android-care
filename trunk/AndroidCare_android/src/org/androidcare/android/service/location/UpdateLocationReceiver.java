@@ -12,9 +12,10 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
-//Receives explicit intents from the AlarmManager of the system. Intents are created by the ConnectionService
+//Receives explicit intents from the AlarmManager of the system. Intents are created by the LocationService
 public class UpdateLocationReceiver extends BroadcastReceiver {
 
+    private static final String TAG = UpdateLocationReceiver.class.getName();
     private LocationService locationService;
     boolean mBound = false;
     
@@ -57,7 +58,7 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
             wakeLock.setReferenceCounted(true);
-            Log.d(UpdateLocationReceiver.class.getName(), "PowerManager lock acquired by UpdateLocationReceiver");
+            Log.d(TAG, "PowerManager lock acquired by UpdateLocationReceiver");
         }
         wakeLock.acquire();
     }
@@ -66,9 +67,9 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
         if(wakeLock != null && wakeLock.isHeld()){
             try{
                 wakeLock.release();
-                Log.d(UpdateLocationReceiver.class.getName(), "PowerManager lock released by UpdateLocationReceiver");
+                Log.d(TAG, "PowerManager lock released by UpdateLocationReceiver");
             } catch (Throwable th) {
-                Log.e(UpdateLocationReceiver.class.getName(), "PowerManager lock could not be released by UpdateLocationReceiver");
+                Log.e(TAG, "PowerManager lock could not be released by UpdateLocationReceiver");
             }
         }
     }

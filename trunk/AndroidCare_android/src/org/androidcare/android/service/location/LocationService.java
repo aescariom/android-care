@@ -24,7 +24,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class LocationService extends Service {
-    private final String tag = this.getClass().getName();
+    private static final String TAG = LocationService.class.getName();
+            
     /* Location parameters */
     private LocationManager locationManager;
     // Binder given to clients
@@ -67,7 +68,7 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
-        Log.i(tag, "Location service started: " + this.hashCode());
+        Log.i(TAG, "Location service started: " + this.hashCode());
 
         bindConnectionService();
         getLocation();
@@ -87,7 +88,7 @@ public class LocationService extends Service {
    private Criteria getCriteria() {
        // setting the criteria
        Criteria criteria = new Criteria();
-       criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+       criteria.setAccuracy(Criteria.ACCURACY_MEDIUM);
        criteria.setPowerRequirement(Criteria.POWER_LOW);
        criteria.setAltitudeRequired(false);
        criteria.setBearingRequired(false);
@@ -127,11 +128,11 @@ public class LocationService extends Service {
         try{
             min = Integer.parseInt(strMin);
         }catch(NumberFormatException ex){
-            Log.d("RefreshReminders", "Error converting: " + strMin + ". We will use the default value...");
+            Log.d(TAG, "Error converting: " + strMin + ". We will use the default value...");
         }
         if(min <= 0) min = 1;
         
-        Log.d("PushMessages", "Next location update will take place in " + min + " minutes");
+        Log.d(TAG, "Next location update will take place in " + min + " minutes");
         
         int timeLapse = min*60*1000;
         
