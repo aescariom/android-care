@@ -10,7 +10,8 @@
 
       <threadsafe>true</threadsafe>
   -->
-
+  <threadsafe>true</threadsafe>
+	
   <!-- Configure serving/caching of GWT files -->
   <static-files>
     <include path="**" />

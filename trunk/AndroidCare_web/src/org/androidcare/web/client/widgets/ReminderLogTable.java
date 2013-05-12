@@ -6,7 +6,6 @@ import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.client.rpc.ReminderService;
 import org.androidcare.web.client.rpc.ReminderServiceAsync;
-import org.androidcare.web.shared.ReminderStatusCode;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
@@ -31,25 +30,24 @@ public class ReminderLogTable extends ObservableForm {
 	private SimplePager pager;
 	private AsyncDataProvider<ReminderLog> provider;
 	
-	private DateTimeFormat format = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss");
+	private DateTimeFormat format = DateTimeFormat.getFormat("HH:mm:ss dd/MM/yyyy");
 	
-	private final ReminderServiceAsync reminderService = GWT
-			.create(ReminderService.class);
+	private final ReminderServiceAsync reminderService = GWT.create(ReminderService.class);
 	
-    public ReminderLogTable(Reminder r){
+    public ReminderLogTable(Reminder reminder){
         super();
 
-        this.reminder = r;
+        this.reminder = reminder;
 
         setUpTable();
         getLogs();
     }
 
     private void setUpTable() {
-		this.table = new CellTable<ReminderLog>();
-	    this.pager = new SimplePager();
+		table = new CellTable<ReminderLog>();
+	    pager = new SimplePager();
 
-		this.table.setPageSize(10);
+		table.setPageSize(10);
 
 		TextColumn<ReminderLog> timeColumn = new TextColumn<ReminderLog>(){
 			@Override
@@ -59,9 +57,9 @@ public class ReminderLogTable extends ObservableForm {
 		};
 		TextColumn<ReminderLog> codeColumn = new TextColumn<ReminderLog>(){
 			@Override
-			public String getValue(ReminderLog a){
+			public String getValue(ReminderLog reminderLog){
 				LocaleInfo loc = com.google.gwt.i18n.client.LocaleInfo.getCurrentLocale();
-				return a.getCode().getDescription(loc.getLocaleName());
+				return reminderLog.getCode().getDescription(loc.getLocaleName());
 			}
 		};
 		TextColumn<ReminderLog> serverTimeColumn = new TextColumn<ReminderLog>(){
@@ -72,14 +70,14 @@ public class ReminderLogTable extends ObservableForm {
 			}
 		};
 
-		this.table.addColumn(codeColumn, "Action");
-		this.table.addColumn(timeColumn, "Time");
-		this.table.addColumn(serverTimeColumn, "Server time");
+		table.addColumn(codeColumn, "Action");
+		table.addColumn(timeColumn, "Time");
+		table.addColumn(serverTimeColumn, "Server time");
 		
 	    VerticalPanel vp = new VerticalPanel();
 	    vp.add(table);
 	    vp.add(pager);
-		this.setWidget(vp);
+		setWidget(vp);
 	}
 
 	public void getLogs() {

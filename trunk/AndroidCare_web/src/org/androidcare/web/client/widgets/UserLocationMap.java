@@ -36,16 +36,14 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.ibm.icu.text.SimpleDateFormat;
 
 public class UserLocationMap extends FlowPanel {
 	
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
 
-	private final PositionServiceAsync positionService = GWT
-			.create(PositionService.class);
+	private final PositionServiceAsync positionService = GWT.create(PositionService.class);
 
-	private final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("dd/MM/yyyy HH:mm:ss");
+	private final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("HH:mm:ss dd/MM/yyyy");
 	
 	private List<Overlay> overlays;
 
@@ -84,26 +82,27 @@ public class UserLocationMap extends FlowPanel {
 		mapWidget.checkResize();
 	}
 
-	private void mapSetup(List<Position> rs) {
+	private void mapSetup(List<Position> positions) {
 		setupMapWidget();
 	    
-		if(rs.size() <= 0){
+		if(positions.size() <= 0){
 			// Open a map centered on Madrid, Spain
 		    center = LatLng.newInstance(40.416667, -3.70355);
 		}else{
-			int i = 0;
+			int positionNumber = 0;
 			overlays = new ArrayList<Overlay>();
-			for(final Position p : rs){
-				final LatLng point = LatLng.newInstance(p.getLatitude(), p.getLongitude());
+			for(final Position position : positions){
+				final LatLng point = LatLng.newInstance(position.getLatitude(), position.getLongitude());
 			    // Add a marker
 				MarkerOptions markerOptions = MarkerOptions.newInstance();
 				String bgColor = "FE6256";
 				String foreColor = "000000";
-				if(i == 0){
+				if(positionNumber == 0){
 					bgColor = "C0FF31";
 				}
-				Icon icon = Icon.newInstance("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + (i+1) + "|" + bgColor + "|" + foreColor);
-				if(i == 0){
+				Icon icon = Icon.newInstance("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + 
+							(positionNumber+1) + "|" + bgColor + "|" + foreColor);
+				if(positionNumber == 0){
 					icon.setIconSize(Size.newInstance(27, 45));
 					icon.setShadowSize(Size.newInstance(49, 45));
 					icon.setIconAnchor(Point.newInstance(27, 45));
@@ -115,29 +114,29 @@ public class UserLocationMap extends FlowPanel {
 				icon.setShadowURL("http://labs.google.com/ridefinder/images/mm_20_shadow.png");
 				markerOptions.setIcon(icon);
 				
-				Marker m = new Marker(point, markerOptions);
-				m.addMarkerClickHandler(new MarkerClickHandler(){
+				Marker marker = new Marker(point, markerOptions);
+				marker.addMarkerClickHandler(new MarkerClickHandler(){
 
 					@Override
 					public void onClick(MarkerClickEvent event) {
-						showWindow(point, p.getDate());
+						showWindow(point, position.getDate());
 					}
 					
 				});
-				if(i == 0){
-					showWindow(point, p.getDate());
+				if(positionNumber == 0){
+					showWindow(point, position.getDate());
 				}
 				
-			    mapWidget.addOverlay(m);
-			    overlays.add(m);
-			    i++;
+			    mapWidget.addOverlay(marker);
+			    overlays.add(marker);
+			    positionNumber++;
 			}
-			Position p = rs.get(0);
-			center = LatLng.newInstance(p.getLatitude(), p.getLongitude());
+			Position lastPosition = positions.get(0);
+			center = LatLng.newInstance(lastPosition.getLatitude(), lastPosition.getLongitude());
 		}
 		mapWidget.checkResize();
 		
-	    this.centerMap();
+	    centerMap();
 	}
 	
 	protected void showWindow(LatLng point, Date date) {
@@ -191,14 +190,14 @@ public class UserLocationMap extends FlowPanel {
 
 	public void getPositions(){
 		try{
-			int num = Integer.valueOf(txtItems.getText());
-			if(num < 1){
-				num = 1;
-			}else if(num > 100){
-				num = 100;
+			int numOfPositions = Integer.valueOf(txtItems.getText());
+			if(numOfPositions < 1){
+				numOfPositions = 1;
+			}else if(numOfPositions > 100){
+				numOfPositions = 100;
 			}
 			// Then, we send the input to the server.
-			positionService.getLastPositions(num,
+			positionService.getLastPositions(numOfPositions,
 				new AsyncCallback<List<Position>>() {
 					public void onFailure(Throwable caught) {
 						setRefreshButtonIdle();
@@ -208,8 +207,8 @@ public class UserLocationMap extends FlowPanel {
 					}
 
 					@Override
-					public void onSuccess(List<Position> rs) {
-						fill(rs);
+					public void onSuccess(List<Position> positions) {
+						fill(positions);
 						setRefreshButtonIdle();
 					}
 				});
@@ -224,10 +223,10 @@ public class UserLocationMap extends FlowPanel {
     	btnRefresh.setEnabled(true);
 	}
 
-	private void fill(final List<Position> rs) {
+	private void fill(final List<Position> positions) {
 		Maps.loadMapsApi("", "2", false, new Runnable() {
 	        public void run() {
-	        	mapSetup(rs);
+	        	mapSetup(positions);
 	        }
 	      });
 	}

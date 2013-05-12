@@ -38,12 +38,12 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	    flowpanel.add(btnAddReminder);
 	    mainPanel.add(flowpanel, localizedConstants.reminders());
 	    	    
-	    map.setSize("100%", "600px");
+	    map.setSize("100%", "400px");
 	    mainPanel.add(map, localizedConstants.map());
 	    
 	    mainPanel.selectTab(0);
 
-	    mainPanel.setSize("100%", "600px");
+	    mainPanel.setSize("100%", "400px");
 	    mainPanel.addStyleName("table-center");
 	    mainPanel.addSelectionHandler(new SelectionHandler<Integer>(){
 
