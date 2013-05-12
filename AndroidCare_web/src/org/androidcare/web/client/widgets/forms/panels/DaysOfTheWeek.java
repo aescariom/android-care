@@ -17,27 +17,27 @@ public class DaysOfTheWeek extends HorizontalPanel {
 	public static final int FRIDAY = 5;
 	public static final int SATURDAY = 6;
 
-	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
+	private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
 
-	protected Label lblMonday = new Label(LocalizedConstants.mondayShort());
+	protected Label lblMonday = new Label(localizedConstants.mondayShort());
 	protected CheckBox chkMonday = new CheckBox();
 	
-	protected Label lblTuesday = new Label(LocalizedConstants.tuesdayShort());
+	protected Label lblTuesday = new Label(localizedConstants.tuesdayShort());
 	protected CheckBox chkTuesday = new CheckBox();
 	
-	protected Label lblWednesday = new Label(LocalizedConstants.wednesdayShort());
+	protected Label lblWednesday = new Label(localizedConstants.wednesdayShort());
 	protected CheckBox chkWednesday = new CheckBox();
 	
-	protected Label lblThursday = new Label(LocalizedConstants.thursdayShort());
+	protected Label lblThursday = new Label(localizedConstants.thursdayShort());
 	protected CheckBox chkThursday = new CheckBox();
 	
-	protected Label lblFriday = new Label(LocalizedConstants.fridayShort());
+	protected Label lblFriday = new Label(localizedConstants.fridayShort());
 	protected CheckBox chkFriday = new CheckBox();
 	
-	protected Label lblSaturday = new Label(LocalizedConstants.saturdayShort());
+	protected Label lblSaturday = new Label(localizedConstants.saturdayShort());
 	protected CheckBox chkSaturday = new CheckBox();
 	
-	protected Label lblSunday = new Label(LocalizedConstants.sundayShort());
+	protected Label lblSunday = new Label(localizedConstants.sundayShort());
 	protected CheckBox chkSunday = new CheckBox();
 	
 	public DaysOfTheWeek(){
@@ -78,7 +78,6 @@ public class DaysOfTheWeek extends HorizontalPanel {
 	}
 
 	public void setValue(Boolean[] days) {
-		if(days.length >= 7){
 			chkMonday.setValue(days[DaysOfTheWeek.MONDAY]);
 			chkTuesday.setValue(days[DaysOfTheWeek.TUESDAY]);
 			chkWednesday.setValue(days[DaysOfTheWeek.WEDNESDAY]);
@@ -86,6 +85,5 @@ public class DaysOfTheWeek extends HorizontalPanel {
 			chkFriday.setValue(days[DaysOfTheWeek.FRIDAY]);
 			chkSaturday.setValue(days[DaysOfTheWeek.SATURDAY]);
 			chkSunday.setValue(days[DaysOfTheWeek.SUNDAY]);
-		}
 	}
 }

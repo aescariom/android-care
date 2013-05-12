@@ -73,23 +73,24 @@ public class Reminder implements Serializable{
 
 	public Reminder() {}
 	
-	public Reminder(Reminder r) {
-		this.id = r.getId();
-		this.title = r.getTitle();
-		this.description = r.getDescription();
-		this.repeat = r.isRepeat();
-		this.activeFrom = new Date(r.getActiveFrom().getTime());
-		if(this.activeUntil != null){ 
-			this.activeUntil = new Date(r.getActiveUntil().getTime());
+	public Reminder(Reminder reminder) {
+		id = reminder.getId();
+		title = reminder.getTitle();
+		description = reminder.getDescription();
+		repeat = reminder.isRepeat();
+		activeFrom = new Date(reminder.getActiveFrom().getTime());
+		//@comentario me parece muy raro este  condicional no será reminder.getActiveUntil() != null
+		if(activeUntil != null){ 
+			activeUntil = new Date(reminder.getActiveUntil().getTime());
 		}
-		this.numerOfRepetitions = r.getNumerOfRepetitions();
-		this.endType = r.getEndType();
-		this.repeatPeriod = r.getRepeatPeriod();
-		this.daysOfWeekInWhichShouldTrigger = r.getDaysOfWeekInWhichShouldTrigger();
-		this.repeatEachXPeriods = r.getRepeatEachXPeriods();
-		this.requestConfirmation = r.isRequestConfirmation();
-		this.owner = r.getOwner();
-		this.blobKey = r.getBlobKey();
+		numerOfRepetitions = reminder.getNumerOfRepetitions();
+		endType = reminder.getEndType();
+		repeatPeriod = reminder.getRepeatPeriod();
+		daysOfWeekInWhichShouldTrigger = reminder.getDaysOfWeekInWhichShouldTrigger();
+		repeatEachXPeriods = reminder.getRepeatEachXPeriods();
+		requestConfirmation = reminder.isRequestConfirmation();
+		owner = reminder.getOwner();
+		blobKey = reminder.getBlobKey();
 	}
 
 	public Long getId() {
@@ -209,29 +210,14 @@ public class Reminder implements Serializable{
 	}
 	
 	public int getLogSize(){
-		if(this.log == null){
+		if(log == null){
 			return 0;
 		}
-		return this.log.size();
+		return log.size();
 	}
 	
 	public List<ReminderLog> getLog(){
-		return this.log;
-	}
-	
-	public void cleanForAPI() {
-		owner = null;
-		log = null;
-		if(!repeat){
-			this.repeatEachXPeriods = null;
-			this.endType = null;
-			this.activeUntil = null;
-			this.daysOfWeekInWhichShouldTrigger = new Boolean[0];
-		}else{
-			if(this.repeatPeriod != Reminder.REPEAT_PERIOD_WEEK){
-				this.daysOfWeekInWhichShouldTrigger = new Boolean[0];
-			}
-		}
+		return log;
 	}
 
 	public void setBlobKey(String keyString) {
@@ -239,6 +225,6 @@ public class Reminder implements Serializable{
 	}
 	
 	public String getBlobKey(){
-		return this.blobKey;
+		return blobKey;
 	}
 }

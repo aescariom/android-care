@@ -2,6 +2,8 @@ package org.androidcare.web.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
@@ -24,7 +26,11 @@ import javax.jdo.Query;
 public class ReminderServiceImpl extends RemoteServiceServlet implements
 		ReminderService {
 	
+	private static final Logger log = Logger.getLogger(ReminderServiceImpl.class.getName());
+	
 	public Reminder saveReminder(Reminder reminder) {
+		//@comentario aunque ahora no vamos hacer nada para corregirlo, este método podría ser usado
+		//por cualquiera para añadir cualquier recordatorio
 		if(reminder.getId() > 0){
 			reminder = editReminder(reminder);
 		}else{
@@ -39,39 +45,42 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		try{
 			txn.begin();
 
-			Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-			r.setTitle(reminder.getTitle());
-			r.setDescription(reminder.getDescription());
-			r.setRepeat(reminder.isRepeat());
-			r.setActiveFrom(reminder.getActiveFrom());
+			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
+			//@comentario ¿tendría sentido que hacer la comprobación
+			//if(reminder.getOwner().compareToIgnoreCase(user.getUserId()) == 0)
+			//no tengo claro que de mucha seguridad, pero menos da una piedra
+			persistedReminder.setTitle(reminder.getTitle());
+			persistedReminder.setDescription(reminder.getDescription());
+			persistedReminder.setRepeat(reminder.isRepeat());
+			persistedReminder.setActiveFrom(reminder.getActiveFrom());
 			if(reminder.getActiveUntil() != null){
-				r.setActiveUntil(reminder.getActiveUntil());
-				r.setNumerOfRepetitions(null);
-				r.setEndType(Reminder.END_TYPE_UNTIL_DATE);
+				persistedReminder.setActiveUntil(reminder.getActiveUntil());
+				persistedReminder.setNumerOfRepetitions(null);
+				persistedReminder.setEndType(Reminder.END_TYPE_UNTIL_DATE);
 			}else if(reminder.getNumerOfRepetitions() != null){
-				r.setNumerOfRepetitions(reminder.getNumerOfRepetitions());
-				r.setEndType(Reminder.END_TYPE_ITERATIONS);
-				r.setActiveUntil(null);
+				persistedReminder.setNumerOfRepetitions(reminder.getNumerOfRepetitions());
+				persistedReminder.setEndType(Reminder.END_TYPE_ITERATIONS);
+				persistedReminder.setActiveUntil(null);
 			}else{
-				r.setNumerOfRepetitions(null);
-				r.setActiveUntil(null);
-				r.setEndType(Reminder.END_TYPE_NEVER_ENDS);
+				persistedReminder.setNumerOfRepetitions(null);
+				persistedReminder.setActiveUntil(null);
+				persistedReminder.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			}
-			r.setRepeatPeriod(reminder.getRepeatPeriod());
-			r.setDaysOfWeekInWhichShouldTrigger(reminder.getDaysOfWeekInWhichShouldTrigger());
-			r.setRepeatEachXPeriods(reminder.getRepeatEachXPeriods());
-			r.setRequestConfirmation(reminder.isRequestConfirmation());
+			persistedReminder.setRepeatPeriod(reminder.getRepeatPeriod());
+			persistedReminder.setDaysOfWeekInWhichShouldTrigger(reminder.getDaysOfWeekInWhichShouldTrigger());
+			persistedReminder.setRepeatEachXPeriods(reminder.getRepeatEachXPeriods());
+			persistedReminder.setRequestConfirmation(reminder.isRequestConfirmation());
 			
 			//setting the owner
 			UserService userService = UserServiceFactory.getUserService();
 		    User user = userService.getCurrentUser();
-			r.setOwner(user.getUserId());
+			persistedReminder.setOwner(user.getUserId());
 		    
 			txn.commit();
 			
-			return r;
+			return persistedReminder;
 		} catch(Exception ex){
-			ex.printStackTrace();
+			log.log(Level.SEVERE, "Reminder could not be edited", ex);
 	    } finally {
 	    	if (txn.isActive()) {
 		        txn.rollback();
@@ -99,13 +108,15 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			}else{
 				reminder.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			}
+			//@comentario ¿deberías usar una transacción para esto?
+			//Pregunto, realmente no leído todavía nada sobre transacciones en el AppEngine,  pero parece
+			//que siempre las usas cuando escribes
 			
             pm.makePersistent(reminder);
             return reminder;
         } catch(Exception ex){
-			ex.printStackTrace();
-        } finally {
- 
+        	log.log(Level.SEVERE, "Reminder could not be edited", ex);
+        } finally { 
             pm.close();
         }
 		return null;
@@ -124,15 +135,15 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 	    query.setOrdering("title asc");
 
 	    try {
-	        List<?> rs = (List<?>) query.execute(user.getUserId());
-	        if(rs != null){
-		        for (Object r : rs) {
-		        	Reminder rem = new Reminder((Reminder)r);
+	        List<?> resulset = (List<?>) query.execute(user.getUserId());
+	        if(resulset != null){
+		        for (Object persitedReminder : resulset) {
+		        	Reminder rem = new Reminder((Reminder)persitedReminder);
 		            list.add(rem);
 		        }
 	        }
 	    } catch(Exception ex){
-			ex.printStackTrace();
+	    	log.log(Level.SEVERE, "Reminders could not be retrieved", ex);
 	    }finally {
 	        query.closeAll();
 	    }
@@ -140,24 +151,15 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public Boolean deleteReminder(Reminder reminder)  {
-
+		//@comentario ¿deberías usar una transacción para esto?
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-
+			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
 			BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-			try{
-				if(r.getBlobKey() != null && r.getBlobKey() != ""){
-					BlobKey blobKeys = new BlobKey(r.getBlobKey());
-				    blobstoreService.delete(blobKeys);
-				}
-			}catch(RuntimeException e){
-				// imagen no borrada
-			}
-			
-			pm.deletePersistent(r);
+			UploadReminderPhoto.deleteReminderImage(persistedReminder, blobstoreService);			
+			pm.deletePersistent(persistedReminder);
 		} catch(Exception ex){
-			ex.printStackTrace();
+			log.log(Level.SEVERE, "Reminder could not be deleted", ex);
         	return false;
         } finally {
             pm.close();
@@ -172,15 +174,15 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-			List<ReminderLog> rs = a.getLog();	
-		    if(rs != null){
-				for (ReminderLog log : rs) {
+			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
+			List<ReminderLog> logs = persistedReminder.getLog();	
+		    if(logs != null){
+				for (ReminderLog log : logs) {
 		            list.add(new ReminderLog(log));
 		        }
 	        }
 		} catch(Exception ex){
-			ex.printStackTrace();
+			log.log(Level.SEVERE, "Reminder's logs could not be retrieved", ex);
         } finally {
             pm.close();
         }
@@ -193,19 +195,19 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-			List<ReminderLog> rs = a.getLog();	
-		    if(rs != null){
-		    	if(rs.size() > start){
+			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
+			List<ReminderLog> logs = persistedReminder.getLog();	
+		    if(logs != null){
+		    	if(logs.size() > start){
 		    		int end = start + length;
-		    		end = Math.min(end, rs.size());
+		    		end = Math.min(end, logs.size());
 		    		for(int i = start; i < end; i++){
-		    			list.add(new ReminderLog(rs.get(i)));
+		    			list.add(new ReminderLog(logs.get(i)));
 		    		}
 		    	}
 	        }
 		} catch(Exception ex){
-			ex.printStackTrace();
+			log.log(Level.SEVERE, "Reminder's logs could not be retrieved", ex);
         } finally {
             pm.close();
         }
@@ -217,10 +219,10 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-			return a.getLog().size();
+			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
+			return persistedReminder.getLog().size();
 		} catch(Exception ex){
-			ex.printStackTrace();
+			log.log(Level.SEVERE, "Reminder's logs count could not be retrieved", ex);
         } finally {
             pm.close();
         }
@@ -233,27 +235,18 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 		final Transaction txn = pm.currentTransaction();
 		try{
 			txn.begin();
-			Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-
+			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
 			BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-			try{
-				if(r.getBlobKey() != null && r.getBlobKey() != ""){
-					BlobKey blobKeys = new BlobKey(r.getBlobKey());
-				    blobstoreService.delete(blobKeys);
-				}
-			}catch(RuntimeException e){
-				// imagen no borrada
-			}
-			r.setBlobKey("");
+			UploadReminderPhoto.deleteReminderImage(persistedReminder, blobstoreService);
+			persistedReminder.setBlobKey("");
 		    
 			txn.commit();
 		} catch(Exception ex){
-			ex.printStackTrace();
+			log.log(Level.SEVERE, "Reminder's photo could not be deleted", ex);
         	return false;
         } finally {
             pm.close();
-        }
-		
+        }		
 		return true;
-	}
+	}	
 }

@@ -29,8 +29,7 @@ public enum RequestCode {
     	return code + ": " + description;
     }
 
-    public static RequestCode getByCode(int codeValue)
-    {
+    public static RequestCode getByCode(int codeValue){
         for (RequestCode  type : RequestCode.values()) {
             if(type.code == codeValue){
             	return type;

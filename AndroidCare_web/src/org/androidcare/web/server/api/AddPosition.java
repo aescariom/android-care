@@ -57,7 +57,7 @@ public class AddPosition extends HttpServlet {
 				
 				if(last != null && last.getLatitude() == latitude && last.getLongitude() == longitude){
 					last.setDate(date);
-					last.setServerDate();
+					last.initializeServerDate();
 				}else{
 					Position p = new Position(latitude, longitude, owner, date);
 					pm.makePersistent(p);

@@ -3,6 +3,8 @@ package org.androidcare.web.server;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
@@ -24,19 +26,19 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class UploadReminderPhoto extends HttpServlet{
+	
+	private static final Logger log = Logger.getLogger(UploadReminderPhoto.class.getName());
+	private static final int ONE_MB = 1024*1024; // 1MB
 
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse res) throws ServletException, IOException {
-
-//		UserService userService = UserServiceFactory.getUserService();
-//		User user = userService.getCurrentUser();
 		
 		int length = request.getContentLength();
-		int oneMB = 1024*1024; // 1MB
 		
-		if(length > oneMB){
-			throw new RuntimeException("The file is too large, it's sice should be lower than 1MB");
+		if(length > ONE_MB){
+			log.log(Level.SEVERE, "The file is too large, it's sice should be lower than 1MB");
+			throw new RuntimeException("The file is too large, it's sice should be lower than 1MB");			
 		}
 		
 		Map<String, List<BlobKey>> blobArray = blobstoreService.getUploads(request);
@@ -50,7 +52,8 @@ public class UploadReminderPhoto extends HttpServlet{
 		BlobInfo blobInfo = bi.loadBlobInfo(photo);
 		String mime = blobInfo.getContentType();
 		
-		if(!mime.equalsIgnoreCase("image/png") && !mime.equalsIgnoreCase("image/gif") && !mime.equalsIgnoreCase("image/bmp") && !mime.equalsIgnoreCase("image/jpeg")){
+		if(isNotASupportedFormat(mime)){
+			log.log(Level.SEVERE, "Image format not supported or it is not an image");
 			throw new RuntimeException("This is not an image");			
 		}
 		
@@ -61,30 +64,36 @@ public class UploadReminderPhoto extends HttpServlet{
 		try{
 			txn.begin();
 
-			Reminder r = (Reminder)pm.getObjectById(Reminder.class, id);
-			//setting the owner
-//			if(r.getId().toString() != user.getUserId()){
-//				throw new RuntimeException("Users don't match");
-//			}
-			
-			try{
-				if(r.getBlobKey() != null && r.getBlobKey() != ""){
-					BlobKey blobKeys = new BlobKey(r.getBlobKey());
-				    blobstoreService.delete(blobKeys);
-				}
-			}catch(RuntimeException e){
-				// imagen no borrada
-			}
+			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, id);
+			deleteReminderImage(persistedReminder, blobstoreService);
 		    
-			r.setBlobKey(photo.getKeyString());
+			persistedReminder.setBlobKey(photo.getKeyString());
 			
 			txn.commit();	
 		} catch(Exception ex){
-			ex.printStackTrace();
+			log.log(Level.SEVERE, "Image could not be uploaded", ex);
 	    } finally {
 	    	if (txn.isActive()) {
 		        txn.rollback();
 		    }
 	    }
+	}
+
+
+	private boolean isNotASupportedFormat(String mime) {
+		return !mime.equalsIgnoreCase("image/png") && !mime.equalsIgnoreCase("image/gif") && !mime.equalsIgnoreCase("image/bmp") && !mime.equalsIgnoreCase("image/jpeg");
+	}
+
+
+	static void deleteReminderImage(Reminder persistedReminder,
+			BlobstoreService blobstoreService) {
+		try{
+			if(persistedReminder.getBlobKey() != null && persistedReminder.getBlobKey() != ""){
+				BlobKey blobKeys = new BlobKey(persistedReminder.getBlobKey());
+			    blobstoreService.delete(blobKeys);
+			}
+		}catch(RuntimeException e){
+			log.log(Level.SEVERE, "Image could not be deleted", e);
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package org.androidcare.web.shared;
 
+//@Comentario en algún momento habría que tener un soporte de i18n un poco menos ad hoc
 public enum ReminderStatusCode {
 
 	REMINDER_DISPLAYED(0, "REMINDER DISPLAYED", "RECORDATORIO MOSTRADO"),

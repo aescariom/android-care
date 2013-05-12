@@ -47,19 +47,19 @@ public class Position implements Serializable {
 		this.serverDate = new Date();
 	}
 	
-	public Position(Position p){
-		this.latitude = p.getLatitude();
-		this.longitude = p.getLongitude();
-		this.owner = p.getOwner();
-		if(p.getDate() != null){
-			this.date = new Date(p.getDate().getTime());
+	public Position(Position position){
+		latitude = position.getLatitude();
+		longitude = position.getLongitude();
+		owner = position.getOwner();
+		if(position.getDate() != null){
+			date = new Date(position.getDate().getTime());
 		}else{
-			this.date = new Date();
+			date = new Date();
 		}
-		if(p.getServerDate() != null){
-			this.serverDate = new Date(p.getServerDate().getTime());
+		if(position.getServerDate() != null){
+			serverDate = new Date(position.getServerDate().getTime());
 		}else{
-			this.serverDate = new Date();
+			serverDate = new Date();
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class Position implements Serializable {
 		this.date = d;
 	}
 	
-	public void setServerDate(){
-		this.serverDate = new Date();
+	public void initializeServerDate(){
+		serverDate = new Date();
 	}
 }

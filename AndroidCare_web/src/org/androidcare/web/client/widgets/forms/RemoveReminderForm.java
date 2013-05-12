@@ -20,19 +20,18 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class RemoveReminderForm extends ObservableForm {
 
-	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
-	private LocalizedMessages LocalizedMessages = GWT.create(LocalizedMessages.class);
+	private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
+	private LocalizedMessages localizedMessages = GWT.create(LocalizedMessages.class);
 
-    Button btnProceed = new Button(LocalizedConstants.proceed());
-    Button btnCancel = new Button(LocalizedConstants.cancel());
+    Button btnProceed = new Button(localizedConstants.proceed());
+    Button btnCancel = new Button(localizedConstants.cancel());
     Label lblWarn = new Label();
 
     VerticalPanel generalPanel = new VerticalPanel();
     HorizontalPanel buttonPanel = new HorizontalPanel();
     
 
-	private final ReminderServiceAsync alertService = GWT
-			.create(ReminderService.class);
+	private final ReminderServiceAsync alertService = GWT.create(ReminderService.class);
 
 
     public RemoveReminderForm(final Reminder reminder) {
@@ -60,7 +59,7 @@ public class RemoveReminderForm extends ObservableForm {
         buttonPanel.add(btnCancel);
         buttonPanel.add(btnProceed);
         
-        lblWarn.setText(LocalizedMessages.aboutToDeleteReminderWarning(reminder.getTitle()));
+        lblWarn.setText(localizedMessages.aboutToDeleteReminderWarning(reminder.getTitle()));
         
         generalPanel.add(lblWarn);
         generalPanel.add(buttonPanel);

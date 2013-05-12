@@ -20,8 +20,8 @@ public class PositionServiceImpl extends RemoteServiceServlet implements
 		PositionService {
 
 	@Override
-	public List<Position> getLastPositions(int num) {
-		List<Position> list = new ArrayList<Position>();
+	public List<Position> getLastPositions(int numOfPositions) {
+		List<Position> positions = new ArrayList<Position>();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		UserService userService = UserServiceFactory.getUserService();
@@ -30,14 +30,14 @@ public class PositionServiceImpl extends RemoteServiceServlet implements
 		Query query = pm.newQuery(Position.class);
 	    query.setFilter("owner == reminderOwner");
 	    query.declareParameters("String reminderOwner");
-	    query.setRange(0, num);
+	    query.setRange(0, numOfPositions);
 	    query.setOrdering("date descending");
 
 	    try {
 	        List<?> rs = (List<?>) query.execute(user.getUserId());
 	        if(rs != null){
-		        for (Object p : rs) {
-		            list.add(new Position((Position)p));
+		        for (Object position : rs) {
+		            positions.add(new Position((Position)position));
 		        }
 	        }
 	    } catch(Exception ex){
@@ -45,6 +45,6 @@ public class PositionServiceImpl extends RemoteServiceServlet implements
 	    }finally {
 	        query.closeAll();
 	    }
-	    return list;
+	    return positions;
 	}
 }
