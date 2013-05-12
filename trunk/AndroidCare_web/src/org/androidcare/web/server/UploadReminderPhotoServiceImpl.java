@@ -10,7 +10,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class UploadReminderPhotoServiceImpl  extends RemoteServiceServlet implements UploadReminderPhotoService {
 
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-
+//@Comentario pues no acabo de entender para qué hace falta esto...
 	@Override
 	public String getBlobStoreUrl() {
 		String url = blobstoreService.createUploadUrl("/reminderUpload");

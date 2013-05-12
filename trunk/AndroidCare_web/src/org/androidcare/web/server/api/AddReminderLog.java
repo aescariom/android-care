@@ -55,9 +55,9 @@ public class AddReminderLog extends HttpServlet {
 					date = format.parse(req.getParameter("time").toString());
 				}
 				
-				Reminder a = (Reminder)pm.getObjectById(Reminder.class, reminderId);
+				Reminder reminder = (Reminder)pm.getObjectById(Reminder.class, reminderId);
 
-				if(a.getOwner().compareToIgnoreCase(user.getUserId()) != 0){
+				if(reminder.getOwner().compareToIgnoreCase(user.getUserId()) != 0){
 					return;
 				}
 				
@@ -65,7 +65,7 @@ public class AddReminderLog extends HttpServlet {
 				log.setTime(date);
 				log.setCode(ReminderStatusCode.getByCode(statusCode));
 				
-				a.addLog(log);
+				reminder.addLog(log);
 
 			    txn.commit();
 

@@ -9,6 +9,8 @@ import javax.servlet.http.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.androidcare.web.server.PMF;
 import org.androidcare.web.shared.persistent.Reminder;
@@ -24,7 +26,8 @@ public class RetrieveReminders extends HttpServlet {
 
 
 	private static final long serialVersionUID = -4706823493170719155L;
-
+	
+	private static final Logger log = Logger.getLogger(RetrieveReminders.class.getName());
 
 	public void process(HttpServletRequest req, HttpServletResponse resp)  
 			   throws IOException, ServletException, JSONException {  
@@ -39,17 +42,17 @@ public class RetrieveReminders extends HttpServlet {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser(); 
 		List<JSONObject> list = null;
+		
 		if(user != null){
-
 			Query query = pm.newQuery(Reminder.class);
 			query.setOrdering("id asc");
 			if(req.getParameter("reminderId") != null){
 				List<Reminder> reminders = new ArrayList<Reminder>();
 				int reminderId = Integer.parseInt(req.getParameter("reminderId").toString());
-				Reminder r = (Reminder)pm.getObjectById(Reminder.class, reminderId);
-				if(r != null){
-					if(r.getOwner().compareToIgnoreCase(user.getUserId()) == 0){
-						reminders.add(r);
+				Reminder reminder = (Reminder)pm.getObjectById(Reminder.class, reminderId);
+				if(reminder != null){
+					if(reminder.getOwner().compareToIgnoreCase(user.getUserId()) == 0){
+						reminders.add(reminder);
 					}
 				}
 				list = getReminderList(reminders);
@@ -72,7 +75,7 @@ public class RetrieveReminders extends HttpServlet {
 		try {
 			process(req, resp);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE,"Reminders could not be retrived",e);
 		}  
 	}  
 
@@ -81,7 +84,7 @@ public class RetrieveReminders extends HttpServlet {
 	    try {
 			process(req, resp);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE,"Reminders could not be retrived",e);
 		}  
 	}  
 	

@@ -10,5 +10,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("position")
 public interface PositionService extends RemoteService {
 
-	List<Position> getLastPositions(int num);
+	List<Position> getLastPositions(int numOfPositions);
 }

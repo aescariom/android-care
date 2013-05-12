@@ -40,9 +40,9 @@ public class ReminderLog implements Serializable {
 
 	public ReminderLog(ReminderLog r){
 		super();
-		this.code = r.getCode();
-		this.time = new Date(r.getTime().getTime());
-		this.serverTime = new Date(r.getServerTime().getTime());
+		code = r.getCode();
+		time = new Date(r.getTime().getTime());
+		serverTime = new Date(r.getServerTime().getTime());
 	}
 
 	public Date getTime() {

@@ -33,8 +33,7 @@ public class DateTimeBox extends HorizontalPanel {
 	}
 
 	public DateTimeBox(boolean time){
-		super();
-		
+		super();		
 		init(time);
 	}
 
