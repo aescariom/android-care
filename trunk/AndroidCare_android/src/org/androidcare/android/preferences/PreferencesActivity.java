@@ -39,6 +39,7 @@ public class PreferencesActivity extends PreferenceActivity {
         setLocationUpdates();
         setSynchronizationInterval();
         setReminderUpdates();
+        setStopButton();
     }
     
     private void setSynchronizationInterval() {
@@ -170,6 +171,20 @@ public class PreferencesActivity extends PreferenceActivity {
                 Toast.makeText(getApplicationContext(), R.string.restarting_service, Toast.LENGTH_SHORT)
                 .show();
                 ServiceManager.startAllServices(getApplicationContext());
+                return true;
+            }
+            
+        });
+    }
+    
+    private void setStopButton(){
+        final Preference restart = (Preference) findPreference("stopServices");
+        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getApplicationContext(), R.string.stopping_service, Toast.LENGTH_SHORT)
+                .show();
+                ServiceManager.stopSecondaryServices(getApplicationContext());
                 return true;
             }
             

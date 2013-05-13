@@ -11,6 +11,10 @@
 		      	android:key="restartServices" 
                 android:title="@string/restart_services"
                 android:summary="" />
+		  <Preference 
+		      	android:key="stopServices" 
+                android:title="@string/stop_services"
+                android:summary="" />
 	 </PreferenceCategory>
 	 
  	<PreferenceCategory

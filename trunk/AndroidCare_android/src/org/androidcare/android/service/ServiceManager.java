@@ -8,14 +8,20 @@ import android.content.Intent;
 
 public abstract class ServiceManager {
 
-    public static void startAllServices(Context context){  
-        Intent i = new Intent(context, ConnectionService.class);
-        context.startService(i);
-
-        i = new Intent(context, ReminderService.class);
-        context.startService(i);
-        
-        i = new Intent(context, LocationService.class);
-        context.startService(i);
+    public static void startAllServices(Context context){
+        context.startService(new Intent(context, ConnectionService.class));
+        context.startService(new Intent(context, LocationService.class));
+        context.startService(new Intent(context, ReminderService.class));
+    }
+    
+    public static void stopAllServices(Context context){
+        context.stopService(new Intent(context, LocationService.class));
+        context.stopService(new Intent(context, ReminderService.class));
+        context.stopService(new Intent(context, ConnectionService.class));
+    }
+    
+    public static void stopSecondaryServices(Context context){
+        context.stopService(new Intent(context, LocationService.class));
+        context.stopService(new Intent(context, ReminderService.class));
     }
 }

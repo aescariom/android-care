@@ -7,11 +7,13 @@
     <string name="error">Error</string>
     <string name="open_account_settings">Open settings</string>
     <string name="restarting_service">Restarting background service&#8230;</string>
+    <string name="stopping_service">Stopping background service&#8230;</string>
     <string name="cancel">Cancel</string>
     
     <!-- Accounts -->
     <string name="account">Accounts</string>
-    <string name="restart_services">Restart</string>
+    <string name="restart_services">Restart services</string>
+    <string name="stop_services">Stop services</string>
     <string name="account_settings">Account settings</string>
     <string name="view_reminders">Reminder list</string>
     <string name="account_summary">Select a Google account</string>
