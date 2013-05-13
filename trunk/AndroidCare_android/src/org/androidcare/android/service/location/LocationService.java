@@ -93,6 +93,7 @@ public class LocationService extends Service {
             public void run() {
                 locationManager.removeUpdates(locationListener);
                 UpdateLocationReceiver.releaseLock();
+                Log.w(TAG, "Location could not be obtained; we stopt trying:");
             }
        }, 50000);
        locationManager.requestSingleUpdate(criteria, locationListener, looper);
