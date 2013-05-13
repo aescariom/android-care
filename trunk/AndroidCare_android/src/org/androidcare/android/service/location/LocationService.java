@@ -20,7 +20,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -85,7 +87,15 @@ public class LocationService extends Service {
 
        // Acquire a reference to the system Location Manager
        this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-       locationManager.requestSingleUpdate(criteria, locationListener, null);
+       Looper looper = Looper.myLooper();
+       final Handler myHandler = new Handler(looper);
+       myHandler.postDelayed(new Runnable() {
+            public void run() {
+                locationManager.removeUpdates(locationListener);
+                UpdateLocationReceiver.releaseLock();
+            }
+       }, 50000);
+       locationManager.requestSingleUpdate(criteria, locationListener, looper);
     }
 
    private Criteria getCriteria() {
