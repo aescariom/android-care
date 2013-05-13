@@ -7,11 +7,13 @@
     <string name="error">Error</string>
     <string name="open_account_settings">Abrir ajustes</string>
     <string name="restarting_service">Reiniciando servicios</string>
+    <string name="stopping_service">Deteniendo los servicios</string>
     <string name="cancel">Cancelar</string>
     
     <!-- Accounts -->
     <string name="account">Cuentas</string>
-    <string name="restart_services">Reiniciar</string>
+    <string name="restart_services">Reiniciar servicios</string>
+    <string name="stop_services">Parar servicios</string>
     <string name="account_settings">Ajustes de la cuenta</string>
     <string name="view_reminders">Lista de recordatorios</string>
     <string name="account_summary">Seleccione una cuenta de google</string>

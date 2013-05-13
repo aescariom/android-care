@@ -17,7 +17,6 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
 
     private static final String TAG = UpdateLocationReceiver.class.getName();
     private LocationService locationService;
-    boolean mBound = false;
     
     private static PowerManager.WakeLock wakeLock = null;
     private static final String LOCK_TAG = "org.androidcare.android.service.location";
@@ -34,14 +33,11 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
 
             Log.e(TAG, "Haciendo scheduling de la siguiente petición");
             locationService.scheduleNextUpdate();
-            
-            mBound = true;
 
             Log.e(TAG, "Terminado el trabajo");
         }
 
         public void onServiceDisconnected(ComponentName name) {
-            mBound = false;
             Log.e(TAG, "Servicio desconectado");
         }
 

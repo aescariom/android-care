@@ -50,6 +50,8 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 public class ConnectionService extends Service {
+
+    private static final String TAG = ConnectionService.class.getName();
     public static final String APP_URL = "http://androidcare2.appspot.com/";
 
     private static final int NOTIFICATION_ADD_ACCOUNT = 0;
@@ -86,7 +88,7 @@ public class ConnectionService extends Service {
         registerReceiver(connectionServiceReceiver, filter);
         setConnectionStateListener();
         isMock = getApplicationContext().getResources().getBoolean(R.bool.mock);
-        
+
         scheduleNextSynchronization();
         
         return result;
@@ -115,9 +117,10 @@ public class ConnectionService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "Stopping service");
         unregisterReceiver(mNetworkStateIntentReceiver);
         unregisterReceiver(connectionServiceReceiver);
-        
+        cancelSynchronizationUpdates();
         closeDatabaseConnection();
     }
 
@@ -438,7 +441,6 @@ public class ConnectionService extends Service {
         }
     }
 
-
     public void scheduleNextSynchronization() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String strMin = prefs.getString("synchronizationInterval", "15");        
@@ -461,6 +463,13 @@ public class ConnectionService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + timeLapse, pendingIntent);
+    }
+    
+    public void cancelSynchronizationUpdates() {
+        AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), PushMessagesReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        am.cancel(pendingIntent);
     }
     
     private DatabaseHelper getHelper() {

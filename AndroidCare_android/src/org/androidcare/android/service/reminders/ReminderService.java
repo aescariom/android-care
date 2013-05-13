@@ -24,7 +24,7 @@ import android.util.Log;
 public class ReminderService extends Service {
 
     private static final int REMINDER_REQUEST_CODE = 0;
-    private final String tag = this.getClass().getName();
+    private final String TAG = this.getClass().getName();
 
     // intent broadcast receiver
     private ReminderServiceBroadcastReceiver reminderServiceReceiver = 
@@ -37,7 +37,7 @@ public class ReminderService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
-        Log.i(tag, "Reminder service started");
+        Log.i(TAG, "Reminder service started");
 
         registerReceiver(reminderServiceReceiver, reminderServiceBroadcastFilter);
 
@@ -51,6 +51,8 @@ public class ReminderService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "Stopping service");
+        cancelAllReminders();
         unregisterReceiver(reminderServiceReceiver);
         closeDatabaseConnection();
     }
@@ -110,7 +112,7 @@ public class ReminderService extends Service {
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis()/*Calendar.getInstance().getTimeInMillis() + 30000*/, sender);
         
-        Log.i(tag, "Reminder scheduled: " + reminder.getTitle() + " @ " + cal.getTime().toString());
+        Log.i(TAG, "Reminder scheduled: " + reminder.getTitle() + " @ " + cal.getTime().toString());
     }
     
     private Intent createReminderIntent(Reminder reminder) {
@@ -132,7 +134,7 @@ public class ReminderService extends Service {
             try {
                 getHelper().getReminderDao().createIfNotExists(r);
             }catch (SQLException e) {
-                Log.e(tag, "Could not insert the reminder: " + r + " -> " + e.toString());
+                Log.e(TAG, "Could not insert the reminder: " + r + " -> " + e.toString());
             }
         }
     }

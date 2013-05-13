@@ -98,7 +98,7 @@ public class LocationService extends Service {
        locationManager.requestSingleUpdate(criteria, locationListener, looper);
     }
 
-   private Criteria getCriteria() {
+    private Criteria getCriteria() {
        // setting the criteria
        Criteria criteria = new Criteria();
        criteria.setAccuracy(Criteria.ACCURACY_MEDIUM);
@@ -108,7 +108,7 @@ public class LocationService extends Service {
        criteria.setSpeedRequired(false);
        criteria.setCostAllowed(true);
        return criteria;
-   }
+    }
 
     private void bindConnectionService() {
        if(!mBound){
@@ -121,6 +121,10 @@ public class LocationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // we must unbind the service in order to destroy ConnectionService
+        getApplicationContext().unbindService(mConnection); 
+        Log.d(TAG, "Stopping service");
+        cancelUpdates();
     }
     
     @Override
@@ -156,5 +160,12 @@ public class LocationService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + timeLapse, pendingIntent);
+    }
+    
+    private void cancelUpdates() {
+        AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), UpdateLocationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        am.cancel(pendingIntent);
     }
 }
