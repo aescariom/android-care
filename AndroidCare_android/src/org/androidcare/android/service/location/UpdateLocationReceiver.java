@@ -25,17 +25,24 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
     private ServiceConnection mConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.e(TAG, "Conectado con el servicio");
             LocationServiceBinder binder = (LocationServiceBinder) service;
             locationService = binder.getService();
 
+            Log.e(TAG, "Pidiendo posición");
             locationService.getLocation();
+
+            Log.e(TAG, "Haciendo scheduling de la siguiente petición");
             locationService.scheduleNextUpdate();
             
             mBound = true;
+
+            Log.e(TAG, "Terminado el trabajo");
         }
 
         public void onServiceDisconnected(ComponentName name) {
             mBound = false;
+            Log.e(TAG, "Servicio desconectado");
         }
 
     };
@@ -58,18 +65,18 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
             wakeLock.setReferenceCounted(true);
-            Log.d(TAG, "PowerManager lock acquired by UpdateLocationReceiver");
         }
         wakeLock.acquire();
+        Log.d(TAG, "PowerManager lock acquired by UpdateLocationReceiver; lock count: " + wakeLock.toString());
     }
     
     public static synchronized void releaseLock(){        
         if(wakeLock != null && wakeLock.isHeld()){
             try{
                 wakeLock.release();
-                Log.d(TAG, "PowerManager lock released by UpdateLocationReceiver");
+                Log.d(TAG, "PowerManager lock released by UpdateLocationReceiver; lock count: " + wakeLock.toString());
             } catch (Throwable th) {
-                Log.e(TAG, "PowerManager lock could not be released by UpdateLocationReceiver");
+                Log.e(TAG, "PowerManager lock could not be released by UpdateLocationReceiver; lock count: " + wakeLock.toString());
             }
         }
     }

@@ -3,6 +3,7 @@ package org.androidcare.android.service.location;
 import java.util.Calendar;
 
 import org.androidcare.android.service.ConnectionService;
+import org.androidcare.android.service.PushMessagesReceiver;
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
 
 import android.app.AlarmManager;
@@ -52,6 +53,8 @@ public class LocationService extends Service {
         public void onLocationChanged(Location location) {
             if(mBound){
                 connectionService.pushLowPriorityMessage(new LocationMessage(location));
+                Log.i(PushMessagesReceiver.class.getName(), 
+                      "Location obtained and scheduled to be sent; " + location.toString());
             }else{
                 bindConnectionService();
             }
