@@ -24,7 +24,7 @@
     <string name="location_updates">Actualización de la localización</string>
     <string name="reminder_updates">Actualización de recordatorios</string>
     <string name="synchronization_interval">Frec. envío eventos</string>
-    <string name="hminute_s">minuto(s)</string>
+    <string name="minute_s">minuto(s)</string>
     <string name="hour_s">hora(s)</string>
     
     <!-- Network -->

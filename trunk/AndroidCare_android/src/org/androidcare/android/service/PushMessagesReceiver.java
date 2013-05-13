@@ -56,18 +56,21 @@ public class PushMessagesReceiver extends BroadcastReceiver {
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
             wakeLock.setReferenceCounted(true);
-            Log.d(PushMessagesReceiver.class.getName(), "PowerManager lock acquired by PushMessagesReceiver");
         }
         wakeLock.acquire();
+        Log.d(PushMessagesReceiver.class.getName(), 
+              "PowerManager lock acquired by PushMessagesReceiver; lock count: " + wakeLock.toString());
     }
     
     public static synchronized void releaseLock(){        
         if(wakeLock != null && wakeLock.isHeld()){
             try{
                 wakeLock.release();
-                Log.d(PushMessagesReceiver.class.getName(), "PowerManager lock released by PushMessagesReceiver");
+                Log.d(PushMessagesReceiver.class.getName(), 
+                      "PowerManager lock released by PushMessagesReceiver; lock count: " + wakeLock.toString());
             } catch (Throwable th) {
-                Log.e(PushMessagesReceiver.class.getName(), "PowerManager lock could not be released by PushMessagesReceiver");
+                Log.e(PushMessagesReceiver.class.getName(), 
+                      "PowerManager lock could not be released by PushMessagesReceiver; lock count: " + wakeLock.toString());
             }
         }
     }
