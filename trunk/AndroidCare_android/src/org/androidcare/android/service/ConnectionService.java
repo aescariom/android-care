@@ -129,6 +129,8 @@ public class ConnectionService extends Service {
     }
 
     private boolean isSessionCookieValid() {
+
+        Log.e(tag, "isSessionCookieValid: " +!isMock + " authCookie == null: " + (authCookie == null));
         if (!isMock && (authCookie == null || authCookie.getExpiryDate().compareTo(new Date()) <= 0)) {
             if(!loggingIn){
                 loggingIn = true;
@@ -310,6 +312,8 @@ public class ConnectionService extends Service {
      */
     public void getOauthCookie(Bundle bundle) throws ConnectionServiceException, ClientProtocolException,
             IOException {
+
+        Log.e(tag, "getOauthCookie");
         authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
         if (authToken.isEmpty()) {
             loggingIn = false;
@@ -370,16 +374,24 @@ public class ConnectionService extends Service {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
+            Log.e(TAG,"Entrando en el MessageQueueProcessor");
             try{
                 if (!isConnectionAvailable()) {
                     triggerConnectionErrorNotification();
                     return false;
                 }
                 if (!isSessionCookieValid()) {
+
+                    Log.e(TAG,"Cookie no valida");
                     return false;
                 }
                 List<Message> messages = getHelper().getMessages();
+
+                Log.e(TAG,"Comenzando a procesar mensajes");
                 for (Message m : messages) {
+
+                    Log.e(TAG,"Mensaje: "+m);
                     try {
 
                         HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
@@ -408,6 +420,7 @@ public class ConnectionService extends Service {
                             retryClient.setHttpRequestRetryHandler(retryHandler);
                             response = retryClient.execute(request);
                         }
+                        //@comentario ojo: si se comete un error este método no hace nada por lo que se pierde el mensaje
                         m.onPostSend(response);
                         getHelper().remove(m);
                         Log.d("HTTP client", "Message processed: " + m);
