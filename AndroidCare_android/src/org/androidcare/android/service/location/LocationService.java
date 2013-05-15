@@ -36,6 +36,7 @@ public class LocationService extends Service {
 
     private ConnectionService connectionService;
     boolean mBound = false;
+    private boolean lastRequestForUpdateFullfilled=false;
     private ServiceConnection mConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -61,6 +62,7 @@ public class LocationService extends Service {
                 bindConnectionService();
             }
             UpdateLocationReceiver.releaseLock();
+            lastRequestForUpdateFullfilled = true;
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -81,19 +83,21 @@ public class LocationService extends Service {
         
         return result;
     }
-
+    
    public void getLocation() {
        Criteria criteria = getCriteria();
-
+       lastRequestForUpdateFullfilled=false;
        // Acquire a reference to the system Location Manager
        this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
        Looper looper = Looper.myLooper();
        final Handler myHandler = new Handler(looper);
        myHandler.postDelayed(new Runnable() {
             public void run() {
-                locationManager.removeUpdates(locationListener);
-                UpdateLocationReceiver.releaseLock();
-                Log.w(TAG, "Location could not be obtained; we stopt trying:");
+                if(!lastRequestForUpdateFullfilled){
+                    locationManager.removeUpdates(locationListener);
+                    UpdateLocationReceiver.releaseLock();
+                    Log.w(TAG, "Location could not be obtained; we stopt trying:");
+                }
             }
        }, 50000);
        locationManager.requestSingleUpdate(criteria, locationListener, looper);

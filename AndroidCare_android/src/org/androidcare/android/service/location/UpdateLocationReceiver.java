@@ -24,21 +24,13 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
     private ServiceConnection mConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.e(TAG, "Conectado con el servicio");
             LocationServiceBinder binder = (LocationServiceBinder) service;
             locationService = binder.getService();
-
-            Log.e(TAG, "Pidiendo posición");
             locationService.getLocation();
-
-            Log.e(TAG, "Haciendo scheduling de la siguiente petición");
             locationService.scheduleNextUpdate();
-
-            Log.e(TAG, "Terminado el trabajo");
         }
 
         public void onServiceDisconnected(ComponentName name) {
-            Log.e(TAG, "Servicio desconectado");
         }
 
     };
