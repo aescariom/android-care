@@ -132,7 +132,7 @@ public class ConnectionService extends Service {
 
         Log.e(tag, "isSessionCookieValid: " +!isMock + " authCookie == null: " + (authCookie == null));
         if (!isMock && (authCookie == null || authCookie.getExpiryDate().compareTo(new Date()) <= 0)) {
-            if(!loggingIn){
+            //if(!loggingIn){ //@bug comentando esto creo que se solucionó
                 loggingIn = true;
                 try {
                     getOauthCookie();
@@ -141,7 +141,7 @@ public class ConnectionService extends Service {
                     triggerAccountSelectorNotification();
                     Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
                 }
-            }
+          //  }
             // this is always false, because we need to get the authCookie before we can send more messages
             return false;  
         }else{
