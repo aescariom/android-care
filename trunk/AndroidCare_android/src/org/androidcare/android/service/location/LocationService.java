@@ -99,7 +99,7 @@ public class LocationService extends Service {
                     Log.w(TAG, "Location could not be obtained; we stopt trying:");
                 }
             }
-       }, 50000);
+       }, 60000);
        locationManager.requestSingleUpdate(criteria, locationListener, looper);
     }
 
