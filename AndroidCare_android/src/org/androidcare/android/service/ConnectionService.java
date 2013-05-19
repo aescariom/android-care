@@ -77,7 +77,8 @@ public class ConnectionService extends Service {
     private final IBinder mBinder = new ConnectionServiceBinder();
     
     private boolean isMock = false;
-    private boolean loggingIn = false;
+    private Date loggingIn = null;
+    private final int timeout = 60 * 1000; // 1 minute
 
     private DatabaseHelper databaseHelper = null;
 
@@ -132,16 +133,23 @@ public class ConnectionService extends Service {
 
         Log.e(tag, "isSessionCookieValid: " +!isMock + " authCookie == null: " + (authCookie == null));
         if (!isMock && (authCookie == null || authCookie.getExpiryDate().compareTo(new Date()) <= 0)) {
-            //if(!loggingIn){ //@bug comentando esto creo que se solucionó
-                loggingIn = true;
-                try {
-                    getOauthCookie();
+            Date now = new Date();
+            if(loggingIn != null){
+                long diff = now.getTime() - loggingIn.getTime();
+                if(diff > timeout){
+                    return false;
                 }
-                catch (ConnectionServiceException e) {
-                    triggerAccountSelectorNotification();
-                    Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
-                }
-          //  }
+            }
+
+            loggingIn = new Date();
+            try {
+                getOauthCookie();
+            }
+            catch (ConnectionServiceException e) {
+                triggerAccountSelectorNotification();
+                Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
+            }
+
             // this is always false, because we need to get the authCookie before we can send more messages
             return false;  
         }else{
@@ -294,14 +302,14 @@ public class ConnectionService extends Service {
                 Intent intent = (Intent) bundle.get(AccountManager.KEY_INTENT);
                 if (intent != null) { // user input required
                     startActivity(intent);
-                    loggingIn = false;
+                    loggingIn = null;
                 } else {
                     new GetCookieTask().execute(bundle);
                 }
             }
             catch (Exception e) {
                 Log.e(tag, "Error when getting the Oauth cookie: " + e.getMessage(), e);
-                loggingIn = false;
+                loggingIn = null;
             }
         }
     }
@@ -316,7 +324,7 @@ public class ConnectionService extends Service {
         Log.e(tag, "getOauthCookie");
         authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
         if (authToken.isEmpty()) {
-            loggingIn = false;
+            loggingIn = null;
             throw new ConnectionServiceException("AuthToken could not be fetched");
         }
 
@@ -333,7 +341,7 @@ public class ConnectionService extends Service {
         response = client.execute(httpGet);
         // the response should be a redirect
         if (response.getStatusLine().getStatusCode() != 302) {
-            loggingIn = false;
+            loggingIn = null;
             throw new ConnectionServiceException("Response was not a redirection");
         }
 
@@ -347,12 +355,12 @@ public class ConnectionService extends Service {
             if (cookie.getName().equals("ACSID")) {
                 Log.i(tag, "We are now logged in");
                 authCookie = cookie;
-                loggingIn = false;
+                loggingIn = null;
                 processMessageQueue();
                 break;
             }
         }
-        loggingIn = false;
+        loggingIn = null;
     }
     
     private class GetCookieTask extends AsyncTask<Bundle, Void, Boolean> {
