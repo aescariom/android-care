@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 
 public class LocationService extends Service {
@@ -60,16 +62,24 @@ public class LocationService extends Service {
                       "Location obtained and scheduled to be sent; " + location.toString());
             }else{
                 bindConnectionService();
+                Log.i(PushMessagesReceiver.class.getName(), 
+                      "Connecting with connectionService");
             }
             UpdateLocationReceiver.releaseLock();
             lastRequestForUpdateFullfilled = true;
         }
 
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.d(LocationListener.class.getName(), "Status changed: " + provider + ": " + status);
+        }
 
-        public void onProviderEnabled(String provider) {}
+        public void onProviderEnabled(String provider) {
+            Log.d(LocationListener.class.getName(), "Provider enabled: " + provider);
+        }
 
-        public void onProviderDisabled(String provider) {}
+        public void onProviderDisabled(String provider) {
+            Log.d(LocationListener.class.getName(), "Provider disabled: " + provider);
+        }
     };
     
     @Override
@@ -85,22 +95,25 @@ public class LocationService extends Service {
     }
     
    public void getLocation() {
-       Criteria criteria = getCriteria();
-       lastRequestForUpdateFullfilled=false;
-       // Acquire a reference to the system Location Manager
-       this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-       Looper looper = Looper.myLooper();
-       final Handler myHandler = new Handler(looper);
-       myHandler.postDelayed(new Runnable() {
-            public void run() {
-                if(!lastRequestForUpdateFullfilled){
-                    locationManager.removeUpdates(locationListener);
-                    UpdateLocationReceiver.releaseLock();
-                    Log.w(TAG, "Location could not be obtained; we stopt trying:");
+       if(!isAirplaneMode()){
+           final Criteria criteria = getCriteria();
+           lastRequestForUpdateFullfilled=false;
+           // Acquire a reference to the system Location Manager
+           this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+           Looper looper = Looper.myLooper();
+           final Handler myHandler = new Handler(looper);
+           myHandler.postDelayed(new Runnable() {
+                public void run() {
+                    if(!lastRequestForUpdateFullfilled){
+                        locationManager.removeUpdates(locationListener);
+                        UpdateLocationReceiver.releaseLock();
+                        Log.w(TAG, "Location could not be obtained; we stopt trying:");
+                    }
                 }
-            }
-       }, 60000);
-       locationManager.requestSingleUpdate(criteria, locationListener, looper);
+           }, 60000);
+           
+           locationManager.requestSingleUpdate(criteria, locationListener, looper);
+       }
     }
 
     private Criteria getCriteria() {
@@ -114,6 +127,17 @@ public class LocationService extends Service {
        criteria.setCostAllowed(true);
        return criteria;
     }
+    
+    public boolean isAirplaneMode() {
+        int settingValue;
+        try {
+          settingValue = Settings.System.getInt(
+              getApplicationContext().getContentResolver(), Settings.System.AIRPLANE_MODE_ON);
+          return settingValue != 0;
+        } catch (SettingNotFoundException e) {
+          return false; 
+        }
+      }
 
     private void bindConnectionService() {
        if(!mBound){
