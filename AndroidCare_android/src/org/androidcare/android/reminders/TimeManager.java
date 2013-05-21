@@ -129,9 +129,6 @@ abstract class TimeManager {
         return null;
     }
 
-    // @comentario cuando leí tu función pensé que estaba bien. Después me puse a cambiar nombres
-    // como yo siempre hago. Después leí de nuevo la función. Ahora, o una de dos, o no entiendo que quieres hacer
-    //O esto está mal. ¿ves tú ahora problema?.
     private static Date getNextHourByTimeLapse(Reminder reminder, Date timeScheduleRequested) {
         // 2 - getting the time lapse between the start date and today
         long millsecSinceReminderActiveToScheduleRequested = (timeScheduleRequested.getTime() - 
