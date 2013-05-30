@@ -23,5 +23,6 @@ public abstract class ServiceManager {
     public static void stopSecondaryServices(Context context){
         context.stopService(new Intent(context, LocationService.class));
         context.stopService(new Intent(context, ReminderService.class));
+        context.stopService(new Intent(context, ConnectionService.class));
     }
 }
