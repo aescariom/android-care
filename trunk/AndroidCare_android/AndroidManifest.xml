@@ -30,6 +30,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".preferences.AdvancedPreferencesActivity" >
+        </activity>
+        <activity
             android:name=".view.ReminderDialogReceiver"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
