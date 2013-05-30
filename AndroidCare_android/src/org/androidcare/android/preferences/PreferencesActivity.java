@@ -36,50 +36,8 @@ public class PreferencesActivity extends PreferenceActivity {
         addGoogleAccounts();
         setResetButton();
         setDisplayRemindersButton();
-        setLocationUpdates();
-        setSynchronizationInterval();
-        setReminderUpdates();
         setStopButton();
-    }
-    
-    private void setSynchronizationInterval() {
-        EditTextPreference pref = (EditTextPreference)findPreference("synchronizationInterval");
-        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
-        pref.setSummary(pref.getText() + " " + getApplicationContext().getResources().getString(R.string.minute_s));
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            public boolean onPreferenceChange(Preference pref, Object newValue) {
-                pref.setSummary(newValue.toString() + " " + getApplicationContext().getResources().getString(R.string.minute_s));
-                return true;
-            }
-        });
-    }
-
-    private void setLocationUpdates() {
-        EditTextPreference pref = (EditTextPreference)findPreference("locationUpdatesInterval");
-        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
-        pref.setSummary(pref.getText() + " " + getApplicationContext().getResources().getString(R.string.minute_s));
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            public boolean onPreferenceChange(Preference pref, Object newValue) {
-                pref.setSummary(newValue.toString() + " " + getApplicationContext().getResources().getString(R.string.minute_s));
-                return true;
-            }
-        });
-    }
-    
-    private void setReminderUpdates() {
-        EditTextPreference pref = (EditTextPreference)findPreference("reminderResquestInterval");
-        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
-        pref.setSummary(pref.getText());
-        pref.setSummary(pref.getText() + " " + getApplicationContext().getResources().getString(R.string.hour_s));
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            public boolean onPreferenceChange(Preference pref, Object newValue) {
-                pref.setSummary(newValue.toString() + " " + getApplicationContext().getResources().getString(R.string.hour_s));
-                return true;
-            }
-        });
+        setAdvancedButton();
     }
 
     private void setDisplayRemindersButton(){
@@ -88,6 +46,19 @@ public class PreferencesActivity extends PreferenceActivity {
 
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(PreferencesActivity.this, ReminderList.class);
+                startActivity(intent);
+                return true;
+            }
+            
+        });
+    }
+
+    private void setAdvancedButton(){
+        final Preference restart = (Preference) findPreference("showAdvanced");
+        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(PreferencesActivity.this, AdvancedPreferencesActivity.class);
                 startActivity(intent);
                 return true;
             }

@@ -19,6 +19,7 @@
     <string name="account_summary">Select a Google account</string>
     <string name="zero_accounts">Zero accounts found</string>
     <string name="setup_google_account">Please, set up a Google account</string>
+    <string name="advanced">Advanced</string>
     
     <!-- Preferences -->
     <string name="others">Others</string>

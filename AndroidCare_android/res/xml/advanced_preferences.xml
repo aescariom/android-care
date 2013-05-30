@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	 
+ 	<PreferenceCategory
+	   android:title="@string/sync_options" >
+ 		<EditTextPreference 
+ 		    android:key="locationUpdatesInterval"
+ 		    android:title="@string/location_updates"
+ 		    android:defaultValue="15"/>
+ 		<EditTextPreference 
+ 		    android:key="synchronizationInterval"
+ 		    android:title="@string/synchronization_interval"
+ 		    android:defaultValue="15"/>
+ 		    
+ 		<EditTextPreference 
+ 		    android:key="reminderResquestInterval"
+ 		    android:title="@string/reminder_updates"
+ 		    android:defaultValue="24"/>    
+ 	</PreferenceCategory>
+ 	
+</PreferenceScreen>

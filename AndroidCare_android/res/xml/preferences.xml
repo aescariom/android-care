@@ -16,29 +16,16 @@
                 android:title="@string/stop_services"
                 android:summary="" />
 	 </PreferenceCategory>
-	 
- 	<PreferenceCategory
-	   android:title="@string/sync_options" >
- 		<EditTextPreference 
- 		    android:key="locationUpdatesInterval"
- 		    android:title="@string/location_updates"
- 		    android:defaultValue="15"/>
- 		<EditTextPreference 
- 		    android:key="synchronizationInterval"
- 		    android:title="@string/synchronization_interval"
- 		    android:defaultValue="15"/>
- 		    
- 		<EditTextPreference 
- 		    android:key="reminderResquestInterval"
- 		    android:title="@string/reminder_updates"
- 		    android:defaultValue="24"/>    
- 	</PreferenceCategory>
  	
  	<PreferenceCategory
 	   android:title="@string/others" >
 		  <Preference 
 		      android:key="viewReminders"
 		      android:title="@string/view_reminders"
+		      android:summary=""/>
+		  <Preference 
+		      android:key="showAdvanced"
+		      android:title="@string/advanced"
 		      android:summary=""/>
 	</PreferenceCategory>
 </PreferenceScreen>
