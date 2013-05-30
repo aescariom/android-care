@@ -57,8 +57,6 @@ public class UserLocationMap extends FlowPanel {
 	private Button btnRefresh;
 	private LatLng center;
 	private int zoom = 14;
-		
-	protected int refreshTime = 5*60*1000; // 5 min
 	
 	public UserLocationMap(){		
 		horizontalPanel = new HorizontalPanel();
@@ -151,7 +149,7 @@ public class UserLocationMap extends FlowPanel {
 		if(mapWidget == null){
 		    mapWidget = new MapWidget();
 		    mapWidget.setCenter(center, zoom);
-		    mapWidget.setSize("100%", "100%");
+		    mapWidget.setSize("100%", "570px");
 		    // Add some controls for the zoom level
 		    mapWidget.addControl(new LargeMapControl());
 	
