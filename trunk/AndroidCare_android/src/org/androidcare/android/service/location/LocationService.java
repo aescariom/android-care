@@ -113,6 +113,8 @@ public class LocationService extends Service {
            }, 60000);
            
            locationManager.requestSingleUpdate(criteria, locationListener, looper);
+       }else{
+           UpdateLocationReceiver.releaseLock();
        }
     }
 
