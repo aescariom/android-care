@@ -19,7 +19,6 @@ import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,11 +40,11 @@ public class UIReminderBasicView extends UIReminderView {
 
         // 2 - turning on the screen, display the activity over the locked screen, keeping the screen on,
         // and unlocking the keyboard
-        getWindow().addFlags(
+        /*getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);*/
 
         btnPerformed = (Button) findViewById(R.id.btnOk);
         btnPerformed.setOnClickListener(new OnClickListener() {
