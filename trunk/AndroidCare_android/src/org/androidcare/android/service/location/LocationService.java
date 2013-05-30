@@ -3,6 +3,8 @@ package org.androidcare.android.service.location;
 import java.util.Calendar;
 
 import org.androidcare.android.service.ConnectionService;
+import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
+import org.androidcare.android.service.Message;
 import org.androidcare.android.service.PushMessagesReceiver;
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
 
@@ -32,54 +34,28 @@ public class LocationService extends Service {
     private static final String TAG = LocationService.class.getName();
             
     /* Location parameters */
-    private LocationManager locationManager;
+    private LocationManager locationManager;    
     // Binder given to clients
     private final IBinder mBinder = new LocationServiceBinder();
 
-    private ConnectionService connectionService;
+
     boolean mBound = false;
     private boolean lastRequestForUpdateFullfilled=false;
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            ConnectionServiceBinder binder = (ConnectionServiceBinder) service;
-            connectionService = binder.getService();
-            
-            mBound = true;
-        }
-
-        public void onServiceDisconnected(ComponentName name) {
-            mBound = false;
-        }
-
-    };
     
     private LocationListener locationListener = new LocationListener(){
         public void onLocationChanged(Location location) {
-            if(mBound){
-                connectionService.pushLowPriorityMessage(new LocationMessage(location));
-                Log.i(PushMessagesReceiver.class.getName(), 
-                      "Location obtained and scheduled to be sent; " + location.toString());
-            }else{
-                bindConnectionService();
-                Log.i(PushMessagesReceiver.class.getName(), 
-                      "Connecting with connectionService");
-            }
+            postData(new LocationMessage(location));
+            Log.i(PushMessagesReceiver.class.getName(), 
+                  "Location obtained and scheduled to be sent; " + location.toString());
             UpdateLocationReceiver.releaseLock();
             lastRequestForUpdateFullfilled = true;
         }
 
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.d(LocationListener.class.getName(), "Status changed: " + provider + ": " + status);
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
 
-        public void onProviderEnabled(String provider) {
-            Log.d(LocationListener.class.getName(), "Provider enabled: " + provider);
-        }
+        public void onProviderEnabled(String provider) { }
 
-        public void onProviderDisabled(String provider) {
-            Log.d(LocationListener.class.getName(), "Provider disabled: " + provider);
-        }
+        public void onProviderDisabled(String provider) { }
     };
     
     @Override
@@ -87,7 +63,6 @@ public class LocationService extends Service {
         int result = super.onStartCommand(intent, flags, startId);
         Log.i(TAG, "Location service started: " + this.hashCode());
 
-        bindConnectionService();
         getLocation();
         scheduleNextUpdate();
         
@@ -141,19 +116,9 @@ public class LocationService extends Service {
         }
       }
 
-    private void bindConnectionService() {
-       if(!mBound){
-           getApplicationContext().bindService(
-                           new Intent(getApplicationContext(), ConnectionService.class),
-                           mConnection, Context.BIND_AUTO_CREATE);
-       }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // we must unbind the service in order to destroy ConnectionService
-        getApplicationContext().unbindService(mConnection); 
         Log.d(TAG, "Stopping service");
         cancelUpdates();
     }
@@ -198,5 +163,11 @@ public class LocationService extends Service {
         Intent intent = new Intent(getApplicationContext(), UpdateLocationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
+    }
+    
+    protected void postData(Message message) {
+        Intent intent = new Intent(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
+        intent.putExtra(ConnectionServiceBroadcastReceiver.EXTRA_MESSAGE, message);
+        getApplicationContext().sendBroadcast(intent);
     }
 }
