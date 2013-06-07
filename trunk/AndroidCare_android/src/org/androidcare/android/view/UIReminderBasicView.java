@@ -82,8 +82,9 @@ public class UIReminderBasicView extends UIReminderView {
         imgResizable = (ImageView) findViewById(R.id.imgReminder);
         
         if(reminder.getBlobKey() != null && reminder.getBlobKey() != ""){
-            String url = "http://androidcare2.appspot.com/api/reminderPhoto?id=" + reminder.getBlobKey();
-            //url="http://www.dipler.org/wp-content/themes/BnB2/images/logo.png";
+            String url = 
+                    getResources().getString(R.string.base_url) + 
+                    "api/reminderPhoto?id=" + reminder.getBlobKey();
             new DownloadImageTask(imgResizable).execute(url);
         }
         

@@ -52,7 +52,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 public class ConnectionService extends Service {
 
     private static final String TAG = ConnectionService.class.getName();
-    public static final String APP_URL = "http://androidcare2.appspot.com/";
+    private static String APP_URL = "";
 
     private static final int NOTIFICATION_ADD_ACCOUNT = 0;
     private static final int NOTIFICATION_SELECT_ACCOUNT = 1;
@@ -86,6 +86,10 @@ public class ConnectionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
         Log.i(tag, "Connection service started");
+
+        APP_URL = getApplicationContext().getResources().getString(R.string.base_url);
+        Log.i(tag, "Server: " + APP_URL);
+        
         registerReceiver(connectionServiceReceiver, filter);
         setConnectionStateListener();
         isMock = getApplicationContext().getResources().getBoolean(R.bool.mock);
@@ -428,7 +432,6 @@ public class ConnectionService extends Service {
                             retryClient.setHttpRequestRetryHandler(retryHandler);
                             response = retryClient.execute(request);
                         }
-                        //@comentario ojo: si se comete un error este método no hace nada por lo que se pierde el mensaje
                         m.onPostSend(response);
                         getHelper().remove(m);
                         Log.d("HTTP client", "Message processed: " + m);
@@ -505,5 +508,9 @@ public class ConnectionService extends Service {
             OpenHelperManager.releaseHelper();
             databaseHelper = null;
         }
+    }
+    
+    public static String getAppUrl(){
+        return APP_URL;
     }
 }

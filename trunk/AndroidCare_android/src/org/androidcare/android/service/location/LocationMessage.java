@@ -19,7 +19,7 @@ import android.location.Location;
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "LocationMessage")
 public class LocationMessage extends Message {
-    public static final String POSITION_LOG_URL = ConnectionService.APP_URL + "api/addPosition";
+    public static final String POSITION_LOG_URL = ConnectionService.getAppUrl() + "api/addPosition";
 
     @DatabaseField
     double latitude;
