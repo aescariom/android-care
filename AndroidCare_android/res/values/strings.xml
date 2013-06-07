@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">AndroidCare</string>
+    <string name="base_url">http://devandroidcare2.appspot.com/</string>
 
     <!-- General -->
     <string name="error">Error</string>

@@ -19,7 +19,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "ReminderLogMessage")
 public class ReminderLogMessage extends Message {
-    public static final String REMINDERS_LOG_URL = ConnectionService.APP_URL + "api/addReminderLog";
+    public static final String REMINDERS_LOG_URL = ConnectionService.getAppUrl() + "api/addReminderLog";
 
     @DatabaseField
     protected int reminderId;

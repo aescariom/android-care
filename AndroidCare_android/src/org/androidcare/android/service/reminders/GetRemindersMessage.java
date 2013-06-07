@@ -21,7 +21,7 @@ import android.util.Log;
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "GetRemindersMessage")
 public class GetRemindersMessage extends Message {
-    public static final String REMINDERS_URL = ConnectionService.APP_URL + "api/retrieveReminders";
+    public static final String REMINDERS_URL = ConnectionService.getAppUrl() + "api/retrieveReminders";
 
     protected static ReminderService reminderService;
 
