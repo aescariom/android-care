@@ -141,6 +141,7 @@ public class ConnectionService extends Service {
             if(loggingIn != null){
                 long diff = now.getTime() - loggingIn.getTime();
                 if(diff > timeout){
+                    loggingIn = null;
                     return false;
                 }
             }
@@ -153,7 +154,6 @@ public class ConnectionService extends Service {
                 triggerAccountSelectorNotification();
                 Log.e(tag, "Error when procesing the MessageQueue: " + e.getMessage(), e);
             }
-
             // this is always false, because we need to get the authCookie before we can send more messages
             return false;  
         }else{
