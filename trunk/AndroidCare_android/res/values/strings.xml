@@ -28,8 +28,10 @@
     <string name="location_updates">Location updates</string>
     <string name="reminder_updates">Reminder updates</string>
     <string name="synchronization_interval">Event sync. interval</string>
+    <string name="reminder_cache_time">Cache time</string>
     <string name="minute_s">minute(s)</string>
     <string name="hour_s">hour(s)</string>
+    <string name="day_s">day(s)</string>
     
     <!-- Network -->
     <string name="not_reachable">Server not responding</string>

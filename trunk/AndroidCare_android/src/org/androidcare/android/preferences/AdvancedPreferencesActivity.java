@@ -36,6 +36,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
         setLocationUpdates();
         setSynchronizationInterval();
         setReminderUpdates();
+        setCacheTime();
     }
     
     private void setSynchronizationInterval() {
@@ -73,6 +74,20 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
 
             public boolean onPreferenceChange(Preference pref, Object newValue) {
                 pref.setSummary(newValue.toString() + " " + getApplicationContext().getResources().getString(R.string.hour_s));
+                return true;
+            }
+        });
+    }
+    
+    private void setCacheTime() {
+        EditTextPreference pref = (EditTextPreference)findPreference("reminderCacheTime");
+        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
+        pref.setSummary(pref.getText());
+        pref.setSummary(pref.getText() + " " + getApplicationContext().getResources().getString(R.string.day_s));
+        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                pref.setSummary(newValue.toString() + " " + getApplicationContext().getResources().getString(R.string.day_s));
                 return true;
             }
         });
