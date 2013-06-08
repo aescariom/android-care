@@ -110,10 +110,10 @@ public class UIReminderBasicView extends UIReminderView {
 
     private File getFile(String fileName) {
         String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidCare";
-        File direct = new File(path);
+        File dir = new File(path);
 
-        if(!direct.exists()){
-             direct.mkdir();
+        if(!dir.exists()){
+             dir.mkdir();
         }
         
         return new File(path, fileName);

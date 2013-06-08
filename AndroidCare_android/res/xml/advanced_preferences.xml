@@ -18,4 +18,12 @@
  		    android:defaultValue="24"/>    
  	</PreferenceCategory>
  	
+ 	<PreferenceCategory
+	   android:title="@string/others" >
+ 		<EditTextPreference 
+ 		    android:key="reminderCacheTime"
+ 		    android:title="@string/reminder_cache_time"
+ 		    android:defaultValue="7"/>    
+ 	</PreferenceCategory>
+ 	
 </PreferenceScreen>

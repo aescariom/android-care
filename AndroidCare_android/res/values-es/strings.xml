@@ -27,8 +27,10 @@
     <string name="location_updates">Actualización de la localización</string>
     <string name="reminder_updates">Actualización de recordatorios</string>
     <string name="synchronization_interval">Frec. envío eventos</string>
+    <string name="reminder_cache_time">Duración de la caché</string>
     <string name="minute_s">minuto(s)</string>
     <string name="hour_s">hora(s)</string>
+    <string name="day_s">día(s)</string>
     
     <!-- Network -->
     <string name="not_reachable">El servidor no responde</string>

@@ -1,6 +1,8 @@
 package org.androidcare.android.service.reminders;
 
+import java.io.File;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
@@ -71,7 +73,41 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
         Intent intent = new Intent(context, RefreshRemindersReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
-        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + fourHours, pendingIntent);        
+        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + fourHours, pendingIntent);  
+        
+        cleanReminderCache(context);
+    }
+
+    private void cleanReminderCache(Context context) {
+        String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidCare";
+        File dir = new File(path);
+        
+        if(!dir.exists()){
+            return;
+        }
+        
+        File[] files = dir.listFiles();
+        Date now = new Date();
+        
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String strDays = prefs.getString("reminderCacheTime", "7");
+        
+        int days = 7;
+        try{
+            days = Integer.parseInt(strDays);
+        }catch(NumberFormatException ex){
+            Log.d("RefreshReminders", "Error converting: " + strDays + ". We will use the default value...");
+        }
+        long cacheTime = days*24*60*60*1000;
+        
+        for(File f : files){
+            long diff = now.getTime() - f.lastModified();
+            if(diff >= cacheTime){
+                Log.d("RefreshReminders", "Deleting cached file: " + f.getName());
+                f.delete();
+            }
+        }
     }
 
 }
