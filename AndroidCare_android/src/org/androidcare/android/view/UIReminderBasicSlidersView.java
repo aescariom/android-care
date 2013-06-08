@@ -26,19 +26,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class UIReminderBasicView extends UIReminderView {
+public class UIReminderBasicSlidersView extends UIReminderView {
 
-    protected Button btnPerformed;
-    protected Button btnNotPerformed;
-    protected Button btnDelayed;
+    protected SlideButton btnPerformed;
+    protected SlideButton btnNotPerformed;
+    protected SlideButton btnDelayed;
     protected TextView lblTitle;
     protected TextView lblDescription;
     protected ImageView imgResizable;
 
-    public UIReminderBasicView(ReminderDialogReceiver activity, Reminder reminder) {
+    public UIReminderBasicSlidersView(ReminderDialogReceiver activity, Reminder reminder) {
         super(activity, reminder);
 
-        inflate(activity, R.layout.basic_reminder_ui, this);
+        inflate(activity, R.layout.basic_reminder_ui_sliders, this);
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // 2 - turning on the screen, display the activity over the locked screen, keeping the screen on,
@@ -49,7 +49,8 @@ public class UIReminderBasicView extends UIReminderView {
                         | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                         | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);*/
 
-        btnPerformed = (Button) findViewById(R.id.btnOk);
+        btnPerformed = (SlideButton) findViewById(R.id.sbtnOk);
+        btnPerformed.setVibration(true);
         btnPerformed.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -59,7 +60,7 @@ public class UIReminderBasicView extends UIReminderView {
         });
         btnPerformed.setBackgroundColor(Color.GREEN);
         
-        btnDelayed = (Button) findViewById(R.id.btnDelay);
+        btnDelayed = (SlideButton) findViewById(R.id.sbtnDelay);
         btnDelayed.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -68,7 +69,7 @@ public class UIReminderBasicView extends UIReminderView {
         });
         btnDelayed.setBackgroundColor(Color.YELLOW);
 
-        btnNotPerformed = (Button) findViewById(R.id.btnCancel);
+        btnNotPerformed = (SlideButton) findViewById(R.id.sbtnCancel);
         btnNotPerformed.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {

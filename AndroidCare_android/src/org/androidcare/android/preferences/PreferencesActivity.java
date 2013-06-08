@@ -1,7 +1,9 @@
 package org.androidcare.android.preferences;
 
 import org.androidcare.android.R;
+import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.ServiceManager;
+import org.androidcare.android.view.ReminderDialogReceiver;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

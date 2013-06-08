@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="70dip">
+        <View
+                android:id="@+id/sb_bg"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+        </View>
+        <TextView
+                android:id="@+id/sb_text"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center">
+        </TextView>
+        <ImageButton
+                android:id="@+id/sb_draggable"
+                android:layout_width="70dip"
+                android:layout_height="70dip"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent">
+        </ImageButton>
+</FrameLayout>
