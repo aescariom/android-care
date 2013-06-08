@@ -4,6 +4,7 @@ import org.androidcare.android.reminders.Reminder;
 
 public class UIReminderViewFactory {
     public static UIReminderView createReminderView(ReminderDialogReceiver context, Reminder reminder) {
-        return new UIReminderBasicView(context, reminder);
+        return new UIReminderBasicSlidersView(context, reminder);
+        //return new UIReminderBasicView(context, reminder);
     }
 }

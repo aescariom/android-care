@@ -10,6 +10,7 @@ import org.androidcare.android.R;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
+import org.androidcare.android.widget.SlideButton;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

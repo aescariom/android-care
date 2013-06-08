@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    			xmlns:custom="http://schemas.android.com/apk/res/org.androidcare.android"
+    		  android:id="@+id/RootLayout"
+              android:layout_width="fill_parent" 
+              android:layout_height="fill_parent" 
+              android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/ButtonLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+        
+        <org.androidcare.android.widget.SlideButton 
+	        android:id="@+id/sbtnOk"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        custom:text="@android:string/ok"
+            />
+
+	    <org.androidcare.android.widget.SlideButton
+	        android:id="@+id/sbtnDelay"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        custom:text="@string/delay_reminder" />
+
+	    <org.androidcare.android.widget.SlideButton
+	        android:id="@+id/sbtnCancel"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        custom:text="@string/cancel" />
+
+    </LinearLayout>
+    <ScrollView 
+        	android:layout_height="match_parent"
+        	android:layout_width="match_parent"
+        	android:background="#ffffff"
+        	android:layout_above="@id/ButtonLayout">
+
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:baselineAligned="false"
+	        android:orientation="vertical" >
+
+	        <TextView
+	            android:id="@+id/txtReminderTitle"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="#000000"
+	            android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+	            android:textSize="30dp" />
+
+	        <TextView
+	            android:id="@+id/txtReminderDescription"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="#000000"
+	            android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+
+	        <org.androidcare.android.view.ResizableImageView
+	            android:id="@+id/imgReminder"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:scaleType="fitStart"
+	            android:background="#CCCCCC" />
+	    </LinearLayout>
+
+	</ScrollView>
+
+</RelativeLayout>
