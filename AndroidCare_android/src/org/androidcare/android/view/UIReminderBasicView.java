@@ -1,5 +1,7 @@
 package org.androidcare.android.view;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -82,10 +84,7 @@ public class UIReminderBasicView extends UIReminderView {
         imgResizable = (ImageView) findViewById(R.id.imgReminder);
         
         if(reminder.getBlobKey() != null && reminder.getBlobKey() != ""){
-            String url = 
-                    getResources().getString(R.string.base_url) + 
-                    "api/reminderPhoto?id=" + reminder.getBlobKey();
-            new DownloadImageTask(imgResizable).execute(url);
+            displayImage(reminder);
         }
         
         // Noise + vibration
@@ -96,6 +95,30 @@ public class UIReminderBasicView extends UIReminderView {
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DISPLAYED));
     }
     
+    private void displayImage(Reminder reminder) {
+        File f = getFile(reminder.getBlobKey());
+        if(f.exists()){
+            Bitmap bitmap = BitmapFactory.decodeFile(f.getPath());
+            imgResizable.setImageBitmap(bitmap);
+        }else{
+            String url = 
+                    getResources().getString(R.string.base_url) + 
+                    "api/reminderPhoto?id=" + reminder.getBlobKey();
+            new DownloadImageTask(imgResizable, reminder.getBlobKey()).execute(url);
+        }
+    }
+
+    private File getFile(String fileName) {
+        String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidCare";
+        File direct = new File(path);
+
+        if(!direct.exists()){
+             direct.mkdir();
+        }
+        
+        return new File(path, fileName);
+    }
+
     public void showDelayModal(View v){
         final CharSequence[] items = {
                 "3 min",
@@ -121,20 +144,25 @@ public class UIReminderBasicView extends UIReminderView {
     }
     
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView imgResizbl;
+        ImageView imgResizble;
+        String fileName;
 
-        public DownloadImageTask(ImageView bmImage) {
-            this.imgResizbl = bmImage;
+        public DownloadImageTask(ImageView bmImage, String fileName) {
+            this.imgResizble = bmImage;
+            this.fileName = fileName;
         }
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
             Bitmap bitmap = null;
+            FileOutputStream os = null;
             try {
                 URL url = new URL(urldisplay);
                 URLConnection connection = url.openConnection();
-                connection.setUseCaches(true);
                 bitmap = BitmapFactory.decodeStream((InputStream)connection.getContent());
+                os = new FileOutputStream(getFile(fileName));
+
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
@@ -143,7 +171,7 @@ public class UIReminderBasicView extends UIReminderView {
         }
 
         protected void onPostExecute(Bitmap result) {
-            imgResizbl.setImageBitmap(result);
+            imgResizble.setImageBitmap(result);
         }
     }
 }
