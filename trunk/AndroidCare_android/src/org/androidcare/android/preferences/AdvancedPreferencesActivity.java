@@ -37,6 +37,8 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
         setSynchronizationInterval();
         setReminderUpdates();
         setCacheTime();
+        setStopButton();
+        setResetButton();
     }
     
     private void setSynchronizationInterval() {
@@ -90,6 +92,34 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
                 pref.setSummary(newValue.toString() + " " + getApplicationContext().getResources().getString(R.string.day_s));
                 return true;
             }
+        });
+    }
+    
+    private void setResetButton(){
+        final Preference restart = (Preference) findPreference("restartServices");
+        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getApplicationContext(), R.string.restarting_service, Toast.LENGTH_SHORT)
+                .show();
+                ServiceManager.startAllServices(getApplicationContext());
+                return true;
+            }
+            
+        });
+    }
+    
+    private void setStopButton(){
+        final Preference restart = (Preference) findPreference("stopServices");
+        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getApplicationContext(), R.string.stopping_service, Toast.LENGTH_SHORT)
+                .show();
+                ServiceManager.stopSecondaryServices(getApplicationContext());
+                return true;
+            }
+            
         });
     }
 }

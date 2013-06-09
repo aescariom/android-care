@@ -22,20 +22,24 @@ import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class UIReminderBasicSlidersView extends UIReminderView {
+public class UIReminderBasicSliderView extends UIReminderView {
 
-    protected SlideButton btnPerformed;
-    protected SlideButton btnNotPerformed;
-    protected SlideButton btnDelayed;
+    protected SlideButton sbtnUnlock;
+    protected Button btnPerformed;
+    protected Button btnNotPerformed;
+    protected Button btnDelayed;
     protected TextView lblTitle;
     protected TextView lblDescription;
     protected ImageView imgResizable;
 
-    public UIReminderBasicSlidersView(ReminderDialogReceiver activity, Reminder reminder) {
+    public UIReminderBasicSliderView(ReminderDialogReceiver activity, Reminder reminder) {
         super(activity, reminder);
 
         inflate(activity, R.layout.basic_reminder_ui_sliders, this);
@@ -43,14 +47,27 @@ public class UIReminderBasicSlidersView extends UIReminderView {
 
         // 2 - turning on the screen, display the activity over the locked screen, keeping the screen on,
         // and unlocking the keyboard
-        /*getWindow().addFlags(
+        getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);*/
+                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        btnPerformed = (SlideButton) findViewById(R.id.sbtnOk);
-        btnPerformed.setVibration(true);
+        sbtnUnlock = (SlideButton) findViewById(R.id.sbtnUnlock);
+        sbtnUnlock.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                cancelVibrationAndSound();
+                RelativeLayout rootLayout = (RelativeLayout)findViewById(R.id.RootLayout);
+                FrameLayout unlockLayout = (FrameLayout)findViewById(R.id.unlockLayout);
+                
+                rootLayout.setVisibility(VISIBLE);
+                unlockLayout.setVisibility(INVISIBLE);
+            }
+        });
+        
+        
+        btnPerformed = (Button) findViewById(R.id.btnOk);
         btnPerformed.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -60,7 +77,7 @@ public class UIReminderBasicSlidersView extends UIReminderView {
         });
         btnPerformed.setBackgroundColor(Color.GREEN);
         
-        btnDelayed = (SlideButton) findViewById(R.id.sbtnDelay);
+        btnDelayed = (Button) findViewById(R.id.btnDelay);
         btnDelayed.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -69,7 +86,7 @@ public class UIReminderBasicSlidersView extends UIReminderView {
         });
         btnDelayed.setBackgroundColor(Color.YELLOW);
 
-        btnNotPerformed = (SlideButton) findViewById(R.id.sbtnCancel);
+        btnNotPerformed = (Button) findViewById(R.id.btnCancel);
         btnNotPerformed.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -110,17 +127,6 @@ public class UIReminderBasicSlidersView extends UIReminderView {
         }
     }
 
-    private File getFile(String fileName) {
-        String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidCare";
-        File dir = new File(path);
-
-        if(!dir.exists()){
-             dir.mkdir();
-        }
-        
-        return new File(path, fileName);
-    }
-
     public void showDelayModal(View v){
         final CharSequence[] items = {
                 "3 min",
@@ -143,37 +149,5 @@ public class UIReminderBasicSlidersView extends UIReminderView {
         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-    
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView imgResizble;
-        String fileName;
-
-        public DownloadImageTask(ImageView bmImage, String fileName) {
-            this.imgResizble = bmImage;
-            this.fileName = fileName;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            FileOutputStream os = null;
-            try {
-                URL url = new URL(urldisplay);
-                URLConnection connection = url.openConnection();
-                bitmap = BitmapFactory.decodeStream((InputStream)connection.getContent());
-                os = new FileOutputStream(getFile(fileName));
-
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            imgResizble.setImageBitmap(result);
-        }
     }
 }

@@ -109,17 +109,6 @@ public class UIReminderBasicView extends UIReminderView {
         }
     }
 
-    private File getFile(String fileName) {
-        String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidCare";
-        File dir = new File(path);
-
-        if(!dir.exists()){
-             dir.mkdir();
-        }
-        
-        return new File(path, fileName);
-    }
-
     public void showDelayModal(View v){
         final CharSequence[] items = {
                 "3 min",
@@ -142,37 +131,5 @@ public class UIReminderBasicView extends UIReminderView {
         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-    
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView imgResizble;
-        String fileName;
-
-        public DownloadImageTask(ImageView bmImage, String fileName) {
-            this.imgResizble = bmImage;
-            this.fileName = fileName;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            FileOutputStream os = null;
-            try {
-                URL url = new URL(urldisplay);
-                URLConnection connection = url.openConnection();
-                bitmap = BitmapFactory.decodeStream((InputStream)connection.getContent());
-                os = new FileOutputStream(getFile(fileName));
-
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            imgResizble.setImageBitmap(result);
-        }
     }
 }
