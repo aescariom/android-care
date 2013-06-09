@@ -2,5 +2,12 @@
 <resources>
     <declare-styleable name="SlideButton">
         <attr name="text" format="string"/>
+        <attr name="vibrate" format="boolean"/>
+        <attr name="vibration_length" format="integer"/>
+        <attr name="draggable_src" format="string"/>
+        <attr name="orientation">
+		  <enum name="horizontal" value="1" />
+		  <enum name="vertical" value="2" />
+		</attr>
     </declare-styleable>
 </resources>

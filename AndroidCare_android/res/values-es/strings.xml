@@ -22,6 +22,7 @@
     <string name="advanced">Avanzado</string>
     
     <!-- Preferences -->
+    <string name="services">Servicios</string>
     <string name="others">Otros</string>
     <string name="sync_options">Opciones de sincronización</string>
     <string name="location_updates">Actualización de la localización</string>

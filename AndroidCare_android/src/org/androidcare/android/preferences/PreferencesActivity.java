@@ -13,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -21,7 +20,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.text.InputType;
 import android.widget.Toast;
 
 public class PreferencesActivity extends PreferenceActivity {
@@ -36,9 +34,7 @@ public class PreferencesActivity extends PreferenceActivity {
         
         addPreferencesFromResource(R.xml.preferences);
         addGoogleAccounts();
-        setResetButton();
         setDisplayRemindersButton();
-        setStopButton();
         setAdvancedButton();
     }
 
@@ -134,33 +130,5 @@ public class PreferencesActivity extends PreferenceActivity {
 
         alertDialog.setIcon(R.drawable.notification_icon);
         alertDialog.show();
-    }
-    
-    private void setResetButton(){
-        final Preference restart = (Preference) findPreference("restartServices");
-        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
-
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getApplicationContext(), R.string.restarting_service, Toast.LENGTH_SHORT)
-                .show();
-                ServiceManager.startAllServices(getApplicationContext());
-                return true;
-            }
-            
-        });
-    }
-    
-    private void setStopButton(){
-        final Preference restart = (Preference) findPreference("stopServices");
-        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
-
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getApplicationContext(), R.string.stopping_service, Toast.LENGTH_SHORT)
-                .show();
-                ServiceManager.stopSecondaryServices(getApplicationContext());
-                return true;
-            }
-            
-        });
     }
 }

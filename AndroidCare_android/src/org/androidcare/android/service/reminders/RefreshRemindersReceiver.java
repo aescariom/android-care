@@ -79,7 +79,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
     }
 
     private void cleanReminderCache(Context context) {
-        String path = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidCare";
+        String path = android.os.Environment.getDownloadCacheDirectory().getAbsolutePath() + "/AndroidCare";
         File dir = new File(path);
         
         if(!dir.exists()){

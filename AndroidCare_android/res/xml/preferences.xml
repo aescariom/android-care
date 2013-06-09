@@ -7,14 +7,6 @@
 		     android:key="account"  
 		     android:summary="@string/account_summary"
 		     android:title="@string/account" />
-		  <Preference 
-		      	android:key="restartServices" 
-                android:title="@string/restart_services"
-                android:summary="" />
-		  <Preference 
-		      	android:key="stopServices" 
-                android:title="@string/stop_services"
-                android:summary="" />
 	 </PreferenceCategory>
  	
  	<PreferenceCategory

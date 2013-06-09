@@ -1,5 +1,11 @@
 package org.androidcare.android.view;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
@@ -10,6 +16,8 @@ import org.androidcare.android.service.reminders.ReminderServiceBroadcastReceive
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public abstract class UIReminderView extends RelativeLayout {    
@@ -56,7 +65,7 @@ public abstract class UIReminderView extends RelativeLayout {
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DELAYED));
     }
 
-    private void cancelVibrationAndSound() {
+    protected void cancelVibrationAndSound() {
         
         playSoundTask.cancel(false);
         vibrationTask.cancel(false);
@@ -168,5 +177,48 @@ public abstract class UIReminderView extends RelativeLayout {
             }
             return null;
         }
+    }
+    
+    protected class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView imgResizble;
+        String fileName;
+
+        public DownloadImageTask(ImageView bmImage, String fileName) {
+            this.imgResizble = bmImage;
+            this.fileName = fileName;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            FileOutputStream os = null;
+            try {
+                URL url = new URL(urldisplay);
+                URLConnection connection = url.openConnection();
+                bitmap = BitmapFactory.decodeStream((InputStream)connection.getContent());
+                os = new FileOutputStream(getFile(fileName));
+
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            imgResizble.setImageBitmap(result);
+        }
+    }
+
+    protected File getFile(String fileName) {
+        String path = android.os.Environment.getDownloadCacheDirectory().getAbsolutePath() + "/AndroidCare";
+        File dir = new File(path);
+
+        if(!dir.exists()){
+             dir.mkdir();
+        }
+        
+        return new File(path, fileName);
     }
 }
