@@ -52,7 +52,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 public class ConnectionService extends Service {
 
     private static final String TAG = ConnectionService.class.getName();
-    private static String APP_URL = "";
+    private static String APP_URL;
 
     private static final int NOTIFICATION_ADD_ACCOUNT = 0;
     private static final int NOTIFICATION_SELECT_ACCOUNT = 1;
@@ -130,6 +130,10 @@ public class ConnectionService extends Service {
     }
 
     public void processMessageQueue() {
+        if(APP_URL == null){
+            APP_URL = getApplicationContext().getResources().getString(R.string.base_url);
+            Log.e(tag, "processMessageQueue: APP_URL is null: overriding -> Server: " + APP_URL);
+        }
         new MessageQueueProcessor().execute((Void)null);
     }
 
@@ -511,6 +515,10 @@ public class ConnectionService extends Service {
     }
     
     public static String getAppUrl(){
+        if(APP_URL == null || APP_URL.compareTo("") == 0){
+            Log.e("ConnectionService", "getAppUrl: APP_URL is null: returning defaultValue!");
+            return "http://androidcare2.appspot.com/";
+        }
         return APP_URL;
     }
 }
