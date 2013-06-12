@@ -28,19 +28,17 @@ public class LocationMessage extends Message {
 
     public LocationMessage(){
         super();
-        this.url = LocationMessage.POSITION_LOG_URL;
     }
     
     public LocationMessage(Location location) {
         super();
-        this.url = LocationMessage.POSITION_LOG_URL;
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
     }
 
     @Override
     public HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException {
-        HttpPost httppost = new HttpPost(this.url);
+        HttpPost httppost = new HttpPost(LocationMessage.POSITION_LOG_URL);
 
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("latitude", String.valueOf(latitude)));
