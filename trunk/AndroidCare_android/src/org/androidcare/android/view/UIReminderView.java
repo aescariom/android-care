@@ -85,20 +85,10 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     protected void reschedule(Reminder reminder) {
-        if(reminder.getId() < 0){
-            // we are not delaying the reminder, so if the delay flag is enabled we should turn it off
-            reminder.setId(reminder.getId() * -1);
-            Log.e(TAG, "Removing delay flag to the reminder");
-        }
         reschedule(reminder, 0);
     }
 
     protected void reschedule(Reminder reminder, int ms) {
-        if(ms > 0 && reminder.getId() > 0){
-            // we are delaying the reminder, so we must turn the flag on
-            reminder.setId(reminder.getId() * -1);
-            Log.e(TAG, "Adding delay flag to the reminder");
-        }
         Intent intent = new Intent(ReminderServiceBroadcastReceiver.ACTION_SCHEDULE_REMINDER);
         intent.putExtra(ReminderServiceBroadcastReceiver.EXTRA_REMINDER, reminder);
         intent.putExtra(ReminderServiceBroadcastReceiver.EXTRA_DELAY, ms);
