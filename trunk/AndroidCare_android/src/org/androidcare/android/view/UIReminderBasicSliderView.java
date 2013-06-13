@@ -18,6 +18,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -54,6 +55,9 @@ public class UIReminderBasicSliderView extends UIReminderView {
                         | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         sbtnUnlock = (SlideButton) findViewById(R.id.sbtnUnlock);
+        sbtnUnlock.setBackgroundResource(R.drawable.arrow_down);
+        AnimationDrawable frameAnimation = (AnimationDrawable) sbtnUnlock.getBackground();
+        frameAnimation.start();
         sbtnUnlock.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {

@@ -98,8 +98,7 @@
    				  android:layout_margin="70dip"
 	              custom:orientation="vertical"
 	              custom:vibrate="true"
-   				  custom:draggable_src="@drawable/pill"
-	              android:background="@drawable/arrow_down"/>
+   				  custom:draggable_src="@drawable/pill"/>
 	    <ImageView 
 	        android:id="@+id/imgRobot"
 	        android:layout_height="150dip"
