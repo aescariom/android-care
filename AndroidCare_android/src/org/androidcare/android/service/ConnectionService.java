@@ -57,6 +57,7 @@ public class ConnectionService extends Service {
     private static final int NOTIFICATION_ADD_ACCOUNT = 0;
     private static final int NOTIFICATION_SELECT_ACCOUNT = 1;
     private static final int NOTIFICATION_NO_CONNECTION = 2;
+    private static final int NOTIFICATION_ERROR_SENDING_MESSAGE = 3;
 
     // auth settings
     private Account googleUser = null;
@@ -238,6 +239,19 @@ public class ConnectionService extends Service {
         }
     }
 
+    protected void triggerMessageSendErrorNotification(String message) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean display = prefs.getBoolean("connectionNotification", false);     
+        if(display){
+            CharSequence tickerText = getResources().getString(R.string.error);
+            CharSequence contentTitle = getResources().getString(R.string.message_not_sent);
+            CharSequence contentText = message;
+    
+            displayNotification(tickerText, contentTitle, contentText,
+                    ConnectionService.NOTIFICATION_ERROR_SENDING_MESSAGE, null);
+        }
+    }
+
     protected void removeConnectionErrorNotification() {
         cancelNotification(ConnectionService.NOTIFICATION_NO_CONNECTION);
     }
@@ -272,9 +286,11 @@ public class ConnectionService extends Service {
             notificationIntent = new Intent((String) action);
         }
 
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent contentIntent = null;
+        if(notificationIntent != null){
+            contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        }
         notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText, contentIntent);
-
         // 4 - Sending the notification to the SO
         manager.notify(notificationId, notification);
     }
@@ -455,6 +471,7 @@ public class ConnectionService extends Service {
                     catch (Exception e) {
                         Log.e(tag, "Error when procesing the Message: " + m + " -> " + e.getMessage(), e);
                         m.onError(e);
+                        triggerMessageSendErrorNotification(m.toString());
                     }
                 }
                 return true;
