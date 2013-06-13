@@ -17,8 +17,6 @@ public abstract class Message implements Serializable, Comparable<Message> {
     @DatabaseField(generatedId = true)
     public int id;
     @DatabaseField
-    protected String url;
-    @DatabaseField
     protected Date creationDate;
 
 

@@ -19,7 +19,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "ReminderLogMessage")
 public class ReminderLogMessage extends Message {
-    public static final String REMINDERS_LOG_URL = ConnectionService.getAppUrl() + "api/addReminderLog";
+    public static final String REMINDERS_LOG_URL = "api/addReminderLog";
 
     @DatabaseField
     protected int reminderId;
@@ -28,19 +28,17 @@ public class ReminderLogMessage extends Message {
 
     public ReminderLogMessage() {
         super();
-        this.url = ReminderLogMessage.REMINDERS_LOG_URL;
     }
 
     public ReminderLogMessage(Reminder reminder, ReminderStatusCode statusCode) {
         super();
-        this.url = ReminderLogMessage.REMINDERS_LOG_URL;
         this.reminderId = reminder.getId();
         this.statusCode = statusCode.getCode();
     }
 
     @Override
     public HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException {
-        HttpPost httppost = new HttpPost(this.url);
+        HttpPost httppost = new HttpPost(ConnectionService.getAppUrl() + REMINDERS_LOG_URL);
 
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("reminderId", String.valueOf(reminderId)));
