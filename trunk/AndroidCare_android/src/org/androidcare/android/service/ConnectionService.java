@@ -173,6 +173,8 @@ public class ConnectionService extends Service {
 
         if (googleAccount.isEmpty()) {
             throw new ConnectionServiceException("Zero accounts configured");
+        }else{
+            removeAccountSelectorNotification();
         }
 
         // 2 - getting the google accounts information
@@ -234,6 +236,12 @@ public class ConnectionService extends Service {
 
     protected void removeConnectionErrorNotification() {
         cancelNotification(ConnectionService.NOTIFICATION_NO_CONNECTION);
+    }
+    
+    protected void removeAccountSelectorNotification(){
+        //once an account is selected, none of these notifications should be shown
+        cancelNotification(ConnectionService.NOTIFICATION_ADD_ACCOUNT);
+        cancelNotification(ConnectionService.NOTIFICATION_SELECT_ACCOUNT);
     }
     
     protected void cancelNotification(int notifyId) {
