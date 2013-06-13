@@ -1,10 +1,6 @@
 package org.androidcare.android.view;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 import org.androidcare.android.R;
 import org.androidcare.android.reminders.Reminder;
@@ -20,8 +16,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.RingtoneManager;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -37,6 +31,7 @@ public class UIReminderBasicSliderView extends UIReminderView {
     protected Button btnNotPerformed;
     protected Button btnDelayed;
     protected TextView lblTitle;
+    protected TextView lblTitlePreview;
     protected TextView lblDescription;
     protected ImageView imgResizable;
 
@@ -101,7 +96,9 @@ public class UIReminderBasicSliderView extends UIReminderView {
         btnNotPerformed.setBackgroundColor(Color.RED);
 
         lblTitle = (TextView) findViewById(R.id.txtReminderTitle);
+        lblTitlePreview = (TextView) findViewById(R.id.txtReminderTitlePreview);
         lblTitle.setText(this.reminder.getTitle());
+        lblTitlePreview.setText(this.reminder.getTitle());
         lblDescription = (TextView) findViewById(R.id.txtReminderDescription);
         lblDescription.setText(this.reminder.getDescription());
         imgResizable = (ImageView) findViewById(R.id.imgReminder);
