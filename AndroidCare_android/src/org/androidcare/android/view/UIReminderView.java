@@ -45,22 +45,25 @@ public abstract class UIReminderView extends RelativeLayout {
         this.reminder = reminder;
         playSoundTask = new PlaySoundTask();
         vibrationTask = new VibrationTask();
+        displayed();
     }
 
     public void performed() {
         cancelVibrationAndSound();
-        reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DONE));
     }
 
     public void notPerformed() {
         cancelVibrationAndSound();
-        reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_IGNORED));
     }
 
     public void delayed(int ms) {
         cancelVibrationAndSound();
+        reminder.setRepeat(false); // we are scheduling manually this reminder, so it should not be reescheduled never again
+        if(reminder.getId() > 0){ // adding the flag
+            reminder.setId(reminder.getId()*-1);
+        }
         reschedule(reminder, ms);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DELAYED));
     }
@@ -71,6 +74,7 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     public void displayed() {
+        reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DISPLAYED));
     }
 
