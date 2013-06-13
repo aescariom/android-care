@@ -55,9 +55,9 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        String strHours = prefs.getString("reminderResquestInterval", "24");
+        String strHours = prefs.getString("reminderResquestInterval", "4");
         
-        int hours = 24;
+        int hours = 4;
         try{
             hours = Integer.parseInt(strHours);
         }catch(NumberFormatException ex){

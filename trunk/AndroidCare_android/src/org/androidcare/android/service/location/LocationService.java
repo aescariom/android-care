@@ -136,8 +136,8 @@ public class LocationService extends Service {
 
     public void scheduleNextUpdate() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String strMin = prefs.getString("locationUpdatesInterval", "15");        
-        int min = 15;
+        String strMin = prefs.getString("locationUpdatesInterval", "3");        
+        int min = 3;
         try{
             min = Integer.parseInt(strMin);
         }catch(NumberFormatException ex){
