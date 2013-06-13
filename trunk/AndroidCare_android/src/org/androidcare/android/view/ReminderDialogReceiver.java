@@ -16,6 +16,5 @@ public class ReminderDialogReceiver extends Activity {
         Reminder reminder = (Reminder) bundle.getSerializable("reminder");
         UIReminderView view = UIReminderViewFactory.createReminderView(this, reminder);
         this.setContentView(view);
-       
     }
 }
