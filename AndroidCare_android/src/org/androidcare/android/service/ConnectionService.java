@@ -226,12 +226,16 @@ public class ConnectionService extends Service {
     }
 
     protected void triggerConnectionErrorNotification() {
-        CharSequence tickerText = getResources().getString(R.string.error);
-        CharSequence contentTitle = getResources().getString(R.string.not_reachable);
-        CharSequence contentText = getResources().getString(R.string.check_internet_connection);
-
-        displayNotification(tickerText, contentTitle, contentText,
-                ConnectionService.NOTIFICATION_NO_CONNECTION, Settings.ACTION_WIFI_SETTINGS);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean display = prefs.getBoolean("connectionNotification", false);     
+        if(display){
+            CharSequence tickerText = getResources().getString(R.string.error);
+            CharSequence contentTitle = getResources().getString(R.string.not_reachable);
+            CharSequence contentText = getResources().getString(R.string.check_internet_connection);
+    
+            displayNotification(tickerText, contentTitle, contentText,
+                    ConnectionService.NOTIFICATION_NO_CONNECTION, Settings.ACTION_WIFI_SETTINGS);
+        }
     }
 
     protected void removeConnectionErrorNotification() {

@@ -23,6 +23,8 @@
     
     <!-- Preferences -->
     <string name="services">Servicios</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="show_connection_notification">Notificación "sin conexión"</string>
     <string name="others">Otros</string>
     <string name="sync_options">Opciones de sincronización</string>
     <string name="location_updates">Actualización de la localización</string>

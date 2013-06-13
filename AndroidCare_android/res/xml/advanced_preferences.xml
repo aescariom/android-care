@@ -31,6 +31,15 @@
  	</PreferenceCategory>
  	
  	<PreferenceCategory
+	   android:title="@string/notifications" >
+ 		<CheckBoxPreference
+ 		    android:title="@string/show_connection_notification"
+ 		    android:defaultValue="false"
+ 		    android:key="connectionNotification"
+ 		    />    
+ 	</PreferenceCategory>
+ 	
+ 	<PreferenceCategory
 	   android:title="@string/others" >
  		<EditTextPreference 
  		    android:key="reminderCacheTime"
