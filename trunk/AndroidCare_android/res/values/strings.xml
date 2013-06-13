@@ -25,7 +25,7 @@
     <!-- Preferences -->
     <string name="services">Services</string>
     <string name="notifications">Notifications</string>
-    <string name="show_connection_notification">No connection notification</string>
+    <string name="show_connection_notification">Connection error</string>
     <string name="others">Others</string>
     <string name="sync_options">Sync Options</string>
     <string name="location_updates">Location updates</string>
@@ -38,6 +38,7 @@
     
     <!-- Network -->
     <string name="not_reachable">Server not responding</string>
+    <string name="message_not_sent">Message not sent</string>
     <string name="check_internet_connection">Please, check yout Internet connection</string>
     <string name="delay_reminder">Delay Reminder</string>
    
