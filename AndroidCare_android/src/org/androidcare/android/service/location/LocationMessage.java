@@ -19,7 +19,7 @@ import android.location.Location;
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "LocationMessage")
 public class LocationMessage extends Message {
-    public static final String POSITION_LOG_URL = /*ConnectionService.getAppUrl() + */"api/addPosition";
+    public static final String POSITION_LOG_URL = "api/addPosition";
 
     @DatabaseField
     double latitude;
@@ -38,7 +38,7 @@ public class LocationMessage extends Message {
 
     @Override
     public HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException {
-        HttpPost httppost = new HttpPost(LocationMessage.POSITION_LOG_URL);
+        HttpPost httppost = new HttpPost(ConnectionService.getAppUrl() + POSITION_LOG_URL);
 
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("latitude", String.valueOf(latitude)));

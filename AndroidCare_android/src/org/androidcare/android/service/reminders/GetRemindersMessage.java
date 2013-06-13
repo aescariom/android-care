@@ -21,18 +21,16 @@ import android.util.Log;
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "GetRemindersMessage")
 public class GetRemindersMessage extends Message {
-    public static final String REMINDERS_URL = ConnectionService.getAppUrl() + "api/retrieveReminders";
+    public static final String REMINDERS_URL = "api/retrieveReminders";
 
     protected static ReminderService reminderService;
 
     public GetRemindersMessage(){
         super();
-        this.url = GetRemindersMessage.REMINDERS_URL;
     }
     
     public GetRemindersMessage(ReminderService reminderService) {
         super();
-        this.url = GetRemindersMessage.REMINDERS_URL;
         GetRemindersMessage.reminderService = reminderService;
     }
     
@@ -42,7 +40,7 @@ public class GetRemindersMessage extends Message {
 
     @Override
     public HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException {
-        HttpGet get = new HttpGet(this.url);
+        HttpGet get = new HttpGet(ConnectionService.getAppUrl() + REMINDERS_URL);
         return get;
     }
 
