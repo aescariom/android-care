@@ -471,8 +471,8 @@ public class ConnectionService extends Service {
 
     public void scheduleNextSynchronization() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String strMin = prefs.getString("synchronizationInterval", "15");        
-        int min = 15;
+        String strMin = prefs.getString("synchronizationInterval", "10");        
+        int min = 10;
         try{
             min = Integer.parseInt(strMin);
         }catch(NumberFormatException ex){
