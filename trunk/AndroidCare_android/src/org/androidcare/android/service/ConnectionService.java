@@ -334,6 +334,8 @@ public class ConnectionService extends Service {
 
         public void run(AccountManagerFuture<Bundle> result) {
             try {
+
+                Log.e(tag, "Entering in  GetAuthTokenCallback");
                 Bundle bundle = result.getResult();
                 Intent intent = (Intent) bundle.get(AccountManager.KEY_INTENT);
                 if (intent != null) { // user input required
