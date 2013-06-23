@@ -1,4 +1,4 @@
-package org.androidcare.web.client;
+package org.androidcare.web.client.widgets;
 
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.ClickEvent;

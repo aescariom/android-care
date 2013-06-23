@@ -2,7 +2,6 @@ package org.androidcare.web.client.widgets;
 
 import java.util.List;
 
-import org.androidcare.web.client.DialogBoxClose;
 import org.androidcare.web.client.LocalizedConstants;
 import org.androidcare.web.client.observer.Observer;
 import org.androidcare.web.client.rpc.ReminderService;

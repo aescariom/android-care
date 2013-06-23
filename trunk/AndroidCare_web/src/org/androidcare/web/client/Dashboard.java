@@ -1,5 +1,6 @@
 package org.androidcare.web.client;
 
+import org.androidcare.web.client.widgets.DialogBoxClose;
 import org.androidcare.web.client.widgets.ReminderTable;
 import org.androidcare.web.client.widgets.UserLocationMap;
 import org.androidcare.web.client.widgets.forms.ReminderForm;
