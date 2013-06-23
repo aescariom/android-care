@@ -2,7 +2,6 @@ package org.androidcare.web.client.widgets.forms;
 
 import java.util.Date;
 
-import org.androidcare.web.client.DialogBoxClose;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.androidcare.web.client.LocalizedConstants;
@@ -11,6 +10,7 @@ import org.androidcare.web.client.rpc.ReminderService;
 import org.androidcare.web.client.rpc.ReminderServiceAsync;
 import org.androidcare.web.client.rpc.UploadReminderPhotoService;
 import org.androidcare.web.client.rpc.UploadReminderPhotoServiceAsync;
+import org.androidcare.web.client.widgets.DialogBoxClose;
 import org.androidcare.web.client.widgets.forms.panels.DateTimeBox;
 import org.androidcare.web.client.widgets.forms.panels.DaysOfTheWeek;
 import org.androidcare.web.shared.persistent.Reminder;
