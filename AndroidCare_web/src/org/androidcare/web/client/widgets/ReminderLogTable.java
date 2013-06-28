@@ -17,11 +17,12 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
-public class ReminderLogTable extends ObservableForm {
+public class ReminderLogTable extends FormPanel {
 	
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
     

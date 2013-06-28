@@ -29,13 +29,12 @@ public class Dashboard implements EntryPoint, ClickHandler {
     Button btnAddReminder = new Button(localizedConstants.addNew());
 
 	public void onModuleLoad() {
-		
-		btnAddReminder.addClickHandler(this);
 
 	    FlowPanel flowpanel;
 
 	    flowpanel = new FlowPanel();
 	    flowpanel.add(reminderTable);
+		btnAddReminder.addClickHandler(this);
 	    flowpanel.add(btnAddReminder);
 	    mainPanel.add(flowpanel, localizedConstants.reminders());
 	    	    

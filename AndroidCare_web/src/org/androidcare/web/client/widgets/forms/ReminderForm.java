@@ -122,7 +122,7 @@ public class ReminderForm extends ObservableForm{
         setUpReminderForm();
     }
     
-    public void setUpReminderForm(){
+    protected void setUpReminderForm(){
 
     	setAction("/reminderUpload");
     	setEncoding(FormPanel.ENCODING_MULTIPART);
@@ -404,7 +404,7 @@ public class ReminderForm extends ObservableForm{
 		});
 	}
 
-	protected void toggleBasicAdvanced() {
+	private void toggleBasicAdvanced() {
 		grid.getRowFormatter().setVisible(REPEAT_ROW, basicMode);
 		grid.getRowFormatter().setVisible(UNTIL_ROW, basicMode);
 		grid.getRowFormatter().setVisible(DAYS_ROW, basicMode);
@@ -419,7 +419,6 @@ public class ReminderForm extends ObservableForm{
 		showHideRepeatRows();
 		showHideWeekDays();
 	}
-
 
 	private void untilManager() {
 		if(rdbUntilDate.getValue()){
@@ -441,7 +440,7 @@ public class ReminderForm extends ObservableForm{
 		}
 	}
 
-	protected void sendForm() {
+	private void sendForm() {
 		
 		Reminder reminder = new Reminder();
 		try{

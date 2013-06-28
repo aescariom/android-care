@@ -35,7 +35,7 @@ public class ReminderTable extends FlexTable implements Observer {
 		getReminders();
 	}
 	
-	public void getReminders() {
+	protected void getReminders() {
 
 		// Then, we send the input to the server.
 		reminderService.fetchReminders(
@@ -52,7 +52,7 @@ public class ReminderTable extends FlexTable implements Observer {
 			});
 	}
 
-	public void fill(List<Reminder> reminders) {
+	protected void fill(List<Reminder> reminders) {
 
 		if(this.getRowCount() > 1) {
 			cleanTable();
@@ -64,7 +64,7 @@ public class ReminderTable extends FlexTable implements Observer {
 		}
 	}
 
-	private void cleanTable() {
+	protected void cleanTable() {
 		int rows = this.getRowCount();
 		for(int i = 1; i < rows; i++){
 			this.removeRow(1);
@@ -72,7 +72,7 @@ public class ReminderTable extends FlexTable implements Observer {
 		}
 	}
 	
-	public void addReminder(final Reminder reminder){
+	protected void addReminder(final Reminder reminder){
 		int row = this.getRowCount();
 		this.setText(row, 0, reminder.getTitle());
 		String description = reminder.getDescription();
@@ -119,7 +119,6 @@ public class ReminderTable extends FlexTable implements Observer {
 	protected void displayLog(int index) {
 		Reminder reminder = reminders.get(index);
 		ReminderLogTable reminderTable = new ReminderLogTable(reminder);
-		reminderTable.addObserver(this);
 		DialogBoxClose dialog = new DialogBoxClose(LocalizedConstants.displayLog(), reminderTable);
 		dialog.show();
 	}

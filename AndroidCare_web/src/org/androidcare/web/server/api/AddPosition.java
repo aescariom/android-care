@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -66,8 +67,10 @@ public class AddPosition extends HttpServlet {
 
 	            resp.getWriter().write("{\"status\": 0}");
 			} catch(Exception ex){
-				txn.rollback();
-	            resp.getWriter().write("{\"status\": -1}");	
+				if(txn.isActive()){
+					txn.rollback();
+				}
+	            resp.getWriter().write("{\"status\": -1}");
 	            ex.printStackTrace();
 			}finally {
 				pm.close();
