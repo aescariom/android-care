@@ -228,7 +228,6 @@ public class UserLocationMap extends FlowPanel {
 	        }
 	      });
 	}
-	  
 	 
 	private float round(double d){
 		long aux = Math.round(d * 10000);
