@@ -1,0 +1,154 @@
+/* Global reset
+   http://meyerweb.com/eric/tools/css/reset/ 
+*****************************************************************/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+html {
+	overflow-x:hidden;
+	padding: 0;
+	background:#fff;
+	margin:0;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Extended base styles
+*****************************************************************/
+
+body {
+	color: #606060;
+	font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
+	-webkit-animation: bugfix infinite 1s; 
+}
+
+@-webkit-keyframes bugfix { 
+	from {padding:0;} to {padding:0;} 
+	}
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Novecentowide-Book';
+	color: #252525;
+}
+h1 {
+	font-size: 42px;
+}
+h2 {
+	font-size: 37px;
+}
+h3 {
+	font-size: 14px;
+}
+
+p strong {
+	font-weight: 700;
+}
+
+h1 strong, h2 strong, h3 strong, h4 strong, h5 strong {
+	font-family: 'Novecentowide-DemiBold';
+}
+a, a:link, a:active, a:visited {
+	-webkit-transition: all 150ms ease-in-out;
+	-moz-transition: all 150ms ease-in-out;
+	-ms-transition: all 150ms ease-in-out;
+	-o-transition: all 150ms ease-in-out;
+	transition: all 150ms ease-in-out;
+	outline: none;
+	text-decoration:none;
+}
+
+img,
+object {
+	max-width: 100%;
+	display: block;
+	height: auto;
+}
+p {
+	margin:1em 0;
+	font-size: 14px;
+	line-height: 24px;
+	color: #606060;
+}
+
+hr {
+	height: 3px;
+	background: #ebebeb;
+	border: none;
+	max-width: 960px;
+	margin: 40px auto;
+}
+
+hr.short {
+	max-width: 460px;
+}
+
+input, textarea, select {
+   -webkit-appearance: none;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+}
+:focus {outline:none;}
+
+::-moz-focus-inner {border:0;}
+
+button {
+	font-family: 'Novecentowide-DemiBold';
+	color: #fff;
+	border: 1px solid #000;
+	cursor: pointer;
+	margin-left: -4px;
+	padding: 14px;
+	font-size: 14px;
+	-webkit-appearance: none;
+	-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3);
+    -moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.3);
+}
+
+button:hover{
+	border: 1px solid #000;
+	background: #2c2c2c;
+}

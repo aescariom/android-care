@@ -1,10 +1,8 @@
 <!doctype html>
-<!-- The DOCTYPE declaration above will set the    -->
-<!-- browser's rendering engine into               -->
-<!-- "Standards Mode". Replacing this declaration  -->
-<!-- with a "Quirks Mode" doctype may lead to some -->
-<!-- differences in layout.                        -->
-
+<!--[if lt IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en" class="no-js"><!--<![endif]-->
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -12,13 +10,9 @@
 
     <link type="text/css" rel="stylesheet" href="AndroidCare_web.css">
     <title>AndroidCare</title>
-    
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="androidcare_web/androidcare_web.nocache.js"></script>
+
+    <script src="dashboard/dashboard.nocache.js"></script>
+    <script src="userBox/userBox.nocache.js"></script>
   </head>
 
   <body>
@@ -34,6 +28,7 @@
       </div>
     </noscript>
 
+	<div id="userContainer"></div>
     <h1>AndroidCare<img src="./images/logo.png" style="height: 50px;" /></h1>
     <div style="clear: both"></div>
 
