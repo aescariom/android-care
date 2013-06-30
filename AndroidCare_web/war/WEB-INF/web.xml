@@ -8,15 +8,19 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>reminderServlet</servlet-name>
-    <servlet-class>org.androidcare.web.server.ReminderServiceImpl</servlet-class>
+    <servlet-class>org.androidcare.web.server.module.dashboard.ReminderServiceImpl</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>uploadReminderPhotoServlet</servlet-name>
-    <servlet-class>org.androidcare.web.server.UploadReminderPhotoServiceImpl</servlet-class>
+    <servlet-class>org.androidcare.web.server.module.dashboard.UploadReminderPhotoServiceImpl</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>positionServlet</servlet-name>
-    <servlet-class>org.androidcare.web.server.PositionServiceImpl</servlet-class>
+    <servlet-class>org.androidcare.web.server.module.dashboard.PositionServiceImpl</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>users</servlet-name>
+    <servlet-class>org.androidcare.web.server.module.userbox.LoggedUserServiceImpl</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>retrieveReminders</servlet-name>
@@ -32,7 +36,7 @@
   </servlet>
   <servlet>
     <servlet-name>UploadReminderPhoto</servlet-name>
-    <servlet-class>org.androidcare.web.server.UploadReminderPhoto</servlet-class>
+    <servlet-class>org.androidcare.web.server.module.dashboard.UploadReminderPhoto</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>ReminderPhoto</servlet-name>
@@ -41,15 +45,24 @@
   
   <servlet-mapping>
     <servlet-name>uploadReminderPhotoServlet</servlet-name>
-    <url-pattern>/androidcare_web/uploadReminderPhoto</url-pattern>
+    <url-pattern>/dashboard/uploadReminderPhoto</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>reminderServlet</servlet-name>
-    <url-pattern>/androidcare_web/reminder</url-pattern>
+    <url-pattern>/dashboard/reminder</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>positionServlet</servlet-name>
-    <url-pattern>/androidcare_web/position</url-pattern>
+    <url-pattern>/dashboard/position</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UploadReminderPhoto</servlet-name>
+    <url-pattern>/dashboard/reminderUpload</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users</servlet-name>
+    <url-pattern>/userBox/users</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
@@ -65,34 +78,26 @@
     <url-pattern>/api/addPosition</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>UploadReminderPhoto</servlet-name>
-    <url-pattern>/reminderUpload</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>ReminderPhoto</servlet-name>
     <url-pattern>/api/reminderPhoto</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Dashboard.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   
   <!-- Security -->
   	<security-constraint>
         <web-resource-collection>
             <web-resource-name>all</web-resource-name>
-    		<url-pattern>/*</url-pattern>
+    		<url-pattern>/api/*</url-pattern>
+    		<url-pattern>/userBox/*</url-pattern>
+    		<url-pattern>/dashboard/*</url-pattern>
+    		<url-pattern>/Dashboard.html</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>
         </auth-constraint>
     </security-constraint>
-  	<security-constraint>
-        <web-resource-collection>
-            <web-resource-name>reminderPhoto</web-resource-name><!-- This item should be public -->
-    		<url-pattern>/api/reminderPhoto</url-pattern>
-        </web-resource-collection>
-    </security-constraint>
-
 </web-app>
