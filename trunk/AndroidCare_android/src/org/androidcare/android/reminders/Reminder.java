@@ -67,8 +67,8 @@ public class Reminder implements Serializable {
     // default date time format
     private final static DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy",
                                                                       Locale.UK);
-   // android 2.3.3 and below 
-   private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
+    // android 2.3.3 and below 
+    private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
                                                                       Locale.UK);
 
     public Reminder() { /* Needed by ormlite */ }
@@ -183,10 +183,10 @@ public class Reminder implements Serializable {
      */
     public void setRepeatPeriod(int repeatPeriod) {
         this.repeatPeriod = repeatPeriod;
-        voidvaladateRepeatPeriod();
+        validateRepeatPeriod();
     }
 
-    private void voidvaladateRepeatPeriod() {
+    private void validateRepeatPeriod() {
         switch (this.repeatPeriod) {
         case Reminder.REPEAT_PERIOD_HOUR:
         case Reminder.REPEAT_PERIOD_DAY:

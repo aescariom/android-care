@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.security.auth.callback.Callback;
+
 import org.androidcare.android.R;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.mock.MockHttpClient;
@@ -27,6 +29,8 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -42,7 +46,9 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -146,7 +152,9 @@ public class ConnectionService extends Service {
             if(loggingIn != null){
                 long diff = now.getTime() - loggingIn.getTime();
                 if(diff > timeout){
+                    Log.e(tag, "Login Timeout");
                     loggingIn = null;
+                }else{ //let's wait until the petition times out
                     return false;
                 }
             }
@@ -180,6 +188,7 @@ public class ConnectionService extends Service {
 
         // 2 - getting the google accounts information
         AccountManager accountManager = AccountManager.get(getApplicationContext());
+        accountManager.invalidateAuthToken("com.google", null);
         Account[] accounts = accountManager.getAccountsByType("com.google");
 
         if (accounts.length == 0) {
@@ -202,12 +211,13 @@ public class ConnectionService extends Service {
 
         // 4 - getting the auth token
         Log.i(tag, "Selected account: " + this.googleUser.toString());
-        accountManager.getAuthToken(this.googleUser, "ah", // this is the "authTokenType" for google App Engine
-                true, // notifyAuthFailure
+
+        AccountManagerFuture<Bundle> future = accountManager.getAuthToken(this.googleUser, "ah", // ah is the "authTokenType" for google App Engine
+                false, // notifyAuthFailure
                 new GetAuthTokenCallback(), // callback
                 null); // a null handler means that it will be handled by the main thread
     }
-
+    
     protected void triggerAccountSelectorNotification() {
         CharSequence tickerText = getResources().getString(R.string.error);
         CharSequence contentTitle = getResources().getString(R.string.zero_accounts);
@@ -356,7 +366,7 @@ public class ConnectionService extends Service {
     /**
      * Callback method for GetAuthTokenCallback
      */
-    public void getOauthCookie(Bundle bundle) throws ConnectionServiceException, ClientProtocolException,
+    protected void getOauthCookie(Bundle bundle) throws ConnectionServiceException, ClientProtocolException,
             IOException {
 
         Log.e(tag, "getOauthCookie");

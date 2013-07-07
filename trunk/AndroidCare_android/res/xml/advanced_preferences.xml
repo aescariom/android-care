@@ -31,6 +31,15 @@
  	</PreferenceCategory>
  	
  	<PreferenceCategory
+	   android:title="@string/location_service" >
+ 		<CheckBoxPreference
+ 		    android:title="@string/force_gps_location_if_airplane_mode"
+ 		    android:defaultValue="false"
+ 		    android:key="forceGPSLocationIfAirplaneMode"
+ 		    />    
+ 	</PreferenceCategory>
+ 	
+ 	<PreferenceCategory
 	   android:title="@string/notifications" >
  		<CheckBoxPreference
  		    android:title="@string/show_connection_notification"

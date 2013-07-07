@@ -1,6 +1,7 @@
 package org.androidcare.android.service.location;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
@@ -41,6 +42,7 @@ public class LocationService extends Service {
 
     boolean mBound = false;
     private boolean lastRequestForUpdateFullfilled=false;
+    int errors = 0;
     
     private LocationListener locationListener = new LocationListener(){
         public void onLocationChanged(Location location) {
@@ -49,13 +51,20 @@ public class LocationService extends Service {
                   "Location obtained and scheduled to be sent; " + location.toString());
             UpdateLocationReceiver.releaseLock();
             lastRequestForUpdateFullfilled = true;
+            errors = 0;
         }
 
-        public void onStatusChanged(String provider, int status, Bundle extras) { }
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.e(TAG, "Provider status changed: " + provider + " to " + status);
+        }
 
-        public void onProviderEnabled(String provider) { }
+        public void onProviderEnabled(String provider) {
+            Log.e(TAG, "Provider enabled: " + provider); 
+        }
 
-        public void onProviderDisabled(String provider) { }
+        public void onProviderDisabled(String provider) {
+            Log.e(TAG, "Provider disabled: " + provider);
+        }
     };
     
     @Override
@@ -70,27 +79,56 @@ public class LocationService extends Service {
     }
     
    public void getLocation() {
-       if(!isAirplaneMode()){
+       SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+       boolean force = prefs.getBoolean("forceGPSLocationIfAirplaneMode", false);   
+       if(force || !isAirplaneMode()){
+           
            final Criteria criteria = getCriteria();
-           lastRequestForUpdateFullfilled=false;
+
+           final Looper looper = getLooper();
            // Acquire a reference to the system Location Manager
            this.locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-           Looper looper = Looper.myLooper();
-           final Handler myHandler = new Handler(looper);
-           myHandler.postDelayed(new Runnable() {
-                public void run() {
-                    if(!lastRequestForUpdateFullfilled){
-                        locationManager.removeUpdates(locationListener);
-                        UpdateLocationReceiver.releaseLock();
-                        Log.w(TAG, "Location could not be obtained; we stopt trying:");
-                    }
-                }
-           }, 60000);
            
-           locationManager.requestSingleUpdate(criteria, locationListener, looper);
+           lastRequestForUpdateFullfilled=false;
+           List<String> providers = locationManager.getProviders(criteria, true);
+           if(providers.size() > 0){
+               locationManager.requestSingleUpdate(criteria, locationListener, looper);
+               Log.i(TAG, "Asking for position using the criteria");
+           }else if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+               locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, looper);
+               Log.w(TAG, "Any provider found, using NETWORK_PROVIDER");
+           }else if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+               locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, looper);
+               Log.w(TAG, "Any provider found, using GPS PROVIDER");
+           }else{
+             Log.e(TAG, "Location could be retrieved because any active radio could be found");
+             UpdateLocationReceiver.releaseLock();
+           }
        }else{
            UpdateLocationReceiver.releaseLock();
        }
+    }
+
+    private Looper getLooper() {
+        final Looper looper = Looper.myLooper();
+        Handler myHandler = new Handler(looper);
+        myHandler.postDelayed(new Runnable() {
+             public void run() {
+                 if(!lastRequestForUpdateFullfilled){
+                     locationManager.removeUpdates(locationListener);
+                     Log.w(TAG, "Location could not be obtained; we stopt trying:");
+                     errors++;
+                     if(errors > 10){
+                         locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, looper);
+                         errors = 0;
+                         Log.e(TAG, "Too many consecutive errors, trying to use the GPS");
+                     }else{
+                         UpdateLocationReceiver.releaseLock();
+                     }
+                 }
+             }
+        }, 60000);
+        return looper;
     }
 
     private Criteria getCriteria() {

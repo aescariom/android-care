@@ -49,6 +49,7 @@ public class LocationMessage extends Message {
 
         return httppost;
     }
+    
     @Override
     public String toString(){
         return "Location message created at " + creationDate + "; latitude: " + latitude + "; latitude: " + latitude;
