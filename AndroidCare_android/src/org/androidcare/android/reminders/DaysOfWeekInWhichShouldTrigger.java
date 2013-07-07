@@ -13,6 +13,8 @@ public class DaysOfWeekInWhichShouldTrigger implements Serializable {
     // sun mon tue wed thu fri sat 
     // 0 1 2 3 4 5 6
     private boolean[] dayIsSelected = { false, false, false, false, false, false, false };
+    
+    DaysOfWeekInWhichShouldTrigger() {/* Needed by ORMLite */}
 
     DaysOfWeekInWhichShouldTrigger(JSONArray jSONArray) throws AndroidCareDateFormatException, JSONException {
         dayIsSelected[0] = jSONArray.getBoolean(0);

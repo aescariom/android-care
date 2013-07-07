@@ -3,22 +3,13 @@ package org.androidcare.android.preferences;
 import org.androidcare.android.R;
 import org.androidcare.android.service.ServiceManager;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.provider.Settings;
 import android.text.InputType;
 import android.widget.Toast;
 

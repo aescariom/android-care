@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">AndroidCare</string>
     <string name="base_url">http://devandroidcare2.appspot.com/</string>
+    <!-- <string name="base_url">http://www.androidcare.org/</string>-->
 
     <!-- General -->
     <string name="error">Error</string>
@@ -35,6 +35,8 @@
     <string name="minute_s">minute(s)</string>
     <string name="hour_s">hour(s)</string>
     <string name="day_s">day(s)</string>
+    <string name="location_service">Location service</string>
+    <string name="force_gps_location_if_airplane_mode">Ignore Airplane Mode</string>
     
     <!-- Network -->
     <string name="not_reachable">Server not responding</string>

@@ -74,7 +74,4 @@ public class PushMessagesReceiver extends BroadcastReceiver {
             }
         }
     }
-    
-
-
 }
