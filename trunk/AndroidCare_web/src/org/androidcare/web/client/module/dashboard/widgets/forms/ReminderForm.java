@@ -21,6 +21,8 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -36,6 +38,8 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ReminderForm extends ObservableForm{
 	private static final int TITLE_ROW = 0;
@@ -73,9 +77,10 @@ public class ReminderForm extends ObservableForm{
 
     private Label lblUpload = new Label(localizedConstants.photo());
     private FileUpload fupPhoto = new FileUpload();
-    private Image imgLoading = new Image("./images/loading.gif");
+    private Image imgLoading = new Image("./images/loading_small.gif");
     private Button btnDeletePhoto = new Button(localizedConstants.delete());
     private Panel pnlPhoto = new HorizontalPanel();
+    private Button btnPhoto = new Button();
     private Image imgPhoto = new Image();
     
     private Label lblUntil = new Label(localizedConstants.until());
@@ -341,7 +346,59 @@ public class ReminderForm extends ObservableForm{
         pnlPhoto.add(imgLoading);
         imgLoading.setVisible(false);
         imgPhoto.setHeight("50px");
-        pnlPhoto.add(imgPhoto);
+        btnPhoto.addClickHandler(new ClickHandler(){
+			int height = 0;
+			int width = 0;
+
+			@Override
+			public void onClick(ClickEvent event) {
+				VerticalPanel vp = new VerticalPanel();
+				final Image img = new Image(imgPhoto.getUrl());
+				vp.add(img);
+				final DialogBoxClose dialog = new DialogBoxClose("", vp);
+				dialog.show();
+				img.addClickHandler(new ClickHandler(){
+
+					@Override
+					public void onClick(ClickEvent event) {
+						changeImageDimensions(img);
+						dialog.autoCenter();
+					}
+				});
+				img.addLoadHandler(new LoadHandler(){
+
+					@Override
+					public void onLoad(LoadEvent event) {
+						width = img.getWidth();
+						height = img.getHeight();
+						changeImageDimensions(img);
+						dialog.autoCenter();
+					}
+					
+				});
+			}
+			
+			private void changeImageDimensions(Image img){
+				if(img.getWidth() == width && img.getHeight() == height){
+					double imgRatio = (double)img.getWidth() / img.getHeight();
+					double windowRatio = (double)Window.getClientWidth() / Window.getClientHeight();
+					if(imgRatio < windowRatio){
+						int h = Window.getClientHeight() - 60;
+						int w = (int)(imgRatio * h);
+						img.setSize(w + "px", h + "px");
+					}else{
+						int w = Window.getClientWidth() - 20;
+						int h = (int)((double)w / imgRatio);
+						img.setSize(w + "px", h + "px");							
+					}
+				}else{
+					img.setSize(width + "px", height + "px");
+				}
+			}
+        	
+        });
+		btnPhoto.getElement().appendChild(imgPhoto.getElement());
+        pnlPhoto.add(btnPhoto);
         btnDeletePhoto.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -350,7 +407,7 @@ public class ReminderForm extends ObservableForm{
 				alertService.deleteReminderPhoto(reminder,
 						new AsyncCallback<Boolean>() {
 							public void onFailure(Throwable caught) {
-								Window.alert("Error en el servidor!!!");
+								Window.alert(localizedConstants.serverError());
 								btnDeletePhoto.setEnabled(true);
 							}
 
@@ -394,7 +451,7 @@ public class ReminderForm extends ObservableForm{
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Error!!!!");
+				Window.alert(localizedConstants.serverError());
 			}
 
 			@Override
@@ -419,6 +476,11 @@ public class ReminderForm extends ObservableForm{
 		}
 		showHideRepeatRows();
 		showHideWeekDays();
+		
+		if(this.getParent() != null){
+			DialogBoxClose dialog = (DialogBoxClose)this.getParent().getParent();
+			dialog.autoCenter();
+		}
 	}
 
 	private void untilManager() {
