@@ -67,7 +67,7 @@ public class UserLocationMap extends FlowPanel {
 		txtItems.setWidth("30px");
 		txtItems.setHeight("10px");
 		lblItems = new Label(LocalizedConstants.positionNumber() + ": ");
-		imgLoading = new Image("./images/loading.gif");
+		imgLoading = new Image("./images/loading_small.gif");
 		imgLoading.setSize("20px", "20px");
 		horizontalPanel.add(lblItems);
 		horizontalPanel.add(txtItems);

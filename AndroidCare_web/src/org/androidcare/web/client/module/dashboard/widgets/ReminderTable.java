@@ -18,31 +18,32 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
 
 public class ReminderTable extends FlexTable implements Observer {
 	
-	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
+	private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
 	
 	private final ReminderServiceAsync reminderService = GWT.create(ReminderService.class);
 
 	private List<Reminder> reminders;
 	
+    private Image imgLoading = new Image("./images/loading_small.gif");
+	
 	public ReminderTable(){
 		super();
-		
-		this.setText(0, 0, LocalizedConstants.title());
-		this.setText(0, 1, LocalizedConstants.description());
-		
 		getReminders();
 	}
 	
 	protected void getReminders() {
+		this.removeAllRows();
+		this.setWidget(0, 0, imgLoading);
 
 		// Then, we send the input to the server.
 		reminderService.fetchReminders(
 			new AsyncCallback<List<Reminder>>() {
 				public void onFailure(Throwable caught) {
-					Window.alert(LocalizedConstants.serverError());
+					Window.alert(localizedConstants.serverError());
 					caught.printStackTrace();
 				}
 
@@ -55,21 +56,14 @@ public class ReminderTable extends FlexTable implements Observer {
 
 	protected void fill(List<Reminder> reminders) {
 
-		if(this.getRowCount() > 1) {
-			cleanTable();
-		}
+		this.removeAllRows();
+
+		this.setText(0, 0, localizedConstants.title());
+		this.setText(0, 1, localizedConstants.description());
 		
 		this.reminders = reminders;
 		for(Reminder reminder : reminders){
 			addReminder(reminder);
-		}
-	}
-
-	protected void cleanTable() {
-		int rows = this.getRowCount();
-		for(int i = 1; i < rows; i++){
-			this.removeRow(1);
-			//@comentario y en vez de esta historia tan rara ¿no sería lo mismo hacer this.removeAllRows()?
 		}
 	}
 	
@@ -82,7 +76,7 @@ public class ReminderTable extends FlexTable implements Observer {
 		}
 		this.setText(row, 1, description);
 
-		Button btnLog = new Button(LocalizedConstants.log());
+		Button btnLog = new Button(localizedConstants.log());
 		btnLog.addClickHandler(new ClickHandler() {
 	        public void onClick(ClickEvent event) {
 	            int editIndex = reminders.indexOf(reminder);
@@ -91,7 +85,7 @@ public class ReminderTable extends FlexTable implements Observer {
 	      });
 		this.setWidget(row, 2, btnLog);
 		
-		Button btnEdit = new Button(LocalizedConstants.edit());
+		Button btnEdit = new Button(localizedConstants.edit());
 		btnEdit.addClickHandler(new ClickHandler() {
 	        public void onClick(ClickEvent event) {
 	            int editIndex = reminders.indexOf(reminder);
@@ -100,7 +94,7 @@ public class ReminderTable extends FlexTable implements Observer {
 	      });
 		this.setWidget(row, 4, btnEdit);
 		
-		Button btnRemove = new Button(LocalizedConstants.delete());
+		Button btnRemove = new Button(localizedConstants.delete());
 		btnRemove.addClickHandler(new ClickHandler() {
 	        public void onClick(ClickEvent event) {
 	            int removeIndex = reminders.indexOf(reminder);
@@ -114,13 +108,13 @@ public class ReminderTable extends FlexTable implements Observer {
 		Reminder reminder = reminders.get(editIndex);
 		ReminderForm reminderForm = new ReminderForm(reminder);
 		reminderForm.addObserver(this);
-		new DialogBoxClose(LocalizedConstants.addNewReminder(), reminderForm).show();
+		new DialogBoxClose(localizedConstants.addNewReminder(), reminderForm).show();
 	}
 	
 	protected void displayLog(int index) {
 		Reminder reminder = reminders.get(index);
 		ReminderLogTable reminderTable = new ReminderLogTable(reminder);
-		DialogBoxClose dialog = new DialogBoxClose(LocalizedConstants.displayLog(), reminderTable);
+		DialogBoxClose dialog = new DialogBoxClose(localizedConstants.displayLog(), reminderTable);
 		dialog.show();
 	}
 	
@@ -128,7 +122,7 @@ public class ReminderTable extends FlexTable implements Observer {
 		Reminder reminder = reminders.get(removeIndex);
 		RemoveReminderForm form = new RemoveReminderForm(reminder);
 		form.addObserver(this);
-		new DialogBoxClose(LocalizedConstants.removeReminder(), form).show();
+		new DialogBoxClose(localizedConstants.removeReminder(), form).show();
 	}
 
 	@Override
