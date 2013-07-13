@@ -20,6 +20,7 @@ public class DialogBoxClose extends DialogBox {
 	public DialogBoxClose(String title, Panel panel) {
         super(true);
         closeAnchor = new Anchor("x");
+        closeAnchor.addStyleName("closeAnchor");
         this.panel = panel;
 
         captionLayoutTable.setText(0, 1, title);

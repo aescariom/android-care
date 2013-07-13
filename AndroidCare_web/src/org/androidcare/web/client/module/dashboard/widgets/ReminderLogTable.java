@@ -6,6 +6,7 @@ import org.androidcare.web.client.module.dashboard.LocalizedConstants;
 import org.androidcare.web.client.module.dashboard.rpc.ReminderService;
 import org.androidcare.web.client.module.dashboard.rpc.ReminderServiceAsync;
 import org.androidcare.web.client.observer.ObservableForm;
+import org.androidcare.web.client.widgets.DialogBoxClose;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 
@@ -111,6 +112,7 @@ public class ReminderLogTable extends FormPanel {
 			          @Override
 			          public void onSuccess(List<ReminderLog> result) {
 			            updateRowData(start, result);
+			            center();
 			          }
 			        });
 		      }
@@ -120,6 +122,13 @@ public class ReminderLogTable extends FormPanel {
 	 
 	    pager.setDisplay(table);
 	 
+	}
+	
+	protected void center(){
+        if(getParent() != null){
+			DialogBoxClose dialog = (DialogBoxClose)getParent().getParent();
+			dialog.autoCenter();
+		}
 	}
 
 }

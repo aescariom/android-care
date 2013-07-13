@@ -339,6 +339,7 @@ public class ReminderForm extends ObservableForm{
 			}
         	
         });
+        submit.addStyleName("save");
 
         grid.setWidget(UPLOAD_ROW, 0, lblUpload);
         fupPhoto.setName("photo");
@@ -346,6 +347,8 @@ public class ReminderForm extends ObservableForm{
         pnlPhoto.add(imgLoading);
         imgLoading.setVisible(false);
         imgPhoto.setHeight("50px");
+        btnPhoto.removeStyleName("gwt-Button");
+        btnPhoto.addStyleName("transparent");
         btnPhoto.addClickHandler(new ClickHandler(){
 			int height = 0;
 			int width = 0;
@@ -421,6 +424,7 @@ public class ReminderForm extends ObservableForm{
 							}
 						});
 			}});
+        btnDeletePhoto.addStyleName("remove");
         pnlPhoto.add(btnDeletePhoto);
         getFormUrl();
         grid.setWidget(UPLOAD_ROW, 1, pnlPhoto);

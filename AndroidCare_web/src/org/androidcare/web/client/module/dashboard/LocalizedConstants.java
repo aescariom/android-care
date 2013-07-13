@@ -29,6 +29,8 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
 	String log();
 	@DefaultStringValue("Delete")
 	String delete();
+	@DefaultStringValue("Refresh")
+	String refresh();
 		
 	/**
 	 * Labels

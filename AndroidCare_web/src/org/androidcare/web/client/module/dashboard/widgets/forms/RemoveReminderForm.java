@@ -37,6 +37,7 @@ public class RemoveReminderForm extends ObservableForm {
     public RemoveReminderForm(final Reminder reminder) {
         super();
         
+        btnProceed.addStyleName("save");
         btnProceed.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -45,6 +46,7 @@ public class RemoveReminderForm extends ObservableForm {
 			}
         });
         
+        btnCancel.addStyleName("remove");
         btnCancel.addClickHandler(new ClickHandler(){
 
 			@Override
