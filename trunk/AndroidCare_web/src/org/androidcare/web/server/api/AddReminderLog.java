@@ -103,10 +103,8 @@ public class AddReminderLog extends HttpServlet {
 
 	    try {
 	        List<?> rs = (List<?>) query.execute(reminder, code, time);
-	        if(rs != null){
-		        for (Object p : rs) {
-		            return true;
-		        }
+	        if(rs != null && rs.size() > 0){
+	        	return true;
 	        }
 	    } catch(Exception ex){
 			ex.printStackTrace();

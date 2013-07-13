@@ -35,6 +35,7 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	    flowpanel = new FlowPanel();
 	    flowpanel.add(reminderTable);
 		btnAddReminder.addClickHandler(this);
+		btnAddReminder.addStyleName("new");
 	    flowpanel.add(btnAddReminder);
 	    mainPanel.add(flowpanel, localizedConstants.reminders());
 	    	    

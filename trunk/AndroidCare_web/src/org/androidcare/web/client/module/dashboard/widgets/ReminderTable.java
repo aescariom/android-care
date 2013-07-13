@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.Image;
 
 public class ReminderTable extends FlexTable implements Observer {
@@ -38,6 +39,7 @@ public class ReminderTable extends FlexTable implements Observer {
 	protected void getReminders() {
 		this.removeAllRows();
 		this.setWidget(0, 0, imgLoading);
+		this.addStyleName("flexTable");
 
 		// Then, we send the input to the server.
 		reminderService.fetchReminders(
@@ -60,11 +62,22 @@ public class ReminderTable extends FlexTable implements Observer {
 
 		this.setText(0, 0, localizedConstants.title());
 		this.setText(0, 1, localizedConstants.description());
+		this.setRowFormatter(new RowFormatter());
 		
 		this.reminders = reminders;
 		for(Reminder reminder : reminders){
 			addReminder(reminder);
 		}
+		applyDataRowStyles();
+	}
+	
+	private void applyDataRowStyles() {
+	    HTMLTable.RowFormatter rf = this.getRowFormatter();
+	    
+	    rf.addStyleName(0, "flexTable-title");
+	    for (int row = 1; row < this.getRowCount(); ++row) {
+	        rf.addStyleName(row, "flexTable-row");
+	    }
 	}
 	
 	protected void addReminder(final Reminder reminder){
@@ -83,6 +96,8 @@ public class ReminderTable extends FlexTable implements Observer {
 	            displayLog(editIndex);
 	        }
 	      });
+		btnLog.addStyleName("log");
+		this.getCellFormatter().addStyleName(row, 2, "flexTable-button");
 		this.setWidget(row, 2, btnLog);
 		
 		Button btnEdit = new Button(localizedConstants.edit());
@@ -92,7 +107,9 @@ public class ReminderTable extends FlexTable implements Observer {
 	            editIndex(editIndex);
 	        }
 	      });
-		this.setWidget(row, 4, btnEdit);
+		btnEdit.addStyleName("edit");
+		this.getCellFormatter().addStyleName(row, 3, "flexTable-button");
+		this.setWidget(row, 3, btnEdit);
 		
 		Button btnRemove = new Button(localizedConstants.delete());
 		btnRemove.addClickHandler(new ClickHandler() {
@@ -101,7 +118,9 @@ public class ReminderTable extends FlexTable implements Observer {
 	            removeReminder(removeIndex);
 	        }
 	      });
-		this.setWidget(row, 5, btnRemove);
+		btnRemove.addStyleName("remove");
+		this.getCellFormatter().addStyleName(row, 4, "flexTable-button");
+		this.setWidget(row, 4, btnRemove);
 	}
 
 	protected void editIndex(int editIndex) {

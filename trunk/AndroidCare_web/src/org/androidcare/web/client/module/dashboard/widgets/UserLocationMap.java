@@ -65,7 +65,6 @@ public class UserLocationMap extends FlowPanel {
 		txtItems = new TextBox();
 		txtItems.setText("10");
 		txtItems.setWidth("30px");
-		txtItems.setHeight("10px");
 		lblItems = new Label(LocalizedConstants.positionNumber() + ": ");
 		imgLoading = new Image("./images/loading_small.gif");
 		imgLoading.setSize("20px", "20px");
@@ -160,8 +159,10 @@ public class UserLocationMap extends FlowPanel {
 	}
 
 	private void removeOverlays() {
-		for(Overlay o : overlays){
-			mapWidget.removeOverlay(o);
+		if(overlays != null){
+			for(Overlay o : overlays){
+				mapWidget.removeOverlay(o);
+			}
 		}
 	}
 
@@ -173,10 +174,8 @@ public class UserLocationMap extends FlowPanel {
 	}
 
 	private void initRefreshButton() {
-		imgRefresh = new Image("./images/refresh.png");
-		imgRefresh.setSize("15px", "15px");
-		btnRefresh = new Button();
-		btnRefresh.getElement().appendChild(imgRefresh.getElement());
+		btnRefresh = new Button(LocalizedConstants.refresh());
+		btnRefresh.addStyleName("refresh");
 		btnRefresh.addClickHandler(new ClickHandler() {
 	        public void onClick(ClickEvent event) {
 	        	imgLoading.setVisible(true);
@@ -191,8 +190,8 @@ public class UserLocationMap extends FlowPanel {
 			int numOfPositions = Integer.valueOf(txtItems.getText());
 			if(numOfPositions < 1){
 				numOfPositions = 1;
-			}else if(numOfPositions > 100){
-				numOfPositions = 100;
+			}else if(numOfPositions > 999){
+				numOfPositions = 999;
 			}
 			// Then, we send the input to the server.
 			positionService.getLastPositions(numOfPositions,
