@@ -52,7 +52,6 @@ public class UserLocationMap extends FlowPanel {
 	private MapWidget mapWidget;
 	private Label lblItems;
 	private TextBox txtItems;
-	private Image imgRefresh;
 	private Image imgLoading;
 	private Button btnRefresh;
 	private LatLng center;

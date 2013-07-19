@@ -91,7 +91,9 @@
   	<security-constraint>
         <web-resource-collection>
             <web-resource-name>all</web-resource-name>
-    		<url-pattern>/api/*</url-pattern>
+    		<url-pattern>/api/retrieveReminders</url-pattern>
+    		<url-pattern>/api/addPosition</url-pattern>
+    		<url-pattern>/api/addReminderLog</url-pattern>
     		<url-pattern>/userBox/*</url-pattern>
     		<url-pattern>/dashboard/*</url-pattern>
     		<url-pattern>/Dashboard.html</url-pattern>
