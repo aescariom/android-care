@@ -52,7 +52,7 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
         if(wakeLock == null){
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
-            wakeLock.setReferenceCounted(true);
+            wakeLock.setReferenceCounted(false);
         }
         wakeLock.acquire();
         Log.d(TAG, "PowerManager lock acquired by UpdateLocationReceiver; lock count: " + wakeLock.toString());
