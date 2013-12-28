@@ -1,7 +1,10 @@
 package org.androidcare.web.client.module.dashboard;
 
+import com.google.gwt.user.client.Window;
+import org.androidcare.web.client.module.dashboard.widgets.AlarmsTable;
 import org.androidcare.web.client.module.dashboard.widgets.ReminderTable;
 import org.androidcare.web.client.module.dashboard.widgets.UserLocationMap;
+import org.androidcare.web.client.module.dashboard.widgets.forms.AlarmForm;
 import org.androidcare.web.client.module.dashboard.widgets.forms.ReminderForm;
 import org.androidcare.web.client.widgets.DialogBoxClose;
 
@@ -25,8 +28,10 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	private TabPanel mainPanel = new TabPanel();
 	private ReminderTable reminderTable = new ReminderTable();
 	private UserLocationMap map = new UserLocationMap();
+    private AlarmsTable alarmsTable = new AlarmsTable();
 	
     Button btnAddReminder = new Button(localizedConstants.addNew());
+    Button btnAddAlarm = new Button(localizedConstants.addNew());
 
 	public void onModuleLoad() {
 
@@ -40,7 +45,23 @@ public class Dashboard implements EntryPoint, ClickHandler {
 	    mainPanel.add(flowpanel, localizedConstants.reminders());
 	    	    
 	    map.setSize("100%", "600px");
+
 	    mainPanel.add(map, localizedConstants.map());
+
+        FlowPanel alarmFlowPanel = new FlowPanel();
+        alarmFlowPanel.add(alarmsTable);
+        btnAddAlarm.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                AlarmForm alarmForm = new AlarmForm();
+                alarmForm.addObserver(alarmsTable);
+
+                new DialogBoxClose(localizedConstants.addNewReminder(), alarmForm).show();
+            }
+        });
+        btnAddAlarm.addStyleName("new");
+        alarmFlowPanel.add(btnAddAlarm);
+        mainPanel.add(alarmFlowPanel, localizedConstants.alarms());
 	    
 	    mainPanel.selectTab(0);
 

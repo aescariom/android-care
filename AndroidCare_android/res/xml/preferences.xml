@@ -11,10 +11,14 @@
  	
  	<PreferenceCategory
 	   android:title="@string/others" >
-		  <Preference 
-		      android:key="viewReminders"
-		      android:title="@string/view_reminders"
-		      android:summary=""/>
+        <Preference
+                android:key="viewReminders"
+                android:title="@string/view_reminders"
+                android:summary=""/>
+        <Preference
+                android:key="viewAlarms"
+                android:title="@string/view_alarms"
+                android:summary=""/>
 		  <Preference 
 		      android:key="showAdvanced"
 		      android:title="@string/advanced"

@@ -27,6 +27,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
         setLocationUpdates();
         setSynchronizationInterval();
         setReminderUpdates();
+        setAlarmUpdates();
         setCacheTime();
         setStopButton();
         setResetButton();
@@ -58,6 +59,20 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
         });
     }
     
+    private void setAlarmUpdates() {
+        EditTextPreference pref = (EditTextPreference)findPreference("alarmResquestInterval");
+        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
+        pref.setSummary(pref.getText());
+        pref.setSummary(pref.getText() + " " + getApplicationContext().getResources().getString(R.string.hour_s));
+        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                pref.setSummary(newValue.toString() + " " + getApplicationContext().getResources().getString(R.string.hour_s));
+                return true;
+            }
+        });
+    }
+
     private void setReminderUpdates() {
         EditTextPreference pref = (EditTextPreference)findPreference("reminderResquestInterval");
         pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);

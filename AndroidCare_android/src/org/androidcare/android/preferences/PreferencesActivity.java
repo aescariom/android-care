@@ -1,10 +1,5 @@
 package org.androidcare.android.preferences;
 
-import org.androidcare.android.R;
-import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.service.ServiceManager;
-import org.androidcare.android.view.ReminderDialogReceiver;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
@@ -20,7 +15,10 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
+import org.androidcare.android.R;
+import org.androidcare.android.service.ServiceManager;
 
 public class PreferencesActivity extends PreferenceActivity {
 
@@ -35,6 +33,7 @@ public class PreferencesActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
         addGoogleAccounts();
         setDisplayRemindersButton();
+        setDisplayAlarmsButton();
         setAdvancedButton();
     }
 
@@ -48,6 +47,20 @@ public class PreferencesActivity extends PreferenceActivity {
                 return true;
             }
             
+        });
+    }
+
+    private void setDisplayAlarmsButton(){
+        final Preference restart = (Preference) findPreference("viewAlarms");
+        restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+
+            public boolean onPreferenceClick(Preference preference) {
+                Log.v("hello", "Llegando a alarmas");
+                Intent intent = new Intent(PreferencesActivity.this, AlarmList.class);
+                startActivity(intent);
+                return true;
+            }
+
         });
     }
 

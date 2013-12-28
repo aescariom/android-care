@@ -1,26 +1,25 @@
 package org.androidcare.web.server.api;
 
-import java.io.*;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import org.androidcare.web.server.PMF;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RetrieveReminders extends HttpServlet {
 
@@ -88,7 +87,7 @@ public class RetrieveReminders extends HttpServlet {
 		}  
 	}  
 	
-	public List<JSONObject> getReminderList(List<?> reminders){		
+	public List<JSONObject> getReminderList(List<?> reminders){
 		ArrayList<JSONObject> list = new ArrayList<JSONObject>();
 		for(Object reminder : reminders){
 			list.add(new JSONObject(new Reminder((Reminder)reminder)));  

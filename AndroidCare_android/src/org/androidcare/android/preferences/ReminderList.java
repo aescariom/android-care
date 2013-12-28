@@ -1,17 +1,15 @@
 package org.androidcare.android.preferences;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import org.androidcare.android.database.DatabaseHelper;
-import org.androidcare.android.reminders.Reminder;
-
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import org.androidcare.android.database.DatabaseHelper;
+import org.androidcare.android.reminders.Reminder;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class ReminderList extends ListActivity {
 

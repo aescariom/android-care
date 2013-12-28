@@ -1,10 +1,10 @@
 package org.androidcare.web.client.module.dashboard.rpc;
 
-import java.util.List;
-
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.androidcare.web.shared.persistent.Position;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import java.util.List;
+
 
 public interface PositionServiceAsync {
 	void getLastPositions(int numOfPositions, AsyncCallback<List<Position>> callback);

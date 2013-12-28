@@ -17,6 +17,7 @@
     <string name="stop_services">Stop services</string>
     <string name="account_settings">Account settings</string>
     <string name="view_reminders">Reminder list</string>
+    <string name="view_alarms">Alarms list</string>
     <string name="account_summary">Select a Google account</string>
     <string name="zero_accounts">Zero accounts found</string>
     <string name="setup_google_account">Please, set up a Google account</string>
@@ -30,6 +31,7 @@
     <string name="sync_options">Sync Options</string>
     <string name="location_updates">Location updates</string>
     <string name="reminder_updates">Reminder updates</string>
+    <string name="alarm_updates">Alarm updates</string>
     <string name="synchronization_interval">Event sync. interval</string>
     <string name="reminder_cache_time">Cache time</string>
     <string name="minute_s">minute(s)</string>
@@ -43,6 +45,6 @@
     <string name="message_not_sent">Message not sent</string>
     <string name="check_internet_connection">Please, check yout Internet connection</string>
     <string name="delay_reminder">Delay Reminder</string>
-   
-    
+
+
 </resources>

@@ -1,20 +1,17 @@
 package org.androidcare.web.server.module.dashboard;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jdo.PersistenceManager;
-
-import org.androidcare.web.client.module.dashboard.rpc.PositionService;
-import org.androidcare.web.server.PMF;
-import org.androidcare.web.shared.persistent.Position;
-
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.androidcare.web.client.module.dashboard.rpc.PositionService;
+import org.androidcare.web.server.PMF;
+import org.androidcare.web.shared.persistent.Position;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class PositionServiceImpl extends RemoteServiceServlet implements
