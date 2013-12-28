@@ -1,15 +1,6 @@
 package org.androidcare.web.client.module.dashboard.widgets;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.androidcare.web.client.module.dashboard.LocalizedConstants;
-import org.androidcare.web.client.module.dashboard.rpc.PositionService;
-import org.androidcare.web.client.module.dashboard.rpc.PositionServiceAsync;
-import org.androidcare.web.shared.persistent.Position;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -29,13 +20,15 @@ import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
+import org.androidcare.web.client.module.dashboard.LocalizedConstants;
+import org.androidcare.web.client.module.dashboard.rpc.PositionService;
+import org.androidcare.web.client.module.dashboard.rpc.PositionServiceAsync;
+import org.androidcare.web.shared.persistent.Position;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class UserLocationMap extends FlowPanel {
 	
@@ -84,7 +77,7 @@ public class UserLocationMap extends FlowPanel {
 		if(positions.size() <= 0){
 			// Open a map centered on Madrid, Spain
 		    center = LatLng.newInstance(40.416667, -3.70355);
-		}else{
+		} else {
 			int positionNumber = 0;
 			overlays = new ArrayList<Overlay>();
 			for(final Position position : positions){

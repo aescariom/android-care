@@ -1,7 +1,5 @@
 package org.androidcare.web.client.module.dashboard;
 
-import com.google.gwt.i18n.client.Constants;
-
 public interface LocalizedConstants extends org.androidcare.web.client.internacionalization.LocalizedConstants {
 	
 	/**
@@ -11,7 +9,9 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
 	String reminders();
 	@DefaultStringValue("Map")
 	String map();
-	
+    @DefaultStringValue("Alarms")
+    String alarms();
+
 	/**
 	 * Buttons
 	 */
@@ -127,6 +127,35 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
 	String longitude();
 	@DefaultStringValue("Time")
 	String time();
+
+    @DefaultStringValue("Add new alarm")
+    String addNewAlarm();
+    @DefaultStringValue("Remove alarm")
+    String removeAlarm();
+
+    @DefaultStringValue("Severity level")
+    String severityLevel();
+    @DefaultStringValue("Phone number")
+    String phoneNumber();
+    @DefaultStringValue("Email")
+    String email();
+    @DefaultStringValue("Make call")
+    String makeCall();
+    @DefaultStringValue("Send SMS")
+    String sendSMS();
+    @DefaultStringValue("Send Email")
+    String sendEmail();
+    @DefaultStringValue("Place")
+    String place();
+
+    @DefaultStringValue("Information")
+    String info();
+    @DefaultStringValue("Warning")
+    String warning();
+    @DefaultStringValue("Severe")
+    String severe();
+    @DefaultStringValue("Very severe")
+    String verySevere();
 	/**
 	 * return Messages
 	 */

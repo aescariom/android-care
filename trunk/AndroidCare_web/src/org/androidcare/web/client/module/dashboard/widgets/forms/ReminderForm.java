@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ReminderForm extends ObservableForm{
+public class ReminderForm extends ObservableForm {
 	private static final int TITLE_ROW = 0;
 	private static final int DESCRIPTION_ROW = 1;
 	private static final int REPEAT_ROW = 2;
@@ -578,7 +578,7 @@ public class ReminderForm extends ObservableForm{
 		}else{
 			grid.getRowFormatter().setVisible(DAYS_ROW, false);
 		}
-		
+
 		if(show){
 			lblSince.setText(localizedConstants.since());
 		}else{

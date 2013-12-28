@@ -44,6 +44,9 @@
         <activity
             android:name=".preferences.ReminderList">
         </activity>
+        <activity
+            android:name=".preferences.AlarmList">
+        </activity>
         
         <!-- reminder notification receiver -->
         <receiver android:name=".view.ReminderReceiver">

@@ -1,23 +1,22 @@
 package org.androidcare.android.database;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
+import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.location.LocationMessage;
 import org.androidcare.android.service.reminders.GetRemindersMessage;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -28,7 +27,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<GetRemindersMessage, Integer> getGetRemindersMessageDao;
     private Dao<LocationMessage, Integer> getLocationMessageDao;
     private Dao<ReminderLogMessage, Integer> getReminderLogMessageDao;
-    
+    private Dao<Alarm, Integer> alarmDao;
+
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -38,6 +38,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try{
             Log.i(DatabaseHelper.class.getName(), "creating database..");
             TableUtils.createTableIfNotExists(connectionSource, Reminder.class);
+            TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetRemindersMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, ReminderLogMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, LocationMessage.class);
@@ -51,8 +52,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase arg0, ConnectionSource arg1, int arg2, int arg3) {
         try{
             Log.i(DatabaseHelper.class.getName(), "updating database..");
-            //TODO copiar los datos de la versi—n anterior
+            //TODO copiar los datos de la versiï¿½n anterior
             TableUtils.createTableIfNotExists(connectionSource, Reminder.class);
+            TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetRemindersMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, ReminderLogMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, LocationMessage.class);
@@ -68,7 +70,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
         return reminderDao;
     }
-    
+
+    public Dao<Alarm, Integer> getAlarmDao() throws SQLException {
+        if (alarmDao == null) {
+            alarmDao = getDao(Alarm.class);
+        }
+        return alarmDao;
+    }
+
     private Dao<GetRemindersMessage, Integer> getGetRemindersMessageDao() throws SQLException{
         if (getGetRemindersMessageDao == null) {
             getGetRemindersMessageDao = getDao(GetRemindersMessage.class);
@@ -110,11 +119,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public int remove(Message message) throws SQLException {
-        if(message.getClass() == GetRemindersMessage.class){
+        if (message.getClass() == GetRemindersMessage.class) {
             return getGetRemindersMessageDao().delete((GetRemindersMessage)message);
-        }else if(message.getClass() == LocationMessage.class){
+        } else if (message.getClass() == LocationMessage.class) {
             return getLocationMessageDao().delete((LocationMessage)message);
-        }else if(message.getClass() == ReminderLogMessage.class){
+        } else if (message.getClass() == ReminderLogMessage.class) {
             return getReminderLogMessageDao().delete((ReminderLogMessage)message);
         }
         return -1;

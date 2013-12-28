@@ -23,12 +23,15 @@
  		    android:key="synchronizationInterval"
  		    android:title="@string/synchronization_interval"
  		    android:defaultValue="10"/>
- 		    
- 		<EditTextPreference 
- 		    android:key="reminderResquestInterval"
- 		    android:title="@string/reminder_updates"
- 		    android:defaultValue="4"/>    
- 	</PreferenceCategory>
+        <EditTextPreference
+            android:key="reminderResquestInterval"
+            android:title="@string/reminder_updates"
+            android:defaultValue="4"/>
+        <EditTextPreference
+            android:key="alarmResquestInterval"
+            android:title="@string/alarm_updates"
+            android:defaultValue="4"/>
+    </PreferenceCategory>
  	
  	<PreferenceCategory
 	   android:title="@string/location_service" >
