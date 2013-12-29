@@ -159,6 +159,7 @@ public class Alarm implements Serializable {
     }
 
     public String getEmailAddress() {
+        System.out.println("email " + this.emailAddress);
         return this.emailAddress;
     }
 
@@ -188,12 +189,6 @@ public class Alarm implements Serializable {
 
     public String getOwner() {
         return owner;
-    }
-
-    public String getPositionToShow() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("(").append(latitude).append("; ").append(longitude).append(")");
-        return builder.toString();
     }
 
     public void setId(long id) {
