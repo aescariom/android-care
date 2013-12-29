@@ -2,35 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="06e2991e-a85f-4d8b-a993-3be177675ef2" name="Default" comment="commit test">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/Dashboard.gwt.xml" afterPath="$PROJECT_DIR$/src/org/androidcare/web/Dashboard.gwt.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/Dashboard.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/Dashboard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/internacionalization/LocalizedConstants.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/internacionalization/LocalizedConstants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages_es.properties" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages_es.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/server/PMF.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/server/PMF.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/PositionServiceAsync.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/PositionServiceAsync.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/PositionServiceImpl.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/PositionServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/ReminderForm.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/ReminderForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/server/api/RetrieveReminders.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/server/api/RetrieveReminders.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/META-INF/jdoconfig.xml" afterPath="$PROJECT_DIR$/src/META-INF/jdoconfig.xml" />
     </list>
     <ignored path="AndroidCare_web.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/LocalizedConstants_es.properties" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385314397190" ignored="false" />
-    <file path="/AlarmsTable.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385314410966" ignored="false" />
-    <file path="/LocalizedConstants.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385314348389" ignored="false" />
+    <file path="/LocalizedConstants_es.properties" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388341237346" ignored="false" />
+    <file path="/AlarmsTable.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388344581040" ignored="false" />
+    <file path="/LocalizedConstants.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388340570832" ignored="false" />
     <file path="/a.dummy" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383678394849" ignored="false" />
     <file path="/Dashboard.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383759203004" ignored="false" />
-    <file path="/AlarmForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384169644288" ignored="false" />
+    <file path="/AlarmForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388348974859" ignored="false" />
     <file path="/a.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383755239659" ignored="false" />
-    <file path="/Alarm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385314163286" ignored="false" />
+    <file path="/Alarm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388348679247" ignored="false" />
     <file path="/ReminderForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383758334343" ignored="false" />
     <file path="/AlarmServiceAsync.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385315489424" ignored="false" />
     <file path="/AlarmService.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384109004106" ignored="false" />
-    <file path="/AlarmServiceImpl.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385315687295" ignored="false" />
+    <file path="/AlarmServiceImpl.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388342446527" ignored="false" />
     <file path="/AlarmSeverity.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384169542980" ignored="false" />
     <file path="/web.xml" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384368074472" ignored="false" />
     <file path="/RetrieveAlarms.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384367951447" ignored="false" />
@@ -66,7 +58,6 @@
     <sortChildren value="false" />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -103,6 +94,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -112,38 +104,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="RetrieveAlarms.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/api/RetrieveAlarms.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="40" selection-start="2410" selection-end="2410" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlarmServiceAsync.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmServiceAsync.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="79" selection-start="284" selection-end="284" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlarmService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="0" selection-start="411" selection-end="411" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="AlarmsTable.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="119" column="54" selection-start="4307" selection-end="4307" vertical-scroll-proportion="0.0">
+            <state line="104" column="43" selection-start="3693" selection-end="3693" vertical-scroll-proportion="0.0">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Alarm.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="78" column="53" selection-start="2263" selection-end="2263" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AlarmForm.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="123" column="36" selection-start="4321" selection-end="4321" vertical-scroll-proportion="0.4008097">
+              <folding>
+                <element signature="e#4746#4747#0" expanded="true" />
+                <element signature="e#5537#5684#0" expanded="true" />
+                <element signature="e#5672#5673#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -151,7 +138,7 @@
       <file leaf-file-name="LocalizedConstants.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="132" column="37" selection-start="2883" selection-end="2883" vertical-scroll-proportion="0.0">
+            <state line="136" column="12" selection-start="2963" selection-end="2963" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -166,28 +153,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LocalizedMessages_es.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages_es.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="116" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LocalizedMessages.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="38" selection-start="365" selection-end="365" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlarmSeverity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AlarmSeverity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/AlarmSeverity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="54" selection-start="356" selection-end="356" vertical-scroll-proportion="0.17062937">
+            <state line="36" column="69" selection-start="988" selection-end="988" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -196,8 +165,10 @@
       <file leaf-file-name="AlarmServiceImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="79" selection-start="867" selection-end="867" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="52" column="38" selection-start="1772" selection-end="1772" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#606#633#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -215,27 +186,27 @@
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/ReminderForm.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/Dashboard.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/AlarmSeverity.java" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/server/api/RetrieveAlarms.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/web.xml" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages_es.properties" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmService.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmServiceAsync.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/RemoveAlarmForm.java" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1680" />
+    <option name="x" value="-1050" />
     <option name="y" value="22" />
-    <option name="width" value="1680" />
-    <option name="height" value="1028" />
+    <option name="width" value="1050" />
+    <option name="height" value="1658" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -281,38 +252,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="AndroidCare_web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidCare_web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidCare_web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidCare_web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidCare_web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -374,7 +313,449 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="shared" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="persistent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shared" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="userbox" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="widgets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="observer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="userbox" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="userbox" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="widgets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="widgets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="forms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dashboard" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="internacionalization" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -400,14 +781,14 @@
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/web/WEB-INF/lib/jta-1.1.jar!/" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="androidcare_web" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -449,6 +830,19 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -475,19 +869,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -665,8 +1046,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1680" y="22" width="1680" height="1028" extended-state="0" />
-    <editor active="true" />
+    <frame x="-1050" y="22" width="1050" height="1658" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -679,7 +1060,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24602203" sideWeight="0.3006608" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28964758" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2893368" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24602203" sideWeight="0.3006608" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -687,8 +1068,8 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14687882" sideWeight="0.8436123" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15638767" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23904383" sideWeight="0.84460336" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15539663" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -762,60 +1143,30 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="62" selection-start="1070" selection-end="1070" vertical-scroll-proportion="0.023659306" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/RemoveReminderForm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="61" selection-start="61" selection-end="61" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/ReminderTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="141" column="47" selection-start="4814" selection-end="4814" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="201" column="20" selection-start="5022" selection-end="5022" vertical-scroll-proportion="0.80791616" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="27" selection-start="1204" selection-end="1204" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="411" selection-end="411" vertical-scroll-proportion="0.0">
+        <state line="10" column="38" selection-start="365" selection-end="365" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/api/RetrieveAlarms.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/AlarmSeverity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="40" selection-start="2410" selection-end="2410" vertical-scroll-proportion="0.0">
+        <state line="36" column="69" selection-start="988" selection-end="988" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmServiceAsync.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/internacionalization/LocalizedConstants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="79" selection-start="284" selection-end="284" vertical-scroll-proportion="0.0">
+        <state line="4" column="17" selection-start="121" selection-end="121" vertical-scroll-proportion="0.040927693">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/ReminderServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages_es.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="871" selection-end="871" vertical-scroll-proportion="-2.9040403" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="54" selection-start="4307" selection-end="4307" vertical-scroll-proportion="0.0">
+        <state line="1" column="19" selection-start="175" selection-end="175" vertical-scroll-proportion="0.010323469">
           <folding />
         </state>
       </provider>
@@ -827,38 +1178,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages_es.properties">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="116" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0">
+        <state line="65" column="19" selection-start="1254" selection-end="1254" vertical-scroll-proportion="0.79011345">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="37" selection-start="2883" selection-end="2883" vertical-scroll-proportion="0.0">
+        <state line="136" column="12" selection-start="2963" selection-end="2963" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/web/WEB-INF/lib/jdo-api-3.0.1.jar!/javax/jdo/PersistenceManager.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="9" selection-start="2592" selection-end="2592" vertical-scroll-proportion="0.33966944">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/PositionServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="13" selection-start="588" selection-end="588" vertical-scroll-proportion="0.06122449">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/ReminderServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="169" column="61" selection-start="6186" selection-end="6186" vertical-scroll-proportion="0.8380567">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="17" selection-start="306" selection-end="306" vertical-scroll-proportion="0.060096152">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/rpc/AlarmServiceAsync.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="9" selection-start="295" selection-end="295" vertical-scroll-proportion="0.084134616">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="79" selection-start="867" selection-end="867" vertical-scroll-proportion="0.0">
+        <state line="52" column="38" selection-start="1772" selection-end="1772" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#606#633#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="104" column="43" selection-start="3693" selection-end="3693" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="38" selection-start="365" selection-end="365" vertical-scroll-proportion="0.0">
+        <state line="78" column="53" selection-start="2263" selection-end="2263" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/AlarmSeverity.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="54" selection-start="356" selection-end="356" vertical-scroll-proportion="0.17062937">
-          <folding />
+        <state line="123" column="36" selection-start="4321" selection-end="4321" vertical-scroll-proportion="0.4008097">
+          <folding>
+            <element signature="e#4746#4747#0" expanded="true" />
+            <element signature="e#5537#5684#0" expanded="true" />
+            <element signature="e#5672#5673#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

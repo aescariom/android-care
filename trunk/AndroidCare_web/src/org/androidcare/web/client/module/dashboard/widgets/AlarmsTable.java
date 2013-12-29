@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Image;
 import org.androidcare.web.client.module.dashboard.LocalizedConstants;
 import org.androidcare.web.client.module.dashboard.rpc.AlarmService;
 import org.androidcare.web.client.module.dashboard.rpc.AlarmServiceAsync;
+import org.androidcare.web.client.module.dashboard.widgets.forms.AlarmForm;
 import org.androidcare.web.client.module.dashboard.widgets.forms.RemoveAlarmForm;
 import org.androidcare.web.client.observer.Observer;
 import org.androidcare.web.client.widgets.DialogBoxClose;
@@ -57,8 +58,7 @@ public class AlarmsTable extends FlexTable implements Observer{
     private void fill(List<Alarm> alarms) {
         this.removeAllRows();
 
-        this.setText(0, 0, localizedConstants.severityLevel());
-        this.setText(0, 1, localizedConstants.place());
+        this.setText(0, 0, localizedConstants.alarmName());
         this.setRowFormatter(new RowFormatter());
 
         this.alarms = alarms;
@@ -79,8 +79,7 @@ public class AlarmsTable extends FlexTable implements Observer{
 
     private void addAlarm(final Alarm alarm) {
         int row = this.getRowCount();
-        this.setText(row, 0, alarm.getAlarmSeverity().getDescription());
-        this.setText(row, 1, alarm.getPositionToShow());
+        this.setText(row, 0, alarm.getName());
 
         Button btnEdit = new Button(localizedConstants.edit());
         btnEdit.addClickHandler(new ClickHandler() {
@@ -108,9 +107,9 @@ public class AlarmsTable extends FlexTable implements Observer{
 
     private void editIndex(int editIndex) {
         Alarm alarm = alarms.get(editIndex);
-        //ReminderForm reminderForm = new ReminderForm(reminder);
-        //reminderForm.addObserver(this);
-        //new DialogBoxClose(localizedConstants.addNewReminder(), reminderForm).show();
+        AlarmForm alarmForm = new AlarmForm(alarm);
+        alarmForm.addObserver(this);
+        new DialogBoxClose(localizedConstants.addNewAlarm(), alarmForm).show();
     }
 
     private void removeReminder(int removeIndex) {

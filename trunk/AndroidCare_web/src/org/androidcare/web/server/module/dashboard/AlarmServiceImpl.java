@@ -69,7 +69,8 @@ public class AlarmServiceImpl extends RemoteServiceServlet implements AlarmServi
         PersistenceManager pm = PMF.get().getPersistenceManager();
 
         try {
-            pm.deletePersistent(alarm);
+            Alarm persistedAlarm = pm.getObjectById(Alarm.class, alarm.getId());
+            pm.deletePersistent(persistedAlarm);
         } catch(Exception ex){
             log.log(Level.SEVERE, "Alarm could not be saved", ex);
         } finally {

@@ -1,6 +1,8 @@
 package org.androidcare.web.client.module.dashboard.widgets.forms;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -17,13 +19,14 @@ import org.androidcare.web.shared.persistent.Alarm;
 public class AlarmForm extends ObservableForm {
 
     private static final int SEVERITY_LEVEL_ROW = 0;
-    private static final int PHONE_NUMBER_ROW = 1;
-    private static final int EMAIL_ROW = 2;
-    private static final int MAKE_CALL_ROW = 3;
-    private static final int SEND_SMS_ROW = 4;
-    private static final int SEND_EMAIL_ROW = 5;
+    private static final int ALARM_NAME_ROW = 1;
+    private static final int PHONE_NUMBER_ROW = 2;
+    private static final int EMAIL_ROW = 3;
+    private static final int MAKE_CALL_ROW = 4;
+    private static final int SEND_SMS_ROW = 5;
+    private static final int SEND_EMAIL_ROW = 6;
 
-    private static final int SEND_ROW = 7;
+    private static final int SEND_ROW = 8;
 
     //Localizer
     private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
@@ -32,6 +35,9 @@ public class AlarmForm extends ObservableForm {
     private Grid grid = new Grid(SEND_ROW + 1, 2);
 
     //Form fields
+    private Label lblName = new Label(localizedConstants.alarmName());
+    private TextBox txtName = new TextBox();
+
     private Label lblSeverityLevel = new Label(localizedConstants.severityLevel());
     private ListBox ddlSeverityLevel = new ListBox();
     private TextBox txtId = new TextBox();
@@ -81,19 +87,20 @@ public class AlarmForm extends ObservableForm {
         if (alarm == null) {
             Alarm alarm = new Alarm();
 
-            alarm.setAlarmSeverity(AlarmSeverity.WARNING);
+            alarm.setAlarmSeverity(AlarmSeverity.INFO);
             alarm.setPhoneNumber("");
             alarm.setEmailAddress("");
 
             alarm.initiateCallOnAlarm(false);
             alarm.sendSMSOnAlarm(false);
-            alarm.sendEmailOnAlarm(false);
+            alarm.sendEmailOnAlarm(true);
         }
         setAlarmValues(alarm);
     }
 
     private void setAlarmValues(Alarm alarm) {
         if (alarm != null) {
+            txtName.setValue(alarm.getName());
             txtPhoneNumber.setValue(alarm.getPhoneNumber());
             txtEmail.setValue(alarm.getEmailAddress());
             chkMakeCall.setValue(alarm.getInitiateCall());
@@ -104,9 +111,26 @@ public class AlarmForm extends ObservableForm {
 
 
     private void addItemsToGrid() {
+        grid.setWidget(ALARM_NAME_ROW, 0, lblName);
+        txtName.setWidth("400px");
+        grid.setWidget(ALARM_NAME_ROW, 1, txtName);
+
         grid.setWidget(SEVERITY_LEVEL_ROW, 0, lblSeverityLevel);
         ddlSeverityLevel.setWidth("400px");
         grid.setWidget(SEVERITY_LEVEL_ROW, 1, ddlSeverityLevel);
+
+        ddlSeverityLevel.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                String selectedValue = ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex());
+
+                AlarmSeverity severity = AlarmSeverity.getAlarmOf(selectedValue);
+                if(severity == AlarmSeverity.SEVERE || severity == AlarmSeverity.VERY_SEVERE) {
+                    chkMakeCall.setValue(true);
+                    chkSendSMS.setValue(true);
+                }
+            }
+        });
 
         grid.setWidget(PHONE_NUMBER_ROW, 0, lblPhoneNumber);
         txtPhoneNumber.setWidth("400px");
@@ -125,6 +149,7 @@ public class AlarmForm extends ObservableForm {
         grid.setWidget(SEND_SMS_ROW, 1, chkSendSMS);
 
         grid.setWidget(SEND_EMAIL_ROW, 0, lblSendEmail);
+        chkSendEmail.setValue(true);
         grid.setWidget(SEND_EMAIL_ROW, 1, chkSendEmail);
 
         submit.addClickHandler(new ClickHandler(){
@@ -156,8 +181,10 @@ public class AlarmForm extends ObservableForm {
         Alarm alarm = new Alarm();
         alarm.setId(-1L);
 
+        alarm.setName(txtName.getText());
         alarm.setAlarmSeverity(AlarmSeverity.getAlarmOf(ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex())));
         alarm.setPhoneNumber(txtPhoneNumber.getValue());
+        Window.alert("mail para guardar " + txtEmail.getValue());
         alarm.setEmailAddress(txtEmail.getValue());
         alarm.initiateCallOnAlarm(chkMakeCall.getValue());
         alarm.sendSMSOnAlarm(chkSendSMS.getValue());
