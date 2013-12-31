@@ -66,6 +66,7 @@ public class Alarm implements Serializable {
         this.sendEmail = alarm.getSendEmail();
         this.logInServer = alarm.getLogInServer();
         this.phoneNumber = alarm.getPhoneNumber();
+        this.emailAddress = alarm.getEmailAddress();
         this.alarmStartTime = alarm.getAlarmStartTime();
         this.alarmEndTime = alarm.getAlarmEndTime();
         this.onlyFireAtHome = alarm.getFireOnlyAtHome();
@@ -159,7 +160,6 @@ public class Alarm implements Serializable {
     }
 
     public String getEmailAddress() {
-        System.out.println("email " + this.emailAddress);
         return this.emailAddress;
     }
 
