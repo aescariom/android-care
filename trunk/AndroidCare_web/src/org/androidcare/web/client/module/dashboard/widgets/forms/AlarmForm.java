@@ -84,8 +84,11 @@ public class AlarmForm extends ObservableForm {
     }
 
     private void setFormValues() {
+
+        Alarm alarm = this.alarm;
+
         if (alarm == null) {
-            Alarm alarm = new Alarm();
+            alarm = new Alarm();
 
             alarm.setAlarmSeverity(AlarmSeverity.INFO);
             alarm.setPhoneNumber("");
@@ -95,6 +98,7 @@ public class AlarmForm extends ObservableForm {
             alarm.sendSMSOnAlarm(false);
             alarm.sendEmailOnAlarm(true);
         }
+
         setAlarmValues(alarm);
     }
 
@@ -184,7 +188,6 @@ public class AlarmForm extends ObservableForm {
         alarm.setName(txtName.getText());
         alarm.setAlarmSeverity(AlarmSeverity.getAlarmOf(ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex())));
         alarm.setPhoneNumber(txtPhoneNumber.getValue());
-        Window.alert("mail para guardar " + txtEmail.getValue());
         alarm.setEmailAddress(txtEmail.getValue());
         alarm.initiateCallOnAlarm(chkMakeCall.getValue());
         alarm.sendSMSOnAlarm(chkSendSMS.getValue());

@@ -4,10 +4,7 @@
     <list default="true" readonly="true" id="06e2991e-a85f-4d8b-a993-3be177675ef2" name="Default" comment="commit test">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidCare_web.iws" afterPath="$PROJECT_DIR$/AndroidCare_web.iws" />
     </list>
     <ignored path="AndroidCare_web.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -16,9 +13,9 @@
     <file path="/LocalizedConstants.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388340570832" ignored="false" />
     <file path="/a.dummy" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383678394849" ignored="false" />
     <file path="/Dashboard.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383759203004" ignored="false" />
-    <file path="/AlarmForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388348974859" ignored="false" />
+    <file path="/AlarmForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388519496485" ignored="false" />
     <file path="/a.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383755239659" ignored="false" />
-    <file path="/Alarm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388348679247" ignored="false" />
+    <file path="/Alarm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388519864408" ignored="false" />
     <file path="/ReminderForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383758334343" ignored="false" />
     <file path="/AlarmServiceAsync.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385315489424" ignored="false" />
     <file path="/AlarmService.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384109004106" ignored="false" />
@@ -113,24 +110,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Alarm.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Alarm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="53" selection-start="2263" selection-end="2263" vertical-scroll-proportion="0.0">
+            <state line="148" column="37" selection-start="3947" selection-end="3947" vertical-scroll-proportion="0.26859504">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlarmForm.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="123" column="36" selection-start="4321" selection-end="4321" vertical-scroll-proportion="0.4008097">
-              <folding>
-                <element signature="e#4746#4747#0" expanded="true" />
-                <element signature="e#5537#5684#0" expanded="true" />
-                <element signature="e#5672#5673#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -166,9 +150,7 @@
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="52" column="38" selection-start="1772" selection-end="1772" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#606#633#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -197,8 +179,8 @@
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/AlarmsTable.java" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
       </list>
     </option>
   </component>
@@ -236,7 +218,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -775,6 +756,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -1047,29 +1029,29 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1050" y="22" width="1050" height="1658" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899868" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32986537" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24034335" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15539663" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24602203" sideWeight="0.3006608" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2893368" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24602203" sideWeight="0.3006608" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899868" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23904383" sideWeight="0.84460336" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15539663" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15539663" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1166,9 +1148,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedMessages_es.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="19" selection-start="175" selection-end="175" vertical-scroll-proportion="0.010323469">
-          <folding />
-        </state>
+        <state line="1" column="19" selection-start="175" selection-end="175" vertical-scroll-proportion="0.010323469" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/RemoveAlarmForm.java">
@@ -1180,9 +1160,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="19" selection-start="1254" selection-end="1254" vertical-scroll-proportion="0.79011345">
-          <folding />
-        </state>
+        <state line="65" column="19" selection-start="1254" selection-end="1254" vertical-scroll-proportion="0.79011345" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java">
@@ -1194,9 +1172,7 @@
     </entry>
     <entry file="jar://$PROJECT_DIR$/web/WEB-INF/lib/jdo-api-3.0.1.jar!/javax/jdo/PersistenceManager.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="9" selection-start="2592" selection-end="2592" vertical-scroll-proportion="0.33966944">
-          <folding />
-        </state>
+        <state line="90" column="9" selection-start="2592" selection-end="2592" vertical-scroll-proportion="0.33966944" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/PositionServiceImpl.java">
@@ -1230,9 +1206,7 @@
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="52" column="38" selection-start="1772" selection-end="1772" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#606#633#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1243,21 +1217,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="53" selection-start="2263" selection-end="2263" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="153" column="39" selection-start="5384" selection-end="5384" vertical-scroll-proportion="0.24380165">
+          <folding>
+            <element signature="e#4272#4788#0" expanded="true" />
+            <element signature="e#4777#4778#0" expanded="true" />
+            <element signature="e#5568#5715#0" expanded="true" />
+            <element signature="e#5703#5704#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="36" selection-start="4321" selection-end="4321" vertical-scroll-proportion="0.4008097">
-          <folding>
-            <element signature="e#4746#4747#0" expanded="true" />
-            <element signature="e#5537#5684#0" expanded="true" />
-            <element signature="e#5672#5673#0" expanded="true" />
-          </folding>
+        <state line="148" column="37" selection-start="3947" selection-end="3947" vertical-scroll-proportion="0.26859504">
+          <folding />
         </state>
       </provider>
     </entry>
