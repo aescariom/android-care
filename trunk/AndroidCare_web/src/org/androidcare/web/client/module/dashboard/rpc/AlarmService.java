@@ -11,5 +11,5 @@ public interface AlarmService extends RemoteService {
     List<Alarm> getActiveAlarms();
     void saveAlarm(Alarm alarm);
 
-    void deleteAlarm(Alarm alarm);
+    boolean deleteAlarm(Alarm alarm);
 }

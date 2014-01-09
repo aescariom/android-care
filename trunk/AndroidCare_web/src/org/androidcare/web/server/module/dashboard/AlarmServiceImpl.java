@@ -65,14 +65,16 @@ public class AlarmServiceImpl extends RemoteServiceServlet implements AlarmServi
     }
 
     @Override
-    public void deleteAlarm(Alarm alarm) {
+    public boolean deleteAlarm(Alarm alarm) {
         PersistenceManager pm = PMF.get().getPersistenceManager();
 
         try {
             Alarm persistedAlarm = pm.getObjectById(Alarm.class, alarm.getId());
             pm.deletePersistent(persistedAlarm);
+            return true;
         } catch(Exception ex){
             log.log(Level.SEVERE, "Alarm could not be saved", ex);
+            return false;
         } finally {
             pm.close();
         }
