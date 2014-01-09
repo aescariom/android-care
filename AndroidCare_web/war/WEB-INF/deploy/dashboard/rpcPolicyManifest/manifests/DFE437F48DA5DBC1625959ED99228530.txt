@@ -1,0 +1,2 @@
+serviceClass: org.androidcare.web.client.module.dashboard.rpc.AlarmService
+path: F1941DC41FFB0E36F8BF192DDEF34D84.gwt.rpc
