@@ -1,13 +1,5 @@
 package org.androidcare.web.client.module.dashboard;
 
-import com.google.gwt.user.client.Window;
-import org.androidcare.web.client.module.dashboard.widgets.AlarmsTable;
-import org.androidcare.web.client.module.dashboard.widgets.ReminderTable;
-import org.androidcare.web.client.module.dashboard.widgets.UserLocationMap;
-import org.androidcare.web.client.module.dashboard.widgets.forms.AlarmForm;
-import org.androidcare.web.client.module.dashboard.widgets.forms.ReminderForm;
-import org.androidcare.web.client.widgets.DialogBoxClose;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,6 +10,12 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
+import org.androidcare.web.client.module.dashboard.widgets.AlarmsTable;
+import org.androidcare.web.client.module.dashboard.widgets.ReminderTable;
+import org.androidcare.web.client.module.dashboard.widgets.UserLocationMap;
+import org.androidcare.web.client.module.dashboard.widgets.forms.AlarmForm;
+import org.androidcare.web.client.module.dashboard.widgets.forms.ReminderForm;
+import org.androidcare.web.client.widgets.DialogBoxClose;
 
 public class Dashboard implements EntryPoint, ClickHandler {
 	
@@ -56,7 +54,7 @@ public class Dashboard implements EntryPoint, ClickHandler {
                 AlarmForm alarmForm = new AlarmForm();
                 alarmForm.addObserver(alarmsTable);
 
-                new DialogBoxClose(localizedConstants.addNewReminder(), alarmForm).show();
+                new DialogBoxClose(localizedConstants.addNewAlarm(), alarmForm).show();
             }
         });
         btnAddAlarm.addStyleName("new");

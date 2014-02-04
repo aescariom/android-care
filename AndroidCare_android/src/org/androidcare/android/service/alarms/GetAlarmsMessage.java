@@ -23,20 +23,20 @@ import java.util.List;
 public class GetAlarmsMessage extends Message {
     public static final String ALARMS_URL = "api/retrieveAlarms";
 
-    protected static AlarmService alarmService;
+    protected static AlarmDownloadService alarmDownloadService;
     private List<Alarm> alarms = new ArrayList();
 
     public GetAlarmsMessage(){
         super();
     }
 
-    public GetAlarmsMessage(AlarmService alarmService) {
+    public GetAlarmsMessage(AlarmDownloadService alarmService) {
         super();
-        GetAlarmsMessage.alarmService = alarmService;
+        GetAlarmsMessage.alarmDownloadService = alarmService;
     }
     
-    public static void setAlarmService(AlarmService alarmService){
-        GetAlarmsMessage.alarmService = alarmService;
+    public static void setAlarmDownloadService(AlarmDownloadService alarmDownloadService){
+        GetAlarmsMessage.alarmDownloadService = alarmDownloadService;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class GetAlarmsMessage extends Message {
                 JSONObject obj = array.getJSONObject(i);
                 this.alarms.add(new Alarm(obj));
             }
-            GetAlarmsMessage.alarmService.addAlarmsToDatabase(this.alarms);
+            GetAlarmsMessage.alarmDownloadService.addAlarmsToDatabase(this.alarms);
 
             Log.i(GetAlarmsMessage.class.getName(), "Alarms updated from the server");
         }
@@ -82,7 +82,7 @@ public class GetAlarmsMessage extends Message {
     @Override
     public void onError(Exception ex){
         super.onError(ex);
-        GetAlarmsMessage.alarmService.addAlarmsToDatabase(this.alarms);
-        Log.e(this.getClass().getName(), "No reminders could be retrieved from the server: ");
+        GetAlarmsMessage.alarmDownloadService.addAlarmsToDatabase(this.alarms);
+        Log.e(this.getClass().getName(), "No alarms could be retrieved from the server: ");
     }
 }

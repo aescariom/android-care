@@ -10,6 +10,7 @@ import com.j256.ormlite.table.TableUtils;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
+import org.androidcare.android.service.alarms.GetAlarmsMessage;
 import org.androidcare.android.service.location.LocationMessage;
 import org.androidcare.android.service.reminders.GetRemindersMessage;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
@@ -28,6 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<LocationMessage, Integer> getLocationMessageDao;
     private Dao<ReminderLogMessage, Integer> getReminderLogMessageDao;
     private Dao<Alarm, Integer> alarmDao;
+    private Dao<GetAlarmsMessage, Integer> getAlarmMessageDao;
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,10 +40,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try{
             Log.i(DatabaseHelper.class.getName(), "creating database..");
             TableUtils.createTableIfNotExists(connectionSource, Reminder.class);
-            TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetRemindersMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, ReminderLogMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, LocationMessage.class);
+            TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
+            TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -54,10 +57,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             Log.i(DatabaseHelper.class.getName(), "updating database..");
             //TODO copiar los datos de la versi�n anterior
             TableUtils.createTableIfNotExists(connectionSource, Reminder.class);
-            TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetRemindersMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, ReminderLogMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, LocationMessage.class);
+            TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
+            TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -69,13 +73,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             reminderDao = getDao(Reminder.class);
         }
         return reminderDao;
-    }
-
-    public Dao<Alarm, Integer> getAlarmDao() throws SQLException {
-        if (alarmDao == null) {
-            alarmDao = getDao(Alarm.class);
-        }
-        return alarmDao;
     }
 
     private Dao<GetRemindersMessage, Integer> getGetRemindersMessageDao() throws SQLException{
@@ -99,6 +96,20 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getLocationMessageDao;
     }
 
+    public Dao<Alarm, Integer> getAlarmDao() throws SQLException {
+        if (alarmDao == null) {
+            alarmDao = getDao(Alarm.class);
+        }
+        return alarmDao;
+    }
+
+    public Dao<GetAlarmsMessage, Integer> getAlarmsMessagesDao() throws SQLException {
+        if (getAlarmMessageDao == null) {
+            getAlarmMessageDao = getDao(GetAlarmsMessage.class);
+        }
+        return getAlarmMessageDao;
+    }
+
     public void truncateReminderTable() throws SQLException {
         TableUtils.clearTable(connectionSource, Reminder.class);
 
@@ -114,6 +125,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             return getLocationMessageDao().create((LocationMessage)message);
         }else if(message.getClass() == ReminderLogMessage.class){
             return getReminderLogMessageDao().create((ReminderLogMessage)message);
+        } else if (message.getClass() == GetAlarmsMessage.class) {
+            return getAlarmsMessagesDao().create((GetAlarmsMessage) message);
         }
         return -1;
     }
@@ -125,14 +138,21 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             return getLocationMessageDao().delete((LocationMessage)message);
         } else if (message.getClass() == ReminderLogMessage.class) {
             return getReminderLogMessageDao().delete((ReminderLogMessage)message);
+        } else if (message.getClass() == GetAlarmsMessage.class) {
+            return getAlarmsMessagesDao().delete((GetAlarmsMessage) message);
         }
         return -1;
     }
 
     public List<Message> getMessages() throws SQLException {
         List<Message> messages = new ArrayList<Message>();
+        Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de recordatorios");
         messages.addAll(getGetRemindersMessageDao().queryForAll());
+        Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de log de recordatorios");
         messages.addAll(getReminderLogMessageDao().queryForAll());
+        Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de alarmas");
+        messages.addAll(getAlarmsMessagesDao().queryForAll());
+        Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de posicionamiento");
         messages.addAll(getLocationMessageDao().queryForAll());
         return messages;
     }

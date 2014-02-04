@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/RootLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+    <LinearLayout
+            android:id="@+id/ButtonLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:baselineAligned="false"
+            android:orientation="vertical" >
+
+        <Button
+                android:id="@+id/btnOk"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:height="150dp"
+                android:background="#ff0000"
+                android:includeFontPadding="false"
+                android:text="@android:string/no"
+                android:textSize="@dimen/button_fomt_size" />
+
+        <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:height="50dp"
+                android:background="#00ff00"
+                android:text="@string/YES"
+                android:textSize="@dimen/button_fomt_size" />
+
+    </LinearLayout>
+    <ScrollView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="#ffffff"
+            android:layout_above="@id/ButtonLayout">
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="vertical" >
+
+            <TextView
+                    android:id="@+id/txtAlarmTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    android:textSize="30dp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

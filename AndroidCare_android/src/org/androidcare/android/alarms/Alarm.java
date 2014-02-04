@@ -22,6 +22,9 @@ public class Alarm implements Serializable {
     @DatabaseField
     private int alarmSeverity;
     @DatabaseField
+    private String name;
+
+    @DatabaseField
     private boolean initiateCall = false;
     @DatabaseField
     private boolean sendSMS = false;
@@ -61,6 +64,7 @@ public class Alarm implements Serializable {
 
     public Alarm (JSONObject jsonObj) throws NumberFormatException, JSONException, ParseException {
         id = Integer.parseInt(jsonObj.getString("id"));
+        name = jsonObj.getString("name");
         alarmSeverity = Integer.parseInt(jsonObj.getString("alarmSeverity"));
 
         initiateCall = Boolean.parseBoolean(jsonObj.getString("initiateCall"));
@@ -78,10 +82,11 @@ public class Alarm implements Serializable {
         onlyFireAtLocation = Boolean.parseBoolean(jsonObj.getString("onlyFireAtLocation"));
     }
 
-    public Alarm (int id, AlarmSeverity severity, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
+    public Alarm (int id, String name, AlarmSeverity severity, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
                   String phoneNumber, String emailAddress, Date alarmStartTime, Date alarmEndTime, boolean onlyFireAtHome,
                   boolean onlyFireAtLocation, double latitude, double longitude) {
         this.id = id;
+        this.name = name;
 
         this.alarmSeverity = severity.getId();
         this.initiateCall = initiateCall;
@@ -113,4 +118,31 @@ public class Alarm implements Serializable {
 
 
 
+    public boolean isInitiateCall() {
+        return initiateCall;
+    }
+
+    public boolean isSendSMS() {
+        return sendSMS;
+    }
+
+    public boolean isSendEmail() {
+        return sendEmail;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getAlarmSeverity() {
+        return AlarmSeverity.getAlarmOfId(alarmSeverity).getDescription();
+    }
+
+    public String getName() {
+        return name;
+    }
 }

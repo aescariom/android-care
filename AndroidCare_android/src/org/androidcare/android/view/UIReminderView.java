@@ -1,18 +1,5 @@
 package org.androidcare.android.view;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
-import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.reminders.ReminderStatusCode;
-import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
-import org.androidcare.android.service.Message;
-import org.androidcare.android.service.reminders.ReminderLogMessage;
-import org.androidcare.android.service.reminders.ReminderServiceBroadcastReceiver;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +14,18 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import org.androidcare.android.reminders.Reminder;
+import org.androidcare.android.reminders.ReminderStatusCode;
+import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
+import org.androidcare.android.service.Message;
+import org.androidcare.android.service.reminders.ReminderLogMessage;
+import org.androidcare.android.service.reminders.ReminderServiceBroadcastReceiver;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 public abstract class UIReminderView extends RelativeLayout {    
 
@@ -36,7 +35,7 @@ public abstract class UIReminderView extends RelativeLayout {
     protected long sleepSoundTime = 500;
     protected long sleepVibrationTime = 1000;
     protected static final long TOO_MUCH_TIME_MAKING_SOUND = 2*60*1000; //2 min
-    protected static final long TOO_MUCH_TIME_BIBRATING = 2*60*1000; //2 min
+    protected static final long TOO_MUCH_TIME_VIBRATING = 2*60*1000; //2 min
     protected PlaySoundTask playSoundTask;
     protected VibrationTask vibrationTask;
 
@@ -164,7 +163,7 @@ public abstract class UIReminderView extends RelativeLayout {
              
             // Vibrate for 'length' milliseconds
             try {
-                while(!isCancelled() && timeVibrating < TOO_MUCH_TIME_BIBRATING){
+                while(!isCancelled() && timeVibrating < TOO_MUCH_TIME_VIBRATING){
                     boolean finish = context.isFinishing();
                     if(finish){
                         break;

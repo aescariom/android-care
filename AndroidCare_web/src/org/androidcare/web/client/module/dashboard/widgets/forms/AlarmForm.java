@@ -104,6 +104,7 @@ public class AlarmForm extends ObservableForm {
 
     private void setAlarmValues(Alarm alarm) {
         if (alarm != null) {
+            ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
             txtName.setValue(alarm.getName());
             txtPhoneNumber.setValue(alarm.getPhoneNumber());
             txtEmail.setValue(alarm.getEmailAddress());
@@ -156,7 +157,7 @@ public class AlarmForm extends ObservableForm {
         chkSendEmail.setValue(true);
         grid.setWidget(SEND_EMAIL_ROW, 1, chkSendEmail);
 
-        submit.addClickHandler(new ClickHandler(){
+        submit.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -183,7 +184,6 @@ public class AlarmForm extends ObservableForm {
     private void sendForm() {
 
         Alarm alarm = new Alarm();
-        alarm.setId(-1L);
 
         alarm.setName(txtName.getText());
         alarm.setAlarmSeverity(AlarmSeverity.getAlarmOf(ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex())));
@@ -194,9 +194,24 @@ public class AlarmForm extends ObservableForm {
         alarm.sendEmailOnAlarm(chkSendEmail.getValue());
         alarm.logInServerOnAlarm(true);
 
+        if (this.alarm != null) {
+            alarmService.deleteAlarm(this.alarm, new AsyncCallback<Boolean>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Error en el servidor modificando la alarma");
+                }
+
+                @Override
+                public void onSuccess(Boolean result) {
+
+                }
+            });
+        }
+
         alarmService.saveAlarm(alarm, new AsyncCallback<Void>() {
+            @Override
             public void onFailure(Throwable caught) {
-                Window.alert("Error en el servidor!!!");
+                Window.alert("Error en el servidor!");
             }
 
             @Override

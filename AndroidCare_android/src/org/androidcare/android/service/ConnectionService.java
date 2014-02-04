@@ -1,13 +1,21 @@
 package org.androidcare.android.service;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.security.auth.callback.Callback;
-
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.app.*;
+import android.content.*;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Binder;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.util.Log;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.R;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.mock.MockHttpClient;
@@ -25,35 +33,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.protocol.HttpContext;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Binder;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.util.Log;
-
-import com.j256.ormlite.android.apptools.OpenHelperManager;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ConnectionService extends Service {
 
@@ -447,7 +431,7 @@ public class ConnectionService extends Service {
                 Log.e(TAG,"Comenzando a procesar mensajes");
                 for (Message m : messages) {
 
-                    Log.e(TAG,"Mensaje: "+m);
+                    Log.e(TAG,"Mensaje: " + m);
                     try {
 
                         HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
