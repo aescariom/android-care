@@ -51,10 +51,10 @@ public class GetAlarmsMessage extends Message {
         Alarm[] alarms = null;
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
-                    .getContent()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String jsonString = "";
             String aux = "";
+
             while ((aux = reader.readLine()) != null) {
                 jsonString += aux;
             }
