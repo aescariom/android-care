@@ -1,15 +1,14 @@
 package org.androidcare.android.service;
 
+import com.j256.ormlite.field.DatabaseField;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpRequestBase;
-
-import com.j256.ormlite.field.DatabaseField;
 
 @SuppressWarnings("serial")
 public abstract class Message implements Serializable, Comparable<Message> {

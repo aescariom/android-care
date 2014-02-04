@@ -1,35 +1,26 @@
 package org.androidcare.android.service.location;
 
-import java.util.Calendar;
-import java.util.List;
-
-import org.androidcare.android.service.ConnectionService;
-import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
-import org.androidcare.android.service.Message;
-import org.androidcare.android.service.PushMessagesReceiver;
-import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Binder;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Looper;
+import android.os.*;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
+import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
+import org.androidcare.android.service.Message;
+import org.androidcare.android.service.PushMessagesReceiver;
+
+import java.util.Calendar;
+import java.util.List;
 
 public class LocationService extends Service {
     private static final String TAG = LocationService.class.getName();
@@ -41,7 +32,7 @@ public class LocationService extends Service {
 
 
     boolean mBound = false;
-    private boolean lastRequestForUpdateFullfilled=false;
+    private boolean lastRequestForUpdateFullfilled = false;
     int errors = 0;
     
     private LocationListener locationListener = new LocationListener(){

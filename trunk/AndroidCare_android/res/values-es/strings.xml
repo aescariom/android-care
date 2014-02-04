@@ -2,8 +2,9 @@
 <resources>
 
     <string name="app_name">AndroidCare</string>
+    <!-- <string name="base_url">http://192.168.2.28:8080/</string> -->
     <string name="base_url">http://devandroidcare2.appspot.com/</string>
-    <!-- <string name="base_url">http://www.androidcare.org/</string>-->
+    <!-- <string name="base_url">http://www.androidcare.org/</string> -->
 
     <!-- General -->
     <string name="error">Error</string>
@@ -46,4 +47,9 @@
     <string name="message_not_sent">Mensaje no enviado</string>
     <string name="check_internet_connection">Por favor, compruebe su conexión a Internet</string>
     <string name="delay_reminder">Retrasar recordatorio</string>
+    <string name="AndroidCareAlarmWithName">ANDROIDCARE: Alarma</string>
+    <string name="triggeredWithPriority">disparada con prioridad</string>
+
+    <string name="YES">SÍ</string>
+    <string name="NO">NO</string>
 </resources>

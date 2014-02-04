@@ -130,6 +130,8 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
 
     @DefaultStringValue("Add new alarm")
     String addNewAlarm();
+    @DefaultStringValue("Edit alarm")
+    String editAlarm();
     @DefaultStringValue("Remove alarm")
     String removeAlarm();
 

@@ -179,6 +179,17 @@
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
@@ -204,29 +215,32 @@
     </library>
     <library name="misc">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/appengine-api-1.0-sdk-1.7.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/appengine-api-labs.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/appengine-endpoints.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/appengine-jsr107cache-1.7.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/asm-4.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/datanucleus-api-jdo-3.1.0-m3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/datanucleus-api-jpa-3.1.0-m3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/datanucleus-appengine-2.1.0-final.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/datanucleus-core-3.1.0-m5.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/geronimo-jpa_2.0_spec-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/gwt-maps.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/gwt-servlet.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jdo-api-3.0.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/json.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jsr107cache-1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jta-1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/adapter4appengine-1.0M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/appengine-api-1.0-sdk-1.8.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/appengine-endpoints-deps.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/appengine-endpoints.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/appengine-jsr107cache-1.8.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/asm-4.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/geronimo-jpa_2.0_spec-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-maps.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-servlet.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/jdo-api-3.0.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/json.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/jsr107cache-1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/jta-1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/adapter4appengine-1.0M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/appengine-api-labs.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/datanucleus-api-jdo-3.1.0-m3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/datanucleus-api-jpa-3.1.0-m3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/datanucleus-appengine-2.1.0-final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/datanucleus-core-3.1.0-m5.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/gwt-maps.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/gwt-servlet.jar!/" />
-        <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/adapter4appengine-1.0M2.jar!/net/sf/gilead/adapter4appengine/emul" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-maps.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-servlet.jar!/" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/adapter4appengine-1.0M2.jar!/net/sf/gilead/adapter4appengine/emul" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/appengine-api-labs.jar!/com/google/appengine/labs/repackaged/com/google/common/base/super" />
+        <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/appengine-api-labs.jar!/com/google/appengine/labs/repackaged/com/google/common/util/super" />
       </SOURCES>
     </library>
   </component>

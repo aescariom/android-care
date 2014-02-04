@@ -2,64 +2,74 @@ package org.androidcare.android.service.alarms;
 
 import android.app.Service;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
+import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
-import org.androidcare.android.database.DatabaseHelper;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class AlarmService extends Service {
 
+    private Alarm alarm;
     private final String TAG = this.getClass().getName();
 
-    private DatabaseHelper databaseHelper = null;
+    public AlarmService(Alarm alarm) {
+        this.alarm = alarm;
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
         Log.i(TAG, "Alarms service started");
-
-        GetAlarmsMessage.setAlarmService(this);
-        
         return result;
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "Stopping service");
-        closeDatabaseConnection();
-    }
-
-    @Override
     public IBinder onBind(Intent intent) {
-        return null;
-    }
-    
-    public void addAlarmsToDatabase(List<Alarm> alarms){
-        for (Alarm alarm : alarms) {
-            try {
-                getHelper().getAlarmDao().createIfNotExists(alarm);
-            }catch (SQLException e) {
-                Log.e(TAG, "Could not insert the alarm: " + alarm + " -> " + e.toString());
-            }
-        }
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private DatabaseHelper getHelper() {
-        if (databaseHelper == null) {
-            databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
-        }
-        return databaseHelper;
+    private void notifyByEmail() {
+
     }
-    
-    private void closeDatabaseConnection() {
-        if (databaseHelper != null) {
-            OpenHelperManager.releaseHelper();
-            databaseHelper = null;
-        }
+
+    private void notifyBySMS() {
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("sms:" + alarm.getPhoneNumber()));
+        smsIntent.putExtra("sms_body", getString(R.string.AndroidCareAlarmWithName) + alarm.getName() + getString(R.string.triggeredWithPriority) + alarm.getAlarmSeverity());
+        startActivity(smsIntent);
     }
+
+    private void notifyByCall() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + alarm.getPhoneNumber()));
+        startActivity(callIntent);
+    }
+
+    public void fireAlarm() {
+        if (alarm.isSendSMS()) {
+            notifyBySMS();
+        }
+
+        if (alarm.isInitiateCall()) {
+            notifyByCall();
+        }
+
+        if (alarm.isSendEmail()) {
+            notifyByEmail();
+        }
+
+    }
+
+    public void cancelAlarm() {
+
+    }
+
+    public void confirmationUser() {
+
+    }
+
+    public void abstractInitiateAlarm() {
+
+    }
+
+
 }

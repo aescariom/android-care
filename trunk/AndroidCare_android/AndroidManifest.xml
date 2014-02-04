@@ -60,11 +60,15 @@
         <!-- get location receiver -->
         <receiver android:name=".service.location.UpdateLocationReceiver">
         </receiver>
+        <!-- get alarms receiver -->
+        <receiver android:name=".service.alarms.DownloadAlarmsReceiver">
+        </receiver>
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
-        <service 	android:enabled="true" android:name=".service.reminders.ReminderService" /> 
-        <service 	android:enabled="true" android:name=".service.location.LocationService" /> 
-        <service 	android:enabled="true" android:name=".service.ConnectionService" /> 
-        
+        <service android:enabled="true" android:name=".service.alarms.AlarmDownloadService" />
+        <service android:enabled="true" android:name=".service.reminders.ReminderService" />
+        <service android:enabled="true" android:name=".service.location.LocationService" />
+        <service android:enabled="true" android:name=".service.ConnectionService" />
+
         <!--  start the service on boot -->
         <receiver android:name=".service.StartServicesOnBootCompleteBroadcastReceiver" android:enabled="true" android:exported="false">
 			<intent-filter>
