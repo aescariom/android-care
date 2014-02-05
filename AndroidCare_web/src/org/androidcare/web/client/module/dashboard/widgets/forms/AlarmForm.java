@@ -13,20 +13,23 @@ import org.androidcare.web.client.module.dashboard.rpc.AlarmService;
 import org.androidcare.web.client.module.dashboard.rpc.AlarmServiceAsync;
 import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.client.widgets.DialogBoxClose;
+import org.androidcare.web.client.widgets.TimeBox;
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.persistent.Alarm;
 
 public class AlarmForm extends ObservableForm {
 
     private static final int SEVERITY_LEVEL_ROW = 0;
-    private static final int ALARM_NAME_ROW = 1;
-    private static final int PHONE_NUMBER_ROW = 2;
-    private static final int EMAIL_ROW = 3;
-    private static final int MAKE_CALL_ROW = 4;
-    private static final int SEND_SMS_ROW = 5;
-    private static final int SEND_EMAIL_ROW = 6;
+    private static final int ALARM_NAME_ROW = SEVERITY_LEVEL_ROW + 1;
+    private static final int START_TIME_ROW = ALARM_NAME_ROW + 1;
+    private static final int END_TIME_ROW = START_TIME_ROW + 1;
+    private static final int PHONE_NUMBER_ROW = END_TIME_ROW + 1;
+    private static final int EMAIL_ROW = PHONE_NUMBER_ROW + 1;
+    private static final int MAKE_CALL_ROW = EMAIL_ROW + 1;
+    private static final int SEND_SMS_ROW = MAKE_CALL_ROW + 1;
+    private static final int SEND_EMAIL_ROW = SEND_SMS_ROW + 1;
 
-    private static final int SEND_ROW = 8;
+    private static final int SEND_ROW = SEND_EMAIL_ROW + 2;
 
     //Localizer
     private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
@@ -41,6 +44,12 @@ public class AlarmForm extends ObservableForm {
     private Label lblSeverityLevel = new Label(localizedConstants.severityLevel());
     private ListBox ddlSeverityLevel = new ListBox();
     private TextBox txtId = new TextBox();
+
+    private Label lblStartTime = new Label(localizedConstants.startTime());
+    private TimeBox txtStartTime = new TimeBox();
+
+    private Label lblEndTime = new Label(localizedConstants.endTime());
+    private TimeBox txtEndTime = new TimeBox();
 
     private Label lblPhoneNumber = new Label(localizedConstants.phoneNumber());
     private TextBox txtPhoneNumber = new TextBox();
@@ -106,6 +115,8 @@ public class AlarmForm extends ObservableForm {
         if (alarm != null) {
             ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
             txtName.setValue(alarm.getName());
+            txtStartTime.setValue(alarm.getAlarmStartTime());
+            txtEndTime.setValue(alarm.getAlarmEndTime());
             txtPhoneNumber.setValue(alarm.getPhoneNumber());
             txtEmail.setValue(alarm.getEmailAddress());
             chkMakeCall.setValue(alarm.getInitiateCall());
@@ -116,10 +127,6 @@ public class AlarmForm extends ObservableForm {
 
 
     private void addItemsToGrid() {
-        grid.setWidget(ALARM_NAME_ROW, 0, lblName);
-        txtName.setWidth("400px");
-        grid.setWidget(ALARM_NAME_ROW, 1, txtName);
-
         grid.setWidget(SEVERITY_LEVEL_ROW, 0, lblSeverityLevel);
         ddlSeverityLevel.setWidth("400px");
         grid.setWidget(SEVERITY_LEVEL_ROW, 1, ddlSeverityLevel);
@@ -136,6 +143,18 @@ public class AlarmForm extends ObservableForm {
                 }
             }
         });
+
+        grid.setWidget(ALARM_NAME_ROW, 0, lblName);
+        txtName.setWidth("400px");
+        grid.setWidget(ALARM_NAME_ROW, 1, txtName);
+
+        grid.setWidget(START_TIME_ROW, 0, lblStartTime);
+        txtStartTime.setWidth("400px");
+        grid.setWidget(START_TIME_ROW, 1, txtStartTime);
+
+        grid.setWidget(END_TIME_ROW, 0, lblEndTime);
+        txtEndTime.setWidth("400px");
+        grid.setWidget(END_TIME_ROW, 1, txtEndTime);
 
         grid.setWidget(PHONE_NUMBER_ROW, 0, lblPhoneNumber);
         txtPhoneNumber.setWidth("400px");
@@ -187,6 +206,8 @@ public class AlarmForm extends ObservableForm {
 
         alarm.setName(txtName.getText());
         alarm.setAlarmSeverity(AlarmSeverity.getAlarmOf(ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex())));
+        alarm.setAlarmStartTime(txtStartTime.getValue());
+        alarm.setAlarmEndTime(txtEndTime.getValue());
         alarm.setPhoneNumber(txtPhoneNumber.getValue());
         alarm.setEmailAddress(txtEmail.getValue());
         alarm.initiateCallOnAlarm(chkMakeCall.getValue());
