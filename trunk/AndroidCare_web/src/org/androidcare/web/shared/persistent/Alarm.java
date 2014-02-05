@@ -7,6 +7,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @PersistenceCapable
@@ -40,7 +41,7 @@ public class Alarm implements Serializable {
     @Persistent
     private Date alarmStartTime;
     @Persistent
-    private  Date alarmEndTime;
+    private Date alarmEndTime;
 
     @Persistent
     private boolean onlyFireAtHome = false;
@@ -89,6 +90,14 @@ public class Alarm implements Serializable {
 
     public void setAlarmSeverity (AlarmSeverity alarmSeverity) {
         this.alarmSeverity = alarmSeverity.getId();
+    }
+
+    public void setAlarmStartTime (Date alarmStartTime) {
+        this.alarmStartTime = alarmStartTime;
+    }
+
+    public void setAlarmEndTime (Date alarmEndTime) {
+        this.alarmEndTime = alarmEndTime;
     }
 
     public void setPhoneNumber (String phoneNumber) {
