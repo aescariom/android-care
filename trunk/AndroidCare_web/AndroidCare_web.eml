@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/AndroidCare_web"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="AppEngine Plane" scope="PROVIDED"/>
+	<levels>
+		<level name="AppEngine Plane" value="application_server_libraries"/>
+		<level name="AppEngine API" value="project"/>
+		<level name="gwt-user" value="project"/>
+		<level name="misc" value="project"/>
+	</levels>
+</component>

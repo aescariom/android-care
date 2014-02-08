@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="AppEngine API">
+    <archive path="/Applications/PFC_SDKs/AppEngine/lib/user/jsr107cache-1.1.jar" />
+    <archive path="/Applications/PFC_SDKs/AppEngine/lib/user/appengine-api-labs-1.8.6.jar" />
+    <archive path="/Applications/PFC_SDKs/AppEngine/lib/user/appengine-api-1.0-sdk-1.8.6.jar" />
+    <archive path="/Applications/PFC_SDKs/AppEngine/lib/user/appengine-jsr107cache-1.8.6.jar" />
+  </library>
+  <library name="gwt-user">
+    <archive path="/Applications/PFC_SDKs/GWT/gwt-user.jar" />
+  </library>
+  <library name="misc">
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/appengine-api-1.0-sdk-1.8.8.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/appengine-endpoints-deps.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/appengine-endpoints.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/appengine-jsr107cache-1.8.8.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/asm-4.0.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/geronimo-jpa_2.0_spec-1.0.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/gwt-maps.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/gwt-servlet.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/jdo-api-3.0.1.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/json.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/jsr107cache-1.1.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/jta-1.1.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/adapter4appengine-1.0M2.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/appengine-api-labs.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/datanucleus-api-jdo-3.1.0-m3.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/datanucleus-api-jpa-3.1.0-m3.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/datanucleus-appengine-2.1.0-final.jar" />
+    <archive path="/Users/alvarodelrosal/SkyDrive/android-care/AndroidCare_web/war/WEB-INF/lib/datanucleus-core-3.1.0-m5.jar" />
+  </library>
+</eclipse-userlibraries>
+
