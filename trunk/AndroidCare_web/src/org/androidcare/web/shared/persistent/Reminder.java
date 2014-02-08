@@ -1,11 +1,10 @@
 package org.androidcare.web.shared.persistent;
 
+import javax.jdo.annotations.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.jdo.annotations.*;
 
 @PersistenceCapable
 public class Reminder implements Serializable{
@@ -23,9 +22,9 @@ public class Reminder implements Serializable{
 	@Persistent
 	private boolean repeat;	
 	@Persistent
-	private Date activeFrom;	
+	private long activeFrom;
 	@Persistent
-	private Date activeUntil;
+	private long activeUntil;
 	@Persistent
 	private Integer numerOfRepetitions;
 	
@@ -78,10 +77,10 @@ public class Reminder implements Serializable{
 		title = reminder.getTitle();
 		description = reminder.getDescription();
 		repeat = reminder.isRepeat();
-		activeFrom = new Date(reminder.getActiveFrom().getTime());
-		//@comentario me parece muy raro este  condicional no será reminder.getActiveUntil() != null
-		if(activeUntil != null){ 
-			activeUntil = new Date(reminder.getActiveUntil().getTime());
+		activeFrom = new Date(reminder.getActiveFrom().getTime()). getTime();
+		//@comentario me parece muy raro este  condicional no serï¿½ reminder.getActiveUntil() != null
+		if(activeUntil != 0){
+			activeUntil = new Date(reminder.getActiveUntil().getTime()).getTime();
 		}
 		numerOfRepetitions = reminder.getNumerOfRepetitions();
 		endType = reminder.getEndType();
@@ -127,19 +126,19 @@ public class Reminder implements Serializable{
 	}
 
 	public Date getActiveFrom() {
-		return activeFrom;
+		return new Date(activeFrom);
 	}
 
 	public void setActiveFrom(Date since) {
-		this.activeFrom = since;
+		this.activeFrom = since.getTime();
 	}
 
 	public Date getActiveUntil() {
-		return activeUntil;
+		return new Date(activeUntil);
 	}
 
 	public void setActiveUntil(Date until) {
-		this.activeUntil = until;
+		this.activeUntil = until.getTime();
 	}
 
 	public int getRepeatPeriod() {

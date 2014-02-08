@@ -1,16 +1,14 @@
 package org.androidcare.web.shared.persistent;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.google.appengine.api.datastore.Key;
+import org.androidcare.web.shared.ReminderStatusCode;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
-import org.androidcare.web.shared.*;
-
-import com.google.appengine.api.datastore.Key;
+import java.io.Serializable;
+import java.util.Date;
 
 @PersistenceCapable
 public class ReminderLog implements Serializable {
@@ -28,37 +26,37 @@ public class ReminderLog implements Serializable {
 	private ReminderStatusCode code;
 
 	@Persistent
-	private Date time;
+	private long time;
 
 	@Persistent
-	private Date serverTime;
+	private long serverTime;
 
 	public ReminderLog(){
 		super();
-		this.serverTime = new Date();
+		this.serverTime = new Date().getTime();
 	}
 
 	public ReminderLog(ReminderLog r){
 		super();
 		code = r.getCode();
-		time = new Date(r.getTime().getTime());
-		serverTime = new Date(r.getServerTime().getTime());
+		time = r.getTime().getTime();
+		serverTime = r.getServerTime().getTime();
 	}
 
 	public Date getTime() {
-		return time;
+		return new Date(time);
 	}
 
 	public Date getServerTime() {
-		return serverTime;
+		return new Date(serverTime);
 	}
 
 	public void setTime(Date time) {
-		this.time = time;
+		this.time = time.getTime();
 	}
 
 	public void setServerTime(Date time) {
-		this.serverTime = time;
+		this.serverTime = time.getTime();
 	}
 
 	public ReminderStatusCode getCode() {

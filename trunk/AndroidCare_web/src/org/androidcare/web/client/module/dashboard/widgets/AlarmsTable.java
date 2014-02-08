@@ -21,7 +21,7 @@ import org.androidcare.web.shared.persistent.Alarm;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlarmsTable extends FlexTable implements Observer{
+public class AlarmsTable extends FlexTable implements Observer {
 
     private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
     private AlarmServiceAsync alarmService = GWT.create(AlarmService.class);

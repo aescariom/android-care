@@ -1,26 +1,23 @@
 package org.androidcare.web.server.module.dashboard;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.Transaction;
-
-import org.androidcare.web.client.module.dashboard.rpc.ReminderService;
-import org.androidcare.web.server.PMF;
-import org.androidcare.web.shared.persistent.Reminder;
-import org.androidcare.web.shared.persistent.ReminderLog;
-
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.androidcare.web.client.module.dashboard.rpc.ReminderService;
+import org.androidcare.web.server.PMF;
+import org.androidcare.web.shared.persistent.Reminder;
+import org.androidcare.web.shared.persistent.ReminderLog;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public class ReminderServiceImpl extends RemoteServiceServlet implements
@@ -29,8 +26,8 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 	private static final Logger log = Logger.getLogger(ReminderServiceImpl.class.getName());
 	
 	public Reminder saveReminder(Reminder reminder) {
-		//@comentario aunque ahora no vamos hacer nada para corregirlo, este método podría ser usado
-		//por cualquiera para añadir cualquier recordatorio
+		//@comentario aunque ahora no vamos hacer nada para corregirlo, este mï¿½todo podrï¿½a ser usado
+		//por cualquiera para aï¿½adir cualquier recordatorio
 		if(reminder.getId() > 0){
 			reminder = editReminder(reminder);
 		}else{
@@ -46,7 +43,7 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			txn.begin();
 
 			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
-			//@comentario ¿tendría sentido que hacer la comprobación
+			//@comentario ï¿½tendrï¿½a sentido que hacer la comprobaciï¿½n
 			//if(reminder.getOwner().compareToIgnoreCase(user.getUserId()) == 0)
 			//no tengo claro que de mucha seguridad, pero menos da una piedra
 			persistedReminder.setTitle(reminder.getTitle());
@@ -108,8 +105,8 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 			}else{
 				reminder.setEndType(Reminder.END_TYPE_NEVER_ENDS);
 			}
-			//@comentario ¿deberías usar una transacción para esto?
-			//Pregunto, realmente no leído todavía nada sobre transacciones en el AppEngine,  pero parece
+			//@comentario ï¿½deberï¿½as usar una transacciï¿½n para esto?
+			//Pregunto, realmente no leï¿½do todavï¿½a nada sobre transacciones en el AppEngine,  pero parece
 			//que siempre las usas cuando escribes
 			
             pm.makePersistent(reminder);
@@ -123,7 +120,7 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public List<Reminder> fetchReminders() {
-		List<Reminder> list = new ArrayList<Reminder>();
+		List<Reminder> list = new ArrayList();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		UserService userService = UserServiceFactory.getUserService();
@@ -151,7 +148,7 @@ public class ReminderServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public Boolean deleteReminder(Reminder reminder)  {
-		//@comentario ¿deberías usar una transacción para esto?
+		//@comentario ï¿½deberï¿½as usar una transacciï¿½n para esto?
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
 			Reminder persistedReminder = (Reminder)pm.getObjectById(Reminder.class, reminder.getId());
