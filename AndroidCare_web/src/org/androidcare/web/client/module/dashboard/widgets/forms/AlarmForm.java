@@ -17,6 +17,8 @@ import org.androidcare.web.client.widgets.TimeBox;
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.persistent.Alarm;
 
+import java.util.Date;
+
 public class AlarmForm extends ObservableForm {
 
     private static final int SEVERITY_LEVEL_ROW = 0;
@@ -100,6 +102,8 @@ public class AlarmForm extends ObservableForm {
             alarm = new Alarm();
 
             alarm.setAlarmSeverity(AlarmSeverity.INFO);
+            alarm.setAlarmEndTime(new Date());
+            alarm.setAlarmStartTime(new Date());
             alarm.setPhoneNumber("");
             alarm.setEmailAddress("");
 

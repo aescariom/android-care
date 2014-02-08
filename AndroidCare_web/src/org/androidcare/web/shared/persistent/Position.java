@@ -23,10 +23,10 @@ public class Position implements Serializable {
     private Float longitude;
 
 	@Persistent 
-	private Date date;
+	private long date;
 	
 	@Persistent 
-	private Date serverDate;
+	private long serverDate;
 	
 	@Persistent
 	private String owner;
@@ -38,11 +38,11 @@ public class Position implements Serializable {
 		this.longitude = longitude;
 		this.owner = owner;
 		if(date != null){
-			this.date = new Date(date.getTime());
+			this.date = date.getTime();
 		}else{
-			this.date = new Date();
+			this.date = new Date().getTime();
 		}
-		this.serverDate = new Date();
+		this.serverDate = new Date().getTime();
 	}
 	
 	public Position(Position position){
@@ -50,14 +50,14 @@ public class Position implements Serializable {
 		longitude = position.getLongitude();
 		owner = position.getOwner();
 		if(position.getDate() != null){
-			date = new Date(position.getDate().getTime());
+			date = new Date(position.getDate().getTime()).getTime();
 		}else{
-			date = new Date();
+ 			date = new Date().getTime();
 		}
 		if(position.getServerDate() != null){
-			serverDate = new Date(position.getServerDate().getTime());
+			serverDate = new Date(position.getServerDate().getTime()).getTime();
 		}else{
-			serverDate = new Date();
+			serverDate = new Date().getTime();
 		}
 	}
 	
@@ -74,18 +74,18 @@ public class Position implements Serializable {
 	}
 	
 	public Date getDate(){
-		return date;
+		return new Date(date);
 	}
 	
 	public Date getServerDate(){
-		return serverDate;
+		return new Date(serverDate);
 	}
 	
 	public void setDate(Date d){
-		this.date = d;
+		this.date = d.getTime();
 	}
 	
 	public void initializeServerDate(){
-		serverDate = new Date();
+		serverDate = new Date().getTime();
 	}
 }

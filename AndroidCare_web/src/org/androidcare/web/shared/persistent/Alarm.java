@@ -7,7 +7,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @PersistenceCapable
@@ -39,9 +38,9 @@ public class Alarm implements Serializable {
     private String emailAddress;
 
     @Persistent
-    private Date alarmStartTime;
+    private long alarmStartTime;
     @Persistent
-    private Date alarmEndTime;
+    private long alarmEndTime;
 
     @Persistent
     private boolean onlyFireAtHome = false;
@@ -68,8 +67,8 @@ public class Alarm implements Serializable {
         this.logInServer = alarm.getLogInServer();
         this.phoneNumber = alarm.getPhoneNumber();
         this.emailAddress = alarm.getEmailAddress();
-        this.alarmStartTime = alarm.getAlarmStartTime();
-        this.alarmEndTime = alarm.getAlarmEndTime();
+        this.alarmStartTime = alarm.getAlarmStartTime().getTime();
+        this.alarmEndTime = alarm.getAlarmEndTime().getTime();
         this.onlyFireAtHome = alarm.getFireOnlyAtHome();
         this.onlyFireAtLocation = alarm.getFireAtLocation();
         this.latitude = alarm.getLatitude();
@@ -93,11 +92,11 @@ public class Alarm implements Serializable {
     }
 
     public void setAlarmStartTime (Date alarmStartTime) {
-        this.alarmStartTime = alarmStartTime;
+        this.alarmStartTime = alarmStartTime.getTime();
     }
 
     public void setAlarmEndTime (Date alarmEndTime) {
-        this.alarmEndTime = alarmEndTime;
+        this.alarmEndTime = alarmEndTime.getTime();
     }
 
     public void setPhoneNumber (String phoneNumber) {
@@ -173,11 +172,11 @@ public class Alarm implements Serializable {
     }
 
     public Date getAlarmStartTime() {
-        return this.alarmStartTime;
+        return new Date (this.alarmStartTime);
     }
 
     public Date getAlarmEndTime() {
-        return this.alarmEndTime;
+        return new Date(this.alarmEndTime);
     }
 
     public boolean getFireOnlyAtHome() {

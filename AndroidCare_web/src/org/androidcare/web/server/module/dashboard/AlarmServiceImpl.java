@@ -36,7 +36,7 @@ public class AlarmServiceImpl extends RemoteServiceServlet implements AlarmServi
             List<?> rs = (List<?>) query.execute(user.getUserId());
             if(rs != null){
                 for (Object alarm : rs) {
-                    alarms.add(new Alarm((Alarm)alarm));
+                    alarms.add(new Alarm((Alarm) alarm));
                 }
             }
         } catch(Exception ex){
