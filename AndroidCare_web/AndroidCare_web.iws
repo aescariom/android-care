@@ -8,7 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="06e2991e-a85f-4d8b-a993-3be177675ef2" name="Default" comment="Modificadas las alarmas">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidCare_web.iws" afterPath="$PROJECT_DIR$/AndroidCare_web.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" afterPath="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
     </list>
     <ignored path="AndroidCare_web.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,23 +62,6 @@
     <sortChildren value="false" />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/PositionServiceImpl.java" line="31" class="org.androidcare.web.server.module.dashboard.PositionServiceImpl" package="org.androidcare.web.server.module.dashboard">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -116,6 +98,23 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/PositionServiceImpl.java" line="31" class="org.androidcare.web.server.module.dashboard.PositionServiceImpl" package="org.androidcare.web.server.module.dashboard">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
@@ -147,7 +146,7 @@
       <file leaf-file-name="datastore-indexes.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/war/WEB-INF/datastore-indexes.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="101" selection-start="873" selection-end="873" vertical-scroll-proportion="0.777027">
+            <state line="11" column="17" selection-start="398" selection-end="398" vertical-scroll-proportion="0.20833333">
               <folding />
             </state>
           </provider>
@@ -215,7 +214,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -282,21 +280,22 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="project.structure.last.edited" value="Facets" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="GOOGLE_APP_ENGINE_ACCOUNT_EMAIL" value="alvarodelrosal@gmail.com" />
-    <property name="recentsLimit" value="5" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/war/Dashboard.html" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/war/Dashboard.html" />
     <property name="GWT.GenerateCompileReport.Module" value="org.androidcare.web.Dashboard" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
@@ -313,8 +312,8 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -339,19 +338,6 @@
     <configuration default="true" type="GoogleAppEngineDevServer" factoryName="Local">
       <server-settings />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -382,6 +368,19 @@
       <listeners />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" />
@@ -395,6 +394,10 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
+      <module name="" />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -416,10 +419,6 @@
       </option>
       <envs />
       <patterns />
-      <method />
-    </configuration>
-    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
-      <module name="" />
       <method />
     </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -599,7 +598,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1680" height="940" extended-state="0" />
+    <frame x="0" y="22" width="1680" height="940" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277311" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -613,7 +612,6 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24602203" sideWeight="0.3006608" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28466386" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16034272" sideWeight="0.31387666" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277311" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -628,6 +626,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32878152" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28466386" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -714,16 +713,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/ReminderLog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="28" selection-start="1074" selection-end="1074" vertical-scroll-proportion="0.9328969">
-          <folding />
-        </state>
+        <state line="46" column="28" selection-start="1074" selection-end="1074" vertical-scroll-proportion="0.9328969" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Reminder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="4" selection-start="2676" selection-end="2676" vertical-scroll-proportion="0.8419118">
-          <folding />
-        </state>
+        <state line="104" column="4" selection-start="2676" selection-end="2676" vertical-scroll-proportion="0.8419118" />
       </provider>
     </entry>
     <entry file="jar:///Applications/PFC_SDKs/GWT/gwt-user.jar!/com/google/gwt/user/server/rpc/AbstractRemoteServiceServlet.java">
@@ -748,16 +743,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/ReminderServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="36" selection-start="5044" selection-end="5044" vertical-scroll-proportion="0.40655106">
-          <folding />
-        </state>
+        <state line="132" column="36" selection-start="5044" selection-end="5044" vertical-scroll-proportion="0.40655106" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Position.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="29" selection-start="1444" selection-end="1444" vertical-scroll-proportion="0.44894028">
-          <folding />
-        </state>
+        <state line="58" column="29" selection-start="1444" selection-end="1444" vertical-scroll-proportion="0.44894028" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/PositionServiceImpl.java">
@@ -795,7 +786,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/war/WEB-INF/datastore-indexes.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="101" selection-start="873" selection-end="873" vertical-scroll-proportion="0.777027">
+        <state line="11" column="17" selection-start="398" selection-end="398" vertical-scroll-proportion="0.20833333">
           <folding />
         </state>
       </provider>

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/adapter4appengine-1.0M2.jar"/>
-	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/gwt-maps.jar"/>
-	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/json.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AppEngine Plane"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AppEngine API"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gwt-user"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/misc"/>
+	<classpathentry kind="output" path="out/production/AndroidCare_web"/>
 </classpath>
