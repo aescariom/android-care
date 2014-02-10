@@ -1,9 +1,7 @@
 package org.androidcare.android.service.reminders;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.reminders.ReminderStatusCode;
 import org.androidcare.android.service.ConnectionService;
@@ -13,8 +11,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "ReminderLogMessage")
@@ -22,7 +21,7 @@ public class ReminderLogMessage extends Message {
     public static final String REMINDERS_LOG_URL = "api/addReminderLog";
 
     @DatabaseField
-    protected int reminderId;
+    protected long reminderId;
     @DatabaseField
     private int statusCode;
 

@@ -9,9 +9,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 @DatabaseTable(tableName = "alarms")
 public class Alarm implements Serializable {
@@ -39,9 +37,9 @@ public class Alarm implements Serializable {
     private String emailAddress;
 
     @DatabaseField
-    private Date alarmStartTime;
+    private long alarmStartTime;
     @DatabaseField
-    private Date alarmEndTime;
+    private long alarmEndTime;
 
     @DatabaseField
     private boolean onlyFireAtHome = false;
@@ -54,10 +52,10 @@ public class Alarm implements Serializable {
     private double longitude;
 
     // default date time format
-    private final static DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy",
+    private final static DateFormat dateFormat = new SimpleDateFormat("HH:mm",
             Locale.UK);
     // android 2.3.3 and below
-    private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
+    private final static DateFormat dateFormatUTC = new SimpleDateFormat("HH:mm 'UTC'",
             Locale.UK);
 
     public Alarm () {}
@@ -75,15 +73,15 @@ public class Alarm implements Serializable {
         phoneNumber = jsonObj.getString("phoneNumber");
         emailAddress = jsonObj.getString("emailAddress");
 
-        alarmStartTime = parseDate(jsonObj.getString("alarmStartTime"));
-        alarmEndTime = parseDate(jsonObj.getString("alarmEndTime"));
+        alarmStartTime = Long.parseLong(jsonObj.getString("alarmStartTime"));
+        alarmEndTime = Long.parseLong(jsonObj.getString("alarmEndTime"));
 
         onlyFireAtHome = Boolean.parseBoolean(jsonObj.getString("onlyFireAtHome"));
         onlyFireAtLocation = Boolean.parseBoolean(jsonObj.getString("onlyFireAtLocation"));
     }
 
     public Alarm (int id, String name, AlarmSeverity severity, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
-                  String phoneNumber, String emailAddress, Date alarmStartTime, Date alarmEndTime, boolean onlyFireAtHome,
+                  String phoneNumber, String emailAddress, long alarmStartTime, long alarmEndTime, boolean onlyFireAtHome,
                   boolean onlyFireAtLocation, double latitude, double longitude) {
         this.id = id;
         this.name = name;
@@ -106,17 +104,6 @@ public class Alarm implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
-    private Date parseDate(String str) throws ParseException {
-        try{
-            return dateFormat.parse(str);
-        }catch(ParseException ex){
-            dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return dateFormatUTC.parse(str);
-        }
-    }
-
-
 
     public boolean isInitiateCall() {
         return initiateCall;
