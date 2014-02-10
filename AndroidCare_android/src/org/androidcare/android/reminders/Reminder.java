@@ -1,5 +1,12 @@
 package org.androidcare.android.reminders;
 
+import android.util.Log;
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,22 +16,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
-import android.util.Log;
-
 @DatabaseTable(tableName = "reminders")
 public class Reminder implements Serializable {
 
     private static final long serialVersionUID = -8087552729716719434L;
 
     @DatabaseField(id = true)
-    private int id;
+    private long id;
     @DatabaseField
     private String title;
     @DatabaseField
@@ -76,7 +74,7 @@ public class Reminder implements Serializable {
     public Reminder(JSONObject jsonObj) throws AndroidCareDateFormatException, NumberFormatException,
             JSONException, ParseException {
         // Mandatory fields
-        id = Integer.parseInt(jsonObj.getString("id"));
+        id = Long.parseLong(jsonObj.getString("id"));
         title = jsonObj.getString("title");
         setActiveFrom(parseDate(jsonObj.getString("activeFrom")));
         repeat = jsonObj.getBoolean("repeat");
@@ -283,11 +281,11 @@ public class Reminder implements Serializable {
         this.requestConfirmation = requestConfirmation;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
