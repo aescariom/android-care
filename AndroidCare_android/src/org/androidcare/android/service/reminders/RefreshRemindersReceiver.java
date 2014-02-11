@@ -1,23 +1,17 @@
 package org.androidcare.android.service.reminders;
 
-import java.io.File;
-import java.util.Calendar;
-import java.util.Date;
-
-import org.androidcare.android.service.ConnectionService;
-import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import org.androidcare.android.service.ConnectionService;
+import org.androidcare.android.service.ConnectionService.ConnectionServiceBinder;
+
+import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
 
 public class RefreshRemindersReceiver extends BroadcastReceiver {
 
@@ -27,6 +21,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
     private ServiceConnection mConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.e("RefreshRemindersReceiver", "onServiceConnected()");
             ConnectionServiceBinder binder = (ConnectionServiceBinder) service;
             connectionService = binder.getService();
 
@@ -47,6 +42,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent arg1) {
+        Log.e("RefreshRemindersReceiver", "onReceive()");
         context.getApplicationContext().bindService(
                            new Intent(context.getApplicationContext(), ConnectionService.class),
                            mConnection, Context.BIND_AUTO_CREATE);
@@ -79,6 +75,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
     }
 
     private void cleanReminderCache(Context context) {
+        Log.e("RefreshRemindersReceiver", "cleanReminderCache()");
         String path = android.os.Environment.getDownloadCacheDirectory().getAbsolutePath() + "/AndroidCare";
         File dir = new File(path);
         

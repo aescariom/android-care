@@ -14,7 +14,12 @@ public class AlarmService extends Service {
     private final String TAG = this.getClass().getName();
 
     public AlarmService(Alarm alarm) {
+        super();
         this.alarm = alarm;
+    }
+
+    public AlarmService() {
+        super();
     }
 
     @Override
@@ -70,6 +75,5 @@ public class AlarmService extends Service {
     public void abstractInitiateAlarm() {
 
     }
-
 
 }

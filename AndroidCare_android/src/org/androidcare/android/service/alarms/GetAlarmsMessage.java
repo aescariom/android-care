@@ -1,8 +1,10 @@
 package org.androidcare.android.service.alarms;
 
 import android.util.Log;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.table.DatabaseTable;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.InvalidMessageResponseException;
 import org.androidcare.android.service.Message;
@@ -15,28 +17,24 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
 @DatabaseTable(tableName = "GetAlarmsMessage")
 public class GetAlarmsMessage extends Message {
+
     public static final String ALARMS_URL = "api/retrieveAlarms";
 
-    protected static AlarmDownloadService alarmDownloadService;
+    private DatabaseHelper databaseHelper = null;
+    protected static AlarmService alarmService;
     private List<Alarm> alarms = new ArrayList();
+
+    private final String TAG = this.getClass().getName();
 
     public GetAlarmsMessage(){
         super();
-    }
-
-    public GetAlarmsMessage(AlarmDownloadService alarmService) {
-        super();
-        GetAlarmsMessage.alarmDownloadService = alarmService;
-    }
-    
-    public static void setAlarmDownloadService(AlarmDownloadService alarmDownloadService){
-        GetAlarmsMessage.alarmDownloadService = alarmDownloadService;
     }
 
     @Override
@@ -68,13 +66,12 @@ public class GetAlarmsMessage extends Message {
                 JSONObject obj = array.getJSONObject(i);
                 this.alarms.add(new Alarm(obj));
             }
-            GetAlarmsMessage.alarmDownloadService.addAlarmsToDatabase(this.alarms);
+            this.addAlarmsToDatabase(this.alarms);
 
-            Log.i(GetAlarmsMessage.class.getName(), "Alarms updated from the server");
+            Log.i(TAG, "Alarms updated from the server");
         }
         catch (Exception e) {
-            Log.e(this.getClass().getName(),
-                    "Error when retrieving alarms from the server: " + e.getMessage(), e);
+            Log.e(TAG, "Error when retrieving alarms from the server: " + e.getMessage(), e);
             throw new InvalidMessageResponseException("Error ocurend when parsing JSON String", e);
         }
     }
@@ -82,7 +79,33 @@ public class GetAlarmsMessage extends Message {
     @Override
     public void onError(Exception ex){
         super.onError(ex);
-        GetAlarmsMessage.alarmDownloadService.addAlarmsToDatabase(this.alarms);
-        Log.e(this.getClass().getName(), "No alarms could be retrieved from the server: ");
+        this.addAlarmsToDatabase(this.alarms);
+        Log.e(TAG, "No alarms could be retrieved from the server: ");
     }
+
+    private void addAlarmsToDatabase(List<Alarm> alarms){
+        for (Alarm alarm : alarms) {
+            try {
+                getHelper().getAlarmDao().createIfNotExists(alarm);
+            }catch (SQLException e) {
+                Log.e(TAG, "Could not insert the alarm: " + alarm + " -> " + e.toString());
+            }
+        }
+        closeDatabaseConnection();
+    }
+
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(null, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+
+    private void closeDatabaseConnection() {
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
+    }
+
 }
