@@ -1,13 +1,12 @@
 package org.androidcare.android.service.reminders;
 
-import java.util.Calendar;
-
-import org.androidcare.android.reminders.Reminder;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import org.androidcare.android.reminders.Reminder;
+
+import java.util.Calendar;
 
 /**
  * Used to reeschedule reminders from the user interface 

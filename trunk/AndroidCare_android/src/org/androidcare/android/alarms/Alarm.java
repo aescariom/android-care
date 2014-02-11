@@ -15,7 +15,7 @@ import java.util.Locale;
 public class Alarm implements Serializable {
 
     @DatabaseField(id = true)
-    private int id;
+    private long id;
 
     @DatabaseField
     private int alarmSeverity;
@@ -61,7 +61,7 @@ public class Alarm implements Serializable {
     public Alarm () {}
 
     public Alarm (JSONObject jsonObj) throws NumberFormatException, JSONException, ParseException {
-        id = Integer.parseInt(jsonObj.getString("id"));
+        id = Long.parseLong(jsonObj.getString("id"));
         name = jsonObj.getString("name");
         alarmSeverity = Integer.parseInt(jsonObj.getString("alarmSeverity"));
 
@@ -80,7 +80,7 @@ public class Alarm implements Serializable {
         onlyFireAtLocation = Boolean.parseBoolean(jsonObj.getString("onlyFireAtLocation"));
     }
 
-    public Alarm (int id, String name, AlarmSeverity severity, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
+    public Alarm (long id, String name, AlarmSeverity severity, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
                   String phoneNumber, String emailAddress, long alarmStartTime, long alarmEndTime, boolean onlyFireAtHome,
                   boolean onlyFireAtLocation, double latitude, double longitude) {
         this.id = id;

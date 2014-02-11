@@ -1,16 +1,5 @@
 package org.androidcare.android.service.reminders;
 
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.androidcare.android.database.DatabaseHelper;
-import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.view.ReminderReceiver;
-
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -20,6 +9,15 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import org.androidcare.android.database.DatabaseHelper;
+import org.androidcare.android.reminders.Reminder;
+import org.androidcare.android.view.ReminderReceiver;
+
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ReminderService extends Service {
 
@@ -36,6 +34,7 @@ public class ReminderService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("ReminderService", "onStartCommand()");
         int result = super.onStartCommand(intent, flags, startId);
         Log.i(TAG, "Reminder service started");
 
@@ -50,6 +49,7 @@ public class ReminderService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.e("ReminderService", "onDestroy()");
         super.onDestroy();
         Log.d(TAG, "Stopping service");
         cancelAllReminders();
@@ -63,6 +63,7 @@ public class ReminderService extends Service {
     }
     
     private void refreshReminders() {
+        Log.e("ReminderService", "refreshReminders()");
         Calendar cal = Calendar.getInstance();
 
         AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -73,6 +74,7 @@ public class ReminderService extends Service {
     }
     
     public void scheduleFromDatabase(){
+        Log.e("ReminderService", "scheduleFromDatabase()");
         cancelAllReminders();
         try {
             List<Reminder> reminders = getHelper().getReminderDao().queryForAll();
@@ -86,6 +88,7 @@ public class ReminderService extends Service {
     }
 
     public void schedule(Reminder[] reminders) {
+        Log.e("ReminderService", "schedule()");
         cancelAllReminders();
         updateDatabase(reminders);
         for (Reminder r : reminders) {
@@ -94,6 +97,7 @@ public class ReminderService extends Service {
     }
 
     public void schedule(Reminder reminder) {
+        Log.e("ReminderService", "schedule()");
         Calendar cal = Calendar.getInstance();
         Date date = reminder.getNextTimeLapse(cal.getTime());
         if (date == null) {
@@ -105,6 +109,7 @@ public class ReminderService extends Service {
     }
     
     public void scheduleTo(Reminder reminder, Calendar cal) {
+        Log.e("ReminderService", "scheduleTo()");
         Intent intent = createReminderIntent(reminder);
         PendingIntent sender = PendingIntent.getBroadcast(this, ReminderService.REMINDER_REQUEST_CODE,
                 intent, Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -116,6 +121,7 @@ public class ReminderService extends Service {
     }
     
     private Intent createReminderIntent(Reminder reminder) {
+        Log.e("ReminderService", "createReminderIntent()");
         Intent intent = new Intent(this.getApplicationContext(), ReminderReceiver.class);
         intent.setData(Uri.parse("androidCare://" + reminder.getId() + ".- " + reminder.getTitle()));
 
@@ -125,6 +131,7 @@ public class ReminderService extends Service {
     }
 
     private void updateDatabase(Reminder[] reminders){
+        Log.e("ReminderService", "updateDatabase()");
         try {            
             getHelper().truncateReminderTable();
         } catch (SQLException e) {
@@ -140,6 +147,7 @@ public class ReminderService extends Service {
     }
 
     private void cancelAllReminders() {
+        Log.e("ReminderService", "cancelAllReminders()");
         List<Reminder> all;
         try {
             all = getHelper().getReminderDao().queryForAll();
@@ -156,6 +164,7 @@ public class ReminderService extends Service {
     }
     
     private DatabaseHelper getHelper() {
+        Log.e("ReminderService", "getHelper()");
         if (databaseHelper == null) {
             databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
         }
