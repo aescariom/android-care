@@ -9,7 +9,9 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 @DatabaseTable(tableName = "alarms")
 public class Alarm implements Serializable {
@@ -18,7 +20,7 @@ public class Alarm implements Serializable {
     private long id;
 
     @DatabaseField
-    private int alarmSeverity;
+    private AlarmSeverity alarmSeverity;
     @DatabaseField
     private String name;
 
@@ -37,9 +39,9 @@ public class Alarm implements Serializable {
     private String emailAddress;
 
     @DatabaseField
-    private long alarmStartTime;
+    private Date alarmStartTime;
     @DatabaseField
-    private long alarmEndTime;
+    private Date alarmEndTime;
 
     @DatabaseField
     private boolean onlyFireAtHome = false;
@@ -52,10 +54,10 @@ public class Alarm implements Serializable {
     private double longitude;
 
     // default date time format
-    private final static DateFormat dateFormat = new SimpleDateFormat("HH:mm",
+    private final static DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy",
             Locale.UK);
     // android 2.3.3 and below
-    private final static DateFormat dateFormatUTC = new SimpleDateFormat("HH:mm 'UTC'",
+    private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
             Locale.UK);
 
     public Alarm () {}
@@ -63,7 +65,9 @@ public class Alarm implements Serializable {
     public Alarm (JSONObject jsonObj) throws NumberFormatException, JSONException, ParseException {
         id = Long.parseLong(jsonObj.getString("id"));
         name = jsonObj.getString("name");
-        alarmSeverity = Integer.parseInt(jsonObj.getString("alarmSeverity"));
+
+        alarmSeverity = AlarmSeverity.getAlarmOfId(Integer.parseInt(jsonObj.getJSONObject("alarmSeverity").
+                getString("id")));
 
         initiateCall = Boolean.parseBoolean(jsonObj.getString("initiateCall"));
         sendSMS = Boolean.parseBoolean(jsonObj.getString("sendSMS"));
@@ -73,20 +77,22 @@ public class Alarm implements Serializable {
         phoneNumber = jsonObj.getString("phoneNumber");
         emailAddress = jsonObj.getString("emailAddress");
 
-        alarmStartTime = Long.parseLong(jsonObj.getString("alarmStartTime"));
-        alarmEndTime = Long.parseLong(jsonObj.getString("alarmEndTime"));
+        alarmStartTime = parseDate(jsonObj.getString("alarmStartTime"));
+        alarmEndTime = parseDate(jsonObj.getString("alarmEndTime"));
 
+        /*
         onlyFireAtHome = Boolean.parseBoolean(jsonObj.getString("onlyFireAtHome"));
         onlyFireAtLocation = Boolean.parseBoolean(jsonObj.getString("onlyFireAtLocation"));
+        */
     }
 
     public Alarm (long id, String name, AlarmSeverity severity, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
-                  String phoneNumber, String emailAddress, long alarmStartTime, long alarmEndTime, boolean onlyFireAtHome,
+                  String phoneNumber, String emailAddress, Date alarmStartTime, Date alarmEndTime, boolean onlyFireAtHome,
                   boolean onlyFireAtLocation, double latitude, double longitude) {
         this.id = id;
         this.name = name;
 
-        this.alarmSeverity = severity.getId();
+        this.alarmSeverity = severity;
         this.initiateCall = initiateCall;
         this.sendSMS = sendSMS;
         this.sendEmail = sendEmail;
@@ -126,10 +132,20 @@ public class Alarm implements Serializable {
     }
 
     public String getAlarmSeverity() {
-        return AlarmSeverity.getAlarmOfId(alarmSeverity).getDescription();
+        return alarmSeverity.getDescription();
     }
 
     public String getName() {
         return name;
     }
+
+    private Date parseDate(String str) throws ParseException {
+        try{
+            return dateFormat.parse(str);
+        }catch(ParseException ex){
+            dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return dateFormatUTC.parse(str);
+        }
+    }
+
 }
