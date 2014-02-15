@@ -60,6 +60,9 @@ public class Alarm implements Serializable {
     private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
             Locale.UK);
 
+    private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.UK);
+    private final static DateFormat timeFormatUTC = new SimpleDateFormat("HH:mm 'UTC'", Locale.UK);
+
     public Alarm () {}
 
     public Alarm (JSONObject jsonObj) throws NumberFormatException, JSONException, ParseException {
@@ -146,6 +149,16 @@ public class Alarm implements Serializable {
             dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
             return dateFormatUTC.parse(str);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(getName()).append(" (").append(timeFormat.format(alarmStartTime)).
+                append(" - ").append(timeFormat.format(alarmEndTime)).append(")");
+
+        return  builder.toString();
     }
 
 }
