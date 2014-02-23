@@ -142,6 +142,14 @@ public class Alarm implements Serializable {
         return name;
     }
 
+    public Date getAlarmStartTime() {
+        return alarmStartTime;
+    }
+
+    public Date getAlarmEndTime() {
+        return alarmEndTime;
+    }
+
     private Date parseDate(String str) throws ParseException {
         try{
             return dateFormat.parse(str);

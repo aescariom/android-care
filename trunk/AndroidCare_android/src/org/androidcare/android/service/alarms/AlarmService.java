@@ -7,8 +7,11 @@ import android.os.IBinder;
 import android.util.Log;
 import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.view.Alarm.UIAlarmConfirmationView;
 
-public class AlarmService extends Service {
+import java.io.Serializable;
+
+public class AlarmService extends Service implements Serializable {
 
     private Alarm alarm;
     private final String TAG = this.getClass().getName();
@@ -69,11 +72,18 @@ public class AlarmService extends Service {
     }
 
     public void confirmationUser() {
+        Intent warningIntent = new Intent(getApplicationContext(), UIAlarmConfirmationView.class);
+        warningIntent.putExtra("alarm_service", this);
 
+        startActivity(warningIntent);
     }
 
     public void abstractInitiateAlarm() {
 
+    }
+
+    public Alarm getAlarm() {
+        return this.alarm;
     }
 
 }
