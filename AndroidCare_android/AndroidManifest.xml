@@ -47,7 +47,8 @@
         <activity
             android:name=".preferences.AlarmList">
         </activity>
-        
+        <activity android:name=".view.Alarm.AlarmWindowReceiver"/>
+
         <!-- reminder notification receiver -->
         <receiver android:name=".view.ReminderReceiver">
         </receiver>
@@ -63,8 +64,13 @@
         <!-- get alarms receiver -->
         <receiver android:name=".service.alarms.DownloadAlarmsReceiver">
         </receiver>
+        <!-- wakeUp alarm receiver -->
+        <receiver android:name=".service.alarms.WakeUpAlarmReceiver">
+        </receiver>
+
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service android:enabled="true" android:name=".service.alarms.AlarmService" />
+        <service android:enabled="true" android:name=".service.alarms.WakeUpAlarmService" />
         <service android:enabled="true" android:name=".service.alarms.DownloadAlarmService" />
         <service android:enabled="true" android:name=".service.reminders.ReminderService" />
         <service android:enabled="true" android:name=".service.location.LocationService" />
@@ -77,5 +83,6 @@
 				<category android:name="android.intent.category.HOME" />
 			</intent-filter>
 		</receiver>
+        <receiver android:name=".view.Alarm.AlarmReceiver"/>
     </application>
 </manifest>

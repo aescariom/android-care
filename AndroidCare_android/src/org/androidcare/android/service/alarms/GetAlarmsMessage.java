@@ -66,6 +66,7 @@ public class GetAlarmsMessage extends Message {
                 JSONObject obj = array.getJSONObject(i);
                 this.alarms.add(new Alarm(obj));
             }
+            this.removeAllAlarms();
             this.addAlarmsToDatabase(this.alarms);
 
             Log.i(TAG, "Alarms updated from the server");
@@ -81,6 +82,21 @@ public class GetAlarmsMessage extends Message {
         super.onError(ex);
         this.addAlarmsToDatabase(this.alarms);
         Log.e(TAG, "No alarms could be retrieved from the server: ");
+    }
+
+    private void removeAllAlarms() {
+        try {
+            List<Alarm> alarms = getHelper().getAlarmDao().queryForAll();
+            for (Alarm alarm : alarms) {
+                getHelper().getAlarmDao().delete(alarm);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } finally {
+            closeDatabaseConnection();
+        }
+
+
     }
 
     private void addAlarmsToDatabase(List<Alarm> alarms){
