@@ -42,12 +42,12 @@
     <file path="/GetAlarmsMessage.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393173369270" ignored="false" />
     <file path="/Alarm.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1392482508935" ignored="false" />
     <file path="/AlarmSeverity.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1384280730618" ignored="false" />
-    <file path="/AlarmService.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393703680575" ignored="false" />
+    <file path="/AlarmService.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393704164498" ignored="false" />
     <file path="/DatabaseHelper.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1391357284920" ignored="false" />
     <file path="/PreferencesActivity.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1384295841231" ignored="false" />
     <file path="/AlarmList.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1384368962352" ignored="false" />
     <file path="/preferences.xml" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1384294944864" ignored="false" />
-    <file path="/strings.xml" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393689682345" ignored="false" />
+    <file path="/strings.xml" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393705079792" ignored="false" />
     <file path="/ReminderList.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1384368813736" ignored="false" />
     <file path="/AdvancedPreferencesActivity.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1384368287626" ignored="false" />
     <file path="/advanced_preferences.xml" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1384368377668" ignored="false" />
@@ -73,7 +73,7 @@
     <file path="/OffAlarmReciever.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393088503521" ignored="false" />
     <file path="/OffAlarmReceiver.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393094028109" ignored="false" />
     <file path="/WakeUpAlarmReceiver.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393193872017" ignored="false" />
-    <file path="/UIAlarmConfirmationView.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393703714635" ignored="false" />
+    <file path="/UIAlarmConfirmationView.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393704781672" ignored="false" />
     <file path="/UIAlarmViewFactory.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393190610978" ignored="false" />
     <file path="/AlarmWindowReceiver.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393237299755" ignored="false" />
     <file path="/UIAlarmView.java" changelist="691c5e69-3a12-44bb-8dab-a79531ac054e" time="1393190576568" ignored="false" />
@@ -145,13 +145,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AlarmService.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/service/alarms/AlarmService.java">
+      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values-es/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="10" selection-start="1911" selection-end="1911" vertical-scroll-proportion="0.35227272">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="54" column="34" selection-start="2820" selection-end="2820" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="24" selection-start="2466" selection-end="2466" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UIAlarmConfirmationView.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmConfirmationView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="45" column="53" selection-start="1717" selection-end="1717" vertical-scroll-proportion="0.59090906">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -172,16 +188,16 @@
         <option value="$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmView.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmViewFactory.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/android/service/alarms/DownloadAlarmService.java" />
-        <option value="$PROJECT_DIR$/res/layout/alarm_ui_confirmation.xml" />
         <option value="$PROJECT_DIR$/src/org/androidcare/android/service/alarms/WakeUpAlarmReceiver.java" />
-        <option value="$PROJECT_DIR$/res/values-es/strings.xml" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/AlarmReceiver.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/android/service/alarms/WakeUpAlarmService.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/AlarmWindowReceiver.java" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmConfirmationView.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/android/service/alarms/AlarmService.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmConfirmationView.java" />
+        <option value="$PROJECT_DIR$/res/values-es/strings.xml" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/res/layout/alarm_ui_confirmation.xml" />
       </list>
     </option>
   </component>
@@ -343,6 +359,92 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="alarms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xml" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values-es" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidCare_android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -607,6 +709,7 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" sideWeight="0.5707317" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32986537" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -630,7 +733,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32986537" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" sideWeight="0.67317075" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32804877" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -701,41 +803,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///Applications/PFC_SDKs/ADK/sources/android-18/android/content/ComponentName.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="0" selection-start="2879" selection-end="2879" vertical-scroll-proportion="0.3318182">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/PFC_SDKs/ADK/sources/android-18/android/content/Intent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3812" column="0" selection-start="177820" selection-end="177820" vertical-scroll-proportion="0.3318182">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/view/UIReminderView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="27" selection-start="3672" selection-end="3672" vertical-scroll-proportion="2.625">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/service/reminders/ReminderService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="20" selection-start="1779" selection-end="1779" vertical-scroll-proportion="0.37045455">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/service/ConnectionServiceBroadcastReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="13" selection-start="187" selection-end="187" vertical-scroll-proportion="0.13636364">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/service/ConnectionService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="28" selection-start="3947" selection-end="3947" vertical-scroll-proportion="2.0454545">
@@ -767,13 +834,6 @@
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/service/ServiceManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="22" selection-start="387" selection-end="387" vertical-scroll-proportion="0.13636364">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmConfirmationView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="119" selection-start="618" selection-end="618" vertical-scroll-proportion="0.375">
           <folding />
         </state>
       </provider>
@@ -812,10 +872,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/service/alarms/AlarmService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="10" selection-start="1911" selection-end="1911" vertical-scroll-proportion="0.35227272">
+        <state line="44" column="8" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.18181819">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="44" selection-start="351" selection-end="351" vertical-scroll-proportion="0.3409091">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values-es/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="34" selection-start="2820" selection-end="2820" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/alarm_ui_confirmation.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="49" selection-start="1153" selection-end="1153" vertical-scroll-proportion="-6.6666665">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="24" selection-start="2466" selection-end="2466" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/android/view/Alarm/UIAlarmConfirmationView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="53" selection-start="1717" selection-end="1717" vertical-scroll-proportion="0.59090906">
+          <folding />
         </state>
       </provider>
     </entry>

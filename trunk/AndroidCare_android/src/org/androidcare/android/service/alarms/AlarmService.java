@@ -56,7 +56,6 @@ public class AlarmService extends Service implements Serializable {
     private void notifyByCall(Context ctx) {
         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + alarm.getPhoneNumber().trim()));
         callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        callIntent.addFlags(Intent.FLAG_FROM_BACKGROUND);
 
         ctx.startActivity(callIntent);
     }
