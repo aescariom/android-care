@@ -1,6 +1,5 @@
 package org.androidcare.android.service.alarms;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,14 +19,9 @@ public class WakeUpAlarmReceiver extends BroadcastReceiver {
         Alarm alarm = (Alarm) bundle.getSerializable("alarm");
 
         Intent windowIntent = new Intent(context, WakeUpAlarmService.class);
+        //Intent windowIntent = new Intent(context, AlarmService.class);
         windowIntent.putExtra("alarm", alarm);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, windowIntent, PendingIntent.FLAG_ONE_SHOT);
 
-        try {
-            pendingIntent.send();
-            Log.e("TEST", "ESTA ALARMA LA RECIBIMOS Y REENVIAMOS " + alarm);
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
-        }
+        context.startService(windowIntent);
     }
 }

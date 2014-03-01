@@ -17,7 +17,9 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- evitar que la CPU se desactive -->
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Obtener una notificación cuando el sistema se enciende -->
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- acceder al almacenamiento de datos -->
-		
+    <uses-permission android:name="android.permission.SEND_SMS" /> <!-- enviar SMS -->
+    <uses-permission android:name="android.permission.CALL_PHONE" /><!-- hacer llamadas -->
+
     <application
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -38,6 +40,10 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
+                android:name=".view.Alarm.AlarmWindowReceiver"
+                android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
             android:name=".AccountSelectorActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
@@ -47,7 +53,9 @@
         <activity
             android:name=".preferences.AlarmList">
         </activity>
-        <activity android:name=".view.Alarm.AlarmWindowReceiver"/>
+        <activity android:name=".view.Alarm.AlarmWindowReceiver"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
 
         <!-- reminder notification receiver -->
         <receiver android:name=".view.ReminderReceiver">
