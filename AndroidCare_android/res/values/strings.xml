@@ -46,10 +46,10 @@
     <string name="message_not_sent">Message not sent</string>
     <string name="check_internet_connection">Please, check yout Internet connection</string>
     <string name="delay_reminder">Delay Reminder</string>
-    <string name="AndroidCareAlarmWithName">ANDROIDCARE: Alarm</string>
-    <string name="triggeredWithPriority">triggered with priority</string>
 
+    <!-- Alarms -->
+    <string name="SMSAlarmStartText">ANDROIDCARE: Alarm </string>
+    <string name="SMSAlarmMiddleText"> triggered with priority </string>
     <string name="YES">YES</string>
     <string name="NO">NO</string>
-
 </resources>

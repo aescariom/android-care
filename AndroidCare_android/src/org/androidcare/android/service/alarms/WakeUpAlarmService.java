@@ -7,8 +7,6 @@ import org.androidcare.android.alarms.Alarm;
 
 public class WakeUpAlarmService extends AlarmService {
 
-    private Alarm alarm;
-
     public WakeUpAlarmService() {
         super();
     }
@@ -18,7 +16,7 @@ public class WakeUpAlarmService extends AlarmService {
         Log.e("TEST", "Enviamos la ventana");
         int result = super.onStartCommand(intent, flags, startId);
         Bundle bundle = intent.getExtras();
-        this.alarm = (Alarm) bundle.getSerializable("alarm");
+        super.setAlarm((Alarm) bundle.getSerializable("alarm"));
 
         new Thread(new Runnable() {
             @Override

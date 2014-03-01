@@ -47,9 +47,10 @@
     <string name="message_not_sent">Mensaje no enviado</string>
     <string name="check_internet_connection">Por favor, compruebe su conexión a Internet</string>
     <string name="delay_reminder">Retrasar recordatorio</string>
-    <string name="AndroidCareAlarmWithName">ANDROIDCARE: Alarma</string>
-    <string name="triggeredWithPriority">disparada con prioridad</string>
 
+    <!-- Alarms -->
+    <string name="SMSAlarmStartText">ANDROIDCARE: Alarma</string>
+    <string name="SMSAlarmMiddleText">disparada con prioridad</string>
     <string name="YES">SÍ</string>
     <string name="NO">NO</string>
 </resources>

@@ -15,7 +15,7 @@
             android:orientation="vertical" >
 
         <Button
-                android:id="@+id/btnOk"
+                android:id="@+id/btnAlarmOk"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -26,7 +26,7 @@
                 android:textSize="@dimen/button_fomt_size" />
 
         <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/btnAlarmCancel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
