@@ -9,6 +9,7 @@ public class AlarmWindowReceiver extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Bundle bundle = getIntent().getExtras();
         AlarmService alarm = (AlarmService) bundle.getSerializable("alarm_service");
         UIAlarmView view = UIAlarmViewFactory.createUIAlarmView(this, alarm);

@@ -2,10 +2,11 @@ package org.androidcare.android.service.alarms;
 
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
-import android.util.Log;
+import android.telephony.SmsManager;
 import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.view.Alarm.AlarmReceiver;
@@ -40,47 +41,37 @@ public class AlarmService extends Service implements Serializable {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private void notifyByEmail() {
+    private void notifyByEmail(Context ctx) {
 
     }
 
-    private void notifyBySMS() {
-        //String message = getString(R.string.AndroidCareAlarmWithName) + alarm.getName() + getString(R.string.triggeredWithPriority) + alarm.getAlarmSeverity();
-
+    private void notifyBySMS(Context ctx) {
         String message = new StringBuilder().append(this.smsAlarmStartText).append(alarm.getName())
                 .append(this.smsAlarmMiddleText).append(alarm.getAlarmSeverity()).toString();
 
-        Log.e("TEST SMS SALVAJE APARECIO", "Esto es el texto " + message);
-        Log.e("TEST SMS SALVAJE APARECIO", "Esto es la longitud " + message.length());
-
-        Log.e("TEST SMS SALVAJE APARECIO", "Esto es el numero de telefono " + alarm.getPhoneNumber().trim());
-
-        /*
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(alarm.getPhoneNumber().trim(), null, message , null, null);
-        */
     }
 
-    private void notifyByCall() {
-
+    private void notifyByCall(Context ctx) {
         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + alarm.getPhoneNumber().trim()));
         callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         callIntent.addFlags(Intent.FLAG_FROM_BACKGROUND);
 
-        startActivity(callIntent);
+        ctx.startActivity(callIntent);
     }
 
-    public void fireAlarm() {
+    public void fireAlarm(Context ctx) {
         if (alarm.isSendSMS()) {
-            notifyBySMS();
+            notifyBySMS(ctx);
         }
 
         if (alarm.isInitiateCall()) {
-            notifyByCall();
+            notifyByCall(ctx);
         }
 
         if (alarm.isSendEmail()) {
-            notifyByEmail();
+            notifyByEmail(ctx);
         }
 
     }
