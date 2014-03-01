@@ -11,7 +11,7 @@ public class UIAlarmConfirmationView extends UIAlarmView {
 
     private AlarmService alarm;
 
-    public UIAlarmConfirmationView(AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm) {
+    public UIAlarmConfirmationView(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm) {
         super(alarmWindowReceiver, alarm);
         this.alarm = alarm;
 
@@ -25,7 +25,7 @@ public class UIAlarmConfirmationView extends UIAlarmView {
         okButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                alarm.fireAlarm();
+                alarm.fireAlarm(alarmWindowReceiver.getApplicationContext());
             }
         });
 
