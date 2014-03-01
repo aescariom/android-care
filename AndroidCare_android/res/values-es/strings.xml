@@ -51,6 +51,6 @@
     <!-- Alarms -->
     <string name="SMSAlarmStartText">ANDROIDCARE: Alarma</string>
     <string name="SMSAlarmMiddleText">disparada con prioridad</string>
-    <string name="YES">SÍ</string>
-    <string name="NO">NO</string>
+    <string name="Cancel">Cancelar</string>
+    <string name="LaunchAlarm">Disparar alarma (</string>
 </resources>

@@ -50,6 +50,6 @@
     <!-- Alarms -->
     <string name="SMSAlarmStartText">ANDROIDCARE: Alarm </string>
     <string name="SMSAlarmMiddleText"> triggered with priority </string>
-    <string name="YES">YES</string>
-    <string name="NO">NO</string>
+    <string name="Cancel">Cancel</string>
+    <string name="LaunchAlarm">Launch alarm (</string>
 </resources>

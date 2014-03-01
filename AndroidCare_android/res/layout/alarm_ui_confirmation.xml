@@ -22,7 +22,7 @@
                 android:height="150dp"
                 android:background="#ff0000"
                 android:includeFontPadding="false"
-                android:text="@android:string/no"
+                android:text="@string/LaunchAlarm"
                 android:textSize="@dimen/button_fomt_size" />
 
         <Button
@@ -32,7 +32,7 @@
                 android:layout_weight="3"
                 android:height="50dp"
                 android:background="#00ff00"
-                android:text="@string/YES"
+                android:text="@string/Cancel"
                 android:textSize="@dimen/button_fomt_size" />
 
     </LinearLayout>
