@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
 import android.telephony.SmsManager;
+import android.util.Log;
 import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
+import org.androidcare.android.service.Message;
 import org.androidcare.android.view.Alarm.AlarmReceiver;
 
 import java.io.Serializable;
@@ -42,7 +45,14 @@ public class AlarmService extends Service implements Serializable {
     }
 
     private void notifyByEmail(Context ctx) {
+        Log.e("TEST", "Enviamos correo");
+        postData(ctx, new SendEmailMessage(this.alarm));
+    }
 
+    private void postData(Context ctx, Message message) {
+        Intent intent = new Intent(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
+        intent.putExtra(ConnectionServiceBroadcastReceiver.EXTRA_MESSAGE, message);
+        ctx.sendBroadcast(intent);
     }
 
     private void notifyBySMS(Context ctx) {
@@ -65,14 +75,13 @@ public class AlarmService extends Service implements Serializable {
             notifyBySMS(ctx);
         }
 
-        if (alarm.isInitiateCall()) {
-            notifyByCall(ctx);
-        }
-
         if (alarm.isSendEmail()) {
             notifyByEmail(ctx);
         }
 
+        if (alarm.isInitiateCall()) {
+            notifyByCall(ctx);
+        }
     }
 
     public void cancelAlarm() {
