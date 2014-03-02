@@ -169,4 +169,7 @@ public class Alarm implements Serializable {
         return  builder.toString();
     }
 
+    public long getId() {
+        return id;
+    }
 }

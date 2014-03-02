@@ -1,5 +1,6 @@
 package org.androidcare.android.view.Alarm;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -11,33 +12,22 @@ import org.androidcare.android.service.alarms.AlarmService;
 public class UIAlarmConfirmationView extends UIAlarmView {
 
     private AlarmService alarm;
+    private boolean trigger;
 
     public UIAlarmConfirmationView(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm) {
         super(alarmWindowReceiver, alarm);
         this.alarm = alarm;
 
+        this.trigger = true;
+
         inflate(alarmWindowReceiver, R.layout.alarm_ui_confirmation, this);
         alarmWindowReceiver.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        TextView text = (TextView) findViewById(R.id.txtAlarmTitle);
-        text.setText(alarm.getAlarm().toString());
+        Button okButton = generateButtons(alarmWindowReceiver, alarm);
+        startCountdown(alarmWindowReceiver, alarm, okButton);
+    }
 
-        final Button okButton = (Button) findViewById(R.id.btnAlarmOk);
-        okButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alarm.fireAlarm(alarmWindowReceiver.getApplicationContext());
-            }
-        });
-
-        Button cancelButton = (Button) findViewById(R.id.btnAlarmCancel);
-        cancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alarm.cancelAlarm();
-            }
-        });
-
+    private void startCountdown(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm, final Button okButton) {
         final String launchAlarmText = alarmWindowReceiver.getApplicationContext().getString(R.string.LaunchAlarm);
 
         new CountDownTimer(30 * 1000, 1 * 1000) {
@@ -47,11 +37,43 @@ public class UIAlarmConfirmationView extends UIAlarmView {
             }
 
             public void onFinish() {
-                alarm.fireAlarm(alarmWindowReceiver.getApplicationContext());
+                if (trigger) {
+                    alarm.fireAlarm(alarmWindowReceiver.getApplicationContext());
+                    closeWindow();
+                }
             }
 
         }.start();
     }
 
+    private Button generateButtons(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm) {
+        TextView text = (TextView) findViewById(R.id.txtAlarmTitle);
+        text.setText(alarm.getAlarm().toString());
+
+        final Button okButton = (Button) findViewById(R.id.btnAlarmOk);
+        okButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alarm.fireAlarm(alarmWindowReceiver.getApplicationContext());
+                closeWindow();
+            }
+        });
+
+        Button cancelButton = (Button) findViewById(R.id.btnAlarmCancel);
+        cancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trigger = false;
+                alarm.cancelAlarm();
+                closeWindow();
+            }
+        });
+        return okButton;
+    }
+
+    public void closeWindow() {
+        Activity parent = (Activity) getContext();
+        parent.finish();
+    }
 
 }
