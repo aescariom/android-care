@@ -8,13 +8,14 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="06e2991e-a85f-4d8b-a993-3be177675ef2" name="Default" comment="Modificadas las alarmas">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidCare_web.iws" afterPath="$PROJECT_DIR$/AndroidCare_web.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/war/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/war/WEB-INF/web.xml" />
     </list>
     <ignored path="AndroidCare_web.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/LocalizedConstants_es.properties" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391611084151" ignored="false" />
     <file path="/AlarmsTable.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1388344581040" ignored="false" />
     <file path="/LocalizedConstants.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391611055624" ignored="false" />
-    <file path="/a.dummy" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391884805022" ignored="false" />
+    <file path="/a.dummy" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1393782555174" ignored="false" />
     <file path="/Dashboard.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383759203004" ignored="false" />
     <file path="/AlarmForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391881295421" ignored="false" />
     <file path="/a.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1383755239659" ignored="false" />
@@ -24,7 +25,7 @@
     <file path="/AlarmService.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384109004106" ignored="false" />
     <file path="/AlarmServiceImpl.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391882359129" ignored="false" />
     <file path="/AlarmSeverity.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384169542980" ignored="false" />
-    <file path="/web.xml" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1384368074472" ignored="false" />
+    <file path="/web.xml" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1393782882182" ignored="false" />
     <file path="/RetrieveAlarms.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391882290801" ignored="false" />
     <file path="/fragment.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1390919878447" ignored="false" />
     <file path="/RemoveAlarmForm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1385315623137" ignored="false" />
@@ -35,6 +36,7 @@
     <file path="/Position.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391884136920" ignored="false" />
     <file path="/Reminder.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391884270016" ignored="false" />
     <file path="/ReminderLog.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1391884334393" ignored="false" />
+    <file path="/SendMailAlarm.java" changelist="06e2991e-a85f-4d8b-a993-3be177675ef2" time="1393783516026" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,37 +127,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Alarm.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
+      <file leaf-file-name="SendMailAlarm.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/api/SendMailAlarm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="168" column="63" selection-start="4429" selection-end="4429" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="68" column="70" selection-start="2513" selection-end="2513" vertical-scroll-proportion="0.7348485">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="appengine-web.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
+      <file leaf-file-name="AddReminderLog.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/api/AddReminderLog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="11" selection-start="190" selection-end="190" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="datastore-indexes.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/war/WEB-INF/datastore-indexes.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="2" selection-start="502" selection-end="502" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlarmServiceImpl.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="26" selection-start="940" selection-end="940" vertical-scroll-proportion="0.018939395">
+            <state line="60" column="29" selection-start="2223" selection-end="2223" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -171,8 +157,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/Dashboard.java" />
-        <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/widgets/TimeBox.java" />
@@ -187,6 +171,8 @@
         <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/ReminderLog.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/ReminderServiceImpl.java" />
         <option value="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
+        <option value="$PROJECT_DIR$/war/WEB-INF/web.xml" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/server/api/SendMailAlarm.java" />
       </list>
     </option>
   </component>
@@ -223,7 +209,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -336,37 +321,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="module" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidCare_web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidCare_web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="module" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboard" />
+              <option name="myItemId" value="api" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -387,20 +342,21 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="project.structure.last.edited" value="Facets" />
-    <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="GOOGLE_APP_ENGINE_ACCOUNT_EMAIL" value="alvarodelrosal@gmail.com" />
-    <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/war/Dashboard.html" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GWT.GenerateCompileReport.Module" value="org.androidcare.web.Dashboard" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
@@ -417,8 +373,8 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -443,6 +399,19 @@
     <configuration default="true" type="GoogleAppEngineDevServer" factoryName="Local">
       <server-settings />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -473,19 +442,6 @@
       <listeners />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" />
@@ -499,10 +455,6 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
-      <module name="" />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -524,6 +476,10 @@
       </option>
       <envs />
       <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
+      <module name="" />
       <method />
     </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -704,11 +660,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="940" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277311" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32878152" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1621787" sideWeight="0.71255505" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39915967" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -730,7 +687,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32878152" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28466386" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -806,26 +762,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/war/AndroidCare_web.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="248" column="1" selection-start="5903" selection-end="5903" vertical-scroll-proportion="0.33224222" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/ReminderLog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="28" selection-start="1074" selection-end="1074" vertical-scroll-proportion="0.9328969" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Reminder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="4" selection-start="2676" selection-end="2676" vertical-scroll-proportion="0.8419118" />
-      </provider>
-    </entry>
-    <entry file="jar:///Applications/PFC_SDKs/GWT/gwt-user.jar!/com/google/gwt/user/server/rpc/AbstractRemoteServiceServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="0" selection-start="2296" selection-end="2296" vertical-scroll-proportion="0.33272058" />
-      </provider>
-    </entry>
     <entry file="jar:///Applications/PFC_SDKs/GWT/gwt-user.jar!/com/google/gwt/user/server/rpc/RemoteServiceServlet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="247" column="0" selection-start="9228" selection-end="9228" vertical-scroll-proportion="0.33272058" />
@@ -863,38 +799,77 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="41" selection-start="710" selection-end="710" vertical-scroll-proportion="0.40332907">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="168" column="63" selection-start="4429" selection-end="4429" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="11" selection-start="190" selection-end="190" vertical-scroll-proportion="0.0">
+        <state line="25" column="26" selection-start="940" selection-end="940" vertical-scroll-proportion="0.018891688">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/war/WEB-INF/datastore-indexes.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="2" selection-start="502" selection-end="502" vertical-scroll-proportion="0.0">
+        <state line="14" column="2" selection-start="502" selection-end="502" vertical-scroll-proportion="0.2651515">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/module/dashboard/AlarmServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="26" selection-start="940" selection-end="940" vertical-scroll-proportion="0.018939395">
+        <state line="168" column="63" selection-start="4429" selection-end="4429" vertical-scroll-proportion="0.109848484">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="17" selection-start="793" selection-end="793" vertical-scroll-proportion="0.49242425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="41" selection-start="710" selection-end="710" vertical-scroll-proportion="-5.6238766">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/api/RetrieveReminders.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="30" selection-start="782" selection-end="782" vertical-scroll-proportion="0.07575758">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/war/WEB-INF/web.xml">
+      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
+        <state />
+      </provider>
+      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorProvider">
+        <state />
+      </provider>
+      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorReferencesProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="36" selection-start="1953" selection-end="1953" vertical-scroll-proportion="-0.7058824">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/api/AddReminderLog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="29" selection-start="2223" selection-end="2223" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/server/api/SendMailAlarm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="68" column="70" selection-start="2513" selection-end="2513" vertical-scroll-proportion="0.7348485">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

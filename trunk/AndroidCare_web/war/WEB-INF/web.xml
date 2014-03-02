@@ -50,6 +50,10 @@
     <servlet-name>alarmServlet</servlet-name>
     <servlet-class>org.androidcare.web.server.module.dashboard.AlarmServiceImpl</servlet-class>
   </servlet>
+  <servlet>
+      <servlet-name>sendMailAlarm</servlet-name>
+      <servlet-class>org.androidcare.web.server.api.SendMailAlarm</servlet-class>
+  </servlet>
 
     <servlet-mapping>
     <servlet-name>uploadReminderPhotoServlet</servlet-name>
@@ -86,6 +90,10 @@
     <url-pattern>/api/addReminderLog</url-pattern>
   </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>sendMailAlarm</servlet-name>
+        <url-pattern>/api/sendMailAlarm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
     <servlet-name>addPosition</servlet-name>
     <url-pattern>/api/addPosition</url-pattern>
   </servlet-mapping>
@@ -110,7 +118,8 @@
             <web-resource-name>all</web-resource-name>
     		<url-pattern>/api/retrieveReminders</url-pattern>
     		<url-pattern>/api/addPosition</url-pattern>
-    		<url-pattern>/api/addReminderLog</url-pattern>
+            <url-pattern>/api/addReminderLog</url-pattern>
+            <url-pattern>/api/sendMailAlarm</url-pattern>
     		<url-pattern>/userBox/*</url-pattern>
     		<url-pattern>/dashboard/*</url-pattern>
     		<url-pattern>/Dashboard.html</url-pattern>
