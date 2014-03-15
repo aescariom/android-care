@@ -11,6 +11,7 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.alarms.GetAlarmsMessage;
+import org.androidcare.android.service.alarms.SendEmailMessage;
 import org.androidcare.android.service.location.LocationMessage;
 import org.androidcare.android.service.reminders.GetRemindersMessage;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
@@ -30,6 +31,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<ReminderLogMessage, Integer> getReminderLogMessageDao;
     private Dao<Alarm, Integer> alarmDao;
     private Dao<GetAlarmsMessage, Integer> getAlarmMessageDao;
+    private Dao<SendEmailMessage, Integer> sendEmailMessagesDao;
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +47,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, LocationMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
+            TableUtils.createTableIfNotExists(connectionSource, SendEmailMessage.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -62,6 +65,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, LocationMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
+            TableUtils.createTableIfNotExists(connectionSource, SendEmailMessage.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -110,6 +114,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getAlarmMessageDao;
     }
 
+    public Dao<SendEmailMessage, Integer> getSendEmailMessagesDao() throws SQLException {
+        if (sendEmailMessagesDao == null) {
+            sendEmailMessagesDao = getDao(SendEmailMessage.class);
+        }
+        return sendEmailMessagesDao;
+    }
+
     public void truncateReminderTable() throws SQLException {
         TableUtils.clearTable(connectionSource, Reminder.class);
 
@@ -127,6 +138,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             return getReminderLogMessageDao().create((ReminderLogMessage)message);
         } else if (message.getClass() == GetAlarmsMessage.class) {
             return getAlarmsMessagesDao().create((GetAlarmsMessage) message);
+        } else if (message.getClass() == SendEmailMessage.class) {
+            return getSendEmailMessagesDao().create((SendEmailMessage) message);
         }
         return -1;
     }
@@ -140,12 +153,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             return getReminderLogMessageDao().delete((ReminderLogMessage)message);
         } else if (message.getClass() == GetAlarmsMessage.class) {
             return getAlarmsMessagesDao().delete((GetAlarmsMessage) message);
+        } else if (message.getClass() == SendEmailMessage.class) {
+            return getSendEmailMessagesDao().delete((SendEmailMessage) message);
         }
         return -1;
     }
 
     public List<Message> getMessages() throws SQLException {
         List<Message> messages = new ArrayList<Message>();
+        Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de correo de alarma");
+        messages.addAll(getSendEmailMessagesDao().queryForAll());
         Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de recordatorios");
         messages.addAll(getGetRemindersMessageDao().queryForAll());
         Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de log de recordatorios");

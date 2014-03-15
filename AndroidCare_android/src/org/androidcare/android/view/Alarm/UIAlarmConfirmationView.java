@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import org.androidcare.android.R;
@@ -25,11 +27,18 @@ public class UIAlarmConfirmationView extends UIAlarmView {
 
         Button okButton = generateButtons(alarmWindowReceiver, alarm);
         startCountdown(alarmWindowReceiver, alarm, okButton);
+
+        getWindow().addFlags(
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                        | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+        startPlayingSoundAndVibration();
     }
 
     private void startCountdown(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm, final Button okButton) {
         final String launchAlarmText = alarmWindowReceiver.getApplicationContext().getString(R.string.LaunchAlarm);
-
         new CountDownTimer(30 * 1000, 1 * 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -71,7 +80,13 @@ public class UIAlarmConfirmationView extends UIAlarmView {
         return okButton;
     }
 
+    protected Window getWindow() {
+        Activity parent = (Activity) getContext();
+        return parent.getWindow();
+    }
+
     public void closeWindow() {
+        stopPlayingSoundAndVibration();
         Activity parent = (Activity) getContext();
         parent.finish();
     }

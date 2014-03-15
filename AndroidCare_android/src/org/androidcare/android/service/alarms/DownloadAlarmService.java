@@ -52,6 +52,8 @@ public class DownloadAlarmService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
+        Log.i(TAG, "Reminder scheduled @ " + cal.getTime().toString());
     }
 
     private void scheduleAlarms() {
