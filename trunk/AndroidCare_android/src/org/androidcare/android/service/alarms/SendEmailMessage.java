@@ -1,5 +1,6 @@
 package org.androidcare.android.service.alarms;
 
+import android.util.Log;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.androidcare.android.alarms.Alarm;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
-@DatabaseTable(tableName = "ReminderLogMessage")
+@DatabaseTable(tableName = "SendEmailMessage")
 public class SendEmailMessage extends Message {
-    public static final String REMINDERS_LOG_URL = "api/sendMailAlarm";
+    public static final String SENDMAIL_URL = "api/sendMailAlarm";
 
     @DatabaseField
     protected long alarmId;
@@ -33,7 +34,7 @@ public class SendEmailMessage extends Message {
 
     @Override
     public HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException {
-        HttpPost httppost = new HttpPost(ConnectionService.getAppUrl() + REMINDERS_LOG_URL);
+        HttpPost httppost = new HttpPost(ConnectionService.getAppUrl() + SENDMAIL_URL);
 
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("alarmId", String.valueOf(alarmId)));
@@ -41,6 +42,8 @@ public class SendEmailMessage extends Message {
         nameValuePairs.add(new BasicNameValuePair("time", date));
 
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+        Log.e("TEST", "Enviamos un correo SendEmailMessage");
 
         return httppost;
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Vibrator;
@@ -23,8 +24,19 @@ public class UIAlarmView extends RelativeLayout{
     public UIAlarmView(Context context, AlarmService alarm) {
         super(context);
         this.alarm = alarm;
-        playSoundTask = new PlaySoundTask();
+
         vibrationTask = new VibrationTask();
+        playSoundTask = new PlaySoundTask();
+    }
+
+    protected void stopPlayingSoundAndVibration() {
+        playSoundTask.cancel(false);
+        vibrationTask.cancel(false);
+    }
+
+    protected void startPlayingSoundAndVibration() {
+        playSoundTask.execute(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+        //vibrationTask.doInBackground(1500);
     }
 
     private class PlaySoundTask extends AsyncTask<Uri, Void, Void> {
