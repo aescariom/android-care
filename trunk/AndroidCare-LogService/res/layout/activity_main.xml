@@ -25,17 +25,17 @@
         android:layout_toLeftOf="@+id/stopServiceButton"
         android:text="Start Service" />
 
-    <EditText
-        android:id="@+id/activityEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/stopServiceButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="68dp"
-        android:ems="10" 
-        android:hint="Actividad fisica">
-
-        <requestFocus />
-    </EditText>
+    <ToggleButton
+            android:id="@+id/enableLockToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WakeLock"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="35dp"
+            android:enabled="true"
+            android:textOff="WakeLock off"
+            android:textOn="WakeLock on"
+            android:singleLine="false"/>
 
 </RelativeLayout>

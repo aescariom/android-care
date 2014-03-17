@@ -31,8 +31,11 @@
         </activity>
 
         <service
-            android:name="LogService"
-            android:exported="false" />
+            android:name=".LogServiceWithWakelock"
+            android:enabled="true" />
+        <service
+            android:name=".LogServiceWithoutWakelock"
+            android:enabled="true" />
     </application>
 
 </manifest>
