@@ -5,6 +5,9 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
@@ -22,10 +25,12 @@ import java.util.Date;
 public class AlarmForm extends ObservableForm {
 
     private static final int SEVERITY_LEVEL_ROW = 0;
-    private static final int ALARM_NAME_ROW = SEVERITY_LEVEL_ROW + 1;
+    private static final int ALARM_TYPE_ROW = SEVERITY_LEVEL_ROW + 1;
+    private static final int ALARM_NAME_ROW = ALARM_TYPE_ROW + 1;
     private static final int START_TIME_ROW = ALARM_NAME_ROW + 1;
     private static final int END_TIME_ROW = START_TIME_ROW + 1;
-    private static final int PHONE_NUMBER_ROW = END_TIME_ROW + 1;
+    private static final int MAP_ROW = END_TIME_ROW + 1;
+    private static final int PHONE_NUMBER_ROW = MAP_ROW + 1;
     private static final int EMAIL_ROW = PHONE_NUMBER_ROW + 1;
     private static final int MAKE_CALL_ROW = EMAIL_ROW + 1;
     private static final int SEND_SMS_ROW = MAKE_CALL_ROW + 1;
@@ -52,6 +57,9 @@ public class AlarmForm extends ObservableForm {
 
     private Label lblEndTime = new Label(localizedConstants.endTime());
     private TimeBox txtEndTime = new TimeBox();
+
+    private Label lblRedZone = new Label(localizedConstants.redZoneMap());
+    private MapWidget redZoneMap = new MapWidget();
 
     private Label lblPhoneNumber = new Label(localizedConstants.phoneNumber());
     private TextBox txtPhoneNumber = new TextBox();
@@ -112,12 +120,24 @@ public class AlarmForm extends ObservableForm {
             alarm.sendEmailOnAlarm(true);
         }
 
+        setMapConfig();
         setAlarmValues(alarm);
+    }
+
+    private void setMapConfig() {
+        redZoneMap = new MapWidget();
+        redZoneMap.setCenter(LatLng.newInstance(40.416667, -3.70355), 14);
+        redZoneMap.setSize("100%", "570px");
+
+        redZoneMap.addControl(new LargeMapControl());
+
+        redZoneMap.checkResize();
     }
 
     private void setAlarmValues(Alarm alarm) {
         if (alarm != null) {
-            ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
+            //ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
+            ddlSeverityLevel.setSelectedIndex(2);
             txtName.setValue(alarm.getName());
             txtStartTime.setValue(alarm.getAlarmStartTime());
             txtEndTime.setValue(alarm.getAlarmEndTime());
@@ -151,6 +171,9 @@ public class AlarmForm extends ObservableForm {
         grid.setWidget(ALARM_NAME_ROW, 0, lblName);
         txtName.setWidth("400px");
         grid.setWidget(ALARM_NAME_ROW, 1, txtName);
+
+        grid.setWidget(MAP_ROW, 0, lblRedZone);
+        grid.setWidget(MAP_ROW, 1, redZoneMap);
 
         grid.setWidget(START_TIME_ROW, 0, lblStartTime);
         txtStartTime.setWidth("400px");
