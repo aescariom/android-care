@@ -6,7 +6,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,15 +18,16 @@ import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.client.widgets.DialogBoxClose;
 import org.androidcare.web.client.widgets.TimeBox;
 import org.androidcare.web.shared.AlarmSeverity;
+import org.androidcare.web.shared.AlarmType;
 import org.androidcare.web.shared.persistent.Alarm;
 
 import java.util.Date;
 
 public class AlarmForm extends ObservableForm {
 
-    private static final int SEVERITY_LEVEL_ROW = 0;
-    private static final int ALARM_TYPE_ROW = SEVERITY_LEVEL_ROW + 1;
-    private static final int ALARM_NAME_ROW = ALARM_TYPE_ROW + 1;
+	private static final int ALARM_TYPE_ROW = 0;
+    private static final int SEVERITY_LEVEL_ROW = ALARM_TYPE_ROW + 1;
+    private static final int ALARM_NAME_ROW = SEVERITY_LEVEL_ROW + 1;
     private static final int START_TIME_ROW = ALARM_NAME_ROW + 1;
     private static final int END_TIME_ROW = START_TIME_ROW + 1;
     private static final int MAP_ROW = END_TIME_ROW + 1;
@@ -45,6 +46,9 @@ public class AlarmForm extends ObservableForm {
     private Grid grid = new Grid(SEND_ROW + 1, 2);
 
     //Form fields
+    private Label lblAlarmType = new Label(localizedConstants.alarmType());
+    private ListBox ddlAlarmType = new ListBox();
+    
     private Label lblName = new Label(localizedConstants.alarmName());
     private TextBox txtName = new TextBox();
 
@@ -58,9 +62,9 @@ public class AlarmForm extends ObservableForm {
     private Label lblEndTime = new Label(localizedConstants.endTime());
     private TimeBox txtEndTime = new TimeBox();
 
-    private Label lblRedZone = new Label(localizedConstants.redZoneMap());
-    private MapWidget redZoneMap = new MapWidget();
-
+    private Label lblRedZoneMap = new Label(localizedConstants.redZoneMap());
+    private MapWidget redZoneMap;
+    
     private Label lblPhoneNumber = new Label(localizedConstants.phoneNumber());
     private TextBox txtPhoneNumber = new TextBox();
 
@@ -89,21 +93,37 @@ public class AlarmForm extends ObservableForm {
         setUpAlarmForm();
     }
 
-    public AlarmForm(Alarm alarm){
+	public AlarmForm(Alarm alarm){
         super();
         this.alarm = alarm;
         setUpAlarmForm();
     }
 
     private void setUpAlarmForm() {
-        addItemsToGrid();
-        setFormValues();
-        setWidget(grid);
-        generateSeverityList();
+    	Maps.loadMapsApi("", "2", false, new Runnable() {
+	        public void run() {
+	        	setUpMap();
+	        	setFormValues();
+	            addItemsToGrid();
+	            setWidget(grid);
+	            generateSeverityList();
+	            generateAlarmTypeList(); 
+	        }
+	      });
     }
+    
+    private void setUpMap() {
+    	LatLng madridCentred = LatLng.newInstance(40.416667, -3.70355);
+    	int zoomPrettyClosed = 14;
+    	
+    	this.redZoneMap = new MapWidget();
+    	this.redZoneMap.setSize("400px", "300px");
+    	
+    	this.redZoneMap.setCenter(madridCentred, zoomPrettyClosed);
+    	this.redZoneMap.checkResize();
+	}
 
     private void setFormValues() {
-
         Alarm alarm = this.alarm;
 
         if (alarm == null) {
@@ -120,24 +140,12 @@ public class AlarmForm extends ObservableForm {
             alarm.sendEmailOnAlarm(true);
         }
 
-        setMapConfig();
         setAlarmValues(alarm);
-    }
-
-    private void setMapConfig() {
-        redZoneMap = new MapWidget();
-        redZoneMap.setCenter(LatLng.newInstance(40.416667, -3.70355), 14);
-        redZoneMap.setSize("100%", "570px");
-
-        redZoneMap.addControl(new LargeMapControl());
-
-        redZoneMap.checkResize();
     }
 
     private void setAlarmValues(Alarm alarm) {
         if (alarm != null) {
-            //ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
-            ddlSeverityLevel.setSelectedIndex(2);
+            ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
             txtName.setValue(alarm.getName());
             txtStartTime.setValue(alarm.getAlarmStartTime());
             txtEndTime.setValue(alarm.getAlarmEndTime());
@@ -151,6 +159,27 @@ public class AlarmForm extends ObservableForm {
 
 
     private void addItemsToGrid() {
+    	grid.setWidget(ALARM_TYPE_ROW, 0, lblAlarmType);
+    	ddlAlarmType.setWidth("400px");
+    	grid.setWidget(ALARM_TYPE_ROW, 1, ddlAlarmType);
+    	
+    	ddlAlarmType.addChangeHandler(new ChangeHandler() {
+    		@Override
+    		public void onChange(ChangeEvent event) {
+    			String selectedValue = ddlAlarmType.getValue(ddlAlarmType.getSelectedIndex());
+    			AlarmType type = AlarmType.getAlarmType(selectedValue);
+    			
+    			hideAllTypeParts();
+    			if (AlarmType.WAKE_UP == type) {
+    				setVisibleWakeUpParts(true);
+    			} else if (AlarmType.RED_ZONE == type) {
+    				setVisibleRedZoneParts(true);
+    			} else if (AlarmType.FELL_OFF == type) {
+    				//PENDING
+    			}
+    		}
+    	});
+    	
         grid.setWidget(SEVERITY_LEVEL_ROW, 0, lblSeverityLevel);
         ddlSeverityLevel.setWidth("400px");
         grid.setWidget(SEVERITY_LEVEL_ROW, 1, ddlSeverityLevel);
@@ -172,9 +201,6 @@ public class AlarmForm extends ObservableForm {
         txtName.setWidth("400px");
         grid.setWidget(ALARM_NAME_ROW, 1, txtName);
 
-        grid.setWidget(MAP_ROW, 0, lblRedZone);
-        grid.setWidget(MAP_ROW, 1, redZoneMap);
-
         grid.setWidget(START_TIME_ROW, 0, lblStartTime);
         txtStartTime.setWidth("400px");
         grid.setWidget(START_TIME_ROW, 1, txtStartTime);
@@ -182,6 +208,10 @@ public class AlarmForm extends ObservableForm {
         grid.setWidget(END_TIME_ROW, 0, lblEndTime);
         txtEndTime.setWidth("400px");
         grid.setWidget(END_TIME_ROW, 1, txtEndTime);
+        
+        grid.setWidget(MAP_ROW, 0, lblRedZoneMap);    
+        grid.setWidget(MAP_ROW, 1, redZoneMap);
+        setVisibleRedZoneParts(false);
 
         grid.setWidget(PHONE_NUMBER_ROW, 0, lblPhoneNumber);
         txtPhoneNumber.setWidth("400px");
@@ -226,13 +256,19 @@ public class AlarmForm extends ObservableForm {
         ddlSeverityLevel.addItem(localizedConstants.severe(), String.valueOf(AlarmSeverity.SEVERE));
         ddlSeverityLevel.addItem(localizedConstants.verySevere(), String.valueOf(AlarmSeverity.VERY_SEVERE));
     }
+    
+    private void generateAlarmTypeList() {
+    	ddlAlarmType.addItem(localizedConstants.wakeUp(), String.valueOf(AlarmType.WAKE_UP));
+    	ddlAlarmType.addItem(localizedConstants.redZone(), String.valueOf(AlarmType.RED_ZONE));
+    	ddlAlarmType.addItem(localizedConstants.fellOff(), String.valueOf(AlarmType.FELL_OFF));
+    }
 
     private void sendForm() {
-
         Alarm alarm = new Alarm();
 
         alarm.setName(txtName.getText());
         alarm.setAlarmSeverity(AlarmSeverity.getAlarmOf(ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex())));
+        alarm.setAlarmType(AlarmType.getAlarmType(ddlAlarmType.getValue(ddlAlarmType.getSelectedIndex())));
         alarm.setAlarmStartTime(txtStartTime.getValue());
         alarm.setAlarmEndTime(txtEndTime.getValue());
         alarm.setPhoneNumber(txtPhoneNumber.getValue());
@@ -251,7 +287,6 @@ public class AlarmForm extends ObservableForm {
 
                 @Override
                 public void onSuccess(Boolean result) {
-
                 }
             });
         }
@@ -279,4 +314,21 @@ public class AlarmForm extends ObservableForm {
             ((DialogBoxClose)d).hide();
         }
     }
+    
+    private void hideAllTypeParts() {
+    	setVisibleWakeUpParts(false);
+    	setVisibleRedZoneParts(false);
+	}
+
+	private void setVisibleWakeUpParts(boolean visible) {
+		lblStartTime.setVisible(visible);
+		txtStartTime.setVisible(visible);
+		lblEndTime.setVisible(visible);
+		txtEndTime.setVisible(visible);
+	}
+
+	private void setVisibleRedZoneParts(boolean visible) {
+		lblRedZoneMap.setVisible(visible);
+		redZoneMap.setVisible(visible);
+	}
 }
