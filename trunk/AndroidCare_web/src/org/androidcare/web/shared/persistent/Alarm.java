@@ -1,6 +1,7 @@
 package org.androidcare.web.shared.persistent;
 
 import org.androidcare.web.shared.AlarmSeverity;
+import org.androidcare.web.shared.AlarmType;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -22,6 +23,8 @@ public class Alarm implements Serializable {
     private String name;
     @Persistent
     private int alarmSeverity;
+    @Persistent
+    private int alarmType;
 
     @Persistent
     private boolean initiateCall = false;
@@ -61,6 +64,7 @@ public class Alarm implements Serializable {
         this.id = alarm.getId();
         this.name = alarm.getName();
         this.alarmSeverity = alarm.getAlarmSeverity().getId();
+        this.alarmType = alarm.getAlarmType().getId();
         this.initiateCall = alarm.getInitiateCall();
         this.sendSMS = alarm.getSendSMS();
         this.sendEmail = alarm.getSendEmail();
@@ -76,8 +80,9 @@ public class Alarm implements Serializable {
         this.owner = alarm.getOwner();
     }
 
-    public Alarm(String name, AlarmSeverity alarmSeverity, String phoneNumber, String emailAddress) {
+    public Alarm(String name, AlarmSeverity alarmSeverity, AlarmType alarmType, String phoneNumber, String emailAddress) {
         this.name = name;
+        this.alarmType = alarmType.getId();
         this.alarmSeverity = alarmSeverity.getId();
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
@@ -87,6 +92,10 @@ public class Alarm implements Serializable {
         this.name = name;
     }
 
+    public void setAlarmType (AlarmType alarmType) {
+    	this.alarmType = alarmType.getId();
+    }
+    
     public void setAlarmSeverity (AlarmSeverity alarmSeverity) {
         this.alarmSeverity = alarmSeverity.getId();
     }
@@ -146,7 +155,11 @@ public class Alarm implements Serializable {
     public AlarmSeverity getAlarmSeverity() {
         return AlarmSeverity.getAlarmOfId(this.alarmSeverity);
     }
-
+    
+    public AlarmType getAlarmType() {
+    	return AlarmType.getAlarmType(this.alarmType);
+    }
+    
     public boolean getInitiateCall() {
         return this.initiateCall;
     }
