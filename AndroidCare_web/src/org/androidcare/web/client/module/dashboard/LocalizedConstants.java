@@ -137,12 +137,16 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
 
     @DefaultStringValue("Alarm name")
     String alarmName();
+    @DefaultStringValue("Alarm type")
+    String alarmType();
     @DefaultStringValue("Severity level")
     String severityLevel();
     @DefaultStringValue("Start time")
     String startTime();
     @DefaultStringValue("End time")
     String endTime();
+    @DefaultStringValue("Red zone map")
+    String redZoneMap();
     @DefaultStringValue("Phone number")
     String phoneNumber();
     @DefaultStringValue("Email")
