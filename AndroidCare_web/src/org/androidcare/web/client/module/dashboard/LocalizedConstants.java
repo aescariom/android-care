@@ -135,6 +135,8 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
     @DefaultStringValue("Remove alarm")
     String removeAlarm();
 
+    @DefaultStringValue("Alarm type")
+    String alarmType();
     @DefaultStringValue("Alarm name")
     String alarmName();
     @DefaultStringValue("Alarm type")
@@ -160,6 +162,13 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
     @DefaultStringValue("Place")
     String place();
 
+    @DefaultStringValue("Wake up")
+    String wakeUp();
+    @DefaultStringValue("Red zone")
+    String redZone();
+    @DefaultStringValue("Fell off")
+    String fellOff();
+    
     @DefaultStringValue("Information")
     String info();
     @DefaultStringValue("Warning")
@@ -173,4 +182,5 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
 	 */
 	@DefaultStringValue("The range must be between 1 and 100")
 	String mustBeBetween1and100();
+	
 }

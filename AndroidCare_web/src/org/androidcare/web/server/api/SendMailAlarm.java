@@ -61,7 +61,7 @@ public class SendMailAlarm extends HttpServlet {
 
         try {
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("androidcare@androidcare.org", "AndroidCare"));
+            msg.setFrom(new InternetAddress("alarms.noreply@androidcare.org", "AndroidCare"));
             msg.addRecipient(Message.RecipientType.TO,
                     new InternetAddress(alarm.getEmailAddress(), alarm.getEmailAddress()));
             msg.setSubject("ANDROIDCARE: ALARMA " + alarm.getName() + " DISPARADA");
