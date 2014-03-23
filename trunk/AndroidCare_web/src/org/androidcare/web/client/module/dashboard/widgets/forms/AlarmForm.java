@@ -7,7 +7,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
+import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.event.MapClickHandler.MapClickEvent;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Overlay;
+import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
@@ -20,8 +24,11 @@ import org.androidcare.web.client.widgets.TimeBox;
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
 import org.androidcare.web.shared.persistent.Alarm;
+import org.androidcare.web.shared.persistent.Position;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AlarmForm extends ObservableForm {
 
@@ -80,6 +87,9 @@ public class AlarmForm extends ObservableForm {
     private Label lblSendEmail = new Label(localizedConstants.sendEmail());
     private CheckBox chkSendEmail = new CheckBox();
 
+    private List<LatLng> positions = new LinkedList();
+    private Polygon polygon;
+    
     private Button submit = new Button(localizedConstants.submit());
 
     private final AlarmServiceAsync alarmService = GWT.create(AlarmService.class);
@@ -121,6 +131,25 @@ public class AlarmForm extends ObservableForm {
     	
     	this.redZoneMap.setCenter(madridCentred, zoomPrettyClosed);
     	this.redZoneMap.checkResize();
+    	
+    	this.redZoneMap.addMapClickHandler(new MapClickHandler() {
+			@Override
+			public void onClick(MapClickEvent ev) {
+				double latitude = ev.getLatLng().getLatitude();
+				double longitude = ev.getLatLng().getLongitude();
+				
+				positions.add(LatLng.newInstance(latitude, longitude));
+				
+				if (polygon != null) {
+					redZoneMap.removeOverlay(polygon);
+				}
+				
+				LatLng[] lats = convertToArray(positions);
+				
+				polygon = new Polygon(lats);
+				redZoneMap.addOverlay(polygon);
+			}
+		});
 	}
 
     private void setFormValues() {
@@ -330,5 +359,10 @@ public class AlarmForm extends ObservableForm {
 	private void setVisibleRedZoneParts(boolean visible) {
 		lblRedZoneMap.setVisible(visible);
 		redZoneMap.setVisible(visible);
+	}
+	
+	private LatLng[] convertToArray(List<LatLng> list) {
+		LatLng[] lats = new LatLng[list.size()];
+		return list.toArray(lats);
 	}
 }
