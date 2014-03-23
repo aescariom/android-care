@@ -4,6 +4,9 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.google.gwt.maps.client.geom.LatLng;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -88,4 +91,5 @@ public class Position implements Serializable {
 	public void initializeServerDate(){
 		serverDate = new Date().getTime();
 	}
+	
 }
