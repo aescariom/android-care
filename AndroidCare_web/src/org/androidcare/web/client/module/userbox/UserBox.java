@@ -42,7 +42,7 @@ public class UserBox  implements EntryPoint {
 
 				@Override
 				public void onSuccess(LoggedUserMessage msg) {
-					Label lbl = new Label("Welcome " + msg.user);
+					Label lbl = new Label(msg.user);
 					flowpanel.add(lbl);
 					HTML link = new HTML("<a style='float:right;' href=\"" + msg.logoutUrl + GWT.getHostPageBaseURL() +  "\">Logout</a>");
 					flowpanel.add(link);
