@@ -5,6 +5,8 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.HasDirection.Direction;
+import com.google.gwt.i18n.shared.DirectionEstimator;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.event.MapClickHandler;
@@ -31,20 +33,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AlarmForm extends ObservableForm {
+	
+	private static final int TO_NEXT_LINE = 1;
+	private static final int WITH_BLANK_LINE = 2;
 
 	private static final int ALARM_TYPE_ROW = 0;
-    private static final int SEVERITY_LEVEL_ROW = ALARM_TYPE_ROW + 1;
-    private static final int ALARM_NAME_ROW = SEVERITY_LEVEL_ROW + 1;
-    private static final int START_TIME_ROW = ALARM_NAME_ROW + 1;
-    private static final int END_TIME_ROW = START_TIME_ROW + 1;
-    private static final int MAP_ROW = END_TIME_ROW + 1;
-    private static final int PHONE_NUMBER_ROW = MAP_ROW + 1;
-    private static final int EMAIL_ROW = PHONE_NUMBER_ROW + 1;
-    private static final int MAKE_CALL_ROW = EMAIL_ROW + 1;
-    private static final int SEND_SMS_ROW = MAKE_CALL_ROW + 1;
-    private static final int SEND_EMAIL_ROW = SEND_SMS_ROW + 1;
+	
+	private static final int ALARM_DATA_ROW = ALARM_TYPE_ROW + WITH_BLANK_LINE;
+    private static final int SEVERITY_LEVEL_ROW = ALARM_DATA_ROW + TO_NEXT_LINE;
+    private static final int ALARM_NAME_ROW = SEVERITY_LEVEL_ROW + TO_NEXT_LINE;
+    private static final int PHONE_NUMBER_ROW = ALARM_NAME_ROW + TO_NEXT_LINE;
+    private static final int EMAIL_ROW = PHONE_NUMBER_ROW + TO_NEXT_LINE;
+    private static final int MAKE_CALL_ROW = EMAIL_ROW + TO_NEXT_LINE;
+    private static final int SEND_SMS_ROW = MAKE_CALL_ROW + TO_NEXT_LINE;
+    private static final int SEND_EMAIL_ROW = SEND_SMS_ROW + TO_NEXT_LINE;
+    
+    private static final int ALARM_CONFIG_ROW = SEND_EMAIL_ROW + TO_NEXT_LINE;
+    private static final int START_TIME_ROW = ALARM_CONFIG_ROW + TO_NEXT_LINE;
+    private static final int END_TIME_ROW = START_TIME_ROW + TO_NEXT_LINE;
+    private static final int MAP_ROW = END_TIME_ROW + TO_NEXT_LINE;
 
-    private static final int SEND_ROW = SEND_EMAIL_ROW + 2;
+    private static final int SEND_ROW = MAP_ROW + TO_NEXT_LINE;
 
     //Localizer
     private LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
@@ -56,21 +65,14 @@ public class AlarmForm extends ObservableForm {
     private Label lblAlarmType = new Label(localizedConstants.alarmType());
     private ListBox ddlAlarmType = new ListBox();
     
+    private Anchor lblAlarmData = new Anchor(localizedConstants.alarmData(), "#");
+    
     private Label lblName = new Label(localizedConstants.alarmName());
     private TextBox txtName = new TextBox();
 
     private Label lblSeverityLevel = new Label(localizedConstants.severityLevel());
     private ListBox ddlSeverityLevel = new ListBox();
     private TextBox txtId = new TextBox();
-
-    private Label lblStartTime = new Label(localizedConstants.startTime());
-    private TimeBox txtStartTime = new TimeBox();
-
-    private Label lblEndTime = new Label(localizedConstants.endTime());
-    private TimeBox txtEndTime = new TimeBox();
-
-    private Label lblRedZoneMap = new Label(localizedConstants.redZoneMap());
-    private MapWidget redZoneMap;
     
     private Label lblPhoneNumber = new Label(localizedConstants.phoneNumber());
     private TextBox txtPhoneNumber = new TextBox();
@@ -87,6 +89,17 @@ public class AlarmForm extends ObservableForm {
     private Label lblSendEmail = new Label(localizedConstants.sendEmail());
     private CheckBox chkSendEmail = new CheckBox();
 
+    private Anchor lblAlarmConfig= new Anchor(localizedConstants.alarmConfig(), "#");
+    
+    private Label lblStartTime = new Label(localizedConstants.startTime());
+    private TimeBox txtStartTime = new TimeBox();
+
+    private Label lblEndTime = new Label(localizedConstants.endTime());
+    private TimeBox txtEndTime = new TimeBox();
+
+    private Label lblRedZoneMap = new Label(localizedConstants.redZoneMap());
+    private MapWidget redZoneMap;
+    
     private List<LatLng> positions = new LinkedList();
     private Polygon polygon;
     
@@ -188,28 +201,143 @@ public class AlarmForm extends ObservableForm {
 
 
     private void addItemsToGrid() {
-    	grid.setWidget(ALARM_TYPE_ROW, 0, lblAlarmType);
-    	ddlAlarmType.setWidth("400px");
-    	grid.setWidget(ALARM_TYPE_ROW, 1, ddlAlarmType);
+    	addAlarmType();
     	
-    	ddlAlarmType.addChangeHandler(new ChangeHandler() {
-    		@Override
-    		public void onChange(ChangeEvent event) {
-    			String selectedValue = ddlAlarmType.getValue(ddlAlarmType.getSelectedIndex());
-    			AlarmType type = AlarmType.getAlarmType(selectedValue);
-    			
-    			hideAllTypeParts();
-    			if (AlarmType.WAKE_UP == type) {
-    				setVisibleWakeUpParts(true);
-    			} else if (AlarmType.RED_ZONE == type) {
-    				setVisibleRedZoneParts(true);
-    			} else if (AlarmType.FELL_OFF == type) {
-    				//PENDING
-    			}
-    		}
-    	});
-    	
-        grid.setWidget(SEVERITY_LEVEL_ROW, 0, lblSeverityLevel);
+    	addAllAlarmDataRows();
+        addAlarmConfig();
+        
+        addSubmitButton();
+
+        txtId.setName("alarmId");
+        txtId.setVisible(false);
+    }
+
+	private void addAllAlarmDataRows() {
+		addAlarmDataShowHideRow();
+        addSeverityLevel();
+        addAlarmName();
+        addPhoneNumberRow();
+        addEmailDataRow();
+        addAlarmTriggersOption();
+	}
+
+	private void setVisibilityAlarmData(boolean visible) {
+		setSeverityLevelVisibility(visible);
+		setNameVisibility(visible);
+		setPhoneNumberVisibility(visible);
+		setEmailVisibility(visible);
+		setMakeCallVisibility(visible);
+		setSendSMSVisibility(visible);
+		setSendEmailVisibility(visible);
+	}
+	
+	private void setSendEmailVisibility(boolean visible) {
+		lblSendEmail.setVisible(visible);
+		chkSendEmail.setVisible(visible);
+	}
+
+	private void setSendSMSVisibility(boolean visible) {
+		lblSendSMS.setVisible(visible);
+		chkSendSMS.setVisible(visible);
+	}
+
+	private void setMakeCallVisibility(boolean visible) {
+		lblMakeCall.setVisible(visible);
+		chkMakeCall.setVisible(visible);
+	}
+
+	private void setEmailVisibility(boolean visible) {
+		lblEmail.setVisible(visible);
+		txtEmail.setVisible(visible);
+	}
+
+	private void setPhoneNumberVisibility(boolean visible) {
+		lblPhoneNumber.setVisible(visible);
+		txtPhoneNumber.setVisible(visible);
+	}
+
+	private void setNameVisibility(boolean visible) {
+		lblName.setVisible(visible);
+		txtName.setVisible(visible);
+	}
+
+	private void setSeverityLevelVisibility(boolean visible) {
+		lblSeverityLevel.setVisible(visible);
+		ddlSeverityLevel.setVisible(visible);
+	}
+
+	private void addAlarmConfig() {
+		addAlarmConfigShowHide();
+		addAlarmStartTime();
+        addAlarmEndTime();
+        addAlarmMapRow();
+	}
+
+	private void addAlarmConfigShowHide() {
+		grid.setWidget(ALARM_CONFIG_ROW, 0, lblAlarmConfig);
+        
+        lblAlarmConfig.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				setVisibilityAlarmConfig(!isAlarmConfigVisible());
+			}
+
+		});
+	}
+	
+	private boolean isAlarmConfigVisible() {
+		return lblStartTime.isVisible() || lblEndTime.isVisible() || lblRedZoneMap.isVisible();
+	}
+	
+	private void setVisibilityAlarmConfig(boolean visible) {
+		if (visible) {
+			showTheRightAlarmConfig();
+		} else {
+			hideAllTypeParts();
+		}
+	}
+
+	
+
+	private void addAlarmMapRow() {
+		grid.setWidget(MAP_ROW, 0, lblRedZoneMap);    
+        grid.setWidget(MAP_ROW, 1, redZoneMap);
+        setVisibleRedZoneParts(false);
+	}
+
+	private void addAlarmEndTime() {
+		grid.setWidget(END_TIME_ROW, 0, lblEndTime);
+        txtEndTime.setWidth("400px");
+        grid.setWidget(END_TIME_ROW, 1, txtEndTime);
+	}
+
+	private void addAlarmStartTime() {
+		grid.setWidget(START_TIME_ROW, 0, lblStartTime);
+        txtStartTime.setWidth("400px");
+        grid.setWidget(START_TIME_ROW, 1, txtStartTime);
+	}
+
+	private void addAlarmName() {
+		grid.setWidget(ALARM_NAME_ROW, 0, lblName);
+        txtName.setWidth("400px");
+        grid.setWidget(ALARM_NAME_ROW, 1, txtName);
+	}
+
+	private void addAlarmDataShowHideRow() {
+		grid.setWidget(ALARM_DATA_ROW, 0, lblAlarmData);
+        
+        lblAlarmData.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				setVisibilityAlarmData(!isAlarmDataVisible());
+			}
+		});
+	}
+
+	private void addSeverityLevel() {
+		grid.setWidget(SEVERITY_LEVEL_ROW, 0, lblSeverityLevel);
         ddlSeverityLevel.setWidth("400px");
         grid.setWidget(SEVERITY_LEVEL_ROW, 1, ddlSeverityLevel);
 
@@ -225,44 +353,31 @@ public class AlarmForm extends ObservableForm {
                 }
             }
         });
+	}
 
-        grid.setWidget(ALARM_NAME_ROW, 0, lblName);
-        txtName.setWidth("400px");
-        grid.setWidget(ALARM_NAME_ROW, 1, txtName);
+	private void addAlarmType() {
+		grid.setWidget(ALARM_TYPE_ROW, 0, lblAlarmType);
+    	ddlAlarmType.setWidth("400px");
+    	grid.setWidget(ALARM_TYPE_ROW, 1, ddlAlarmType);
+    	
+    	ddlAlarmType.addChangeHandler(new ChangeHandler() {
+    		@Override
+    		public void onChange(ChangeEvent event) {
+    			showTheRightAlarmConfig();
+    		}
 
-        grid.setWidget(START_TIME_ROW, 0, lblStartTime);
-        txtStartTime.setWidth("400px");
-        grid.setWidget(START_TIME_ROW, 1, txtStartTime);
+    	});
+	}
 
-        grid.setWidget(END_TIME_ROW, 0, lblEndTime);
-        txtEndTime.setWidth("400px");
-        grid.setWidget(END_TIME_ROW, 1, txtEndTime);
-        
-        grid.setWidget(MAP_ROW, 0, lblRedZoneMap);    
-        grid.setWidget(MAP_ROW, 1, redZoneMap);
-        setVisibleRedZoneParts(false);
-
-        grid.setWidget(PHONE_NUMBER_ROW, 0, lblPhoneNumber);
+	private void addPhoneNumberRow() {
+		grid.setWidget(PHONE_NUMBER_ROW, 0, lblPhoneNumber);
         txtPhoneNumber.setWidth("400px");
         txtPhoneNumber.setMaxLength(13);
         grid.setWidget(PHONE_NUMBER_ROW, 1, txtPhoneNumber);
+	}
 
-        grid.setWidget(EMAIL_ROW, 0, lblEmail);
-        txtEmail.setWidth("400px");
-        txtEmail.setMaxLength(140);
-        grid.setWidget(EMAIL_ROW, 1, txtEmail);
-
-        grid.setWidget(MAKE_CALL_ROW, 0, lblMakeCall);
-        grid.setWidget(MAKE_CALL_ROW, 1, chkMakeCall);
-
-        grid.setWidget(SEND_SMS_ROW, 0, lblSendSMS);
-        grid.setWidget(SEND_SMS_ROW, 1, chkSendSMS);
-
-        grid.setWidget(SEND_EMAIL_ROW, 0, lblSendEmail);
-        chkSendEmail.setValue(true);
-        grid.setWidget(SEND_EMAIL_ROW, 1, chkSendEmail);
-
-        submit.addClickHandler(new ClickHandler() {
+	private void addSubmitButton() {
+		submit.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -270,14 +385,39 @@ public class AlarmForm extends ObservableForm {
             }
 
         });
-
         submit.addStyleName("save");
 
         grid.setWidget(SEND_ROW, 0, submit);
+	}
 
-        txtId.setName("alarmId");
-        txtId.setVisible(false);
-    }
+	private void addEmailDataRow() {
+		grid.setWidget(EMAIL_ROW, 0, lblEmail);
+        txtEmail.setWidth("400px");
+        txtEmail.setMaxLength(140);
+        grid.setWidget(EMAIL_ROW, 1, txtEmail);
+	}
+
+	private void addAlarmTriggersOption() {
+		addMakeCallRow();
+        addSendSMSRow();
+        addSendEmailRow();
+	}
+
+	private void addMakeCallRow() {
+		grid.setWidget(MAKE_CALL_ROW, 0, lblMakeCall);
+        grid.setWidget(MAKE_CALL_ROW, 1, chkMakeCall);
+	}
+
+	private void addSendSMSRow() {
+		grid.setWidget(SEND_SMS_ROW, 0, lblSendSMS);
+        grid.setWidget(SEND_SMS_ROW, 1, chkSendSMS);
+	}
+
+	private void addSendEmailRow() {
+		grid.setWidget(SEND_EMAIL_ROW, 0, lblSendEmail);
+        chkSendEmail.setValue(true);
+        grid.setWidget(SEND_EMAIL_ROW, 1, chkSendEmail);
+	}
 
     private void generateSeverityList() {
         ddlSeverityLevel.addItem(localizedConstants.info(), String.valueOf(AlarmSeverity.INFO));
@@ -364,5 +504,27 @@ public class AlarmForm extends ObservableForm {
 	private LatLng[] convertToArray(List<LatLng> list) {
 		LatLng[] lats = new LatLng[list.size()];
 		return list.toArray(lats);
+	}
+
+	private boolean isAlarmDataVisible() {
+		return lblSeverityLevel.isVisible();
+	}
+
+	private void showTheRightAlarmConfig() {
+		String selectedValue = ddlAlarmType.getValue(ddlAlarmType.getSelectedIndex());
+		AlarmType type = AlarmType.getAlarmType(selectedValue);
+		
+		showAlarmConfigDependingType(type);
+	}
+	
+	private void showAlarmConfigDependingType(AlarmType type) {
+		hideAllTypeParts();
+		if (AlarmType.WAKE_UP == type) {
+			setVisibleWakeUpParts(true);
+		} else if (AlarmType.RED_ZONE == type) {
+			setVisibleRedZoneParts(true);
+		} else if (AlarmType.FELL_OFF == type) {
+			//PENDING
+		}
 	}
 }
