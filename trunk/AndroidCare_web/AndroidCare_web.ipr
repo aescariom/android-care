@@ -13,6 +13,9 @@
             <element id="library" level="project" name="AppEngine API" />
             <element id="file-copy" path="/Applications/PFC_SDKs/GWT/gwt-servlet.jar" />
             <element id="library" level="project" name="misc" />
+            <element id="file-copy" path="$PROJECT_DIR$/war/WEB-INF/lib/json.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/war/WEB-INF/lib/gwt-maps.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/war/WEB-INF/lib/adapter4appengine-1.0M2.jar" />
           </element>
         </element>
         <element id="gwt-compiler-output" facet="AndroidCare_web/gwt/GWT" />
@@ -38,9 +41,7 @@
       </profile>
     </annotationProcessing>
   </component>
-  <component name="CopyrightManager" default="">
-    <module2copyright />
-  </component>
+  <component name="CopyrightManager" default="" />
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>

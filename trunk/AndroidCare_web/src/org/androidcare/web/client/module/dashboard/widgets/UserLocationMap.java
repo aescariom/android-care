@@ -14,16 +14,17 @@ import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.geom.Point;
 import com.google.gwt.maps.client.geom.Size;
-import com.google.gwt.maps.client.overlay.Icon;
-import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.maps.client.overlay.Overlay;
+import com.google.gwt.maps.client.overlay.*;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import org.androidcare.web.client.module.dashboard.LocalizedConstants;
+import org.androidcare.web.client.module.dashboard.rpc.AlarmService;
+import org.androidcare.web.client.module.dashboard.rpc.AlarmServiceAsync;
 import org.androidcare.web.client.module.dashboard.rpc.PositionService;
 import org.androidcare.web.client.module.dashboard.rpc.PositionServiceAsync;
+import org.androidcare.web.shared.AlarmType;
+import org.androidcare.web.shared.persistent.Alarm;
 import org.androidcare.web.shared.persistent.Position;
 
 import java.util.ArrayList;
@@ -126,9 +127,47 @@ public class UserLocationMap extends FlowPanel {
 		mapWidget.checkResize();
 		
 	    centerMap();
+        loadRedZones();
 	}
-	
-	protected void showWindow(LatLng point, Date date) {
+
+    private void loadRedZones() {
+        AlarmServiceAsync alarmService = GWT.create(AlarmService.class);
+        alarmService.getActiveAlarms(new AsyncCallback<List<Alarm>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error");
+                caught.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(List<Alarm> result) {
+                drawRedZones(result);
+            }
+
+        });
+    }
+
+    private void drawRedZones(List<Alarm> alarms) {
+        if (alarms != null) {
+            for (Alarm alarm : alarms) {
+                if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
+                    LatLng[] lats = convertToLatLng(alarm.getPositions());
+                    mapWidget.addOverlay(new Polygon(lats));
+                }
+            }
+        }
+    }
+
+    private LatLng[] convertToLatLng(org.androidcare.web.shared.persistent.Point[] positions) {
+        LatLng[] lats = new LatLng[positions.length];
+        for (int i = 0; i < positions.length; i++) {
+            lats[i] = positions[i].toLatLng();
+        }
+        return lats;
+
+    }
+
+    protected void showWindow(LatLng point, Date date) {
 		mapWidget.getInfoWindow().open(point,
 		        new InfoWindowContent(
         		LocalizedConstants.latitude() + ": " + round(point.getLatitude()) + 

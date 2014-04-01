@@ -10,16 +10,6 @@
           <root url="file://$MODULE_DIR$/war" relative="/" />
         </webroots>
       </configuration>
-      <facet type="google-app-engine" name="Google App Engine">
-        <configuration>
-          <sdk-home-path>/Applications/PFC_SDKs/AppEngine</sdk-home-path>
-          <run-enhancer-on-make>true</run-enhancer-on-make>
-          <files-to-enhance>
-            <file path="$MODULE_DIR$/src" />
-          </files-to-enhance>
-          <persistence-api>JDO3</persistence-api>
-        </configuration>
-      </facet>
     </facet>
     <facet type="gwt" name="GWT">
       <configuration>
@@ -37,6 +27,16 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/org/androidcare/web/shared" relative="/WEB-INF" />
         </webroots>
+      </configuration>
+    </facet>
+    <facet type="google-app-engine" name="Google App Engine">
+      <configuration>
+        <sdk-home-path>/Applications/PFC_SDKs/AppEngine</sdk-home-path>
+        <run-enhancer-on-make>true</run-enhancer-on-make>
+        <files-to-enhance>
+          <file path="$MODULE_DIR$/src" />
+        </files-to-enhance>
+        <persistence-api>JDO3</persistence-api>
       </configuration>
     </facet>
   </component>

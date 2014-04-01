@@ -26,6 +26,7 @@ import org.androidcare.web.client.widgets.TimeBox;
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
 import org.androidcare.web.shared.persistent.Alarm;
+import org.androidcare.web.shared.persistent.Point;
 import org.androidcare.web.shared.persistent.Position;
 
 import java.util.Date;
@@ -100,7 +101,7 @@ public class AlarmForm extends ObservableForm {
     private Label lblRedZoneMap = new Label(localizedConstants.redZoneMap());
     private MapWidget redZoneMap;
     
-    private List<LatLng> positions = new LinkedList();
+    private List<Point> positions = new LinkedList();
     private Polygon polygon;
     
     private Button submit = new Button(localizedConstants.submit());
@@ -151,15 +152,15 @@ public class AlarmForm extends ObservableForm {
 				double latitude = ev.getLatLng().getLatitude();
 				double longitude = ev.getLatLng().getLongitude();
 				
-				positions.add(LatLng.newInstance(latitude, longitude));
+				positions.add(new Point(latitude, longitude));
 				
 				if (polygon != null) {
 					redZoneMap.removeOverlay(polygon);
 				}
 				
 				LatLng[] lats = convertToArray(positions);
-				
-				polygon = new Polygon(lats);
+
+                Polygon polygon = new Polygon(lats);
 				redZoneMap.addOverlay(polygon);
 			}
 		});
@@ -435,11 +436,15 @@ public class AlarmForm extends ObservableForm {
     private void sendForm() {
         Alarm alarm = new Alarm();
 
+        Point [] points = new Point[positions.size()];
+
         alarm.setName(txtName.getText());
+
         alarm.setAlarmSeverity(AlarmSeverity.getAlarmOf(ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex())));
         alarm.setAlarmType(AlarmType.getAlarmType(ddlAlarmType.getValue(ddlAlarmType.getSelectedIndex())));
         alarm.setAlarmStartTime(txtStartTime.getValue());
         alarm.setAlarmEndTime(txtEndTime.getValue());
+        alarm.setPositions(positions.toArray(points));
         alarm.setPhoneNumber(txtPhoneNumber.getValue());
         alarm.setEmailAddress(txtEmail.getValue());
         alarm.initiateCallOnAlarm(chkMakeCall.getValue());
@@ -501,9 +506,14 @@ public class AlarmForm extends ObservableForm {
 		redZoneMap.setVisible(visible);
 	}
 	
-	private LatLng[] convertToArray(List<LatLng> list) {
+	private LatLng[] convertToArray(List<Point> list) {
 		LatLng[] lats = new LatLng[list.size()];
-		return list.toArray(lats);
+        int i = 0;
+        for (Point point : list) {
+            lats[i] = point.toLatLng();
+            i++;
+        }
+		return lats;
 	}
 
 	private boolean isAlarmDataVisible() {
