@@ -56,6 +56,9 @@ public class Alarm implements Serializable {
     private double longitude;
 
     @Persistent
+    private Point[] positions;
+
+    @Persistent
     private String owner;
 
     public Alarm(){}
@@ -106,6 +109,10 @@ public class Alarm implements Serializable {
 
     public void setAlarmEndTime (Date alarmEndTime) {
         this.alarmEndTime = alarmEndTime.getTime();
+    }
+
+    public void setPositions (Point[] positions) {
+        this.positions = positions;
     }
 
     public void setPhoneNumber (String phoneNumber) {
@@ -190,6 +197,10 @@ public class Alarm implements Serializable {
 
     public Date getAlarmEndTime() {
         return new Date(this.alarmEndTime);
+    }
+
+    public Point[] getPositions() {
+        return this.positions;
     }
 
     public boolean getFireOnlyAtHome() {
