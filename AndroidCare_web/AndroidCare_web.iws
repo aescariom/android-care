@@ -7,16 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="06e2991e-a85f-4d8b-a993-3be177675ef2" name="Default" comment="Modificadas las alarmas">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projectFilesBackup" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/androidcare/web/shared/AlarmType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projectFilesBackup/AndroidCare_web.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidCare_web.iml" afterPath="$PROJECT_DIR$/AndroidCare_web.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidCare_web.ipr" afterPath="$PROJECT_DIR$/AndroidCare_web.ipr" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Point.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/GeoPoint.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidCare_web.iws" afterPath="$PROJECT_DIR$/AndroidCare_web.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java" afterPath="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java" />
     </list>
     <ignored path="AndroidCare_web.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -113,8 +105,8 @@
       <file leaf-file-name="AlarmForm.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4489" max-vertical-offset="7095">
-              <caret line="388" column="38" selection-start-line="388" selection-start-column="36" selection-end-line="388" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5730" max-vertical-offset="8205">
+              <caret line="382" column="38" selection-start-line="382" selection-start-column="36" selection-end-line="382" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -123,47 +115,29 @@
       <file leaf-file-name="Alarm.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1467" max-vertical-offset="2715">
-              <caret line="114" column="40" selection-start-line="114" selection-start-column="35" selection-end-line="114" selection-end-column="35" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3207#3208#0" expanded="true" />
-                <element signature="e#3265#3266#0" expanded="true" />
-                <element signature="e#3317#3318#0" expanded="true" />
-                <element signature="e#3359#3360#0" expanded="true" />
-                <element signature="e#5282#5283#0" expanded="true" />
-                <element signature="e#5319#5320#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="1850" max-vertical-offset="2445">
+              <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Point.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Point.java">
+      <file leaf-file-name="GeoPoint.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/GeoPoint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="795">
-              <caret line="47" column="55" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#820#821#0" expanded="true" />
-                <element signature="e#856#857#0" expanded="true" />
-                <element signature="e#892#893#0" expanded="true" />
-                <element signature="e#929#930#0" expanded="true" />
-                <element signature="e#961#962#0" expanded="true" />
-                <element signature="e#1023#1024#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.8487395" vertical-offset="35" max-vertical-offset="630">
+              <caret line="47" column="33" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserLocationMap.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="UserLocationMap.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.49347568" vertical-offset="2704" max-vertical-offset="3855">
-              <caret line="219" column="72" selection-start-line="219" selection-start-column="12" selection-end-line="219" selection-end-column="12" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="2394" max-vertical-offset="3570">
+              <caret line="197" column="36" selection-start-line="197" selection-start-column="9" selection-end-line="197" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -194,9 +168,10 @@
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/LocalizedConstants_es.properties" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/AlarmType.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java" />
-        <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Point.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java" />
         <option value="$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Point.java" />
+        <option value="$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/GeoPoint.java" />
       </list>
     </option>
   </component>
@@ -445,8 +420,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -832,12 +807,13 @@
       <updated>1382885812884</updated>
       <workItem from="1395920660412" duration="259000" />
       <workItem from="1396370059973" duration="776000" />
-      <workItem from="1396373189180" duration="3371000" />
+      <workItem from="1396373189180" duration="4054000" />
+      <workItem from="1396889025206" duration="310000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4406000" />
+    <option name="totallyTimeSpent" value="5399000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -877,7 +853,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24602203" sideWeight="0.3006608" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2847302" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2847302" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16034272" sideWeight="0.31387666" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277311" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13157895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -947,15 +923,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="3420">
           <caret line="3" column="43" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3207#3208#0" expanded="true" />
-            <element signature="e#3265#3266#0" expanded="true" />
-            <element signature="e#3317#3318#0" expanded="true" />
-            <element signature="e#3359#3360#0" expanded="true" />
-            <element signature="e#5282#5283#0" expanded="true" />
-            <element signature="e#5319#5320#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -971,7 +939,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="627" max-vertical-offset="1470">
           <caret line="84" column="17" selection-start-line="84" selection-start-column="16" selection-end-line="84" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -979,9 +946,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3495">
           <caret line="67" column="23" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -997,15 +962,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="2520">
           <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3207#3208#0" expanded="true" />
-            <element signature="e#3265#3266#0" expanded="true" />
-            <element signature="e#3317#3318#0" expanded="true" />
-            <element signature="e#3359#3360#0" expanded="true" />
-            <element signature="e#5282#5283#0" expanded="true" />
-            <element signature="e#5319#5320#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1013,9 +970,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1005" max-vertical-offset="3495">
           <caret line="67" column="23" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1031,9 +986,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1005" max-vertical-offset="3495">
           <caret line="67" column="23" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1119,7 +1072,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="627" max-vertical-offset="1470">
           <caret line="84" column="17" selection-start-line="84" selection-start-column="16" selection-end-line="84" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1135,7 +1087,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08896797" vertical-offset="0" max-vertical-offset="843">
           <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1151,57 +1102,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1185">
           <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="25" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5730" max-vertical-offset="8205">
+          <caret line="382" column="38" selection-start-line="382" selection-start-column="36" selection-end-line="382" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2394" max-vertical-offset="3570">
+          <caret line="197" column="36" selection-start-line="197" selection-start-column="9" selection-end-line="197" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Alarm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1467" max-vertical-offset="2715">
-          <caret line="114" column="40" selection-start-line="114" selection-start-column="35" selection-end-line="114" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3207#3208#0" expanded="true" />
-            <element signature="e#3265#3266#0" expanded="true" />
-            <element signature="e#3317#3318#0" expanded="true" />
-            <element signature="e#3359#3360#0" expanded="true" />
-            <element signature="e#5282#5283#0" expanded="true" />
-            <element signature="e#5319#5320#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/forms/AlarmForm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4489" max-vertical-offset="7095">
-          <caret line="388" column="38" selection-start-line="388" selection-start-column="36" selection-end-line="388" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1850" max-vertical-offset="2445">
+          <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/Point.java">
+    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/shared/persistent/GeoPoint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="795">
-          <caret line="47" column="55" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#820#821#0" expanded="true" />
-            <element signature="e#856#857#0" expanded="true" />
-            <element signature="e#892#893#0" expanded="true" />
-            <element signature="e#929#930#0" expanded="true" />
-            <element signature="e#961#962#0" expanded="true" />
-            <element signature="e#1023#1024#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/androidcare/web/client/module/dashboard/widgets/UserLocationMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49347568" vertical-offset="2704" max-vertical-offset="3855">
-          <caret line="219" column="72" selection-start-line="219" selection-start-column="12" selection-end-line="219" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.8487395" vertical-offset="35" max-vertical-offset="630">
+          <caret line="47" column="33" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
