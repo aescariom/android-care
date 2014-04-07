@@ -22,5 +22,5 @@
     <datastore-index kind="Alarm" ancestor="false" source="auto">
         <property name="owner" direction="asc"/>
     </datastore-index>
-
+    
 </datastore-indexes>
