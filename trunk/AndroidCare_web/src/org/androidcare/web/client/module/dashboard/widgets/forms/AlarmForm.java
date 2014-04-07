@@ -5,14 +5,10 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.HasDirection.Direction;
-import com.google.gwt.i18n.shared.DirectionEstimator;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.event.MapClickHandler;
-import com.google.gwt.maps.client.event.MapClickHandler.MapClickEvent;
 import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -26,9 +22,7 @@ import org.androidcare.web.client.widgets.TimeBox;
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
 import org.androidcare.web.shared.persistent.Alarm;
-import org.androidcare.web.shared.persistent.Point;
-import org.androidcare.web.shared.persistent.Position;
-
+import org.androidcare.web.shared.persistent.GeoPoint;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -101,8 +95,8 @@ public class AlarmForm extends ObservableForm {
     private Label lblRedZoneMap = new Label(localizedConstants.redZoneMap());
     private MapWidget redZoneMap;
     
-    private List<Point> positions = new LinkedList();
-    private Polygon polygon;
+    private List<GeoPoint> positions = new LinkedList<GeoPoint>();
+    private Polygon polygon = null;
     
     private Button submit = new Button(localizedConstants.submit());
 
@@ -152,7 +146,7 @@ public class AlarmForm extends ObservableForm {
 				double latitude = ev.getLatLng().getLatitude();
 				double longitude = ev.getLatLng().getLongitude();
 				
-				positions.add(new Point(latitude, longitude));
+				positions.add(new GeoPoint(latitude, longitude));
 				
 				if (polygon != null) {
 					redZoneMap.removeOverlay(polygon);
@@ -160,7 +154,7 @@ public class AlarmForm extends ObservableForm {
 				
 				LatLng[] lats = convertToArray(positions);
 
-                Polygon polygon = new Polygon(lats);
+                polygon = new Polygon(lats);
 				redZoneMap.addOverlay(polygon);
 			}
 		});
@@ -436,15 +430,13 @@ public class AlarmForm extends ObservableForm {
     private void sendForm() {
         Alarm alarm = new Alarm();
 
-        Point [] points = new Point[positions.size()];
-
         alarm.setName(txtName.getText());
 
         alarm.setAlarmSeverity(AlarmSeverity.getAlarmOf(ddlSeverityLevel.getValue(ddlSeverityLevel.getSelectedIndex())));
         alarm.setAlarmType(AlarmType.getAlarmType(ddlAlarmType.getValue(ddlAlarmType.getSelectedIndex())));
         alarm.setAlarmStartTime(txtStartTime.getValue());
         alarm.setAlarmEndTime(txtEndTime.getValue());
-        alarm.setPositions(positions.toArray(points));
+        alarm.setPositions(loadAlarmInto(positions, alarm));
         alarm.setPhoneNumber(txtPhoneNumber.getValue());
         alarm.setEmailAddress(txtEmail.getValue());
         alarm.initiateCallOnAlarm(chkMakeCall.getValue());
@@ -478,7 +470,16 @@ public class AlarmForm extends ObservableForm {
         });
     }
 
-    private void closeForm() {
+    private List<GeoPoint> loadAlarmInto(List<GeoPoint> positions, Alarm alarm) {
+    	List<GeoPoint> points = new LinkedList<GeoPoint>();
+		for (GeoPoint point: positions) {
+			point.setAlarm(alarm);
+			points.add(point);
+		}
+		return points;
+	}
+
+	private void closeForm() {
         Object d = (Object)getParent().getParent();
         submit.setEnabled(true);
 
@@ -506,10 +507,10 @@ public class AlarmForm extends ObservableForm {
 		redZoneMap.setVisible(visible);
 	}
 	
-	private LatLng[] convertToArray(List<Point> list) {
+	private LatLng[] convertToArray(List<GeoPoint> list) {
 		LatLng[] lats = new LatLng[list.size()];
         int i = 0;
-        for (Point point : list) {
+        for (GeoPoint point : list) {
             lats[i] = point.toLatLng();
             i++;
         }

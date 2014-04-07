@@ -2,22 +2,17 @@ package org.androidcare.web.shared.persistent;
 
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
-@PersistenceCapable
+@PersistenceCapable(detachable = "true")
 public class Alarm implements Serializable {
 
     private static final long serialVersionUID = 750596504539903183L;
-
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Long id;
 
     @Persistent
     private String name;
@@ -55,8 +50,8 @@ public class Alarm implements Serializable {
     @Persistent
     private double longitude;
 
-    @Persistent
-    private Point[] positions;
+    @Persistent(mappedBy = "alarm")
+    private List<GeoPoint> positions = new LinkedList();
 
     @Persistent
     private String owner;
@@ -64,18 +59,22 @@ public class Alarm implements Serializable {
     public Alarm(){}
 
     public Alarm(Alarm alarm) {
-        this.id = alarm.getId();
         this.name = alarm.getName();
         this.alarmSeverity = alarm.getAlarmSeverity().getId();
         this.alarmType = alarm.getAlarmType().getId();
+        
         this.initiateCall = alarm.getInitiateCall();
         this.sendSMS = alarm.getSendSMS();
         this.sendEmail = alarm.getSendEmail();
         this.logInServer = alarm.getLogInServer();
+        
         this.phoneNumber = alarm.getPhoneNumber();
         this.emailAddress = alarm.getEmailAddress();
+        
         this.alarmStartTime = alarm.getAlarmStartTime().getTime();
         this.alarmEndTime = alarm.getAlarmEndTime().getTime();
+        this.positions = alarm.getPositions();
+        
         this.onlyFireAtHome = alarm.getFireOnlyAtHome();
         this.onlyFireAtLocation = alarm.getFireAtLocation();
         this.latitude = alarm.getLatitude();
@@ -111,7 +110,7 @@ public class Alarm implements Serializable {
         this.alarmEndTime = alarmEndTime.getTime();
     }
 
-    public void setPositions (Point[] positions) {
+    public void setPositions (List<GeoPoint> positions) {
         this.positions = positions;
     }
 
@@ -149,10 +148,6 @@ public class Alarm implements Serializable {
         this.onlyFireAtLocation = true;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public long getId() {
-        return this.id;
     }
 
     public String getName() {
@@ -199,7 +194,7 @@ public class Alarm implements Serializable {
         return new Date(this.alarmEndTime);
     }
 
-    public Point[] getPositions() {
+    public List<GeoPoint> getPositions() {
         return this.positions;
     }
 
@@ -221,10 +216,6 @@ public class Alarm implements Serializable {
 
     public String getOwner() {
         return owner;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setOwner(String owner) {

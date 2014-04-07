@@ -25,6 +25,7 @@ import org.androidcare.web.client.module.dashboard.rpc.PositionService;
 import org.androidcare.web.client.module.dashboard.rpc.PositionServiceAsync;
 import org.androidcare.web.shared.AlarmType;
 import org.androidcare.web.shared.persistent.Alarm;
+import org.androidcare.web.shared.persistent.GeoPoint;
 import org.androidcare.web.shared.persistent.Position;
 
 import java.util.ArrayList;
@@ -158,10 +159,10 @@ public class UserLocationMap extends FlowPanel {
         }
     }
 
-    private LatLng[] convertToLatLng(org.androidcare.web.shared.persistent.Point[] positions) {
-        LatLng[] lats = new LatLng[positions.length];
-        for (int i = 0; i < positions.length; i++) {
-            lats[i] = positions[i].toLatLng();
+    private LatLng[] convertToLatLng(List<GeoPoint> positions) {
+        LatLng[] lats = new LatLng[positions.size()];
+        for (int i = 0; i < positions.size(); i++) {
+            lats[i] = positions.get(i).toLatLng();
         }
         return lats;
 
