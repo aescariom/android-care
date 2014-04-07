@@ -7,7 +7,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import java.io.Serializable;
 
-public class Point implements Serializable {
+public class GeoPoint implements Serializable {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -18,16 +18,16 @@ public class Point implements Serializable {
     @Persistent
     private Double longitude;
 
-    public Point() {
+    public GeoPoint() {
 
     }
 
-    public Point(double latitude, double longitude) {
+    public GeoPoint(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public Point (Point point) {
+    public GeoPoint(GeoPoint point) {
         this.latitude = point.getLatitude();
         this.longitude = point.getLongitude();
     }
