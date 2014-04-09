@@ -19,11 +19,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import org.androidcare.web.client.module.dashboard.LocalizedConstants;
-import org.androidcare.web.client.module.dashboard.rpc.AlarmService;
-import org.androidcare.web.client.module.dashboard.rpc.AlarmServiceAsync;
-import org.androidcare.web.client.module.dashboard.rpc.PositionService;
-import org.androidcare.web.client.module.dashboard.rpc.PositionServiceAsync;
-import org.androidcare.web.shared.AlarmType;
+import org.androidcare.web.client.module.dashboard.rpc.*;
 import org.androidcare.web.shared.persistent.Alarm;
 import org.androidcare.web.shared.persistent.GeoPoint;
 import org.androidcare.web.shared.persistent.Position;
@@ -36,7 +32,8 @@ public class UserLocationMap extends FlowPanel {
 	
 	private LocalizedConstants LocalizedConstants = GWT.create(LocalizedConstants.class);
 
-	private final PositionServiceAsync positionService = GWT.create(PositionService.class);
+    private final PositionServiceAsync positionService = GWT.create(PositionService.class);
+    private final AlarmServiceAsync alarmService = GWT.create(AlarmService.class);
 
 	private final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("HH:mm:ss dd/MM/yyyy");
 	
@@ -132,7 +129,7 @@ public class UserLocationMap extends FlowPanel {
 	}
 
     private void loadRedZones() {
-        AlarmServiceAsync alarmService = GWT.create(AlarmService.class);
+
         alarmService.getActiveAlarms(new AsyncCallback<List<Alarm>>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -142,21 +139,14 @@ public class UserLocationMap extends FlowPanel {
 
             @Override
             public void onSuccess(List<Alarm> result) {
-                drawRedZones(result);
+                for (Alarm alarm : result) {
+                    List<GeoPoint> positions = alarm.getPositions();
+                    LatLng[] points = convertToLatLng(positions);
+                    mapWidget.addOverlay(new Polygon(points));
+                }
             }
 
         });
-    }
-
-    private void drawRedZones(List<Alarm> alarms) {
-        if (alarms != null) {
-            for (Alarm alarm : alarms) {
-                if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
-                    LatLng[] lats = convertToLatLng(alarm.getPositions());
-                    mapWidget.addOverlay(new Polygon(lats));
-                }
-            }
-        }
     }
 
     private LatLng[] convertToLatLng(List<GeoPoint> positions) {
