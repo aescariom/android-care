@@ -293,8 +293,6 @@ public class AlarmForm extends ObservableForm {
 		}
 	}
 
-	
-
 	private void addAlarmMapRow() {
 		grid.setWidget(MAP_ROW, 0, lblRedZoneMap);    
         grid.setWidget(MAP_ROW, 1, redZoneMap);
@@ -436,7 +434,7 @@ public class AlarmForm extends ObservableForm {
         alarm.setAlarmType(AlarmType.getAlarmType(ddlAlarmType.getValue(ddlAlarmType.getSelectedIndex())));
         alarm.setAlarmStartTime(txtStartTime.getValue());
         alarm.setAlarmEndTime(txtEndTime.getValue());
-        alarm.setPositions(loadAlarmInto(positions, alarm));
+        alarm.setPositions(positions);
         alarm.setPhoneNumber(txtPhoneNumber.getValue());
         alarm.setEmailAddress(txtEmail.getValue());
         alarm.initiateCallOnAlarm(chkMakeCall.getValue());
@@ -469,15 +467,6 @@ public class AlarmForm extends ObservableForm {
             }
         });
     }
-
-    private List<GeoPoint> loadAlarmInto(List<GeoPoint> positions, Alarm alarm) {
-    	List<GeoPoint> points = new LinkedList<GeoPoint>();
-		for (GeoPoint point: positions) {
-			point.setAlarm(alarm);
-			points.add(point);
-		}
-		return points;
-	}
 
 	private void closeForm() {
         Object d = (Object)getParent().getParent();
