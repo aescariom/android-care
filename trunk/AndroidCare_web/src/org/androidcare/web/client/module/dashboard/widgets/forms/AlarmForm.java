@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.event.PolygonClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.user.client.Window;
@@ -30,11 +31,11 @@ import java.util.List;
 public class AlarmForm extends ObservableForm {
 	
 	private static final int TO_NEXT_LINE = 1;
-	private static final int WITH_BLANK_LINE = 2;
+	private static final int PREPEND_BLANK_LINE = 2;
 
 	private static final int ALARM_TYPE_ROW = 0;
 	
-	private static final int ALARM_DATA_ROW = ALARM_TYPE_ROW + WITH_BLANK_LINE;
+	private static final int ALARM_DATA_ROW = ALARM_TYPE_ROW + PREPEND_BLANK_LINE;
     private static final int SEVERITY_LEVEL_ROW = ALARM_DATA_ROW + TO_NEXT_LINE;
     private static final int ALARM_NAME_ROW = SEVERITY_LEVEL_ROW + TO_NEXT_LINE;
     private static final int PHONE_NUMBER_ROW = ALARM_NAME_ROW + TO_NEXT_LINE;
@@ -126,6 +127,7 @@ public class AlarmForm extends ObservableForm {
 	            setWidget(grid);
 	            generateSeverityList();
 	            generateAlarmTypeList(); 
+	            drawPolygon();
 	        }
 	      });
     }
@@ -152,10 +154,7 @@ public class AlarmForm extends ObservableForm {
 					redZoneMap.removeOverlay(polygon);
 				}
 				
-				LatLng[] lats = convertToArray(positions);
-
-                polygon = new Polygon(lats);
-				redZoneMap.addOverlay(polygon);
+				drawPolygon();
 			}
 		});
 	}
@@ -171,6 +170,7 @@ public class AlarmForm extends ObservableForm {
             alarm.setAlarmStartTime(new Date());
             alarm.setPhoneNumber("");
             alarm.setEmailAddress("");
+            alarm.setPositions(new LinkedList());
 
             alarm.initiateCallOnAlarm(false);
             alarm.sendSMSOnAlarm(false);
@@ -183,9 +183,12 @@ public class AlarmForm extends ObservableForm {
     private void setAlarmValues(Alarm alarm) {
         if (alarm != null) {
             ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
+        	ddlAlarmType.setSelectedIndex(alarm.getAlarmType().getId());
             txtName.setValue(alarm.getName());
             txtStartTime.setValue(alarm.getAlarmStartTime());
             txtEndTime.setValue(alarm.getAlarmEndTime());
+            this.positions = alarm.getPositions();
+            drawPolygon();
             txtPhoneNumber.setValue(alarm.getPhoneNumber());
             txtEmail.setValue(alarm.getEmailAddress());
             chkMakeCall.setValue(alarm.getInitiateCall());
@@ -526,5 +529,20 @@ public class AlarmForm extends ObservableForm {
 		} else if (AlarmType.FELL_OFF == type) {
 			//PENDING
 		}
+	}
+
+	private void drawPolygon() {
+		LatLng[] lats = convertToArray(positions);
+
+		polygon = new Polygon(lats);
+		polygon.addPolygonClickHandler(new PolygonClickHandler() {
+			@Override
+			public void onClick(PolygonClickEvent event) {
+				positions = new LinkedList();
+				redZoneMap.removeOverlay(polygon);
+			}
+		});
+		
+		redZoneMap.addOverlay(polygon);
 	}
 }
