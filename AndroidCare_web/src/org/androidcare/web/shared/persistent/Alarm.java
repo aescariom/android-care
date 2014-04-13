@@ -3,6 +3,8 @@ package org.androidcare.web.shared.persistent;
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
 
+import com.google.gwt.user.client.Window;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -12,7 +14,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-@PersistenceCapable(detachable = "true")
+@PersistenceCapable
 public class Alarm implements Serializable {
 
     private static final long serialVersionUID = 750596504539903183L;
@@ -65,6 +67,8 @@ public class Alarm implements Serializable {
     public Alarm(){}
 
     public Alarm(Alarm alarm) {
+    	this.id = alarm.getId();
+    	
         this.name = alarm.getName();
         this.alarmSeverity = alarm.getAlarmSeverity().getId();
         this.alarmType = alarm.getAlarmType().getId();
@@ -79,7 +83,7 @@ public class Alarm implements Serializable {
         
         this.alarmStartTime = alarm.getAlarmStartTime().getTime();
         this.alarmEndTime = alarm.getAlarmEndTime().getTime();
-        setPositions(alarm.getPositions());
+        this.positions = geoPoints2StringConverter(alarm.getPositions());
 
         this.onlyFireAtHome = alarm.getFireOnlyAtHome();
         this.onlyFireAtLocation = alarm.getFireAtLocation();
@@ -141,12 +145,22 @@ public class Alarm implements Serializable {
     }
 
     public void setPositions(List<GeoPoint> points) {
-        this.positions = new LinkedList();
-        for (GeoPoint point : points) {
-            this.positions.add(point.toString());
-        }
+        this.positions = geoPoints2StringConverter(points);
     }
 
+    public List<String> geoPoints2StringConverter(List<GeoPoint> points) {
+    	if (points == null) {
+    		return new LinkedList();
+    	}
+    	
+    	List<String> positions = new LinkedList();
+        for (GeoPoint point : points) {
+        	String stringedPoint = point.toString(); 
+            positions.add(stringedPoint);
+        }
+        return positions;
+    }
+    
     public void onlyFireAtHome() {
         this.onlyFireAtLocation = false;
         this.onlyFireAtHome = true;
@@ -206,7 +220,7 @@ public class Alarm implements Serializable {
     public List<GeoPoint> getPositions() {
         List<GeoPoint> points = new LinkedList();
         for(String point : positions) {
-            points.add(new GeoPoint(point));
+            points.add(GeoPoint.generateFrom(point));
         }
         return points;
     }
@@ -227,7 +241,7 @@ public class Alarm implements Serializable {
         return this.longitude;
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 

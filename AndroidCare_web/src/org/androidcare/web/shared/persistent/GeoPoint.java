@@ -21,13 +21,15 @@ public class GeoPoint {
         this.longitude = point.getLongitude();
     }
 
-    public GeoPoint (String latlng) {
+    public static GeoPoint generateFrom(String latlng) {
         //No, no me mires asi, en AppEngine la clase StringTokenizer no esta disponible.
 
         String lat = latlng.substring(0, latlng.indexOf(";"));
         String lng = latlng.substring(latlng.indexOf(";")+1);
-        this.latitude = Double.parseDouble(lat);
-        this.longitude = Double.parseDouble(lng);
+        double latitude = Double.parseDouble(lat);
+        double longitude = Double.parseDouble(lng);
+        
+        return new GeoPoint(latitude, longitude);
     }
 
     public double getLatitude() {
