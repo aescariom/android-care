@@ -58,7 +58,9 @@ public class AlarmsTable extends FlexTable implements Observer {
     private void fill(List<Alarm> alarms) {
         this.removeAllRows();
 
-        this.setText(0, 0, localizedConstants.alarmName());
+        this.setText(0, 0, localizedConstants.severityLevel());
+        this.setText(0, 1, localizedConstants.alarmType());
+        this.setText(0, 2, localizedConstants.alarmName());
         this.setRowFormatter(new RowFormatter());
 
         this.alarms = alarms;
@@ -79,7 +81,9 @@ public class AlarmsTable extends FlexTable implements Observer {
 
     private void addAlarm(final Alarm alarm) {
         int row = this.getRowCount();
-        this.setText(row, 0, alarm.getName());
+        this.setText(row, 0, alarm.getAlarmSeverityAsString());
+        this.setText(row, 1, alarm.getAlarmTypeAsString());
+        this.setText(row, 2, alarm.getName());
 
         Button btnEdit = new Button(localizedConstants.edit());
         btnEdit.addClickHandler(new ClickHandler() {
@@ -90,8 +94,8 @@ public class AlarmsTable extends FlexTable implements Observer {
         });
 
         btnEdit.addStyleName("edit");
-        this.getCellFormatter().addStyleName(row, 2, "flexTable-button");
-        this.setWidget(row, 2, btnEdit);
+        this.getCellFormatter().addStyleName(row, 3, "flexTable-button");
+        this.setWidget(row, 3, btnEdit);
 
         Button btnRemove = new Button(localizedConstants.delete());
         btnRemove.addClickHandler(new ClickHandler() {
@@ -101,8 +105,8 @@ public class AlarmsTable extends FlexTable implements Observer {
             }
         });
         btnRemove.addStyleName("remove");
-        this.getCellFormatter().addStyleName(row, 3, "flexTable-button");
-        this.setWidget(row, 3, btnRemove);
+        this.getCellFormatter().addStyleName(row, 4, "flexTable-button");
+        this.setWidget(row, 4, btnRemove);
     }
 
     private void editIndex(int editIndex) {

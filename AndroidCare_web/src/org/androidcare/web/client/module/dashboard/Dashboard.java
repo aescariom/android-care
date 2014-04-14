@@ -54,7 +54,10 @@ public class Dashboard implements EntryPoint, ClickHandler {
                 AlarmForm alarmForm = new AlarmForm();
                 alarmForm.addObserver(alarmsTable);
 
-                new DialogBoxClose(localizedConstants.addNewAlarm(), alarmForm).show();
+                DialogBoxClose container = new DialogBoxClose(localizedConstants.addNewAlarm(), alarmForm);
+                container.show();
+                
+                alarmForm.setContainer(container);
             }
         });
         btnAddAlarm.addStyleName("new");
