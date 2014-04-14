@@ -100,6 +100,8 @@ public class AlarmForm extends ObservableForm {
     private Polygon polygon = null;
     
     private Button submit = new Button(localizedConstants.submit());
+    
+    private DialogBoxClose container;
 
     private final AlarmServiceAsync alarmService = GWT.create(AlarmService.class);
 
@@ -122,12 +124,12 @@ public class AlarmForm extends ObservableForm {
     	Maps.loadMapsApi("", "2", false, new Runnable() {
 	        public void run() {
 	        	setUpMap();
-	        	setFormValues();
 	            addItemsToGrid();
 	            setWidget(grid);
 	            generateSeverityList();
 	            generateAlarmTypeList(); 
-	            drawPolygon();
+	            setFormValues();
+	            container.center();
 	        }
 	      });
     }
@@ -166,6 +168,7 @@ public class AlarmForm extends ObservableForm {
             alarm = new Alarm();
 
             alarm.setAlarmSeverity(AlarmSeverity.INFO);
+            alarm.setAlarmType(AlarmType.WAKE_UP);
             alarm.setAlarmEndTime(new Date());
             alarm.setAlarmStartTime(new Date());
             alarm.setPhoneNumber("");
@@ -182,8 +185,9 @@ public class AlarmForm extends ObservableForm {
 
     private void setAlarmValues(Alarm alarm) {
         if (alarm != null) {
-            ddlSeverityLevel.setSelectedIndex(alarm.getAlarmSeverity().getId());
-        	ddlAlarmType.setSelectedIndex(alarm.getAlarmType().getId());
+        	setDdlAlarmTypeFor(alarm);
+        	setDdlAlarmSeverityFor(alarm);
+        	showTheRightAlarmConfig();
             txtName.setValue(alarm.getName());
             txtStartTime.setValue(alarm.getAlarmStartTime());
             txtEndTime.setValue(alarm.getAlarmEndTime());
@@ -197,8 +201,25 @@ public class AlarmForm extends ObservableForm {
         }
     }
 
+    private void setDdlAlarmTypeFor(Alarm alarm) {
+    	for(int i = 0; i < ddlAlarmType.getItemCount(); i++){
+			if(ddlAlarmType.getValue(i).compareToIgnoreCase(String.valueOf(alarm.getAlarmType())) == 0){
+				ddlAlarmType.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
 
-    private void addItemsToGrid() {
+    private void setDdlAlarmSeverityFor(Alarm alarm) {
+    	for(int i = 0; i < ddlSeverityLevel.getItemCount(); i++){
+			if(ddlSeverityLevel.getValue(i).compareToIgnoreCase(String.valueOf(alarm.getAlarmSeverity())) == 0){
+				ddlSeverityLevel.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
+
+	private void addItemsToGrid() {
     	addAlarmType();
     	
     	addAllAlarmDataRows();
@@ -336,7 +357,7 @@ public class AlarmForm extends ObservableForm {
 		grid.setWidget(SEVERITY_LEVEL_ROW, 0, lblSeverityLevel);
         ddlSeverityLevel.setWidth("400px");
         grid.setWidget(SEVERITY_LEVEL_ROW, 1, ddlSeverityLevel);
-
+        
         ddlSeverityLevel.addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
@@ -544,5 +565,9 @@ public class AlarmForm extends ObservableForm {
 		});
 		
 		redZoneMap.addOverlay(polygon);
+	}
+	
+	public void setContainer(DialogBoxClose container) {
+		this.container = container;
 	}
 }

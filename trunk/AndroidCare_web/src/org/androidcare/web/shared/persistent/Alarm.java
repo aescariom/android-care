@@ -1,8 +1,10 @@
 package org.androidcare.web.shared.persistent;
 
+import org.androidcare.web.client.module.dashboard.LocalizedConstants;
 import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -251,6 +253,36 @@ public class Alarm implements Serializable {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+    
+    public String getAlarmTypeAsString() {
+    	LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
+    	
+    	if (AlarmType.getAlarmType(this.alarmType) == AlarmType.WAKE_UP) {
+    		return localizedConstants.wakeUp();
+    	} else if (AlarmType.getAlarmType(this.alarmType) == AlarmType.RED_ZONE) {
+    		return localizedConstants.redZone();
+    	} else if (AlarmType.getAlarmType(this.alarmType) == AlarmType.FELL_OFF) {
+    		return localizedConstants.fellOff();
+    	} else {
+    		return "No idea. this should *not* happen";
+    	}
+    }
+    
+    public String getAlarmSeverityAsString() {
+    	LocalizedConstants localizedConstants = GWT.create(LocalizedConstants.class);
+    	
+    	if (AlarmSeverity.getAlarmOfId(this.alarmSeverity) == AlarmSeverity.INFO) {
+    		return localizedConstants.info();
+    	} else if (AlarmSeverity.getAlarmOfId(this.alarmSeverity) == AlarmSeverity.WARNING) {
+    		return localizedConstants.warning();
+    	} else if (AlarmSeverity.getAlarmOfId(this.alarmSeverity) == AlarmSeverity.SEVERE) {
+    		return localizedConstants.severe();
+    	} else if (AlarmSeverity.getAlarmOfId(this.alarmSeverity) == AlarmSeverity.VERY_SEVERE) {
+    		return localizedConstants.verySevere();
+    	} else {
+    		return "No idea. this should *not* happen";
+    	}
     }
 
 }
