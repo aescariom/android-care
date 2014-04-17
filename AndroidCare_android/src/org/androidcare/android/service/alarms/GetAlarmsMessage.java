@@ -96,7 +96,6 @@ public class GetAlarmsMessage extends Message {
             closeDatabaseConnection();
         }
 
-
     }
 
     private void addAlarmsToDatabase(List<Alarm> alarms){

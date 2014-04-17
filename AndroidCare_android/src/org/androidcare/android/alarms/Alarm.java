@@ -1,11 +1,15 @@
 package org.androidcare.android.alarms;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import org.androidcare.android.database.DatabaseHelper;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +23,8 @@ public class Alarm implements Serializable {
     @DatabaseField(id = true)
     private long id;
 
+    @DatabaseField
+    private AlarmType alarmType;
     @DatabaseField
     private AlarmSeverity alarmSeverity;
     @DatabaseField
@@ -63,14 +69,25 @@ public class Alarm implements Serializable {
     private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.UK);
     private final static DateFormat timeFormatUTC = new SimpleDateFormat("HH:mm 'UTC'", Locale.UK);
 
+    private DatabaseHelper databaseHelper;
+
     public Alarm () {}
 
-    public Alarm (JSONObject jsonObj) throws NumberFormatException, JSONException, ParseException {
+    public Alarm (JSONObject jsonObj) throws NumberFormatException, JSONException, ParseException, SQLException {
         id = Long.parseLong(jsonObj.getString("id"));
         name = jsonObj.getString("name");
 
         alarmSeverity = AlarmSeverity.getAlarmOfId(Integer.parseInt(jsonObj.getJSONObject("alarmSeverity").
                 getString("id")));
+        alarmType = AlarmType.getAlarmType(Integer.parseInt(jsonObj.getJSONObject("alarmType").
+                getString("id")));
+
+        JSONArray array = new JSONArray(jsonObj.getString("positions"));
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject geoPointJSON = array.getJSONObject(i);
+            createGeoPoint(geoPointJSON, id);
+        }
+        closeDatabaseConnection();
 
         initiateCall = Boolean.parseBoolean(jsonObj.getString("initiateCall"));
         sendSMS = Boolean.parseBoolean(jsonObj.getString("sendSMS"));
@@ -82,20 +99,16 @@ public class Alarm implements Serializable {
 
         alarmStartTime = parseDate(jsonObj.getString("alarmStartTime"));
         alarmEndTime = parseDate(jsonObj.getString("alarmEndTime"));
-
-        /*
-        onlyFireAtHome = Boolean.parseBoolean(jsonObj.getString("onlyFireAtHome"));
-        onlyFireAtLocation = Boolean.parseBoolean(jsonObj.getString("onlyFireAtLocation"));
-        */
     }
 
-    public Alarm (long id, String name, AlarmSeverity severity, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
+    public Alarm (long id, String name, AlarmSeverity severity, AlarmType type, boolean initiateCall, boolean sendSMS, boolean sendEmail, boolean logInServer,
                   String phoneNumber, String emailAddress, Date alarmStartTime, Date alarmEndTime, boolean onlyFireAtHome,
                   boolean onlyFireAtLocation, double latitude, double longitude) {
         this.id = id;
         this.name = name;
 
         this.alarmSeverity = severity;
+        this.alarmType = type;
         this.initiateCall = initiateCall;
         this.sendSMS = sendSMS;
         this.sendEmail = sendEmail;
@@ -159,17 +172,44 @@ public class Alarm implements Serializable {
         }
     }
 
+    private void createGeoPoint(JSONObject geoPointJSON, long id) throws SQLException, JSONException, ParseException {
+        getHelper().getGeoPointDao().create(new GeoPoint(geoPointJSON, id));
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
+        builder.append(getName()).append(" - ");
 
-        builder.append(getName()).append(" (").append(timeFormat.format(alarmStartTime)).
-                append(" - ").append(timeFormat.format(alarmEndTime)).append(")");
+        if (alarmType == AlarmType.WAKE_UP) {
+            builder.append(AlarmType.WAKE_UP.getDescription());
+        } else if (alarmType == AlarmType.RED_ZONE) {
+            builder.append(AlarmType.RED_ZONE.getDescription());
+        } else if (alarmType == AlarmType.FELL_OFF) {
+            builder.append(AlarmType.FELL_OFF.getDescription());
+        } else {
+            builder.append("no idea");
+        }
 
         return  builder.toString();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
+
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(null, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+
+    private void closeDatabaseConnection() {
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
+    }
+
 }

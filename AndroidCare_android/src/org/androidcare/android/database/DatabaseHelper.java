@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.alarms.GetAlarmsMessage;
@@ -18,7 +19,9 @@ import org.androidcare.android.service.reminders.ReminderLogMessage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -32,6 +35,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Alarm, Integer> alarmDao;
     private Dao<GetAlarmsMessage, Integer> getAlarmMessageDao;
     private Dao<SendEmailMessage, Integer> sendEmailMessagesDao;
+    private Dao<GeoPoint, Integer> geoPointDao;
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -48,6 +52,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, SendEmailMessage.class);
+            TableUtils.createTableIfNotExists(connectionSource, GeoPoint.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -66,6 +71,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, Alarm.class);
             TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, SendEmailMessage.class);
+            TableUtils.createTableIfNotExists(connectionSource, GeoPoint.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -121,6 +127,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return sendEmailMessagesDao;
     }
 
+    public Dao<GeoPoint, Integer> getGeoPointDao() throws SQLException {
+        if (geoPointDao == null) {
+            geoPointDao = getDao(GeoPoint.class);
+        }
+        return geoPointDao;
+    }
+
     public void truncateReminderTable() throws SQLException {
         TableUtils.clearTable(connectionSource, Reminder.class);
 
@@ -172,6 +185,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de posicionamiento");
         messages.addAll(getLocationMessageDao().queryForAll());
         return messages;
+    }
+
+    public List<GeoPoint> getGeoPointsFor(Alarm alarm) throws SQLException {
+        List<GeoPoint> geoPoints = new ArrayList();
+        Map<String, Object> whereClause = new HashMap();
+        whereClause.put("alarmIsReferedTo", alarm.getId());
+        geoPoints.addAll(getGeoPointDao().queryForFieldValues(whereClause));
+        return geoPoints;
     }
 
 }

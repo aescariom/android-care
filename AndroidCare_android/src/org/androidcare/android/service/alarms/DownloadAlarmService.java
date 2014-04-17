@@ -53,7 +53,7 @@ public class DownloadAlarmService extends Service {
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-        Log.i(TAG, "Reminder scheduled @ " + cal.getTime().toString());
+        Log.i(TAG, "Alarm scheduled @ " + cal.getTime().toString());
     }
 
     private void scheduleAlarms() {
@@ -71,8 +71,6 @@ public class DownloadAlarmService extends Service {
 
     private void schedule(Alarm alarm) {
         Context context = getApplicationContext();
-
-        // AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(context, WakeUpAlarmReceiver.class);
         intent.putExtra("alarm", alarm);
@@ -110,5 +108,11 @@ public class DownloadAlarmService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(downloadAlarmsReceiver);
+        super.onDestroy();
     }
 }

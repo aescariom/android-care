@@ -52,4 +52,7 @@
     <string name="SMSAlarmMiddleText"> triggered with priority </string>
     <string name="Cancel">Cancel</string>
     <string name="LaunchAlarm">Launch alarm (</string>
+    <string name="wake_up">Wake up</string>
+    <string name="red_zone">Red zone</string>
+    <string name="fell_off">Fell off</string>
 </resources>

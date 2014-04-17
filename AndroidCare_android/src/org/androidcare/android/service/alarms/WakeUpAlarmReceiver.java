@@ -19,7 +19,6 @@ public class WakeUpAlarmReceiver extends BroadcastReceiver {
         Alarm alarm = (Alarm) bundle.getSerializable("alarm");
 
         Intent windowIntent = new Intent(context, WakeUpAlarmService.class);
-        //Intent windowIntent = new Intent(context, AlarmService.class);
         windowIntent.putExtra("alarm", alarm);
 
         context.startService(windowIntent);
