@@ -45,6 +45,7 @@ public class GetAlarmsMessage extends Message {
 
     @Override
     public void onPostSend(HttpResponse response) throws InvalidMessageResponseException {
+        /* aka onAfterSend */
         super.onPostSend(response);
         Alarm[] alarms = null;
 

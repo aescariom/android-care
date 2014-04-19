@@ -5,15 +5,15 @@ import android.os.Bundle;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
 
-public class WakeUpAlarmService extends AlarmService {
+public class FellOffAlarmService extends AlarmService {
 
-    public WakeUpAlarmService() {
+    public FellOffAlarmService() {
         super();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("TEST", "Enviamos la ventana de wake up");
+        Log.e("TEST", "Enviamos la ventana de fell off");
 
         int result = super.onStartCommand(intent, flags, startId);
         Bundle bundle = intent.getExtras();

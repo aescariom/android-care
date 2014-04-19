@@ -1,5 +1,6 @@
 package org.androidcare.android.alarms;
 
+import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -163,6 +164,14 @@ public class Alarm implements Serializable {
         return alarmEndTime;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public AlarmType getAlarmType() {
+        return alarmType;
+    }
+
     private Date parseDate(String str) throws ParseException {
         try{
             return dateFormat.parse(str);
@@ -173,7 +182,9 @@ public class Alarm implements Serializable {
     }
 
     private void createGeoPoint(JSONObject geoPointJSON, long id) throws SQLException, JSONException, ParseException {
-        getHelper().getGeoPointDao().create(new GeoPoint(geoPointJSON, id));
+        GeoPoint geoPoint = new GeoPoint(geoPointJSON, id);
+        getHelper().getGeoPointDao().create(geoPoint);
+        Log.e("TEST", "GeoPoint que guardamos en la base de datos: " + geoPoint);
     }
 
     @Override
@@ -192,10 +203,6 @@ public class Alarm implements Serializable {
         }
 
         return  builder.toString();
-    }
-
-    public Long getId() {
-        return id;
     }
 
     private DatabaseHelper getHelper() {

@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.alarms.AlarmType;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.ConnectionService;
 
@@ -72,7 +73,18 @@ public class DownloadAlarmService extends Service {
     private void schedule(Alarm alarm) {
         Context context = getApplicationContext();
 
-        Intent intent = new Intent(context, WakeUpAlarmReceiver.class);
+        Intent intent = null;
+
+        if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
+            intent = new Intent(context, WakeUpAlarmReceiver.class);
+        } else if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
+            intent = new Intent(context, RedZoneAlarmReceiver.class);
+        } else if (alarm.getAlarmType() == AlarmType.FELL_OFF) {
+            intent = new Intent(context, FellOffAlarmReceiver.class);
+        } else {
+
+        }
+
         intent.putExtra("alarm", alarm);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -85,7 +97,7 @@ public class DownloadAlarmService extends Service {
 
         try {
             alarmIntent.send();
-            Log.e("TEST", "ESTA ES LA ALARMA QUE ENVIAMOS: " + alarm);
+            Log.e("TEST", "ESTA ES LA ALARMA QUE ENVIAMOS A PROGRAMAR: " + alarm);
         } catch (PendingIntent.CanceledException e) {
             e.printStackTrace();
         }
