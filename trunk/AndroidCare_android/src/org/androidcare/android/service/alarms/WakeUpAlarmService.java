@@ -13,7 +13,8 @@ public class WakeUpAlarmService extends AlarmService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("TEST", "Enviamos la ventana");
+        Log.e("TEST", "Enviamos la ventana de wake up");
+
         int result = super.onStartCommand(intent, flags, startId);
         Bundle bundle = intent.getExtras();
         super.setAlarm((Alarm) bundle.getSerializable("alarm"));

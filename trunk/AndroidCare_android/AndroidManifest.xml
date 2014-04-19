@@ -75,10 +75,18 @@
         <!-- wakeUp alarm receiver -->
         <receiver android:name=".service.alarms.WakeUpAlarmReceiver">
         </receiver>
+        <!-- RedZone alarm receiver -->
+        <receiver android:name=".service.alarms.RedZoneAlarmReceiver">
+        </receiver>
+        <!-- FellOff alarm receiver -->
+        <receiver android:name=".service.alarms.FellOffAlarmReceiver">
+        </receiver>
 
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service android:enabled="true" android:name=".service.alarms.AlarmService" />
         <service android:enabled="true" android:name=".service.alarms.WakeUpAlarmService" />
+        <service android:enabled="true" android:name=".service.alarms.RedZoneAlarmService" />
+        <service android:enabled="true" android:name=".service.alarms.FellOffAlarmService" />
         <service android:enabled="true" android:name=".service.alarms.DownloadAlarmService" />
         <service android:enabled="true" android:name=".service.reminders.ReminderService" />
         <service android:enabled="true" android:name=".service.location.LocationService" />
