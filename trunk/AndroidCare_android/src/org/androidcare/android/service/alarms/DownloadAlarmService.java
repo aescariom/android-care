@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
@@ -17,10 +18,12 @@ import org.androidcare.android.service.ConnectionService;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DownloadAlarmService extends Service {
 
+    public static final long A_DAY = 24 * 60 * 60 * 1000;
     private final String TAG = this.getClass().getName();
 
     private ConnectionService connectionService;
@@ -46,6 +49,11 @@ public class DownloadAlarmService extends Service {
     }
 
     public void downloadAlarms() {
+        Log.e("TEST", "UNA DESCARGA SALVAJE");
+
+        Toast.makeText(getApplicationContext(), "descargando alarmas", Toast.LENGTH_SHORT)
+                .show();
+
         Calendar cal = Calendar.getInstance();
 
         AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -81,26 +89,35 @@ public class DownloadAlarmService extends Service {
             intent = new Intent(context, RedZoneAlarmReceiver.class);
         } else if (alarm.getAlarmType() == AlarmType.FELL_OFF) {
             intent = new Intent(context, FellOffAlarmReceiver.class);
-        } else {
-
         }
 
         intent.putExtra("alarm", alarm);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
+        Calendar calendar = getNextTime(alarm);
+
+        Log.e("TEST", " Este es el tiempo:" + calendar.toString());
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+    }
+
+    private Calendar getNextTime(Alarm alarm) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, alarm.getAlarmStartTime().getHours());
-        calendar.set(Calendar.MINUTE, alarm.getAlarmStartTime().getMinutes());
 
-        Log.e("TEST Este es el tiempo:", calendar.toString());
+        if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
+            calendar.set(Calendar.HOUR_OF_DAY, alarm.getAlarmStartTime().getHours());
+            calendar.set(Calendar.MINUTE, alarm.getAlarmStartTime().getMinutes());
+            calendar.set(Calendar.SECOND, 0);
 
-        try {
-            alarmIntent.send();
-            Log.e("TEST", "ESTA ES LA ALARMA QUE ENVIAMOS A PROGRAMAR: " + alarm);
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
+            if (calendar.getTime().compareTo(new Date()) < 0) {
+                long calendarTimeInMillis = calendar.getTimeInMillis();
+                calendar.setTimeInMillis(calendarTimeInMillis + A_DAY);
+            }
         }
+
+        return calendar;
     }
 
     private DatabaseHelper getHelper() {

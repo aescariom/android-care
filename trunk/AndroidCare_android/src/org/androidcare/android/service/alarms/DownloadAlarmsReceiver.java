@@ -62,7 +62,8 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
 
         Log.d("RefreshReminders", "The reminders will be reloaded in " + hours + " hours");
 
-        long fourHours = hours * 60 * 60 * 1000;
+        //long fourHours = hours * 60 * 60 * 1000;
+        long fourHours = hours * 60 * 1000;  // ahora son minutos
 
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, DownloadAlarmsReceiver.class);
