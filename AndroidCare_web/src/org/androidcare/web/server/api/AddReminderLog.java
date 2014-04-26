@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.androidcare.web.server.PMF;
-import org.androidcare.web.shared.persistent.Position;
 import org.androidcare.web.shared.persistent.Reminder;
 import org.androidcare.web.shared.persistent.ReminderLog;
 

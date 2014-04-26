@@ -5,7 +5,6 @@ import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -152,10 +151,10 @@ public class Alarm implements Serializable {
 
     public List<String> geoPoints2StringConverter(List<GeoPoint> points) {
     	if (points == null) {
-    		return new LinkedList();
+    		return new LinkedList<String>();
     	}
     	
-    	List<String> positions = new LinkedList();
+    	List<String> positions = new LinkedList<String>();
         for (GeoPoint point : points) {
         	String stringedPoint = point.toString(); 
             positions.add(stringedPoint);
@@ -220,7 +219,7 @@ public class Alarm implements Serializable {
     }
 
     public List<GeoPoint> getPositions() {
-        List<GeoPoint> points = new LinkedList();
+        List<GeoPoint> points = new LinkedList<GeoPoint>();
         for(String point : positions) {
             points.add(GeoPoint.generateFrom(point));
         }
