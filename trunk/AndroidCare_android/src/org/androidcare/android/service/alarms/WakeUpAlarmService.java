@@ -38,14 +38,14 @@ public class WakeUpAlarmService extends AlarmService {
         Bundle bundle = intent.getExtras();
         super.setAlarm((Alarm) bundle.getSerializable("alarm"));
 
-        final GravitySensorRetriever gravitySensorRetriever = new GravitySensorRetriever(this);
+        GravitySensorRetriever gravitySensorRetriever = new GravitySensorRetriever(this);
 
         runWatchDog(gravitySensorRetriever, wakeLock);
 
         return START_STICKY;
     }
 
-    private void runWatchDog(final GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {
+    private void runWatchDog(GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {
         Log.e("TEST", "EMPEZAMOS A MONITORIZAR");
 
         while (true)  {
@@ -85,7 +85,7 @@ public class WakeUpAlarmService extends AlarmService {
         thisService.stopSelf();
     }
 
-    private void detectMovement(final GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {
+    private void detectMovement(GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {
         float[] sensorsData = gravitySensorRetriever.getSensorsData();
 
         Log.e("TEST", "estado if sensores: " + lastX + "; " + lastY + "; " + lastZ);
