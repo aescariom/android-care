@@ -52,7 +52,8 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
         if(wakeLock == null){
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
-            wakeLock.setReferenceCounted(false);
+            //comentario juego con fuego al volver a poner esto actúe pero es para depurar la aplicación
+            wakeLock.setReferenceCounted(true);
         }
         wakeLock.acquire();
         Log.d(TAG, "PowerManager lock acquired by UpdateLocationReceiver; lock count: " + wakeLock.toString());
@@ -63,6 +64,10 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
             try{
                 wakeLock.release();
                 Log.d(TAG, "PowerManager lock released by UpdateLocationReceiver; lock count: " + wakeLock.toString());
+                if (wakeLock.isHeld()){
+
+                    Log.e(TAG, "We have a look leak: " + wakeLock.toString());
+                }
             } catch (Throwable th) {
                 Log.e(TAG, "PowerManager lock could not be released by UpdateLocationReceiver; lock count: " + wakeLock.toString());
             }

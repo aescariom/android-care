@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DownloadAlarmService extends Service {
+public class DownloadAlarmsService extends Service {
 
     public static final long A_DAY = 24 * 60 * 60 * 1000;
     private final String TAG = this.getClass().getName();
@@ -51,8 +51,7 @@ public class DownloadAlarmService extends Service {
     public void downloadAlarms() {
         Log.e("TEST", "UNA DESCARGA SALVAJE");
 
-        Toast.makeText(getApplicationContext(), "descargando alarmas", Toast.LENGTH_SHORT)
-                .show();
+        Toast.makeText(getApplicationContext(), "descargando alarmas", Toast.LENGTH_SHORT).show();
 
         Calendar cal = Calendar.getInstance();
 
@@ -66,7 +65,7 @@ public class DownloadAlarmService extends Service {
     }
 
     private void scheduleAlarms() {
-        List<Alarm> alarms = new ArrayList();
+        List<Alarm> alarms = null;
         try {
             alarms = getHelper().getAlarmDao().queryForAll();
         } catch (SQLException e) {

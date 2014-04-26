@@ -47,6 +47,7 @@ public class GetAlarmsMessage extends Message {
     public void onPostSend(HttpResponse response) throws InvalidMessageResponseException {
         /* aka onAfterSend */
         super.onPostSend(response);
+        //comentario ¿y esto? ¿Sobra?
         Alarm[] alarms = null;
 
         try {

@@ -25,6 +25,7 @@ public class PreferencesActivity extends PreferenceActivity {
     protected AccountManager accountManager;
     protected boolean isMock;
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class PreferencesActivity extends PreferenceActivity {
     }
 
     private void setDisplayRemindersButton(){
+        @SuppressWarnings("deprecation")
         final Preference restart = (Preference) findPreference("viewReminders");
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 
@@ -51,6 +53,7 @@ public class PreferencesActivity extends PreferenceActivity {
     }
 
     private void setDisplayAlarmsButton(){
+        @SuppressWarnings("deprecation")
         final Preference restart = (Preference) findPreference("viewAlarms");
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 
@@ -65,6 +68,7 @@ public class PreferencesActivity extends PreferenceActivity {
     }
 
     private void setAdvancedButton(){
+        @SuppressWarnings("deprecation")
         final Preference restart = (Preference) findPreference("showAdvanced");
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 
@@ -85,6 +89,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
         // 2 - listing the accounts
         if (accounts.length > 0) {
+            @SuppressWarnings("deprecation")
             final ListPreference accountList = (ListPreference) findPreference("account");
             Context ctx = getApplicationContext();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -124,7 +129,8 @@ public class PreferencesActivity extends PreferenceActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.zero_accounts);
         alertDialog.setMessage(getResources().getString(R.string.setup_google_account));
-
+//Comentario estos dos warnings podíamos resolver los
+    //    http://stackoverflow.com/questions/13268302/alternative-setbutton
         alertDialog.setButton(getResources().getString(R.string.open_account_settings),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -144,4 +150,7 @@ public class PreferencesActivity extends PreferenceActivity {
         alertDialog.setIcon(R.drawable.notification_icon);
         alertDialog.show();
     }
+    
+    //Comentario la funcionalidad que teníamos aquí para parar y arrancar los servicios a veces nos fue útil para depurar
+    //¿las borrado por algún motivo?
 }

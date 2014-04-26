@@ -12,7 +12,7 @@ public class GeoPoint {
 
     @DatabaseField(generatedId = true)
     private Long id;
-
+//Comentario no lo pillo ¿qué es esto?
     @DatabaseField
     private Long alarmIsReferedTo;
     @DatabaseField

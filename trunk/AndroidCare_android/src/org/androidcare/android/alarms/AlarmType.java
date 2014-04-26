@@ -21,12 +21,12 @@ public enum AlarmType {
         return this.description;
     }
 
-    public static AlarmType getAlarmType(String v) {
-        if ((AlarmType.WAKE_UP.toString()).equals(v)) {
+    public static AlarmType getAlarmType(String alarmName) {
+        if ((AlarmType.WAKE_UP.toString()).equals(alarmName)) {
             return AlarmType.WAKE_UP;
-        } else if ((AlarmType.RED_ZONE.toString()).equals(v)) {
+        } else if ((AlarmType.RED_ZONE.toString()).equals(alarmName)) {
             return AlarmType.RED_ZONE;
-        } else if ((AlarmType.FELL_OFF.toString()).equals(v)) {
+        } else if ((AlarmType.FELL_OFF.toString()).equals(alarmName)) {
             return AlarmType.FELL_OFF;
         } else {
             return null;

@@ -49,16 +49,21 @@ public abstract class UIReminderView extends RelativeLayout {
 
     public void performed() {
         cancelVibrationAndSound();
+        //comentario  ¿por qué has borrado esto?
+        //reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DONE));
     }
 
     public void notPerformed() {
         cancelVibrationAndSound();
+        //comentario  ¿por qué has borrado esto?
+        //reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_IGNORED));
     }
 
     public void delayed(int ms) {
         cancelVibrationAndSound();
+        //comentario WTF? Pero qué estás haciendo aquí con estas tres líneas?
         reminder.setRepeat(false); // we are scheduling manually this reminder, so it should not be reescheduled never again
         if(reminder.getId() > 0){ // adding the flag
             reminder.setId(reminder.getId()*-1);
@@ -73,6 +78,7 @@ public abstract class UIReminderView extends RelativeLayout {
     }
 
     public void displayed() {
+        //comentario ¿por qué has hecho este cambio?creo que esto rompe el funcionamiento de la aplicación 
         reschedule(reminder);
         postData(new ReminderLogMessage(reminder, ReminderStatusCode.REMINDER_DISPLAYED));
     }
@@ -117,7 +123,6 @@ public abstract class UIReminderView extends RelativeLayout {
         @Override
         protected Void doInBackground(Uri... params) {
             try {
-                Log.e(TAG, "Entrando");
                 Activity context = (Activity)getContext();
                 
                 // 1 - getting the sound
@@ -144,7 +149,6 @@ public abstract class UIReminderView extends RelativeLayout {
             }
             catch (Exception e) { 
                 Log.e(TAG, "Could not play the sound when reminder was received", e);
-                e.printStackTrace();
             }
             return null;
         }
@@ -175,7 +179,6 @@ public abstract class UIReminderView extends RelativeLayout {
                 vibrator.cancel();                
             }catch (InterruptedException e) {
                 Log.e(TAG, "Could not play the sound when reminder was received", e);
-                e.printStackTrace();
             }
             return null;
         }

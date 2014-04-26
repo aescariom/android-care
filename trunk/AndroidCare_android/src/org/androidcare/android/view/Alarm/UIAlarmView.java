@@ -13,7 +13,7 @@ import org.androidcare.android.service.alarms.AlarmService;
 
 public class UIAlarmView extends RelativeLayout{
 
-
+//Comentario no estás haciendo nada con la alarma ¿es esto un trabajo en proceso?
     private final AlarmService alarm;
     protected long sleepSoundTime = 500;
     protected static final long TOO_MUCH_TIME_MAKING_SOUND = 2*60*1000; //2 min
@@ -38,7 +38,10 @@ public class UIAlarmView extends RelativeLayout{
         playSoundTask.execute(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
         //vibrationTask.doInBackground(1500);
     }
-
+//Comentario mira que eres chapuzas. Haces copiar y pegar el código de Alejandro.
+    //Convierte estas  dos clases en publicas  y tales un  constructor
+    //al que se le pasen los parámetros que hagan falta y usarlas en tu código
+    //Y en el de Alejandro en vez de copiar y pegar
     private class PlaySoundTask extends AsyncTask<Uri, Void, Void> {
         private int timeMakingSound=0;
         @Override

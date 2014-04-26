@@ -17,7 +17,8 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
 
     protected AccountManager accountManager;
     protected boolean isMock;
-
+//Comentario es que me fastidiaba en estos warnings y no tengo intención de ponernos a usar fragmentos
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
     }
     
     private void setSynchronizationInterval() {
+        @SuppressWarnings("deprecation")
         EditTextPreference pref = (EditTextPreference)findPreference("synchronizationInterval");
         pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         pref.setSummary(pref.getText() + " " + getApplicationContext().getResources().getString(R.string.minute_s));
@@ -47,6 +49,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
     }
 
     private void setLocationUpdates() {
+        @SuppressWarnings("deprecation")
         EditTextPreference pref = (EditTextPreference)findPreference("locationUpdatesInterval");
         pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         pref.setSummary(pref.getText() + " " + getApplicationContext().getResources().getString(R.string.minute_s));
@@ -60,6 +63,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
     }
     
     private void setAlarmUpdates() {
+        @SuppressWarnings("deprecation")
         EditTextPreference pref = (EditTextPreference)findPreference("alarmResquestInterval");
         pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         pref.setSummary(pref.getText());
@@ -74,6 +78,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
     }
 
     private void setReminderUpdates() {
+        @SuppressWarnings("deprecation")
         EditTextPreference pref = (EditTextPreference)findPreference("reminderResquestInterval");
         pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         pref.setSummary(pref.getText());
@@ -88,6 +93,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
     }
     
     private void setCacheTime() {
+        @SuppressWarnings("deprecation")
         EditTextPreference pref = (EditTextPreference)findPreference("reminderCacheTime");
         pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
         pref.setSummary(pref.getText());
@@ -102,6 +108,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
     }
     
     private void setResetButton(){
+        @SuppressWarnings("deprecation")
         final Preference restart = (Preference) findPreference("restartServices");
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 
@@ -116,6 +123,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
     }
     
     private void setStopButton(){
+        @SuppressWarnings("deprecation")
         final Preference restart = (Preference) findPreference("stopServices");
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 

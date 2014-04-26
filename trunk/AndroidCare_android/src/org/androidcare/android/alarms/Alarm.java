@@ -21,6 +21,8 @@ import java.util.TimeZone;
 @DatabaseTable(tableName = "alarms")
 public class Alarm implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @DatabaseField(id = true)
     private long id;
 
@@ -66,7 +68,7 @@ public class Alarm implements Serializable {
     // android 2.3.3 and below
     private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
             Locale.UK);
-
+//Comentario ¿trabajo en proceso?
     private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.UK);
     private final static DateFormat timeFormatUTC = new SimpleDateFormat("HH:mm 'UTC'", Locale.UK);
 
