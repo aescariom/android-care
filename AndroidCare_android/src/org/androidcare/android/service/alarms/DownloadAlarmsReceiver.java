@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class DownloadAlarmsReceiver extends BroadcastReceiver {
 
     public static final String ACTION_UPDATE = "org.androidcare.android.service.UPDATE_ALARMS";
-    private DownloadAlarmService downloadAlarmService;
+    private DownloadAlarmsService downloadAlarmService;
     private ConnectionService connectionService;
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -35,7 +35,7 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
         super();
     }
 
-    public DownloadAlarmsReceiver(DownloadAlarmService downloadAlarmService) {
+    public DownloadAlarmsReceiver(DownloadAlarmsService downloadAlarmService) {
         super();
         this.downloadAlarmService = downloadAlarmService;
     }

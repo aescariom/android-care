@@ -88,7 +88,7 @@ public class AlarmService extends Service implements Serializable {
     }
 
     public void cancelAlarm() {
-
+//Comentario no entiendo el propósito de este método
     }
 
     public void confirmationUser() {

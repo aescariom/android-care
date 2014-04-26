@@ -63,6 +63,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase arg0, ConnectionSource arg1, int arg2, int arg3) {
         try{
             Log.i(DatabaseHelper.class.getName(), "updating database..");
+            //comentario no hace falta, no tenemos usuarios reales
             //TODO copiar los datos de la versi�n anterior
             TableUtils.createTableIfNotExists(connectionSource, Reminder.class);
             TableUtils.createTableIfNotExists(connectionSource, GetRemindersMessage.class);
@@ -188,8 +189,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public List<GeoPoint> getGeoPointsFor(Alarm alarm) throws SQLException {
-        List<GeoPoint> geoPoints = new ArrayList();
-        Map<String, Object> whereClause = new HashMap();
+        List<GeoPoint> geoPoints = new ArrayList<GeoPoint>();
+        Map<String, Object> whereClause = new HashMap<String, Object>();
         whereClause.put("alarmIsReferedTo", alarm.getId());
         geoPoints.addAll(getGeoPointDao().queryForFieldValues(whereClause));
         return geoPoints;

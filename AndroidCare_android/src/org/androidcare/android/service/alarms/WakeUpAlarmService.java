@@ -65,14 +65,6 @@ public class WakeUpAlarmService extends AlarmService {
     }
 
     private void launchAlarm(GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {
-        try {
-            wakeLock.release();
-        } catch (RuntimeException ex) {
-            /*
-                Pues sÃ­, otra chapu, pero se vuelve loco con el contador de locks y lanza excepciones. Ver mÃ¡s detalle:
-                http://stackoverflow.com/questions/12140844/java-lang-runtimeexception-wakelock-under-locked-c2dm-lib
-             */
-        }
         gravitySensorRetriever.stopSensorsUpdate();
 
         new Thread(new Runnable() {
@@ -83,6 +75,10 @@ public class WakeUpAlarmService extends AlarmService {
         }).start();
 
         thisService.stopSelf();
+        //Comentario mejor liberar aquí el lock ¿no? por otro lado, uso la solución que ya utilizamos en otro sitio
+        if(wakeLock.isHeld()){
+            wakeLock.release();
+        }
     }
 
     private void detectMovement(GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {

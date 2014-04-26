@@ -1,3 +1,4 @@
+//Comentario ¡cómo me ha dolido ver el nombre del paquete con mayúscula!
 package org.androidcare.android.view.Alarm;
 
 import android.app.PendingIntent;
@@ -5,7 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import org.androidcare.android.service.alarms.AlarmService;
+import org.androidcare.android.service.location.LocationService;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -24,6 +28,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         try {
             pendingIntent.send();
         } catch (PendingIntent.CanceledException e) {
+            //comentario haz log como Dios manda
+            //esta línea debería ser
+            //Log.e(TAG, "Alarm Service PendingIntent cancelled: " + e.getMessage(), e);
+            //donde tag debería ser un atributo de la clase
+            //private static final String TAG = LocationService.class.getName();
+            //y usa el nivel de log adecuado: Log.e, Log.i, Log.w....
+            //se agradece mucho hacer todo esto cuando hay que depurar algo
             e.printStackTrace();
         }
 
