@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
@@ -16,7 +15,6 @@ import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.ConnectionService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +38,7 @@ public class DownloadAlarmsService extends Service {
         int result = super.onStartCommand(intent, flags, startId);
 
         Log.i(TAG, "Alarms downloads service started");
+
         registerReceiver(downloadAlarmsReceiver, downloadAlarmFilter);
 
         this.downloadAlarms();
@@ -48,10 +47,8 @@ public class DownloadAlarmsService extends Service {
         return result;
     }
 
-    public void downloadAlarms() {
+    private void downloadAlarms() {
         Log.e("TEST", "UNA DESCARGA SALVAJE");
-
-        Toast.makeText(getApplicationContext(), "descargando alarmas", Toast.LENGTH_SHORT).show();
 
         Calendar cal = Calendar.getInstance();
 

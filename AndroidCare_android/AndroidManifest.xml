@@ -40,7 +40,7 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
-                android:name=".view.Alarm.AlarmWindowReceiver"
+                android:name=".view.alarm.AlarmWindowReceiver"
                 android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
@@ -53,7 +53,7 @@
         <activity
             android:name=".preferences.AlarmList">
         </activity>
-        <activity android:name=".view.Alarm.AlarmWindowReceiver"
+        <activity android:name=".view.alarm.AlarmWindowReceiver"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
 
@@ -87,7 +87,7 @@
         <service android:enabled="true" android:name=".service.alarms.WakeUpAlarmService" />
         <service android:enabled="true" android:name=".service.alarms.RedZoneAlarmService" />
         <service android:enabled="true" android:name=".service.alarms.FellOffAlarmService" />
-        <service android:enabled="true" android:name=".service.alarms.DownloadAlarmService" />
+        <service android:enabled="true" android:name=".service.alarms.DownloadAlarmsService" />
         <service android:enabled="true" android:name=".service.reminders.ReminderService" />
         <service android:enabled="true" android:name=".service.location.LocationService" />
         <service android:enabled="true" android:name=".service.ConnectionService" />
@@ -99,6 +99,6 @@
 				<category android:name="android.intent.category.HOME" />
 			</intent-filter>
 		</receiver>
-        <receiver android:name=".view.Alarm.AlarmReceiver"/>
+        <receiver android:name=".view.alarm.AlarmReceiver"/>
     </application>
 </manifest>

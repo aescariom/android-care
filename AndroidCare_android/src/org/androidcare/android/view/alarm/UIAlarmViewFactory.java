@@ -1,4 +1,4 @@
-package org.androidcare.android.view.Alarm;
+package org.androidcare.android.view.alarm;
 
 import android.util.Log;
 import org.androidcare.android.service.alarms.AlarmService;
