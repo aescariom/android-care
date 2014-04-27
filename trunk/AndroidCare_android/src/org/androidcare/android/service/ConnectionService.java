@@ -415,7 +415,7 @@ public class ConnectionService extends Service {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            Log.e(TAG,"Entrando en el MessageQueueProcessor");
+            Log.e("TEST","Entrando en el MessageQueueProcessor");
             try{
                 if (!isConnectionAvailable()) {
                     triggerConnectionErrorNotification();
@@ -428,10 +428,10 @@ public class ConnectionService extends Service {
                 }
                 List<Message> messages = getHelper().getMessages();
 
-                Log.e(TAG,"Comenzando a procesar mensajes");
+                Log.e("TEST","Comenzando a procesar mensajes");
                 for (Message m : messages) {
 
-                    Log.e(TAG,"Mensaje: " + m);
+                    Log.e("TEST","Mensaje: " + m);
                     try {
 
                         HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(

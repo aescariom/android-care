@@ -1,4 +1,4 @@
-package org.androidcare.android.view.Alarm;
+package org.androidcare.android.view.alarm;
 
 import android.app.Activity;
 import android.os.Bundle;

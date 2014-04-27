@@ -1,4 +1,4 @@
-package org.androidcare.android.view.Alarm;
+package org.androidcare.android.view.alarm;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -12,7 +12,7 @@ import org.androidcare.android.R;
 import org.androidcare.android.service.alarms.AlarmService;
 
 public class UIAlarmConfirmationView extends UIAlarmView {
-//Comentario ¡ojo! Estás redefiniendo la variable aquí, el padre ya tiene una igual
+//Comentario ï¿½ojo! Estï¿½s redefiniendo la variable aquï¿½, el padre ya tiene una igual
     private AlarmService alarm;
     private boolean trigger;
 

@@ -11,7 +11,7 @@ import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
-import org.androidcare.android.view.Alarm.AlarmReceiver;
+import org.androidcare.android.view.alarm.AlarmReceiver;
 
 import java.io.Serializable;
 
@@ -88,7 +88,7 @@ public class AlarmService extends Service implements Serializable {
     }
 
     public void cancelAlarm() {
-//Comentario no entiendo el propósito de este método
+//Comentario no entiendo el propï¿½sito de este mï¿½todo
     }
 
     public void confirmationUser() {
