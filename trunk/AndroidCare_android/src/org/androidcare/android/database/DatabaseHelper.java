@@ -192,12 +192,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return messages;
     }
 
-    public List<GeoPoint> getGeoPointsFor(Alarm alarm) throws SQLException {
+    public List<GeoPoint> getGeoPointsFor(long id) throws SQLException {
         List<GeoPoint> geoPoints = new ArrayList<GeoPoint>();
         Map<String, Object> whereClause = new HashMap<String, Object>();
-        whereClause.put("alarmIsReferedTo", alarm.getId());
+        whereClause.put("alarmIsReferedTo", id);
         geoPoints.addAll(getGeoPointDao().queryForFieldValues(whereClause));
         return geoPoints;
+    }
+
+    public void deleteGeoPointsReferedTo(long id) throws SQLException {
+        List<GeoPoint> points = getGeoPointsFor(id);
+        getGeoPointDao().delete(points);
     }
 
 }

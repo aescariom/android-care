@@ -11,6 +11,7 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
+import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.ConnectionService;
 
@@ -68,7 +69,19 @@ public class DownloadAlarmsService extends Service {
         }
 
         for (Alarm alarm : alarms) {
+            ifIsRedZoneAddsGeoPointsTo(alarm);
             scheduleFirstLaunch(alarm);
+        }
+    }
+
+    private void ifIsRedZoneAddsGeoPointsTo(Alarm alarm) {
+        if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
+            try {
+                List<GeoPoint> geoPoints = getHelper().getGeoPointsFor(alarm.getId());
+                alarm.setGeoPoints(geoPoints);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -81,6 +94,7 @@ public class DownloadAlarmsService extends Service {
             intent = new Intent(context, WakeUpAlarmReceiver.class);
         } else if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
             intent = new Intent(context, RedZoneAlarmReceiver.class);
+            Log.i(TAG, "Alarm sent " + alarm.getGeoPoints().size());
         } else if (alarm.getAlarmType() == AlarmType.FELL_OFF) {
             intent = new Intent(context, FellOffAlarmReceiver.class);
         }

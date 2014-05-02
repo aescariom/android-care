@@ -50,7 +50,7 @@ public class Alarm implements Serializable {
     private Date alarmStartTime;
     @DatabaseField
     private Date alarmEndTime;
-    private List<GeoPoint> points = new LinkedList();
+    private List<GeoPoint> geoPoints = new LinkedList();
 
     @DatabaseField
     private boolean onlyFireAtHome = false;
@@ -73,7 +73,6 @@ public class Alarm implements Serializable {
     private final static DateFormat timeFormatUTC = new SimpleDateFormat("HH:mm 'UTC'", Locale.UK);
 
     private DatabaseHelper databaseHelper;
-    private List<GeoPoint> geoPoints;
 
     public Alarm () {}
 
@@ -87,6 +86,7 @@ public class Alarm implements Serializable {
                 getString("id")));
 
         JSONArray array = new JSONArray(jsonObj.getString("positions"));
+        getHelper().deleteGeoPointsReferedTo(id);
         for (int i = 0; i < array.length(); i++) {
             JSONObject geoPointJSON = array.getJSONObject(i);
             createGeoPoint(geoPointJSON, id);
@@ -185,10 +185,7 @@ public class Alarm implements Serializable {
     }
 
     private void createGeoPoint(JSONObject geoPointJSON, long id) throws SQLException, JSONException, ParseException {
-        GeoPoint geoPoint = new GeoPoint(geoPointJSON, id);
-        getHelper().getGeoPointDao().create(geoPoint);
-        points.add(geoPoint);
-        Log.e(TAG, "Saved point: " + geoPoint);
+        getHelper().getGeoPointDao().create(new GeoPoint(geoPointJSON, id));
     }
 
     @Override
@@ -224,6 +221,10 @@ public class Alarm implements Serializable {
     }
 
     public List<GeoPoint> getGeoPoints() {
-        return geoPoints;
+        return this.geoPoints;
+    }
+
+    public void setGeoPoints(List<GeoPoint> geoPoints) {
+        this.geoPoints = geoPoints;
     }
 }

@@ -17,6 +17,8 @@ public class RedZoneAlarmService extends AlarmService {
     private static final String TAG = RedZoneAlarmService.class.getName();
     static final int UPDATE_INTERVAL = 10 * 1000;
 
+    private static boolean running = true;
+
     public RedZoneAlarmService() {
         super();
     }
@@ -46,8 +48,8 @@ public class RedZoneAlarmService extends AlarmService {
     private void runWatchDog(LocationRetreiver locationRetreiver) {
         Log.i(TAG, "Red zone monitor started");
 
-        while (true)  {
-            Log.i(TAG, "Question");
+        while (running)  {
+            Log.i(TAG, "Asks for location");
             locationRetreiver.getLocation();
             try {
                 Thread.sleep(UPDATE_INTERVAL);
@@ -71,6 +73,7 @@ public class RedZoneAlarmService extends AlarmService {
         Alarm alarm = getAlarm();
         List<GeoPoint> points = alarm.getGeoPoints();
         if (points != null) {
+            Log.i(TAG, "number of points " + points.size());
             for (int i = 0; i < points.size(); i++) {
                 GeoPoint firstGeoPoint = getFirstGeoPoint(i, points);
                 GeoPoint secondGeoPoint = getSecondGeoPoint(i, points);
@@ -80,7 +83,8 @@ public class RedZoneAlarmService extends AlarmService {
                 }
             }
 
-            Log.i(TAG, "User @ " + location + " crosses " + crossings);
+            Log.i(TAG, "alarm " + alarm.getName() + " crosses " + crossings);
+
 
             if (pointIsInPolygon(crossings)) {
                 launchAlarm(wakeLock);
@@ -122,7 +126,6 @@ public class RedZoneAlarmService extends AlarmService {
         }
 
         return pointBelongToSegment(locationX, candidateY, firstGeoPointX, firstGeoPointY, secondGeoPointX, secondGeoPointY);
-
     }
 
     private boolean pointBelongToSegment(double locationX, double candidateY, double firstGeoPointX, double firstGeoPointY,
@@ -140,6 +143,7 @@ public class RedZoneAlarmService extends AlarmService {
 
     private double evaluateForY(double firstGeoPointX, double firstGeoPointY, double secondGeoPointX, double secondGeoPointY,
                                 double x) {
+
         return ((secondGeoPointY - firstGeoPointY) / (secondGeoPointX - firstGeoPointX)) *
                 (x -firstGeoPointX) + firstGeoPointY;
     }
@@ -149,6 +153,7 @@ public class RedZoneAlarmService extends AlarmService {
     }
 
     private GeoPoint getSecondGeoPoint(int i, List<GeoPoint> points) {
-        return i < points.size() ? points.get(i) : points.get(0);
+        return i < (points.size() - 1) ? points.get(i + 1) : points.get(0);
     }
+
 }
