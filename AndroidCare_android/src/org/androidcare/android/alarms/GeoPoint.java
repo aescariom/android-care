@@ -6,10 +6,11 @@ import com.j256.ormlite.table.DatabaseTable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 
 @DatabaseTable(tableName = "GeoPoints")
-public class GeoPoint {
+public class GeoPoint implements Serializable {
 
     @DatabaseField(generatedId = true)
     private Long id;

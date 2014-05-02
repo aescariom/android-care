@@ -4,6 +4,7 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.table.DatabaseTable;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.InvalidMessageResponseException;
@@ -67,6 +68,7 @@ public class GetAlarmsMessage extends Message {
                 this.alarms.add(new Alarm(obj));
             }
             this.removeAllAlarms();
+            this.removeAllGeoPoints();
             this.addAlarmsToDatabase(this.alarms);
 
             Log.i(TAG, "Alarms updated from the server");
@@ -82,6 +84,20 @@ public class GetAlarmsMessage extends Message {
         super.onError(ex);
         this.addAlarmsToDatabase(this.alarms);
         Log.e(TAG, "No alarms could be retrieved from the server: ");
+    }
+
+    private void removeAllGeoPoints() {
+        List<GeoPoint> points = null;
+        try {
+            points = getHelper().getGeoPointDao().queryForAll();
+            for (GeoPoint point : points) {
+                getHelper().getGeoPointDao().delete(point);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDatabaseConnection();
+        }
     }
 
     private void removeAllAlarms() {
