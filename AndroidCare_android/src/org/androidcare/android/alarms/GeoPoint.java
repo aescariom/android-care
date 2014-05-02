@@ -1,5 +1,6 @@
 package org.androidcare.android.alarms;
 
+import android.util.Log;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.json.JSONException;
@@ -12,7 +13,6 @@ public class GeoPoint {
 
     @DatabaseField(generatedId = true)
     private Long id;
-//Comentario no lo pillo ¿qué es esto?
     @DatabaseField
     private Long alarmIsReferedTo;
     @DatabaseField
@@ -26,6 +26,7 @@ public class GeoPoint {
         this.latitude = Double.parseDouble(jsonObj.getString("latitude"));
         this.longitude = Double.parseDouble(jsonObj.getString("longitude"));
         this.alarmIsReferedTo = alarmId;
+        Log.e("TEST", "Creado objeto GeoPoint " + latitude + ";" + longitude + " alarmId " + alarmId);
     }
 
     public GeoPoint (Double latitude, Double longitude, Long alarmId) {

@@ -18,6 +18,7 @@ public class WakeUpAlarmService extends AlarmService {
     private float lastX = 0;
     private float lastY = 0;
     private float lastZ = 0;
+    private String TAG = this.getClass().getName();
 
     public WakeUpAlarmService() {
         super();
@@ -38,15 +39,13 @@ public class WakeUpAlarmService extends AlarmService {
         Bundle bundle = intent.getExtras();
         super.setAlarm((Alarm) bundle.getSerializable("alarm"));
 
-        GravitySensorRetriever gravitySensorRetriever = new GravitySensorRetriever(this);
-
-        runWatchDog(gravitySensorRetriever, wakeLock);
+        runWatchDog(new GravitySensorRetriever(this), wakeLock);
 
         return START_STICKY;
     }
 
     private void runWatchDog(GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {
-        Log.e("TEST", "EMPEZAMOS A MONITORIZAR");
+        Log.e(TAG, "Wake up monitor started");
 
         while (true)  {
             detectMovement(gravitySensorRetriever, wakeLock);
@@ -75,7 +74,7 @@ public class WakeUpAlarmService extends AlarmService {
         }).start();
 
         thisService.stopSelf();
-        //Comentario mejor liberar aquí el lock ¿no? por otro lado, uso la solución que ya utilizamos en otro sitio
+
         if(wakeLock.isHeld()){
             wakeLock.release();
         }
@@ -94,14 +93,15 @@ public class WakeUpAlarmService extends AlarmService {
             }
         }
 
-        Log.e("TEST", "Una asignacion feliz: " + sensorsData[0] + "; " + sensorsData[1] + "; " + sensorsData[2]);
         if (sensorsData != null) {
+            Log.e("TEST", "Una asignacion feliz: " + sensorsData[0] + "; " + sensorsData[1] + "; " + sensorsData[2]);
             lastX = sensorsData[0];
             lastY = sensorsData[1];
             lastZ = sensorsData[2];
         } else {
             thisService.stopSelf();
             //Lo matamos porque no disponemos de datos... :(
+            Log.w(TAG, "No data available");
         }
     }
 

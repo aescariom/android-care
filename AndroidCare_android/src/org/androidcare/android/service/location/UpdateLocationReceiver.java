@@ -1,16 +1,10 @@
 package org.androidcare.android.service.location;
 
-import org.androidcare.android.service.location.LocationService;
-import org.androidcare.android.service.location.LocationService.LocationServiceBinder;
-
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+import org.androidcare.android.service.location.LocationService.LocationServiceBinder;
 
 //Receives explicit intents from the AlarmManager of the system. Intents are created by the LocationService
 public class UpdateLocationReceiver extends BroadcastReceiver {
@@ -52,7 +46,7 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
         if(wakeLock == null){
             PowerManager mgr = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
             wakeLock = mgr .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_TAG);
-            //comentario juego con fuego al volver a poner esto actúe pero es para depurar la aplicación
+            //comentario juego con fuego al volver a poner esto actï¿½e pero es para depurar la aplicaciï¿½n
             wakeLock.setReferenceCounted(true);
         }
         wakeLock.acquire();
@@ -65,7 +59,6 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
                 wakeLock.release();
                 Log.d(TAG, "PowerManager lock released by UpdateLocationReceiver; lock count: " + wakeLock.toString());
                 if (wakeLock.isHeld()){
-
                     Log.e(TAG, "We have a look leak: " + wakeLock.toString());
                 }
             } catch (Throwable th) {
@@ -73,7 +66,5 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
             }
         }
     }
-    
-
 
 }
