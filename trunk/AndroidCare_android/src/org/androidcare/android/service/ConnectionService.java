@@ -474,6 +474,7 @@ public class ConnectionService extends Service {
             }catch(SQLException e){
                 Log.e(tag, "Error when procesing the Queue -> " + e.getMessage(), e);
             }
+            Log.i(TAG, "Finished procesing messages");
             return false;
         }
         

@@ -48,8 +48,6 @@ public class DownloadAlarmsService extends Service {
     }
 
     private void downloadAlarms() {
-        Log.e("TEST", "UNA DESCARGA SALVAJE");
-
         Calendar cal = Calendar.getInstance();
 
         AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -58,7 +56,7 @@ public class DownloadAlarmsService extends Service {
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
 
-        Log.i(TAG, "Alarm scheduled @ " + cal.getTime().toString());
+        Log.i(TAG, "Download scheduled @ " + cal.getTime().toString());
     }
 
     private void scheduleAlarms() {
@@ -70,11 +68,11 @@ public class DownloadAlarmsService extends Service {
         }
 
         for (Alarm alarm : alarms) {
-            schedule(alarm);
+            scheduleFirstLaunch(alarm);
         }
     }
 
-    private void schedule(Alarm alarm) {
+    private void scheduleFirstLaunch(Alarm alarm) {
         Context context = getApplicationContext();
 
         Intent intent = null;
@@ -91,8 +89,6 @@ public class DownloadAlarmsService extends Service {
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Calendar calendar = getNextTime(alarm);
-
-        Log.e("TEST", " Este es el tiempo:" + calendar.toString());
 
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);

@@ -14,14 +14,13 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 @DatabaseTable(tableName = "alarms")
 public class Alarm implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private String TAG = this.getClass().getName();
 
     @DatabaseField(id = true)
     private long id;
@@ -51,6 +50,7 @@ public class Alarm implements Serializable {
     private Date alarmStartTime;
     @DatabaseField
     private Date alarmEndTime;
+    private List<GeoPoint> points = new LinkedList();
 
     @DatabaseField
     private boolean onlyFireAtHome = false;
@@ -68,11 +68,12 @@ public class Alarm implements Serializable {
     // android 2.3.3 and below
     private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
             Locale.UK);
-//Comentario ¿trabajo en proceso?
+//Comentario ï¿½trabajo en proceso?
     private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.UK);
     private final static DateFormat timeFormatUTC = new SimpleDateFormat("HH:mm 'UTC'", Locale.UK);
 
     private DatabaseHelper databaseHelper;
+    private List<GeoPoint> geoPoints;
 
     public Alarm () {}
 
@@ -186,7 +187,8 @@ public class Alarm implements Serializable {
     private void createGeoPoint(JSONObject geoPointJSON, long id) throws SQLException, JSONException, ParseException {
         GeoPoint geoPoint = new GeoPoint(geoPointJSON, id);
         getHelper().getGeoPointDao().create(geoPoint);
-        Log.e("TEST", "GeoPoint que guardamos en la base de datos: " + geoPoint);
+        points.add(geoPoint);
+        Log.e(TAG, "Saved point: " + geoPoint);
     }
 
     @Override
@@ -221,4 +223,7 @@ public class Alarm implements Serializable {
         }
     }
 
+    public List<GeoPoint> getGeoPoints() {
+        return geoPoints;
+    }
 }

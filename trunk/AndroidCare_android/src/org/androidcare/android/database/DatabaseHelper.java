@@ -151,8 +151,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }else if(message.getClass() == ReminderLogMessage.class){
             return getReminderLogMessageDao().create((ReminderLogMessage)message);
         } else if (message.getClass() == GetAlarmsMessage.class) {
+            // only one message of this type should exists
+            TableUtils.clearTable(connectionSource, GetAlarmsMessage.class);
             return getAlarmsMessagesDao().create((GetAlarmsMessage) message);
         } else if (message.getClass() == SendEmailMessage.class) {
+            // only one message of this type should exists
+            TableUtils.clearTable(connectionSource, SendEmailMessage.class);
             return getSendEmailMessagesDao().create((SendEmailMessage) message);
         }
         return -1;

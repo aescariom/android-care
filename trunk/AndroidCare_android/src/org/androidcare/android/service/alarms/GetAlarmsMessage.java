@@ -48,9 +48,6 @@ public class GetAlarmsMessage extends Message {
         /* aka onAfterSend */
         super.onPostSend(response);
 
-        //comentario �y esto? �Sobra?
-        Alarm[] alarms = null;
-
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String jsonString = "";

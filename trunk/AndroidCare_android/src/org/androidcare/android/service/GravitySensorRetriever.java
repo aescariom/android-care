@@ -7,36 +7,32 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class GravitySensorRetriever implements SensorEventListener, Serializable {
     private SensorManager sensorManager;
-    private List<Sensor> deviceSensors;
-    private Map<String, SensorValues> deviceSensorValues;
+    private Sensor sensor;
+    private SensorValues deviceSensorValues;
 
     public GravitySensorRetriever(Context context) {
+
         sensorManager = (SensorManager) context
                 .getSystemService(Context.SENSOR_SERVICE);
-        //deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        deviceSensors = sensorManager.getSensorList(Sensor.TYPE_GRAVITY);
-        deviceSensorValues = new HashMap<String, GravitySensorRetriever.SensorValues>();
 
-        registerSensorsListener();
-    }
-
-    public void registerSensorsListener() {
-        for (Sensor sensor : deviceSensors) {
-            deviceSensorValues.put(sensor.getName(), new SensorValues(sensor));
-
-            sensorManager.registerListener(this, sensor,
-                    SensorManager.SENSOR_DELAY_NORMAL);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        if (sensor != null) {
+            registerSensorsListener();
+        } else {
+            throw new RuntimeException("Gravity Sensor not found");
         }
     }
 
+    public void registerSensorsListener() {
+            deviceSensorValues = new SensorValues(sensor);
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
     public float[] getSensorsData() {
-        return deviceSensorValues.get("Gravity").getValues();
+        return deviceSensorValues.getValues();
     }
 
     public void stopSensorsUpdate() {
@@ -49,9 +45,7 @@ public class GravitySensorRetriever implements SensorEventListener, Serializable
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        SensorValues sensorValues = deviceSensorValues.get(event.sensor
-                .getName());
-        sensorValues.setValues(event.values);
+        deviceSensorValues.setValues(event.values);
     }
 
     private class SensorValues implements Serializable {
