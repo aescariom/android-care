@@ -155,8 +155,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.clearTable(connectionSource, GetAlarmsMessage.class);
             return getAlarmsMessagesDao().create((GetAlarmsMessage) message);
         } else if (message.getClass() == SendEmailMessage.class) {
-            // only one message of this type should exists
-            TableUtils.clearTable(connectionSource, SendEmailMessage.class);
             return getSendEmailMessagesDao().create((SendEmailMessage) message);
         }
         return -1;
@@ -190,19 +188,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de posicionamiento");
         messages.addAll(getLocationMessageDao().queryForAll());
         return messages;
-    }
-
-    public List<GeoPoint> getGeoPointsFor(long id) throws SQLException {
-        List<GeoPoint> geoPoints = new ArrayList<GeoPoint>();
-        Map<String, Object> whereClause = new HashMap<String, Object>();
-        whereClause.put("alarmIsReferedTo", id);
-        geoPoints.addAll(getGeoPointDao().queryForFieldValues(whereClause));
-        return geoPoints;
-    }
-
-    public void deleteGeoPointsReferedTo(long id) throws SQLException {
-        List<GeoPoint> points = getGeoPointsFor(id);
-        getGeoPointDao().delete(points);
     }
 
 }

@@ -22,6 +22,7 @@ import org.androidcare.android.service.ServiceManager;
 
 public class PreferencesActivity extends PreferenceActivity {
 
+    private final String TAG = this.getClass().getName();
     protected AccountManager accountManager;
     protected boolean isMock;
 
@@ -58,7 +59,7 @@ public class PreferencesActivity extends PreferenceActivity {
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 
             public boolean onPreferenceClick(Preference preference) {
-                Log.v("hello", "Llegando a alarmas");
+                Log.v(TAG, "Llegando a alarmas");
                 Intent intent = new Intent(PreferencesActivity.this, AlarmList.class);
                 startActivity(intent);
                 return true;
@@ -129,7 +130,7 @@ public class PreferencesActivity extends PreferenceActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.zero_accounts);
         alertDialog.setMessage(getResources().getString(R.string.setup_google_account));
-//Comentario estos dos warnings podíamos resolver los
+//Comentario estos dos warnings podï¿½amos resolver los
     //    http://stackoverflow.com/questions/13268302/alternative-setbutton
         alertDialog.setButton(getResources().getString(R.string.open_account_settings),
                 new DialogInterface.OnClickListener() {
@@ -151,6 +152,6 @@ public class PreferencesActivity extends PreferenceActivity {
         alertDialog.show();
     }
     
-    //Comentario la funcionalidad que teníamos aquí para parar y arrancar los servicios a veces nos fue útil para depurar
-    //¿las borrado por algún motivo?
+    //Comentario la funcionalidad que tenï¿½amos aquï¿½ para parar y arrancar los servicios a veces nos fue ï¿½til para depurar
+    //ï¿½las borrado por algï¿½n motivo?
 }

@@ -9,13 +9,13 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.text.ParseException;
 
-@DatabaseTable(tableName = "GeoPoints")
+@DatabaseTable(tableName = "geo_points")
 public class GeoPoint implements Serializable {
 
     @DatabaseField(generatedId = true)
-    private Long id;
-    @DatabaseField
-    private Long alarmIsReferedTo;
+    private int id;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "alarmIsReferedTo")
+    private Alarm alarm;
     @DatabaseField
     private Double latitude;
     @DatabaseField
@@ -23,17 +23,15 @@ public class GeoPoint implements Serializable {
 
     public GeoPoint() {}
 
-    public GeoPoint (JSONObject jsonObj, Long alarmId) throws NumberFormatException, JSONException, ParseException {
+    public GeoPoint (JSONObject jsonObj, Alarm alarm) throws NumberFormatException, JSONException, ParseException {
         this.latitude = Double.parseDouble(jsonObj.getString("latitude"));
         this.longitude = Double.parseDouble(jsonObj.getString("longitude"));
-        this.alarmIsReferedTo = alarmId;
-        Log.e("TEST", "Creado objeto GeoPoint " + latitude + ";" + longitude + " alarmId " + alarmId);
+        this.alarm = alarm;
+        Log.e("TEST", "Creado objeto GeoPoint " + latitude + ";" + longitude);
     }
 
-    public GeoPoint (Double latitude, Double longitude, Long alarmId) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.alarmIsReferedTo = alarmId;
+    public int getId() {
+        return this.id;
     }
 
     public Double getLatitude() {
@@ -44,8 +42,8 @@ public class GeoPoint implements Serializable {
         return this.longitude;
     }
 
-    public Long getAlarmIdIsReferedTo() {
-        return this.alarmIsReferedTo;
+    public Alarm getAlarm() {
+        return this.alarm;
     }
 
     @Override

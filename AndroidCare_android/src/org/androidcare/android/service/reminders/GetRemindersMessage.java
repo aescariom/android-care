@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 @DatabaseTable(tableName = "GetRemindersMessage")
 public class GetRemindersMessage extends Message {
     public static final String REMINDERS_URL = "api/retrieveReminders";
+    public final String TAG = this.getClass().getName();
 
     protected static ReminderService reminderService;
 
@@ -76,8 +77,7 @@ public class GetRemindersMessage extends Message {
             Log.i(GetRemindersMessage.class.getName(), "Reminders updated from the server");
         }
         catch (Exception e) {
-            Log.e(this.getClass().getName(),
-                    "Error when retrieving reminders from the server: " + e.getMessage(), e);
+            Log.e(TAG,"Error when retrieving reminders from the server: " + e.getMessage(), e);
             throw new InvalidMessageResponseException("Error ocurend when parsing JSON String", e);
         }
     }
@@ -86,6 +86,6 @@ public class GetRemindersMessage extends Message {
     public void onError(Exception ex){
         super.onError(ex);
         GetRemindersMessage.reminderService.scheduleFromDatabase();
-        Log.e(this.getClass().getName(), "No reminders could be retrieved from the server: ");
+        Log.e(TAG, "No reminders could be retrieved from the server: ");
     }
 }

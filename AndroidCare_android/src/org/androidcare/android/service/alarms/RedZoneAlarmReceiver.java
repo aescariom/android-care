@@ -7,21 +7,22 @@ import android.os.Bundle;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
 
-public class RedZoneAlarmReceiver extends BroadcastReceiver {
+import java.io.Serializable;
 
+public class RedZoneAlarmReceiver extends BroadcastReceiver implements Serializable {
+
+    public final static String ACTION_TRIGGER_REDZONE_ALARM = "org.androidcare.android.service.TRIGGER_REDZONE_ALARM";
     private final String TAG = this.getClass().getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e(TAG, "Recibimos un red zone");
-
+        Log.d(TAG, "Starting red zone alarm receiver");
         Bundle bundle = intent.getExtras();
-        Alarm alarm = (Alarm) bundle.getSerializable("alarm");
+        Alarm alarm= (Alarm) bundle.getSerializable("alarm");
 
-        Intent serviceIntent = new Intent(context, RedZoneAlarmService.class);
-        serviceIntent.putExtra("alarm", alarm);
+            Intent serviceIntent = new Intent(context, RedZoneAlarmService.class);
+            serviceIntent.putExtra("alarm", alarm);
 
-        context.startService(serviceIntent);
+            context.startService(serviceIntent);
     }
-
 }

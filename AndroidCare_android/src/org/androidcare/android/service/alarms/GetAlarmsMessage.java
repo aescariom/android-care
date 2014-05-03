@@ -29,7 +29,6 @@ public class GetAlarmsMessage extends Message {
     public static final String ALARMS_URL = "api/retrieveAlarms";
 
     private DatabaseHelper databaseHelper = null;
-    protected static AlarmService alarmService;
     private List<Alarm> alarms = new ArrayList();
 
     private final String TAG = this.getClass().getName();
@@ -62,13 +61,13 @@ public class GetAlarmsMessage extends Message {
                 throw new InvalidMessageResponseException("No JSON String received");
             }
 
+            this.removeAllAlarms();
+
             JSONArray array = new JSONArray(jsonString);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
-                this.alarms.add(new Alarm(obj));
+                this.alarms.add(new Alarm(obj, null));
             }
-            this.removeAllAlarms();
-            this.removeAllGeoPoints();
             this.addAlarmsToDatabase(this.alarms);
 
             Log.i(TAG, "Alarms updated from the server");
@@ -82,25 +81,11 @@ public class GetAlarmsMessage extends Message {
     @Override
     public void onError(Exception ex){
         super.onError(ex);
-        this.addAlarmsToDatabase(this.alarms);
         Log.e(TAG, "No alarms could be retrieved from the server: ");
     }
 
-    private void removeAllGeoPoints() {
-        List<GeoPoint> points = null;
-        try {
-            points = getHelper().getGeoPointDao().queryForAll();
-            for (GeoPoint point : points) {
-                getHelper().getGeoPointDao().delete(point);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeDatabaseConnection();
-        }
-    }
-
     private void removeAllAlarms() {
+        this.removeAllGeoPoints();
         try {
             List<Alarm> alarms = getHelper().getAlarmDao().queryForAll();
             for (Alarm alarm : alarms) {
@@ -111,7 +96,17 @@ public class GetAlarmsMessage extends Message {
         } finally {
             closeDatabaseConnection();
         }
+    }
 
+    private void removeAllGeoPoints() {
+        try {
+            List<GeoPoint> geoPoints = getHelper().getGeoPointDao().queryForAll();
+            getHelper().getGeoPointDao().delete(geoPoints);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } finally {
+            closeDatabaseConnection();
+        }
     }
 
     private void addAlarmsToDatabase(List<Alarm> alarms){
