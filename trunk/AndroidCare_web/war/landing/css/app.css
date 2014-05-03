@@ -1,0 +1,136 @@
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+
+html {
+/* 	-webkit-font-smoothing: antialiased; */
+}
+
+body {
+	background: #424b51;
+	color: #fff;
+}
+
+h1 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 36px;
+	font-weight: normal;
+}
+
+h2 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 28px;
+	font-weight: normal;
+}
+
+h3 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 22px;
+	font-weight: normal;
+}
+
+h4 {
+	font-size: 19px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+h5 {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+h6 {
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: none;
+	letter-spacing: 1px;
+}
+
+p {
+	margin-bottom: 1em;
+}
+
+a {
+	color: #fff;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus,
+.navbar-brand:active,
+.navbar-brand.active {
+	text-decoration: underline;
+}
+
+.btn {
+	background: transparent;
+	color: #fff;
+	-webkit-transition: all 0.2s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+	-moz-transition: all 0.1s ease-out;  /* Firefox 4-15 */
+	-o-transition: all 0.1s ease-out;  /* Opera 10.50â€“12.00 */
+	transition: all 0.1s ease-out;  /* Chrome 26, Firefox 16+, IE 10+, Opera 12.10+ */
+}
+
+
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active,
+.open .dropdown-toggle.btn-default {
+	color: #000;
+	background: #fff;
+	border-color: #fff;
+}
+
+nav.navbar {
+	background: none;
+	border: none;
+	margin-top: 10px;
+	color: #fff;
+}
+
+ul.navbar-nav a:hover {
+	background: transparent;
+	text-decoration: underline;
+}
+
+ul.navbar-nav a.btn-default:hover {
+	background-color: #fff;
+	text-decoration: none;
+}
+
+nav a:hover {
+	text-decoration: underline;
+	color: #fff;
+}
+
+.navbar-inner .navbar-toggle {
+	margin-right: 0;
+	border-color: #fff;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.navbar-inner .navbar-toggle .icon-bar,
+.navbar-inner .navbar-toggle:hover,
+.navbar-inner .navbar-toggle:focus {
+	background-color: #fff;
+}
+
+.navbar-inner .navbar-toggle:hover,
+.navbar-inner .navbar-toggle:focus {
+	color: #000;
+}
+
+div.panel {
+	background:rgba(0, 0, 0, 0.4);
+}
+
+div#hello {
+	position: absolute;
+	top: auto;
+	bottom: 60px;
+	border: none;
+}
