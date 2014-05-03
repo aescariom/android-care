@@ -1,8 +1,9 @@
 package org.androidcare.android.alarms;
 
-import android.util.Log;
+import android.content.Context;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.androidcare.android.database.DatabaseHelper;
 import org.json.JSONArray;
@@ -50,7 +51,8 @@ public class Alarm implements Serializable {
     private Date alarmStartTime;
     @DatabaseField
     private Date alarmEndTime;
-    private List<GeoPoint> geoPoints = new LinkedList();
+    @ForeignCollectionField(eager=true)
+    private Collection<GeoPoint> geoPoints;
 
     @DatabaseField
     private boolean onlyFireAtHome = false;
@@ -68,15 +70,10 @@ public class Alarm implements Serializable {
     // android 2.3.3 and below
     private final static DateFormat dateFormatUTC = new SimpleDateFormat("EEE MMM d HH:mm:ss 'UTC' yyyy",
             Locale.UK);
-//Comentario �trabajo en proceso?
-    private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.UK);
-    private final static DateFormat timeFormatUTC = new SimpleDateFormat("HH:mm 'UTC'", Locale.UK);
-
-    private DatabaseHelper databaseHelper;
 
     public Alarm () {}
 
-    public Alarm (JSONObject jsonObj) throws NumberFormatException, JSONException, ParseException, SQLException {
+    public Alarm (JSONObject jsonObj, Context context) throws NumberFormatException, JSONException, ParseException, SQLException {
         id = Long.parseLong(jsonObj.getString("id"));
         name = jsonObj.getString("name");
 
@@ -86,12 +83,10 @@ public class Alarm implements Serializable {
                 getString("id")));
 
         JSONArray array = new JSONArray(jsonObj.getString("positions"));
-        getHelper().deleteGeoPointsReferedTo(id);
         for (int i = 0; i < array.length(); i++) {
             JSONObject geoPointJSON = array.getJSONObject(i);
-            createGeoPoint(geoPointJSON, id);
+            createGeoPoint(geoPointJSON, this, context);
         }
-        closeDatabaseConnection();
 
         initiateCall = Boolean.parseBoolean(jsonObj.getString("initiateCall"));
         sendSMS = Boolean.parseBoolean(jsonObj.getString("sendSMS"));
@@ -184,8 +179,9 @@ public class Alarm implements Serializable {
         }
     }
 
-    private void createGeoPoint(JSONObject geoPointJSON, long id) throws SQLException, JSONException, ParseException {
-        getHelper().getGeoPointDao().create(new GeoPoint(geoPointJSON, id));
+    private void createGeoPoint(JSONObject geoPointJSON, Alarm alarm, Context context) throws SQLException, JSONException, ParseException {
+        getHelper(context).getGeoPointDao().create(new GeoPoint(geoPointJSON, alarm));
+        closeDatabaseConnection();
     }
 
     @Override
@@ -206,25 +202,33 @@ public class Alarm implements Serializable {
         return  builder.toString();
     }
 
-    private DatabaseHelper getHelper() {
-        if (databaseHelper == null) {
-            databaseHelper = OpenHelperManager.getHelper(null, DatabaseHelper.class);
-        }
-        return databaseHelper;
+    private DatabaseHelper getHelper(Context context) {
+        return OpenHelperManager.getHelper(context, DatabaseHelper.class);
     }
 
     private void closeDatabaseConnection() {
-        if (databaseHelper != null) {
-            OpenHelperManager.releaseHelper();
-            databaseHelper = null;
+        OpenHelperManager.releaseHelper();
+    }
+
+    public List<GeoPoint> getGeoPoints(Context context) {
+       /*
+       Procedimiento alternativo (dejar unso días hasta estar seguros de que funciona)
+
+       List<GeoPoint> points = new ArrayList();
+        try {
+            List<GeoPoint> allpoints = getHelper(context).getGeoPointDao().queryForAll();
+            for (GeoPoint point : allpoints) {
+                if (point.getAlarm().getName().equals(getName())) {
+                    points.add(point);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDatabaseConnection();
         }
-    }
-
-    public List<GeoPoint> getGeoPoints() {
-        return this.geoPoints;
-    }
-
-    public void setGeoPoints(List<GeoPoint> geoPoints) {
-        this.geoPoints = geoPoints;
+        return points;
+        */
+        return new ArrayList<GeoPoint>(this.geoPoints);
     }
 }

@@ -75,9 +75,6 @@
         <!-- wakeUp alarm receiver -->
         <receiver android:name=".service.alarms.WakeUpAlarmReceiver">
         </receiver>
-        <!-- RedZone alarm receiver -->
-        <receiver android:name=".service.alarms.RedZoneAlarmReceiver">
-        </receiver>
         <!-- FellOff alarm receiver -->
         <receiver android:name=".service.alarms.FellOffAlarmReceiver">
         </receiver>

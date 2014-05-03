@@ -12,14 +12,10 @@ import org.androidcare.android.R;
 import org.androidcare.android.service.alarms.AlarmService;
 
 public class UIAlarmConfirmationView extends UIAlarmView {
-//Comentario �ojo! Est�s redefiniendo la variable aqu�, el padre ya tiene una igual
-    private AlarmService alarm;
     private boolean trigger;
 
     public UIAlarmConfirmationView(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm) {
         super(alarmWindowReceiver, alarm);
-        //comentario si realmente hace falta la alarma, ya las almacenado en la llamada super
-        this.alarm = alarm;
 
         this.trigger = true;
 

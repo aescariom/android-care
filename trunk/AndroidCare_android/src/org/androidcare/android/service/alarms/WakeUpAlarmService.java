@@ -32,6 +32,8 @@ public class WakeUpAlarmService extends AlarmService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        Log.d(TAG, "Starting service");
+
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My wakelook");
         wakeLock.acquire();
@@ -42,6 +44,12 @@ public class WakeUpAlarmService extends AlarmService {
         runWatchDog(new GravitySensorRetriever(this), wakeLock);
 
         return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "Stopping service");
+        super.onDestroy();
     }
 
     private void runWatchDog(GravitySensorRetriever gravitySensorRetriever, PowerManager.WakeLock wakeLock) {

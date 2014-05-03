@@ -1,23 +1,30 @@
 package org.androidcare.android.service.alarms;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.GeoPoint;
+import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.location.LocationRetreiver;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class RedZoneAlarmService extends AlarmService {
 
     private static final String TAG = RedZoneAlarmService.class.getName();
     static final int UPDATE_INTERVAL = 10 * 1000;
+    private DatabaseHelper databaseHelper = null;
 
-    private static boolean running = true;
+    private RedZoneAlarmReceiver redZoneAlarmReceiver =
+            new RedZoneAlarmReceiver();
 
     public RedZoneAlarmService() {
         super();
@@ -25,7 +32,8 @@ public class RedZoneAlarmService extends AlarmService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
+        int result = super.onStartCommand(intent, flags, startId);
+        Log.d(TAG, "Red zone alarm service started");
 
         final RedZoneAlarmService alarmService = this;
 
@@ -36,27 +44,31 @@ public class RedZoneAlarmService extends AlarmService {
 
         Bundle bundle = intent.getExtras();
         super.setAlarm((Alarm) bundle.getSerializable("alarm"));
-        new Thread() {
-            public void run() {
-                runWatchDog(new LocationRetreiver(alarmService, wakeLock));
-            }
-        }.start();
 
-        return START_STICKY;
+        runWatchDog(new LocationRetreiver(alarmService, wakeLock));
+
+        return result;
     }
 
     private void runWatchDog(LocationRetreiver locationRetreiver) {
         Log.i(TAG, "Red zone monitor started");
 
-        while (running)  {
-            Log.i(TAG, "Asks for location");
-            locationRetreiver.getLocation();
-            try {
-                Thread.sleep(UPDATE_INTERVAL);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        locationRetreiver.getLocation();
+        scheduleNextRun();
+    }
+
+    private void scheduleNextRun() {
+        Intent intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_ALARM);
+        intent.putExtra("alarm", getAlarm());
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis() + UPDATE_INTERVAL);
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+
+        Log.d(TAG, "Next launch programed @ " + calendar);
     }
 
     @Override
@@ -71,26 +83,30 @@ public class RedZoneAlarmService extends AlarmService {
         int crossings = 0;
 
         Alarm alarm = getAlarm();
-        List<GeoPoint> points = alarm.getGeoPoints();
-        if (points != null) {
-            Log.i(TAG, "number of points " + points.size());
-            for (int i = 0; i < points.size(); i++) {
-                GeoPoint firstGeoPoint = getFirstGeoPoint(i, points);
-                GeoPoint secondGeoPoint = getSecondGeoPoint(i, points);
+        if (alarm != null) {
+            List<GeoPoint> points = alarm.getGeoPoints(getApplicationContext());
+            if (points != null && points.size() > 0) {
+                Log.d(TAG, points.size() + " points found");
+                for (int i = 0; i < points.size(); i++) {
+                    GeoPoint firstGeoPoint = getFirstGeoPoint(i, points);
+                    GeoPoint secondGeoPoint = getSecondGeoPoint(i, points);
 
-                if (rayCrossesSegment(location, firstGeoPoint, secondGeoPoint)) {
-                    crossings++;
+                    if (rayCrossesSegment(location, firstGeoPoint, secondGeoPoint)) {
+                        crossings++;
+                    }
                 }
-            }
 
-            Log.i(TAG, "alarm " + alarm.getName() + " crosses " + crossings);
+                Log.i(TAG, "alarm " + alarm.getName() + " crosses " + crossings);
 
 
-            if (pointIsInPolygon(crossings)) {
-                launchAlarm(wakeLock);
+                if (pointIsInPolygon(crossings)) {
+                    launchAlarm(wakeLock);
+                }
+            } else {
+                Log.w(TAG, "Points for alarm not found");
             }
         } else {
-            Log.w(TAG, "Points for alarm not found");
+            Log.w(TAG, "Alarm not found");
         }
     }
 
@@ -154,6 +170,28 @@ public class RedZoneAlarmService extends AlarmService {
 
     private GeoPoint getSecondGeoPoint(int i, List<GeoPoint> points) {
         return i < (points.size() - 1) ? points.get(i + 1) : points.get(0);
+    }
+
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+
+    private void closeDatabaseConnection() {
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        closeDatabaseConnection();
+
+        Log.d(TAG, "Stopping service");
+        super.onDestroy();
     }
 
 }

@@ -11,9 +11,7 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
-import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
-import org.androidcare.android.service.ConnectionService;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -25,14 +23,16 @@ public class DownloadAlarmsService extends Service {
     public static final long A_DAY = 24 * 60 * 60 * 1000;
     private final String TAG = this.getClass().getName();
 
-    private ConnectionService connectionService;
-    boolean mBound = false;
-
     private DownloadAlarmsReceiver downloadAlarmsReceiver =
-            new DownloadAlarmsReceiver(this);
+            new DownloadAlarmsReceiver();
     private IntentFilter downloadAlarmFilter =
             new IntentFilter(DownloadAlarmsReceiver.ACTION_UPDATE);
     private DatabaseHelper databaseHelper;
+
+    private RedZoneAlarmReceiver redZoneAlarmReceiver =
+            new RedZoneAlarmReceiver();
+    private IntentFilter redZoneAlarmBroadcastFilter =
+            new IntentFilter(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_ALARM);
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -41,6 +41,9 @@ public class DownloadAlarmsService extends Service {
         Log.i(TAG, "Alarms downloads service started");
 
         registerReceiver(downloadAlarmsReceiver, downloadAlarmFilter);
+        Log.d(TAG, "Registred download alarm receiver");
+        registerReceiver(redZoneAlarmReceiver, redZoneAlarmBroadcastFilter);
+        Log.d(TAG, "Registred Red zone alarm receiver");
 
         this.downloadAlarms();
         this.scheduleAlarms();
@@ -69,19 +72,7 @@ public class DownloadAlarmsService extends Service {
         }
 
         for (Alarm alarm : alarms) {
-            ifIsRedZoneAddsGeoPointsTo(alarm);
             scheduleFirstLaunch(alarm);
-        }
-    }
-
-    private void ifIsRedZoneAddsGeoPointsTo(Alarm alarm) {
-        if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
-            try {
-                List<GeoPoint> geoPoints = getHelper().getGeoPointsFor(alarm.getId());
-                alarm.setGeoPoints(geoPoints);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -92,11 +83,13 @@ public class DownloadAlarmsService extends Service {
 
         if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
             intent = new Intent(context, WakeUpAlarmReceiver.class);
+            Log.d(TAG, "Launching Wake up alarm");
         } else if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
-            intent = new Intent(context, RedZoneAlarmReceiver.class);
-            Log.i(TAG, "Alarm sent " + alarm.getGeoPoints().size());
+            intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_ALARM);
+            Log.d(TAG, "Launching Red zone alarm");
         } else if (alarm.getAlarmType() == AlarmType.FELL_OFF) {
             intent = new Intent(context, FellOffAlarmReceiver.class);
+            Log.d(TAG, "Launching Fell off alarm");
         }
 
         intent.putExtra("alarm", alarm);
@@ -147,7 +140,11 @@ public class DownloadAlarmsService extends Service {
 
     @Override
     public void onDestroy() {
+        unregisterReceiver(redZoneAlarmReceiver);
+        Log.i(TAG, "Unregistrd redZoneAlarmReceiver");
         unregisterReceiver(downloadAlarmsReceiver);
+        Log.i(TAG, "Unregistrd downloadAlarmsReceiver");
+        closeDatabaseConnection();
         super.onDestroy();
     }
 }
