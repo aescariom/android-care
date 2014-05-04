@@ -5,10 +5,16 @@
 
 html {
 /* 	-webkit-font-smoothing: antialiased; */
+background: url(../img/bg.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body {
-	background: #424b51;
+	/*background: #424b51;*/
+	background: transparent;
 	color: #fff;
 }
 
@@ -85,7 +91,7 @@ a {
 }
 
 nav.navbar {
-	background: none;
+	background: transparent;
 	border: none;
 	margin-top: 10px;
 	color: #fff;
