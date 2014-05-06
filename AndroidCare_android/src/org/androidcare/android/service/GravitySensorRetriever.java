@@ -34,6 +34,11 @@ public class GravitySensorRetriever implements SensorEventListener{
         registerSensorsListener();
     }
 
+    public void unregister() {
+        sensorManager.unregisterListener(this);
+        subscribedSensor = null;
+    }
+
     public void registerSensorsListener() {
         for (Sensor sensor : deviceSensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -48,9 +53,7 @@ public class GravitySensorRetriever implements SensorEventListener{
     public void onSensorChanged(SensorEvent event) {
         Log.d(TAG, "Sensor changed");
         if (subscribedSensor != null) {
-            subscribedSensor.onChangeSensor(event.values, lock);
-        } else {
-            sensorManager.unregisterListener(this);
+            subscribedSensor.onChangeSensor(event.values, lock, this);
         }
     }
 }
