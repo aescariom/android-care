@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 public class RedZoneAlarmReceiver extends BroadcastReceiver implements Serializable {
 
-    public final static String ACTION_TRIGGER_REDZONE_ALARM = "org.androidcare.android.service.TRIGGER_REDZONE_ALARM";
+    public final static String ACTION_TRIGGER_REDZONE_SENSOR = "org.androidcare.android.service.TRIGGER_REDZONE_SENSOR";
     private final String TAG = this.getClass().getName();
 
     @Override

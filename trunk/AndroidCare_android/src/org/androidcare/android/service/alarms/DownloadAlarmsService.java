@@ -15,24 +15,22 @@ import org.androidcare.android.database.DatabaseHelper;
 
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class DownloadAlarmsService extends Service {
 
     public static final long A_DAY = 24 * 60 * 60 * 1000;
     private final String TAG = this.getClass().getName();
-
-    private DownloadAlarmsReceiver downloadAlarmsReceiver =
-            new DownloadAlarmsReceiver();
-    private IntentFilter downloadAlarmFilter =
-            new IntentFilter(DownloadAlarmsReceiver.ACTION_UPDATE);
     private DatabaseHelper databaseHelper;
 
-    private RedZoneAlarmReceiver redZoneAlarmReceiver =
-            new RedZoneAlarmReceiver();
-    private IntentFilter redZoneAlarmBroadcastFilter =
-            new IntentFilter(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_ALARM);
+    private DownloadAlarmsReceiver downloadAlarmsReceiver = new DownloadAlarmsReceiver();
+    private IntentFilter downloadAlarmFilter = new IntentFilter(DownloadAlarmsReceiver.ACTION_UPDATE);
+
+    private WakeUpAlarmReceiver wakeUpAlarmReceiver = new WakeUpAlarmReceiver();
+    private IntentFilter wakeUpAlarmBroadcastFilter = new IntentFilter(WakeUpAlarmReceiver.ACTION_TRIGGER_WAKEUP_SENSOR);
+
+    private RedZoneAlarmReceiver redZoneAlarmReceiver = new RedZoneAlarmReceiver();
+    private IntentFilter redZoneAlarmBroadcastFilter = new IntentFilter(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -42,6 +40,8 @@ public class DownloadAlarmsService extends Service {
 
         registerReceiver(downloadAlarmsReceiver, downloadAlarmFilter);
         Log.d(TAG, "Registred download alarm receiver");
+        registerReceiver(wakeUpAlarmReceiver, wakeUpAlarmBroadcastFilter);
+        Log.d(TAG, "Registred Wake up alarm receiver");
         registerReceiver(redZoneAlarmReceiver, redZoneAlarmBroadcastFilter);
         Log.d(TAG, "Registred Red zone alarm receiver");
 
@@ -85,7 +85,7 @@ public class DownloadAlarmsService extends Service {
             intent = new Intent(context, WakeUpAlarmReceiver.class);
             Log.d(TAG, "Launching Wake up alarm");
         } else if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
-            intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_ALARM);
+            intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
             Log.d(TAG, "Launching Red zone alarm");
         } else if (alarm.getAlarmType() == AlarmType.FELL_OFF) {
             intent = new Intent(context, FellOffAlarmReceiver.class);
@@ -99,12 +99,14 @@ public class DownloadAlarmsService extends Service {
 
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+
+        Log.d(TAG, "Alarm " + alarm + " scheduled @ " + calendar);
     }
 
     private Calendar getNextTime(Alarm alarm) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-
+        /*
         if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
             calendar.set(Calendar.HOUR_OF_DAY, alarm.getAlarmStartTime().getHours());
             calendar.set(Calendar.MINUTE, alarm.getAlarmStartTime().getMinutes());
@@ -115,6 +117,7 @@ public class DownloadAlarmsService extends Service {
                 calendar.setTimeInMillis(calendarTimeInMillis + A_DAY);
             }
         }
+        */
 
         return calendar;
     }
@@ -142,6 +145,8 @@ public class DownloadAlarmsService extends Service {
     public void onDestroy() {
         unregisterReceiver(redZoneAlarmReceiver);
         Log.i(TAG, "Unregistrd redZoneAlarmReceiver");
+        unregisterReceiver(wakeUpAlarmReceiver);
+        Log.i(TAG, "Unregistrd wakeUpAlarmReceiver");
         unregisterReceiver(downloadAlarmsReceiver);
         Log.i(TAG, "Unregistrd downloadAlarmsReceiver");
         closeDatabaseConnection();

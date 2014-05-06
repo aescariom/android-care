@@ -9,6 +9,7 @@ import org.androidcare.android.alarms.Alarm;
 
 public class WakeUpAlarmReceiver extends BroadcastReceiver {
 
+    public final static String ACTION_TRIGGER_WAKEUP_SENSOR = "org.androidcare.android.service.TRIGGER_WAKEUP_SENSOR";
     private final String TAG = this.getClass().getName();
 
     @Override

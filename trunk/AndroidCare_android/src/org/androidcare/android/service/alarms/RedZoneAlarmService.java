@@ -8,7 +8,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
@@ -58,7 +57,7 @@ public class RedZoneAlarmService extends AlarmService {
     }
 
     private void scheduleNextRun() {
-        Intent intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_ALARM);
+        Intent intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
         intent.putExtra("alarm", getAlarm());
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -172,24 +171,8 @@ public class RedZoneAlarmService extends AlarmService {
         return i < (points.size() - 1) ? points.get(i + 1) : points.get(0);
     }
 
-    private DatabaseHelper getHelper() {
-        if (databaseHelper == null) {
-            databaseHelper = OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
-        }
-        return databaseHelper;
-    }
-
-    private void closeDatabaseConnection() {
-        if (databaseHelper != null) {
-            OpenHelperManager.releaseHelper();
-            databaseHelper = null;
-        }
-    }
-
     @Override
     public void onDestroy() {
-        closeDatabaseConnection();
-
         Log.d(TAG, "Stopping service");
         super.onDestroy();
     }
