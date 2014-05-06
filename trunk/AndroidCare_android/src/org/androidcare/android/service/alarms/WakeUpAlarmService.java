@@ -1,7 +1,5 @@
 package org.androidcare.android.service.alarms;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +12,6 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.service.GravitySensorRetriever;
 import org.androidcare.android.service.alarms.receivers.WakeUpAlarmReceiver;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class WakeUpAlarmService extends AlarmService implements GravitySensorListener {
@@ -25,15 +22,10 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
     private float lastY = 0;
     private float lastZ = 0;
     private String TAG = this.getClass().getName();
-    private boolean isTheAlarmAlreadyLaunched = false;
+    private boolean isTheAlarmLaunchable = true;
 
     public WakeUpAlarmService() {
         super();
-    }
-
-    @Override
-    public void onCreate() {
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
     }
 
     @Override
@@ -64,17 +56,19 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
     }
 
     @Override
-    public void onChangeSensor(float[] values, PowerManager.WakeLock lock) {
+    public void onChangeSensor(float[] values, PowerManager.WakeLock lock, GravitySensorRetriever retriever) {
         Log.e(TAG, "sensor values: " + values[0] + "; " + values[1] + "; " + values[2]);
-        detectMovement(values, lock);
+        detectMovement(values, lock, retriever);
         if (mustLaunchAlarmByTime()) {
-            launchAlarm(lock);
+            launchAlarm(lock, retriever);
         }
     }
 
-    private void detectMovement(float[] values, PowerManager.WakeLock lock) {
+    private void detectMovement(float[] values, PowerManager.WakeLock lock, GravitySensorRetriever retriever) {
         if (lastX != 0.0f && lastY != 0.0f && lastZ != 0.0f ) {
             if (isOutOfinterval(values)) {
+                isTheAlarmLaunchable = false;
+                retriever.unregister();
                 finishRunning(lock);
             }
         }
@@ -98,13 +92,13 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
                 lastZ + DELTA < sensorsData[2] || sensorsData[2] < lastX - DELTA;
     }
 
-    private void launchAlarm(PowerManager.WakeLock lock) {
+    private void launchAlarm(PowerManager.WakeLock lock, GravitySensorRetriever retriever) {
         Log.d(TAG, "INITIATE ALARM LAUNCH");
-        if (! isTheAlarmAlreadyLaunched) {
+        if (isTheAlarmLaunchable) {
             abstractInitiateAlarm();
-            isTheAlarmAlreadyLaunched = true;
+            isTheAlarmLaunchable = false;
         }
-
+        retriever.unregister();
         finishRunning(lock);
     }
 
