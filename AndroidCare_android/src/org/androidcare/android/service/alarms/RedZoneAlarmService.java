@@ -11,6 +11,7 @@ import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
+import org.androidcare.android.service.alarms.receivers.RedZoneAlarmReceiver;
 import org.androidcare.android.service.location.LocationRetreiver;
 
 import java.util.Calendar;
@@ -53,10 +54,10 @@ public class RedZoneAlarmService extends AlarmService {
         Log.i(TAG, "Red zone monitor started");
 
         locationRetreiver.getLocation();
-        scheduleNextRun();
+        scheduleNextLaunch();
     }
 
-    private void scheduleNextRun() {
+    private void scheduleNextLaunch() {
         Intent intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
         intent.putExtra("alarm", getAlarm());
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);

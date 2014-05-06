@@ -70,13 +70,13 @@
         <receiver android:name=".service.location.UpdateLocationReceiver">
         </receiver>
         <!-- get alarms receiver -->
-        <receiver android:name=".service.alarms.DownloadAlarmsReceiver">
+        <receiver android:name=".service.alarms.receivers.DownloadAlarmsReceiver">
         </receiver>
         <!-- wakeUp alarm receiver -->
-        <receiver android:name=".service.alarms.WakeUpAlarmReceiver">
+        <receiver android:name=".service.alarms.receivers.WakeUpAlarmReceiver">
         </receiver>
         <!-- FellOff alarm receiver -->
-        <receiver android:name=".service.alarms.FellOffAlarmReceiver">
+        <receiver android:name=".service.alarms.receivers.FellOffAlarmReceiver">
         </receiver>
 
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
