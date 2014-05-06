@@ -1,4 +1,4 @@
-package org.androidcare.android.service.alarms;
+package org.androidcare.android.service.alarms.messages;
 
 import android.util.Log;
 import com.j256.ormlite.field.DatabaseField;

@@ -1,4 +1,4 @@
-package org.androidcare.android.service.alarms;
+package org.androidcare.android.service.alarms.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.service.alarms.RedZoneAlarmService;
 
 import java.io.Serializable;
 

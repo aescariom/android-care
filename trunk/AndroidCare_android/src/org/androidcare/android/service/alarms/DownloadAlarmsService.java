@@ -12,9 +12,14 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
 import org.androidcare.android.database.DatabaseHelper;
+import org.androidcare.android.service.alarms.receivers.DownloadAlarmsReceiver;
+import org.androidcare.android.service.alarms.receivers.FellOffAlarmReceiver;
+import org.androidcare.android.service.alarms.receivers.RedZoneAlarmReceiver;
+import org.androidcare.android.service.alarms.receivers.WakeUpAlarmReceiver;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DownloadAlarmsService extends Service {
@@ -82,7 +87,8 @@ public class DownloadAlarmsService extends Service {
         Intent intent = null;
 
         if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
-            intent = new Intent(context, WakeUpAlarmReceiver.class);
+            intent = new Intent(WakeUpAlarmReceiver.ACTION_TRIGGER_WAKEUP_SENSOR);
+
             Log.d(TAG, "Launching Wake up alarm");
         } else if (alarm.getAlarmType() == AlarmType.RED_ZONE) {
             intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
@@ -106,7 +112,7 @@ public class DownloadAlarmsService extends Service {
     private Calendar getNextTime(Alarm alarm) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        /*
+
         if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
             calendar.set(Calendar.HOUR_OF_DAY, alarm.getAlarmStartTime().getHours());
             calendar.set(Calendar.MINUTE, alarm.getAlarmStartTime().getMinutes());
@@ -117,7 +123,6 @@ public class DownloadAlarmsService extends Service {
                 calendar.setTimeInMillis(calendarTimeInMillis + A_DAY);
             }
         }
-        */
 
         return calendar;
     }
@@ -144,11 +149,11 @@ public class DownloadAlarmsService extends Service {
     @Override
     public void onDestroy() {
         unregisterReceiver(redZoneAlarmReceiver);
-        Log.i(TAG, "Unregistrd redZoneAlarmReceiver");
+        Log.i(TAG, "Unregistred redZoneAlarmReceiver");
         unregisterReceiver(wakeUpAlarmReceiver);
-        Log.i(TAG, "Unregistrd wakeUpAlarmReceiver");
+        Log.i(TAG, "Unregistred wakeUpAlarmReceiver");
         unregisterReceiver(downloadAlarmsReceiver);
-        Log.i(TAG, "Unregistrd downloadAlarmsReceiver");
+        Log.i(TAG, "Unregistred downloadAlarmsReceiver");
         closeDatabaseConnection();
         super.onDestroy();
     }

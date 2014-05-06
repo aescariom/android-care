@@ -1,4 +1,4 @@
-package org.androidcare.android.service.alarms;
+package org.androidcare.android.service.alarms.receivers;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -7,12 +7,14 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import org.androidcare.android.service.ConnectionService;
+import org.androidcare.android.service.alarms.messages.GetAlarmsMessage;
 
 import java.util.Calendar;
 
 public class DownloadAlarmsReceiver extends BroadcastReceiver {
 
     public static final String ACTION_UPDATE = "org.androidcare.android.service.UPDATE_ALARMS";
+    private final String TAG = this.getClass().getName();
     private ConnectionService connectionService;
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -29,7 +31,6 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
         }
     };
 
-
     public DownloadAlarmsReceiver(){
         super();
     }
@@ -39,6 +40,8 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
         context.getApplicationContext().bindService(
                 new Intent(context.getApplicationContext(), ConnectionService.class),
                 mConnection, Context.BIND_AUTO_CREATE);
+
+        Log.d(TAG, "Starts downloading files");
 
         Calendar cal = Calendar.getInstance();
 
@@ -56,8 +59,7 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
 
         Log.d("RefreshReminders", "The reminders will be reloaded in " + hours + " hours");
 
-        //long fourHours = hours * 60 * 60 * 1000;
-        long fourHours = hours * 60 * 1000;  // ahora son minutos (TEST)
+        long fourHours = hours * 60 * 60 * 1000;
 
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, DownloadAlarmsReceiver.class);

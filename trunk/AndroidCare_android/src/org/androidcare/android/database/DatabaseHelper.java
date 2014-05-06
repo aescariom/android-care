@@ -11,17 +11,15 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
-import org.androidcare.android.service.alarms.GetAlarmsMessage;
-import org.androidcare.android.service.alarms.SendEmailMessage;
+import org.androidcare.android.service.alarms.messages.GetAlarmsMessage;
+import org.androidcare.android.service.alarms.messages.SendEmailMessage;
 import org.androidcare.android.service.location.LocationMessage;
 import org.androidcare.android.service.reminders.GetRemindersMessage;
 import org.androidcare.android.service.reminders.ReminderLogMessage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 

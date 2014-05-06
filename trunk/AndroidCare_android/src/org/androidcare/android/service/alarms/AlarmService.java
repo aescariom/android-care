@@ -11,6 +11,7 @@ import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
+import org.androidcare.android.service.alarms.messages.SendEmailMessage;
 import org.androidcare.android.view.alarm.AlarmReceiver;
 
 import java.io.Serializable;

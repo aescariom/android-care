@@ -1,4 +1,4 @@
-package org.androidcare.android.service.alarms;
+package org.androidcare.android.service.alarms.messages;
 
 import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -47,6 +47,8 @@ public class GetAlarmsMessage extends Message {
     public void onPostSend(HttpResponse response) throws InvalidMessageResponseException {
         /* aka onAfterSend */
         super.onPostSend(response);
+
+        Log.d(TAG, "Starts processing alarms from server");
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
