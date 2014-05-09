@@ -17,8 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
-import org.androidcare.android.service.PushMessagesReceiver;
-import org.androidcare.android.service.alarms.RedZoneAlarmService;
+import org.androidcare.android.service.alarms.GreenZoneAlarmService;
 
 import java.util.List;
 
@@ -49,8 +48,8 @@ public class LocationRetreiver implements LocationListener {
     public void onLocationChanged(Location location) {
         if (parentService.getClass() == LocationService.class) {
             postData(new LocationMessage(location));
-        } else if (parentService.getClass() == RedZoneAlarmService.class) {
-            RedZoneAlarmService redZoneAlarm = (RedZoneAlarmService) parentService;
+        } else if (parentService.getClass() == GreenZoneAlarmService.class) {
+            GreenZoneAlarmService redZoneAlarm = (GreenZoneAlarmService) parentService;
             redZoneAlarm.analyzeThe(location, wakeLock);
         } else {
             throw new RuntimeException("No idea what should I do with this...");

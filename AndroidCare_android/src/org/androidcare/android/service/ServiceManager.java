@@ -28,7 +28,7 @@ public abstract class ServiceManager {
         context.stopService(new Intent(context, DownloadAlarmsService.class));
         context.stopService(new Intent(context, AlarmService.class));
         context.stopService(new Intent(context, WakeUpAlarmService.class));
-        context.stopService(new Intent(context, RedZoneAlarmService.class));
+        context.stopService(new Intent(context, GreenZoneAlarmService.class));
         context.stopService(new Intent(context, FellOffAlarmService.class));
         context.stopService(new Intent(context, ReminderService.class));
     }

@@ -26,30 +26,25 @@ public class GetRemindersMessage extends Message {
 
     public GetRemindersMessage(){
         super();
-        Log.e("GetRemindersMessage", "GetRemindersMessage()");
     }
     
     public GetRemindersMessage(ReminderService reminderService) {
         super();
-        Log.e("GetRemindersMessage", "GetRemindersMessage()");
         GetRemindersMessage.reminderService = reminderService;
     }
     
     public static void setReminderService(ReminderService reminderService){
-        Log.e("GetRemindersMessage", "setReminderService()");
         GetRemindersMessage.reminderService = reminderService;
     }
 
     @Override
     public HttpRequestBase getHttpRequestBase() throws UnsupportedEncodingException {
-        Log.e("GetRemindersMessage", "getHttpRequestBase()");
         HttpGet get = new HttpGet(ConnectionService.getAppUrl() + REMINDERS_URL);
         return get;
     }
 
     @Override
     public void onPostSend(HttpResponse response) throws InvalidMessageResponseException {
-        Log.e("GetRemindersMessage", "onPostSend()");
         super.onPostSend(response);
         Reminder[] reminders = null;
 

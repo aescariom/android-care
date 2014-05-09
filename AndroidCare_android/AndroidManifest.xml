@@ -82,7 +82,7 @@
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service android:enabled="true" android:name=".service.alarms.AlarmService" />
         <service android:enabled="true" android:name=".service.alarms.WakeUpAlarmService" />
-        <service android:enabled="true" android:name=".service.alarms.RedZoneAlarmService" />
+        <service android:enabled="true" android:name=".service.alarms.GreenZoneAlarmService" />
         <service android:enabled="true" android:name=".service.alarms.FellOffAlarmService" />
         <service android:enabled="true" android:name=".service.alarms.DownloadAlarmsService" />
         <service android:enabled="true" android:name=".service.reminders.ReminderService" />

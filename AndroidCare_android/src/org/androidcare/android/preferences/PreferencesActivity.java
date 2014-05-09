@@ -130,8 +130,6 @@ public class PreferencesActivity extends PreferenceActivity {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.zero_accounts);
         alertDialog.setMessage(getResources().getString(R.string.setup_google_account));
-//Comentario estos dos warnings pod�amos resolver los
-    //    http://stackoverflow.com/questions/13268302/alternative-setbutton
         alertDialog.setButton(getResources().getString(R.string.open_account_settings),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -151,7 +149,4 @@ public class PreferencesActivity extends PreferenceActivity {
         alertDialog.setIcon(R.drawable.notification_icon);
         alertDialog.show();
     }
-    
-    //Comentario la funcionalidad que ten�amos aqu� para parar y arrancar los servicios a veces nos fue �til para depurar
-    //�las borrado por alg�n motivo?
 }
