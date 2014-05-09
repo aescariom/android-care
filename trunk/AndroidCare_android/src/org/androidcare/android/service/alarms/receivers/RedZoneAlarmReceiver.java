@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
-import org.androidcare.android.service.alarms.RedZoneAlarmService;
+import org.androidcare.android.service.alarms.GreenZoneAlarmService;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ public class RedZoneAlarmReceiver extends BroadcastReceiver implements Serializa
         Bundle bundle = intent.getExtras();
         Alarm alarm= (Alarm) bundle.getSerializable("alarm");
 
-            Intent serviceIntent = new Intent(context, RedZoneAlarmService.class);
+            Intent serviceIntent = new Intent(context, GreenZoneAlarmService.class);
             serviceIntent.putExtra("alarm", alarm);
 
             context.startService(serviceIntent);

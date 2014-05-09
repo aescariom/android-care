@@ -33,9 +33,4 @@ public class UIAlarmView extends RelativeLayout{
         playSoundTask.execute(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
         //vibrationTask.doInBackground(1500);
     }
-    //Comentario mira que eres chapuzas. Haces copiar y pegar el c�digo de Alejandro.
-    //Convierte estas dos clases en publicas  y tales un  constructor
-    //al que se le pasen los par�metros que hagan falta y usarlas en tu c�digo
-    //Y en el de Alejandro en vez de copiar y pegar
-
 }

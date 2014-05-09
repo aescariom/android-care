@@ -191,8 +191,8 @@ public class Alarm implements Serializable {
 
         if (alarmType == AlarmType.WAKE_UP) {
             builder.append(AlarmType.WAKE_UP.getDescription());
-        } else if (alarmType == AlarmType.RED_ZONE) {
-            builder.append(AlarmType.RED_ZONE.getDescription());
+        } else if (alarmType == AlarmType.GREEN_ZONE) {
+            builder.append(AlarmType.GREEN_ZONE.getDescription());
         } else if (alarmType == AlarmType.FELL_OFF) {
             builder.append(AlarmType.FELL_OFF.getDescription());
         } else {

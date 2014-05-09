@@ -50,7 +50,6 @@ public class ReminderService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Stopping service");
-        //comentario ¿por qué? ¿qué tiene que ver que se pare el servicio con cancelar los recordatorios?
         cancelAllReminders();
         unregisterReceiver(reminderServiceReceiver);
         closeDatabaseConnection();

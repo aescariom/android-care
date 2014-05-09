@@ -17,25 +17,25 @@ import org.androidcare.android.service.location.LocationRetreiver;
 import java.util.Calendar;
 import java.util.List;
 
-public class RedZoneAlarmService extends AlarmService {
+public class GreenZoneAlarmService extends AlarmService {
 
-    private static final String TAG = RedZoneAlarmService.class.getName();
+    private static final String TAG = GreenZoneAlarmService.class.getName();
     static final int UPDATE_INTERVAL = 10 * 1000;
     private DatabaseHelper databaseHelper = null;
 
     private RedZoneAlarmReceiver redZoneAlarmReceiver =
             new RedZoneAlarmReceiver();
 
-    public RedZoneAlarmService() {
+    public GreenZoneAlarmService() {
         super();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
-        Log.d(TAG, "Red zone alarm service started");
+        Log.d(TAG, "Green zone alarm service started");
 
-        final RedZoneAlarmService alarmService = this;
+        final GreenZoneAlarmService alarmService = this;
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         final PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wakelook " + TAG);
@@ -99,7 +99,7 @@ public class RedZoneAlarmService extends AlarmService {
                 Log.i(TAG, "alarm " + alarm.getName() + " crosses " + crossings);
 
 
-                if (pointIsInPolygon(crossings)) {
+                if (!pointIsInPolygon(crossings)) {
                     launchAlarm(wakeLock);
                 }
             } else {
@@ -111,12 +111,7 @@ public class RedZoneAlarmService extends AlarmService {
     }
 
     private void launchAlarm(PowerManager.WakeLock wakeLock) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                abstractInitiateAlarm();
-            }
-        }).start();
+        abstractInitiateAlarm();
 
         if(wakeLock.isHeld()){
             wakeLock.release();
