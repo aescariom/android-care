@@ -59,6 +59,7 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
     public void onChangeSensor(float[] values, PowerManager.WakeLock lock, GravitySensorRetriever retriever) {
         Log.e(TAG, "sensor values: " + values[0] + "; " + values[1] + "; " + values[2]);
         detectMovement(values, lock, retriever);
+        Log.d(TAG, "End time " + getAlarm().getAlarmEndTime() + " must launch " + mustLaunchAlarmByTime());
         if (mustLaunchAlarmByTime()) {
             launchAlarm(lock, retriever);
         }
@@ -117,7 +118,7 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
     }
 
     private boolean mustLaunchAlarmByTime() {
-        Alarm alarm = super.getAlarm();
+        Alarm alarm = getAlarm();
         Date endTime = alarm.getAlarmEndTime();
         Date now = new Date();
         return isNowAfterEndTime(now, endTime);

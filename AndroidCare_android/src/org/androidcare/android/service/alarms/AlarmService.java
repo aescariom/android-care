@@ -12,7 +12,7 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.alarms.messages.SendEmailMessage;
-import org.androidcare.android.view.alarm.AlarmReceiver;
+import org.androidcare.android.view.UserWarningReceiver;
 
 import java.io.Serializable;
 
@@ -92,8 +92,9 @@ public class AlarmService extends Service implements Serializable {
     }
 
     public void confirmationUser() {
-        Intent warningIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        warningIntent.putExtra("alarm_service", this);
+        Intent warningIntent = new Intent(getApplicationContext(), UserWarningReceiver.class);
+        warningIntent.putExtra("type", "alarm");
+        warningIntent.putExtra("displayable", this);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, warningIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -104,9 +105,7 @@ public class AlarmService extends Service implements Serializable {
         }
     }
 
-    public void abstractInitiateAlarm() {
-
-    }
+    public void abstractInitiateAlarm() {}
 
     public Alarm getAlarm() {
         return this.alarm;

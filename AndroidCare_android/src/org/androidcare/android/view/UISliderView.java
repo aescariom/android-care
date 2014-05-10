@@ -1,47 +1,52 @@
 package org.androidcare.android.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.*;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import org.androidcare.android.R;
-import org.androidcare.android.alarms.Alarm;
-import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.reminders.ReminderStatusCode;
-import org.androidcare.android.service.reminders.ReminderLogMessage;
 import org.androidcare.android.widget.SlideButton;
 
-import java.io.File;
+import java.io.Serializable;
 
 public class UISliderView extends RelativeLayout {
 
     private final String TAG = this.getClass().getName();
     protected SlideButton sbtnUnlock;
     protected long sleepSoundTime = 500;
-    protected long sleepVibrationTime = 1000;
+    protected TextView lblTitle;
     protected static final long TOO_MUCH_TIME_MAKING_SOUND = 2*60*1000; //2 min
     protected static final long TOO_MUCH_TIME_VIBRATING = 2*60*1000; //2 min
     protected PlaySoundTask playSoundTask;
     protected VibrationTask vibrationTask;
+    private Activity activity;
+    private boolean shouldFire = true;
 
-    public UISliderView(Activity activity, Alarm alarm) {
+    public UISliderView(final Activity activity, final String type, final Serializable displayable) {
+        super(activity.getApplicationContext());
+
+        this.activity = activity;
+        playSoundTask = new PlaySoundTask();
+        vibrationTask = new VibrationTask();
+
         inflate(activity, R.layout.basic_reminder_ui_sliders, this);
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        lblTitle = (TextView) findViewById(R.id.txtReminderTitlePreview);
 
         // 2 - turning on the screen, display the activity over the locked screen, keeping the screen on,
         // and unlocking the keyboard
@@ -58,18 +63,44 @@ public class UISliderView extends RelativeLayout {
         sbtnUnlock.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                cancelVibrationAndSound();
-                RelativeLayout rootLayout = (RelativeLayout)findViewById(R.id.RootLayout);
-                FrameLayout unlockLayout = (FrameLayout)findViewById(R.id.unlockLayout);
-
-                rootLayout.setVisibility(VISIBLE);
-                unlockLayout.setVisibility(INVISIBLE);
+                closeWindow(type, displayable);
+                shouldFire = false;
             }
         });
 
         // Noise + vibration
         playSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
         vibrate(1500);
+
+        if ("alarm".equals(type)) {
+            new CountDownTimer(30 * 1000, 1 * 1000) {
+                public void onTick(long millisUntilFinished) {
+                    lblTitle.setText(String.valueOf(millisUntilFinished / 1000));
+                }
+
+                public void onFinish() {
+                    if (shouldFire) {
+                        closeWindow(type, displayable);
+                    }
+                }
+
+            }.start();
+        }
+    }
+
+    private void closeWindow(String type, Serializable displayable) {
+        cancelVibrationAndSound();
+        FrameLayout unlockLayout = (FrameLayout)findViewById(R.id.unlockLayout);
+
+        unlockLayout.setVisibility(INVISIBLE);
+
+        Intent intent = new Intent(getContext(), SpecificWarningActivityLauncher.class);
+        intent.putExtra("type", type);
+        intent.putExtra("displayable", displayable);
+
+        Log.d(TAG, "Starting specific window once slided.");
+
+        activity.getApplicationContext().sendBroadcast(intent);
     }
 
     protected void cancelVibrationAndSound() {
@@ -82,7 +113,7 @@ public class UISliderView extends RelativeLayout {
         @Override
         protected Void doInBackground(Uri... params) {
             try {
-                Activity context = (Activity)getContext();
+                Context context = getContext();
 
                 // 1 - getting the sound
                 MediaPlayer mMediaPlayer = new MediaPlayer();
@@ -96,10 +127,6 @@ public class UISliderView extends RelativeLayout {
                     mMediaPlayer.prepare();
                     mMediaPlayer.start();
                     while(!isCancelled() && timeMakingSound < TOO_MUCH_TIME_MAKING_SOUND){
-                        boolean finish = context.isFinishing();
-                        if(finish){
-                            break;
-                        }
                         Thread.sleep(sleepSoundTime);
                         timeMakingSound+=sleepSoundTime;
                     }
@@ -107,7 +134,7 @@ public class UISliderView extends RelativeLayout {
                 }
             }
             catch (Exception e) {
-                Log.e(TAG, "Could not play the sound when reminder was received", e);
+                Log.e(TAG, "Could not play the sound", e);
             }
             return null;
         }
@@ -118,16 +145,15 @@ public class UISliderView extends RelativeLayout {
 
         @Override
         protected Void doInBackground(Integer... params) {
-            Activity context = (Activity)getContext();
             int timeOfEachVibration = params[0];
 
             // Get instance of Vibrator from current Context
-            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            Vibrator vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
 
             // Vibrate for 'length' milliseconds
             try {
                 while(!isCancelled() && timeVibrating < TOO_MUCH_TIME_VIBRATING){
-                    boolean finish = context.isFinishing();
+                    boolean finish = activity.isFinishing();
                     if(finish){
                         break;
                     }
@@ -143,7 +169,13 @@ public class UISliderView extends RelativeLayout {
         }
     }
 
+    protected void playSound(Uri soundUri) {
+        playSoundTask.execute(soundUri);
+    }
 
+    protected void vibrate(int length){
+        vibrationTask.execute(length);
+    }
 
 }
 

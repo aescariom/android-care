@@ -1,4 +1,4 @@
-package org.androidcare.android.view;
+package org.androidcare.android.view.reminder;
 
 import org.androidcare.android.reminders.Reminder;
 

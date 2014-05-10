@@ -1,4 +1,4 @@
-package org.androidcare.android.view;
+package org.androidcare.android.view.reminder;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
