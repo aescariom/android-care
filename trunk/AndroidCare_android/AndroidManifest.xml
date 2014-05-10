@@ -36,7 +36,7 @@
             android:name=".preferences.AdvancedPreferencesActivity" >
         </activity>
         <activity
-            android:name=".view.ReminderDialogReceiver"
+            android:name=".view.reminder.ReminderDialogReceiver"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
@@ -56,9 +56,13 @@
         <activity android:name=".view.alarm.AlarmWindowReceiver"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+        <activity android:name=".view.UserWarningDialogReceiver">
+        </activity>
+        <activity android:name=".view.SpecificWarningActivityLauncher">
+        </activity>
 
         <!-- reminder notification receiver -->
-        <receiver android:name=".view.ReminderReceiver">
+        <receiver android:name=".view.reminder.ReminderReceiver">
         </receiver>
         <!-- get reminders receiver -->
         <receiver android:name=".service.reminders.RefreshRemindersReceiver">
@@ -77,6 +81,12 @@
         </receiver>
         <!-- FellOff alarm receiver -->
         <receiver android:name=".service.alarms.receivers.FellOffAlarmReceiver">
+        </receiver>
+        <!-- User warning Window caller receiver -->
+        <receiver android:name=".view.UserWarningReceiver">
+        </receiver>
+        <!-- Specific window activity launcher receiver -->
+        <receiver android:name=".view.SpecificWarningActivityLauncher">
         </receiver>
 
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->

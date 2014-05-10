@@ -15,7 +15,7 @@ public class UIAlarmConfirmationView extends UIAlarmView {
     private boolean trigger;
 
     public UIAlarmConfirmationView(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm) {
-        super(alarmWindowReceiver, alarm);
+        super(alarmWindowReceiver);
 
         this.trigger = true;
 
@@ -29,14 +29,13 @@ public class UIAlarmConfirmationView extends UIAlarmView {
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                         | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-
-        startPlayingSoundAndVibration();
+                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+        );
     }
 
     private void startCountdown(final AlarmWindowReceiver alarmWindowReceiver, final AlarmService alarm, final Button okButton) {
         final String launchAlarmText = alarmWindowReceiver.getApplicationContext().getString(R.string.LaunchAlarm);
-        new CountDownTimer(30 * 1000, 1 * 1000) {
+        new CountDownTimer(5 * 1000, 1 * 1000) {
 
             public void onTick(long millisUntilFinished) {
                 okButton.setText(new StringBuilder().append(launchAlarmText).append(millisUntilFinished / 1000).append(")").toString());
@@ -83,7 +82,6 @@ public class UIAlarmConfirmationView extends UIAlarmView {
     }
 
     public void closeWindow() {
-        stopPlayingSoundAndVibration();
         Activity parent = (Activity) getContext();
         parent.finish();
     }

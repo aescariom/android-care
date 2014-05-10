@@ -11,8 +11,8 @@ public class AlarmWindowReceiver extends Activity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-        AlarmService alarm = (AlarmService) bundle.getSerializable("alarm_service");
-        UIAlarmView view = UIAlarmViewFactory.createUIAlarmView(this, alarm);
+        AlarmService alarmService = (AlarmService) bundle.getSerializable("alarm");
+        UIAlarmView view = UIAlarmViewFactory.createUIAlarmView(this, alarmService);
         this.setContentView(view);
     }
 }

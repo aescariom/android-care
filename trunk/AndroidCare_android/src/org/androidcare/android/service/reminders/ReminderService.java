@@ -6,13 +6,12 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.view.ReminderReceiver;
+import org.androidcare.android.view.UserWarningReceiver;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -114,11 +113,10 @@ public class ReminderService extends Service {
     }
     
     private Intent createReminderIntent(Reminder reminder) {
-        Intent intent = new Intent(this.getApplicationContext(), ReminderReceiver.class);
-        intent.setData(Uri.parse("androidCare://" + reminder.getId() + ".- " + reminder.getTitle()));
+        Intent intent = new Intent(this.getApplicationContext(), UserWarningReceiver.class);
+        intent.putExtra("type", "reminder");
+        intent.putExtra("displayable", reminder);
 
-        intent.putExtra("reminder", reminder);
-        
         return intent;
     }
 

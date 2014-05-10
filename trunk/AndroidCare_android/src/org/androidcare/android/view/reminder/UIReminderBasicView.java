@@ -1,16 +1,4 @@
-package org.androidcare.android.view;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
-import org.androidcare.android.R;
-import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.reminders.ReminderStatusCode;
-import org.androidcare.android.service.reminders.ReminderLogMessage;
-import org.androidcare.android.widget.SlideButton;
+package org.androidcare.android.view.reminder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,12 +7,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import org.androidcare.android.R;
+import org.androidcare.android.reminders.Reminder;
+import org.androidcare.android.reminders.ReminderStatusCode;
+import org.androidcare.android.service.reminders.ReminderLogMessage;
+
+import java.io.File;
 
 public class UIReminderBasicView extends UIReminderView {
 

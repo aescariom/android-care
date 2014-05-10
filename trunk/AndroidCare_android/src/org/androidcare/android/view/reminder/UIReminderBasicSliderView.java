@@ -1,12 +1,4 @@
-package org.androidcare.android.view;
-
-import java.io.File;
-
-import org.androidcare.android.R;
-import org.androidcare.android.reminders.Reminder;
-import org.androidcare.android.reminders.ReminderStatusCode;
-import org.androidcare.android.service.reminders.ReminderLogMessage;
-import org.androidcare.android.widget.SlideButton;
+package org.androidcare.android.view.reminder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,11 +10,14 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.RingtoneManager;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
+import org.androidcare.android.R;
+import org.androidcare.android.reminders.Reminder;
+import org.androidcare.android.reminders.ReminderStatusCode;
+import org.androidcare.android.service.reminders.ReminderLogMessage;
+import org.androidcare.android.widget.SlideButton;
+
+import java.io.File;
 
 public class UIReminderBasicSliderView extends UIReminderView {
 

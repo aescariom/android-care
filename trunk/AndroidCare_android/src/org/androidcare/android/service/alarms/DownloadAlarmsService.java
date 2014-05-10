@@ -88,7 +88,6 @@ public class DownloadAlarmsService extends Service {
 
         if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
             intent = new Intent(WakeUpAlarmReceiver.ACTION_TRIGGER_WAKEUP_SENSOR);
-
             Log.d(TAG, "Launching Wake up alarm");
         } else if (alarm.getAlarmType() == AlarmType.GREEN_ZONE) {
             intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);

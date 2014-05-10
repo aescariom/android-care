@@ -1,11 +1,9 @@
-package org.androidcare.android.view;
+package org.androidcare.android.view.reminder;
 
-import org.androidcare.android.R;
 import org.androidcare.android.reminders.Reminder;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
 
 public class ReminderDialogReceiver extends Activity {
 

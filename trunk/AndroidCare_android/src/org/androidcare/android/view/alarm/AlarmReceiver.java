@@ -15,13 +15,13 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        AlarmService alarm = (AlarmService) bundle.getSerializable("alarm_service");
+        AlarmService alarm = (AlarmService) bundle.getSerializable("alarm");
         displayAlarm(context, alarm);
     }
 
     private void displayAlarm(Context context, AlarmService alarm) {
         Intent intent = new Intent(context, AlarmWindowReceiver.class);
-        intent.putExtra("alarm_service", alarm);
+        intent.putExtra("alarm", alarm);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         try {
@@ -30,7 +30,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.e(TAG, "Alarm Service PendingIntent cancelled: " + e.getMessage(), e);
             e.printStackTrace();
         }
-
     }
 
 }
