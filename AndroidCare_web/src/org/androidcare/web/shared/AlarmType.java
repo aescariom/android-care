@@ -2,7 +2,7 @@ package org.androidcare.web.shared;
 
 public enum AlarmType {
     WAKE_UP(1, "Wake up"),
-    RED_ZONE(2, "Red zone"),
+    GREEN_ZONE(2, "Green zone"),
     FELL_OFF(3, "Fell off");
 
     private int id;
@@ -24,8 +24,8 @@ public enum AlarmType {
     public static AlarmType getAlarmType(String v) {
         if ((AlarmType.WAKE_UP.toString()).equals(v)) {
             return AlarmType.WAKE_UP;
-        } else if ((AlarmType.RED_ZONE.toString()).equals(v)) {
-            return AlarmType.RED_ZONE;
+        } else if ((AlarmType.GREEN_ZONE.toString()).equals(v)) {
+            return AlarmType.GREEN_ZONE;
         } else if ((AlarmType.FELL_OFF.toString()).equals(v)) {
             return AlarmType.FELL_OFF;
         } else {
@@ -36,8 +36,8 @@ public enum AlarmType {
     public static AlarmType getAlarmType(int id) {
         if (id == AlarmType.WAKE_UP.getId()) {
             return WAKE_UP;
-        } else if (id == AlarmType.RED_ZONE.getId()) {
-            return AlarmType.RED_ZONE;
+        } else if (id == AlarmType.GREEN_ZONE.getId()) {
+            return AlarmType.GREEN_ZONE;
         } else if (id == AlarmType.FELL_OFF.getId()) {
             return AlarmType.FELL_OFF;
         } else {
