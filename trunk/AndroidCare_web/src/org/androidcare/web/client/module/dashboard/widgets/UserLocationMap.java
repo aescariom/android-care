@@ -125,10 +125,10 @@ public class UserLocationMap extends FlowPanel {
 		mapWidget.checkResize();
 		
 	    centerMap();
-        loadRedZones();
+        loadGreenZones();
 	}
 
-    private void loadRedZones() {
+    private void loadGreenZones() {
 
         alarmService.getActiveAlarms(new AsyncCallback<List<Alarm>>() {
             @Override

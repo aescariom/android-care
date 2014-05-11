@@ -93,8 +93,8 @@ public class AlarmForm extends ObservableForm {
     private Label lblEndTime = new Label(localizedConstants.endTime());
     private TimeBox txtEndTime = new TimeBox();
 
-    private Label lblRedZoneMap = new Label(localizedConstants.redZoneMap());
-    private MapWidget redZoneMap;
+    private Label lblGreenZoneMap = new Label(localizedConstants.greenZoneMap());
+    private MapWidget greenZoneMap;
     
     private List<GeoPoint> positions = new LinkedList<GeoPoint>();
     private Polygon polygon = null;
@@ -132,33 +132,34 @@ public class AlarmForm extends ObservableForm {
 	            container.center();
 	        }
 	      });
+        container.center();
     }
     
     private void setUpMap() {
-    	LatLng madridCentred = LatLng.newInstance(40.416667, -3.70355);
+    	LatLng madridCentred = LatLng.newInstance(40.416667, -3.70355); //Madrid
     	int zoomPrettyClosed = 14;
     	
-    	this.redZoneMap = new MapWidget();
-    	this.redZoneMap.setSize("400px", "300px");
+    	this.greenZoneMap = new MapWidget();
+    	this.greenZoneMap.setSize("400px", "300px");
     	
-    	this.redZoneMap.setCenter(madridCentred, zoomPrettyClosed);
-    	this.redZoneMap.checkResize();
+    	this.greenZoneMap.setCenter(madridCentred, zoomPrettyClosed);
+    	this.greenZoneMap.checkResize();
     	
-    	this.redZoneMap.addMapClickHandler(new MapClickHandler() {
-			@Override
-			public void onClick(MapClickEvent ev) {
-				double latitude = ev.getLatLng().getLatitude();
-				double longitude = ev.getLatLng().getLongitude();
-				
-				positions.add(new GeoPoint(latitude, longitude));
-				
-				if (polygon != null) {
-					redZoneMap.removeOverlay(polygon);
-				}
-				
-				drawPolygon();
-			}
-		});
+    	this.greenZoneMap.addMapClickHandler(new MapClickHandler() {
+            @Override
+            public void onClick(MapClickEvent ev) {
+                double latitude = ev.getLatLng().getLatitude();
+                double longitude = ev.getLatLng().getLongitude();
+
+                positions.add(new GeoPoint(latitude, longitude));
+
+                if (polygon != null) {
+                    greenZoneMap.removeOverlay(polygon);
+                }
+
+                drawPolygon();
+            }
+        });
 	}
 
     private void setFormValues() {
@@ -306,7 +307,7 @@ public class AlarmForm extends ObservableForm {
 	}
 	
 	private boolean isAlarmConfigVisible() {
-		return lblStartTime.isVisible() || lblEndTime.isVisible() || lblRedZoneMap.isVisible();
+		return lblStartTime.isVisible() || lblEndTime.isVisible() || lblGreenZoneMap.isVisible();
 	}
 	
 	private void setVisibilityAlarmConfig(boolean visible) {
@@ -318,9 +319,9 @@ public class AlarmForm extends ObservableForm {
 	}
 
 	private void addAlarmMapRow() {
-		grid.setWidget(MAP_ROW, 0, lblRedZoneMap);    
-        grid.setWidget(MAP_ROW, 1, redZoneMap);
-        setVisibleRedZoneParts(false);
+		grid.setWidget(MAP_ROW, 0, lblGreenZoneMap);
+        grid.setWidget(MAP_ROW, 1, greenZoneMap);
+        setVisibleGreenZoneParts(false);
 	}
 
 	private void addAlarmEndTime() {
@@ -445,7 +446,7 @@ public class AlarmForm extends ObservableForm {
     
     private void generateAlarmTypeList() {
     	ddlAlarmType.addItem(localizedConstants.wakeUp(), String.valueOf(AlarmType.WAKE_UP));
-    	ddlAlarmType.addItem(localizedConstants.redZone(), String.valueOf(AlarmType.RED_ZONE));
+    	ddlAlarmType.addItem(localizedConstants.greenZone(), String.valueOf(AlarmType.GREEN_ZONE));
     	ddlAlarmType.addItem(localizedConstants.fellOff(), String.valueOf(AlarmType.FELL_OFF));
     }
 
@@ -505,7 +506,7 @@ public class AlarmForm extends ObservableForm {
     
     private void hideAllTypeParts() {
     	setVisibleWakeUpParts(false);
-    	setVisibleRedZoneParts(false);
+    	setVisibleGreenZoneParts(false);
 	}
 
 	private void setVisibleWakeUpParts(boolean visible) {
@@ -515,9 +516,9 @@ public class AlarmForm extends ObservableForm {
 		txtEndTime.setVisible(visible);
 	}
 
-	private void setVisibleRedZoneParts(boolean visible) {
-		lblRedZoneMap.setVisible(visible);
-		redZoneMap.setVisible(visible);
+	private void setVisibleGreenZoneParts(boolean visible) {
+		lblGreenZoneMap.setVisible(visible);
+		greenZoneMap.setVisible(visible);
 	}
 	
 	private LatLng[] convertToArray(List<GeoPoint> list) {
@@ -545,8 +546,8 @@ public class AlarmForm extends ObservableForm {
 		hideAllTypeParts();
 		if (AlarmType.WAKE_UP == type) {
 			setVisibleWakeUpParts(true);
-		} else if (AlarmType.RED_ZONE == type) {
-			setVisibleRedZoneParts(true);
+		} else if (AlarmType.GREEN_ZONE == type) {
+			setVisibleGreenZoneParts(true);
 		} else if (AlarmType.FELL_OFF == type) {
 			//PENDING
 		}
@@ -560,11 +561,11 @@ public class AlarmForm extends ObservableForm {
 			@Override
 			public void onClick(PolygonClickEvent event) {
 				positions = new LinkedList();
-				redZoneMap.removeOverlay(polygon);
+				greenZoneMap.removeOverlay(polygon);
 			}
 		});
 		
-		redZoneMap.addOverlay(polygon);
+		greenZoneMap.addOverlay(polygon);
 	}
 	
 	public void setContainer(DialogBoxClose container) {

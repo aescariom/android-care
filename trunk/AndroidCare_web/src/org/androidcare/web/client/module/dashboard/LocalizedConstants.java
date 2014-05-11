@@ -145,8 +145,8 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
     String startTime();
     @DefaultStringValue("End time")
     String endTime();
-    @DefaultStringValue("Red zone map")
-    String redZoneMap();
+    @DefaultStringValue("Green zone map")
+    String greenZoneMap();
     @DefaultStringValue("Phone number")
     String phoneNumber();
     @DefaultStringValue("Email")
@@ -167,8 +167,8 @@ public interface LocalizedConstants extends org.androidcare.web.client.internaci
     
     @DefaultStringValue("Wake up")
     String wakeUp();
-    @DefaultStringValue("Red zone")
-    String redZone();
+    @DefaultStringValue("Green zone")
+    String greenZone();
     @DefaultStringValue("Fell off")
     String fellOff();
     

@@ -1,2 +1,6 @@
 # Module dashboard
 # RPC service class, partial path of RPC policy file
+org.androidcare.web.client.module.dashboard.rpc.ReminderService, D4F71D00C9BDFC2CB6C91AFC1150448A.gwt.rpc
+org.androidcare.web.client.module.dashboard.rpc.AlarmService, 8FD86DB9067901D721575821FB0BB50F.gwt.rpc
+org.androidcare.web.client.module.dashboard.rpc.PositionService, 3172745787EEF2AF5D8D0B42CBFB652C.gwt.rpc
+org.androidcare.web.client.module.dashboard.rpc.UploadReminderPhotoService, 62E34CBBFDB03F4EE13C14745E3D313B.gwt.rpc
