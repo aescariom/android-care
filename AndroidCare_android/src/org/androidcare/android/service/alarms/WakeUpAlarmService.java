@@ -8,11 +8,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.GravitySensorRetriever;
 import org.androidcare.android.service.alarms.receivers.WakeUpAlarmReceiver;
 
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 public class WakeUpAlarmService extends AlarmService implements GravitySensorListener {
 
@@ -33,14 +37,20 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "Starting service");
 
+        Bundle bundle = intent.getExtras();
+
+        Alarm alarmReceived = (Alarm) bundle.getSerializable("alarm");
+        super.setAlarm(alarmReceived);
+
+        Log.d(TAG, "Alarm data @ WakeUpAlarmService " + alarmReceived.getName() + " (" + alarmReceived.getAlarmStartTime().getHours() +
+                ":" + alarmReceived.getAlarmStartTime().getMinutes() + " - " + alarmReceived.getAlarmEndTime().getHours() +
+                ":" + alarmReceived.getAlarmEndTime().getMinutes() + ")");
+
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         final PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wakelook " + TAG);
         wakeLock.acquire();
 
         new GravitySensorRetriever(this, wakeLock);
-
-        Bundle bundle = intent.getExtras();
-        super.setAlarm((Alarm) bundle.getSerializable("alarm"));
 
         return START_STICKY;
     }
@@ -68,9 +78,7 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
     private void detectMovement(float[] values, PowerManager.WakeLock lock, GravitySensorRetriever retriever) {
         if (lastX != 0.0f && lastY != 0.0f && lastZ != 0.0f ) {
             if (isOutOfinterval(values)) {
-                isTheAlarmLaunchable = false;
-                retriever.unregister();
-                finishRunning(lock);
+                finishRunning(lock, retriever);
             }
         }
 
@@ -99,12 +107,14 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
             abstractInitiateAlarm();
             isTheAlarmLaunchable = false;
         }
-        retriever.unregister();
-        finishRunning(lock);
+        finishRunning(lock, retriever);
     }
 
-    private void finishRunning(PowerManager.WakeLock lock) {
+    private void finishRunning(PowerManager.WakeLock lock, GravitySensorRetriever retriever) {
         Log.d(TAG, "Finishes execution");
+
+        isTheAlarmLaunchable = false;
+        retriever.unregister();
 
         ComponentName component = new ComponentName(getApplicationContext(), WakeUpAlarmReceiver.class);
         getApplicationContext().getPackageManager().
@@ -136,6 +146,17 @@ public class WakeUpAlarmService extends AlarmService implements GravitySensorLis
     @Override
     public void abstractInitiateAlarm() {
         confirmationUser();
+    }
+
+    private DatabaseHelper getHelper(DatabaseHelper databaseHelper) {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+
+    private void closeDatabaseConnection() {
+        OpenHelperManager.releaseHelper();
     }
 
 }

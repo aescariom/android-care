@@ -49,8 +49,7 @@ public class GetRemindersMessage extends Message {
         Reminder[] reminders = null;
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
-                    .getContent()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String jsonString = "";
             String aux = "";
             while ((aux = reader.readLine()) != null) {
@@ -70,8 +69,7 @@ public class GetRemindersMessage extends Message {
             }
             GetRemindersMessage.reminderService.schedule(reminders);
             Log.i(GetRemindersMessage.class.getName(), "Reminders updated from the server");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e(TAG,"Error when retrieving reminders from the server: " + e.getMessage(), e);
             throw new InvalidMessageResponseException("Error ocurend when parsing JSON String", e);
         }

@@ -96,7 +96,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
         }catch(NumberFormatException ex){
             Log.d("RefreshReminders", "Error converting: " + strDays + ". We will use the default value...");
         }
-        long cacheTime = days*24*60*60*1000;
+        long cacheTime = days * 24 * 60 * 60 * 1000;
         
         for(File f : files){
             long diff = now.getTime() - f.lastModified();

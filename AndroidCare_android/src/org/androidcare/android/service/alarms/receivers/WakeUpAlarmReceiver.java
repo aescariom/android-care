@@ -21,6 +21,8 @@ public class WakeUpAlarmReceiver extends BroadcastReceiver implements Serializab
 
         Bundle bundle = intent.getExtras();
         Alarm alarm = (Alarm) bundle.getSerializable("alarm");
+        Log.d(TAG, "Alarm data @ WakeUpAlarmReceiver " + alarm.getName() + " (" + alarm.getAlarmStartTime().getHours() + ":" + alarm.getAlarmStartTime().getMinutes() +
+                " - " + alarm.getAlarmEndTime().getHours() + ":" + alarm.getAlarmEndTime().getMinutes() + ")");
 
         Intent serviceIntent = new Intent(context, WakeUpAlarmService.class);
         serviceIntent.putExtra("alarm", alarm);

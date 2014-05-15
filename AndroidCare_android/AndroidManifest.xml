@@ -73,9 +73,6 @@
         <!-- get location receiver -->
         <receiver android:name=".service.location.UpdateLocationReceiver">
         </receiver>
-        <!-- get alarms receiver -->
-        <receiver android:name=".service.alarms.receivers.DownloadAlarmsReceiver">
-        </receiver>
         <!-- wakeUp alarm receiver -->
         <receiver android:name=".service.alarms.receivers.WakeUpAlarmReceiver">
         </receiver>

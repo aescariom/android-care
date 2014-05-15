@@ -114,6 +114,9 @@ public class GetAlarmsMessage extends Message {
     private void addAlarmsToDatabase(List<Alarm> alarms){
         for (Alarm alarm : alarms) {
             try {
+                Log.d(TAG, "Alarm data @ GetAlarmsMessage " + alarm.getName() + " (" + alarm.getAlarmStartTime().getHours() +
+                        ":" + alarm.getAlarmStartTime().getMinutes() + " - " + alarm.getAlarmEndTime().getHours() +
+                        ":" + alarm.getAlarmEndTime().getMinutes() + ")");
                 getHelper().getAlarmDao().createIfNotExists(alarm);
             }catch (SQLException e) {
                 Log.e(TAG, "Could not insert the alarm: " + alarm + " -> " + e.toString());
