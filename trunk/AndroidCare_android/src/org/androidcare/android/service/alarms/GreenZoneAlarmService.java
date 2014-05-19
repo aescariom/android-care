@@ -10,7 +10,6 @@ import android.os.PowerManager;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.GeoPoint;
-import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.alarms.receivers.RedZoneAlarmReceiver;
 import org.androidcare.android.service.location.LocationRetreiver;
 
@@ -20,11 +19,7 @@ import java.util.List;
 public class GreenZoneAlarmService extends AlarmService {
 
     private static final String TAG = GreenZoneAlarmService.class.getName();
-    static final int UPDATE_INTERVAL = 10 * 1000;
-    private DatabaseHelper databaseHelper = null;
-
-    private RedZoneAlarmReceiver redZoneAlarmReceiver =
-            new RedZoneAlarmReceiver();
+    static final int UPDATE_INTERVAL = 60 * 60 * 1000;
 
     public GreenZoneAlarmService() {
         super();

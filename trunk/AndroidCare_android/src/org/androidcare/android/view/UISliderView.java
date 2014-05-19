@@ -106,6 +106,7 @@ public class UISliderView extends RelativeLayout {
     protected void cancelVibrationAndSound() {
         playSoundTask.cancel(false);
         vibrationTask.cancel(false);
+        Log.d(TAG, "Vibration and sound cancelled");
     }
 
     private class PlaySoundTask extends AsyncTask<Uri, Void, Void> {
