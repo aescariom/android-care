@@ -48,9 +48,14 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
         List<Alarm> alarmList = new LinkedList();
         try {
             alarmList =  getHelper(context).getAlarmDao().queryForAll();
+            closeDatabaseConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        String iterationNumber = arg1.getStringExtra("tryNumber");
+        int tryNumber = (iterationNumber != null ? Integer.parseInt(iterationNumber) : 0);
+        tryNumber++;
 
         context.getApplicationContext().bindService(
                 new Intent(context.getApplicationContext(), ConnectionService.class),
@@ -66,9 +71,9 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
             String strHours = prefs.getString("alarmResquestInterval", "4");
 
             int hours = 4;
-            try{
+            try {
                 hours = Integer.parseInt(strHours);
-            }catch(NumberFormatException ex){
+            } catch(NumberFormatException ex) {
                 Log.d("RefreshReminders", "Error converting: " + strHours + ". We will use the default value...");
             }
             if(hours <= 0) {
@@ -84,11 +89,17 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
         boolean setUpTheQuery = (PendingIntent.getBroadcast(context, 0,
                 new Intent(DownloadAlarmsReceiver.ACTION_UPDATE), PendingIntent.FLAG_NO_CREATE) == null);
 
+        if (tryNumber > 3) {
+            tryNumber = 1;
+            timeInMillis = 60 * 60 * 1000;
+        }
+
         if (setUpTheQuery) {
             Log.d(TAG, "download alarms will be refreshed in " + timeInMillis + " millis");
 
             AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(DownloadAlarmsReceiver.ACTION_UPDATE);
+            intent.putExtra("tryNumber", String.valueOf(tryNumber));
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
             am.cancel(pendingIntent);
             am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + timeInMillis, pendingIntent);
