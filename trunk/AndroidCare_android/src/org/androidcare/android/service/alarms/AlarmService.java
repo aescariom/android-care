@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.util.Log;
 import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.preferences.PreferencesActivity;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.alarms.messages.SendEmailMessage;
@@ -86,9 +87,12 @@ public class AlarmService extends Service implements Serializable {
         if (alarm.isInitiateCall()) {
             notifyByCall(ctx);
         }
+
+        launchPreferencesActivity(ctx);
     }
 
-    public void cancelAlarm() {
+    public void cancelAlarm(Context ctx) {
+        launchPreferencesActivity(ctx);
     }
 
     public void confirmationUser() {
@@ -100,6 +104,16 @@ public class AlarmService extends Service implements Serializable {
 
         try {
             pendingIntent.send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void launchPreferencesActivity(Context ctx) {
+        Intent intent = new Intent(ctx, PreferencesActivity.class);
+        PendingIntent pending = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        try {
+            pending.send();
         } catch (PendingIntent.CanceledException e) {
             e.printStackTrace();
         }

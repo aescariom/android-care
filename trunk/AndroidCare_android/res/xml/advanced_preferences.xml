@@ -32,15 +32,24 @@
             android:title="@string/alarm_updates"
             android:defaultValue="4"/>
     </PreferenceCategory>
- 	
- 	<PreferenceCategory
-	   android:title="@string/location_service" >
- 		<CheckBoxPreference
- 		    android:title="@string/force_gps_location_if_airplane_mode"
- 		    android:defaultValue="false"
- 		    android:key="forceGPSLocationIfAirplaneMode"
- 		    />    
- 	</PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/location_service" >
+        <CheckBoxPreference
+                android:title="@string/force_gps_location_if_airplane_mode"
+                android:defaultValue="false"
+                android:key="forceGPSLocationIfAirplaneMode"
+                />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/alarm_service" >
+        <CheckBoxPreference
+                android:title="@string/use_lock_with_fell_off_alarm"
+                android:defaultValue="true"
+                android:key="forceLockWithFellOffAlarm"
+                />
+    </PreferenceCategory>
  	
  	<PreferenceCategory
 	   android:title="@string/notifications" >

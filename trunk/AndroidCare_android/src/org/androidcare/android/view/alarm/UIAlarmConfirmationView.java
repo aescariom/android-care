@@ -61,7 +61,7 @@ public class UIAlarmConfirmationView extends UIAlarmView {
             @Override
             public void onClick(View v) {
                 trigger = false;
-                alarm.cancelAlarm();
+                alarm.cancelAlarm(alarmWindowReceiver.getApplicationContext());
                 closeWindow();
             }
         });

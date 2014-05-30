@@ -10,8 +10,9 @@ import android.os.PowerManager;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.GeoPoint;
-import org.androidcare.android.service.alarms.receivers.RedZoneAlarmReceiver;
+import org.androidcare.android.service.alarms.receivers.GreenZoneAlarmReceiver;
 import org.androidcare.android.service.location.LocationRetreiver;
+import org.androidcare.android.service.location.LocationService;
 
 import java.util.Calendar;
 import java.util.List;
@@ -20,6 +21,7 @@ public class GreenZoneAlarmService extends AlarmService {
 
     private static final String TAG = GreenZoneAlarmService.class.getName();
     static final int UPDATE_INTERVAL = 60 * 60 * 1000;
+    private boolean heWasInside = true;
 
     public GreenZoneAlarmService() {
         super();
@@ -39,6 +41,7 @@ public class GreenZoneAlarmService extends AlarmService {
 
         Bundle bundle = intent.getExtras();
         super.setAlarm((Alarm) bundle.getSerializable("alarm"));
+        this.heWasInside = (Boolean) bundle.getSerializable("heWasInside");
 
         runWatchDog(new LocationRetreiver(alarmService, wakeLock));
 
@@ -53,8 +56,9 @@ public class GreenZoneAlarmService extends AlarmService {
     }
 
     private void scheduleNextLaunch() {
-        Intent intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
+        Intent intent = new Intent(GreenZoneAlarmReceiver.ACTION_TRIGGER_GREENZONE_SENSOR);
         intent.putExtra("alarm", getAlarm());
+        intent.putExtra("heWasInside", heWasInside);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Calendar calendar = Calendar.getInstance();
@@ -93,9 +97,28 @@ public class GreenZoneAlarmService extends AlarmService {
 
                 Log.i(TAG, "alarm " + alarm.getName() + " crosses " + crossings);
 
-
                 if (!pointIsInPolygon(crossings)) {
-                    launchAlarm(wakeLock);
+                    //Outside zone
+                    Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                    intent.putExtra("timeUpdate", 1);
+                    startService(intent);
+                    if (heWasInside) {
+                        //going out
+                        launchAlarm(wakeLock);
+                    } else {
+                        //still out
+                    }
+                    heWasInside = false;
+                } else {
+                    //Inside zone
+                    if (heWasInside) {
+                        //still in
+                    } else {
+                        //going in
+                        Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                        startService(intent);
+                    }
+                    heWasInside = true;
                 }
             } else {
                 Log.w(TAG, "Points for alarm not found");
@@ -106,6 +129,7 @@ public class GreenZoneAlarmService extends AlarmService {
     }
 
     private void launchAlarm(PowerManager.WakeLock wakeLock) {
+
         abstractInitiateAlarm();
 
         if(wakeLock.isHeld()){

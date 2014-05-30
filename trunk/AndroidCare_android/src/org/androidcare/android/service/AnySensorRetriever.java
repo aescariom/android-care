@@ -7,34 +7,38 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.util.Log;
-import org.androidcare.android.service.alarms.GravitySensorListener;
+import org.androidcare.android.service.alarms.AnySensorListener;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class GravitySensorRetriever implements SensorEventListener{
+public class AnySensorRetriever implements SensorEventListener{
     private final String TAG = this.getClass().getName();
 
-    private GravitySensorListener subscribedSensor;
-
+    private AnySensorListener subscribedSensor;
     private SensorManager sensorManager;
     private List<Sensor> deviceSensors;
     private PowerManager.WakeLock lock;
+    private PowerManager.WakeLock sensorLock;
 
-    public GravitySensorRetriever(GravitySensorListener sensorListener, PowerManager.WakeLock lock) {
+    public AnySensorRetriever(AnySensorListener sensorListener, Context ctx, PowerManager.WakeLock lock, int type) {
         this.subscribedSensor = sensorListener;
-        sensorManager = (SensorManager) sensorListener.getContext().getSystemService(Context.SENSOR_SERVICE);
-        deviceSensors = sensorManager.getSensorList(Sensor.TYPE_GRAVITY);
+        sensorManager = (SensorManager) ctx.getSystemService(Context.SENSOR_SERVICE);
+        deviceSensors = sensorManager.getSensorList(type);
 
         this.lock = lock;
+
+        PowerManager pm = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
+        this.sensorLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "Wakelock " + TAG);
+        sensorLock.acquire();
 
         registerSensorsListener();
     }
 
     public void unregister() {
+        if (sensorLock.isHeld()) {
+            sensorLock.release();
+        }
+
         sensorManager.unregisterListener(this);
         subscribedSensor = null;
     }
@@ -42,11 +46,13 @@ public class GravitySensorRetriever implements SensorEventListener{
     public void registerSensorsListener() {
         for (Sensor sensor : deviceSensors) {
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+            Log.d(TAG, "Sensor registered");
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        Log.d(TAG, "Accuracy changed");
     }
 
     @Override
@@ -54,6 +60,10 @@ public class GravitySensorRetriever implements SensorEventListener{
         Log.d(TAG, "Sensor changed");
         if (subscribedSensor != null) {
             subscribedSensor.onChangeSensor(event.values, lock, this);
+        }
+        if (sensorLock.isHeld()) {
+            Log.d(TAG, "Screen lock released");
+            sensorLock.release();
         }
     }
 }

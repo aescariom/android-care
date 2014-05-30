@@ -9,6 +9,7 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.service.alarms.FellOffAlarmService;
 
 public class FellOffAlarmReceiver extends BroadcastReceiver {
+    public static final String ACTION_TRIGGER_FELLOFF_SENSOR = "org.androidcare.android.service.TRIGGER_FELLOFF_SENSOR";
     private final String TAG = this.getClass().getName();
 
     @Override
