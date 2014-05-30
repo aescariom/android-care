@@ -55,4 +55,6 @@
     <string name="wake_up">Wake up</string>
     <string name="red_zone">Red zone</string>
     <string name="fell_off">Fell off</string>
+    <string name="alarm_service">Alarm Service</string>
+    <string name="use_lock_with_fell_off_alarm">Use lock with fell off alarm monitor</string>
 </resources>

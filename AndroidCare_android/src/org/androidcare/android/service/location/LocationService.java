@@ -28,7 +28,22 @@ public class LocationService extends Service {
         Log.i(TAG, "Location service started: " + this.hashCode());
 
         getLocation();
-        scheduleNextUpdate();
+
+        int min = 3;
+            try {
+                min = intent.getExtras().getInt("timeUpdate");
+                Log.d(TAG, "rescheduling time from intent");
+            } catch (NullPointerException ex) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String strMin = prefs.getString("locationUpdatesInterval", "3");
+
+                min = Integer.parseInt(strMin);
+                Log.d(TAG, "rescheduling time from user options");
+            } catch (NumberFormatException ex) {
+                Log.e(TAG, "Error converting. We will use the default value...");
+                ex.printStackTrace();
+            }
+        scheduleNextUpdate(min);
         
         return result;
     }
@@ -56,25 +71,18 @@ public class LocationService extends Service {
         }
     }
 
-    public void scheduleNextUpdate() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String strMin = prefs.getString("locationUpdatesInterval", "3");        
-        int min = 3;
-        try{
-            min = Integer.parseInt(strMin);
-        }catch(NumberFormatException ex){
-            Log.d(TAG, "Error converting: " + strMin + ". We will use the default value...");
-        }
+    public void scheduleNextUpdate(int min) {
         if(min <= 0) min = 1;
         
         Log.d(TAG, "Next location update will take place in " + min + " minutes");
-        
-        int timeLapse = min*60*1000;
-        
+
+        int timeLapse = Math.round(min * 60 * 1000);
+
         Calendar cal = Calendar.getInstance();
 
         AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), UpdateLocationReceiver.class);
+        intent.putExtra("timeUpdate", min);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         am.cancel(pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + timeLapse, pendingIntent);

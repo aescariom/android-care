@@ -3,6 +3,7 @@ package org.androidcare.android.service.location;
 import android.content.*;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import org.androidcare.android.service.location.LocationService.LocationServiceBinder;
 
@@ -11,7 +12,8 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
 
     private static final String TAG = UpdateLocationReceiver.class.getName();
     private LocationService locationService;
-    
+
+    private int min;
     private static PowerManager.WakeLock wakeLock = null;
     private static final String LOCK_TAG = "org.androidcare.android.service.location";
         
@@ -21,7 +23,8 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
             LocationServiceBinder binder = (LocationServiceBinder) service;
             locationService = binder.getService();
             locationService.getLocation();
-            locationService.scheduleNextUpdate();
+
+            locationService.scheduleNextUpdate(min);
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -35,6 +38,20 @@ public class UpdateLocationReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent arg1) {
+        try {
+            this.min = arg1.getExtras().getInt("timeUpdate");
+            Log.d(TAG, "rescheduling time from intent");
+        } catch (NullPointerException ex) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            String strMin = prefs.getString("locationUpdatesInterval", "3");
+
+            this.min = Integer.parseInt(strMin);
+            Log.d(TAG, "rescheduling time from user options");
+        } catch (NumberFormatException ex) {
+            Log.e(TAG, "Error converting. We will use the default value...");
+            ex.printStackTrace();
+        }
+
         // binding the connection Service
         acquireLock(context); // we will have to wait until the service is attached
         context.getApplicationContext().bindService(

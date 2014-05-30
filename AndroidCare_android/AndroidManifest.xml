@@ -73,12 +73,6 @@
         <!-- get location receiver -->
         <receiver android:name=".service.location.UpdateLocationReceiver">
         </receiver>
-        <!-- wakeUp alarm receiver -->
-        <receiver android:name=".service.alarms.receivers.WakeUpAlarmReceiver">
-        </receiver>
-        <!-- FellOff alarm receiver -->
-        <receiver android:name=".service.alarms.receivers.FellOffAlarmReceiver">
-        </receiver>
         <!-- User warning Window caller receiver -->
         <receiver android:name=".view.UserWarningReceiver">
         </receiver>

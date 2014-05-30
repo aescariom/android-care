@@ -55,4 +55,6 @@
     <string name="wake_up">Despertador</string>
     <string name="red_zone">Zona roja</string>
     <string name="fell_off">Caida</string>
+    <string name="alarm_service">Servicio de alarmas</string>
+    <string name="use_lock_with_fell_off_alarm">Usar lock al activar monitorización</string>
 </resources>

@@ -13,10 +13,7 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
 import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
-import org.androidcare.android.service.alarms.receivers.DownloadAlarmsReceiver;
-import org.androidcare.android.service.alarms.receivers.FellOffAlarmReceiver;
-import org.androidcare.android.service.alarms.receivers.RedZoneAlarmReceiver;
-import org.androidcare.android.service.alarms.receivers.WakeUpAlarmReceiver;
+import org.androidcare.android.service.alarms.receivers.*;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -25,7 +22,6 @@ import java.util.List;
 
 public class DownloadAlarmsService extends Service {
 
-    public static final long A_DAY = 24 * 60 * 60 * 1000;
     private final String TAG = this.getClass().getName();
     private DatabaseHelper databaseHelper;
 
@@ -35,8 +31,11 @@ public class DownloadAlarmsService extends Service {
     private WakeUpAlarmReceiver wakeUpAlarmReceiver = new WakeUpAlarmReceiver();
     private IntentFilter wakeUpAlarmBroadcastFilter = new IntentFilter(WakeUpAlarmReceiver.ACTION_TRIGGER_WAKEUP_SENSOR);
 
-    private RedZoneAlarmReceiver redZoneAlarmReceiver = new RedZoneAlarmReceiver();
-    private IntentFilter redZoneAlarmBroadcastFilter = new IntentFilter(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
+    private GreenZoneAlarmReceiver greenZoneAlarmReceiver = new GreenZoneAlarmReceiver();
+    private IntentFilter redZoneAlarmBroadcastFilter = new IntentFilter(GreenZoneAlarmReceiver.ACTION_TRIGGER_GREENZONE_SENSOR);
+
+    private FellOffAlarmReceiver fellOffAlarmReceiver = new FellOffAlarmReceiver();
+    private IntentFilter fellOffAlarmBroadcastFilter = new IntentFilter(FellOffAlarmReceiver.ACTION_TRIGGER_FELLOFF_SENSOR);
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -50,8 +49,10 @@ public class DownloadAlarmsService extends Service {
         Log.d(TAG, "Registred download alarm receiver");
         registerReceiver(wakeUpAlarmReceiver, wakeUpAlarmBroadcastFilter);
         Log.d(TAG, "Registred Wake up alarm receiver");
-        registerReceiver(redZoneAlarmReceiver, redZoneAlarmBroadcastFilter);
-        Log.d(TAG, "Registred Red zone alarm receiver");
+        registerReceiver(greenZoneAlarmReceiver, redZoneAlarmBroadcastFilter);
+        Log.d(TAG, "Registred Green zone alarm receiver");
+        registerReceiver(fellOffAlarmReceiver, fellOffAlarmBroadcastFilter);
+        Log.d(TAG, "Registred Fell off alarm receiver");
 
         if ("schedule".equals(action)) {
             this.scheduleAlarms();
@@ -120,10 +121,11 @@ public class DownloadAlarmsService extends Service {
             intent = new Intent(WakeUpAlarmReceiver.ACTION_TRIGGER_WAKEUP_SENSOR);
             Log.d(TAG, "Launching Wake up alarm");
         } else if (alarm.getAlarmType() == AlarmType.GREEN_ZONE) {
-            intent = new Intent(RedZoneAlarmReceiver.ACTION_TRIGGER_REDZONE_SENSOR);
-            Log.d(TAG, "Launching Red zone alarm");
+            intent = new Intent(GreenZoneAlarmReceiver.ACTION_TRIGGER_GREENZONE_SENSOR);
+            intent.putExtra("heWasInside", true);
+            Log.d(TAG, "Launching Green zone alarm");
         } else if (alarm.getAlarmType() == AlarmType.FELL_OFF) {
-            intent = new Intent(context, FellOffAlarmReceiver.class);
+            intent = new Intent(FellOffAlarmReceiver.ACTION_TRIGGER_FELLOFF_SENSOR);
             Log.d(TAG, "Launching Fell off alarm");
         }
 
@@ -140,7 +142,7 @@ public class DownloadAlarmsService extends Service {
             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
 
             Log.d(TAG, "Alarm in the future " + alarm + " scheduled @ " + calendar.getTime());
-            Log.d(TAG, "Alarm execution " + alarm + " scheduled @ " + alarm.getAlarmEndTime());
+            Log.d(TAG, "Alarm will be triggered " + alarm + " scheduled @ " + alarm.getAlarmEndTime());
         } else {
             Log.d(TAG, "Alarm in the past, we will schedule it tomorrow, when it is in the future");
         }
@@ -185,8 +187,10 @@ public class DownloadAlarmsService extends Service {
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(redZoneAlarmReceiver);
-        Log.i(TAG, "Unregistred redZoneAlarmReceiver");
+        unregisterReceiver(fellOffAlarmReceiver);
+        Log.d(TAG, "Unregistred fellOffAlarmReceiver");
+        unregisterReceiver(greenZoneAlarmReceiver);
+        Log.i(TAG, "Unregistred greenZoneAlarmReceiver");
         unregisterReceiver(wakeUpAlarmReceiver);
         Log.i(TAG, "Unregistred wakeUpAlarmReceiver");
         unregisterReceiver(downloadAlarmsReceiver);
