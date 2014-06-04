@@ -51,17 +51,19 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
             wakeLock.acquire();
             Log.d(TAG, "lock set");
         }
-
+//Comentario  ¿no tendría sentido guardar una referencia a esto y desregistrarse cuando se pare el servicio de la alarma?
         new AnySensorRetriever(this, this, wakeLock, Sensor.TYPE_ACCELEROMETER);
 
         return START_STICKY;
     }
 
+    //Comentario entiendo que aquí habría que desregistrar tanto tu listener como el listener del sistema que
+    //Tu listener tiene dentro
     @Override
     public void onDestroy() {
         Log.d(TAG, "Stopping service");
     }
-
+//Comentario no entiendo cuál es el propósito de esto
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -130,7 +132,7 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
                 setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
     }
-
+//Comentario ¿y esto que viene?
     @Override
     public Context getContext() {
         return null;

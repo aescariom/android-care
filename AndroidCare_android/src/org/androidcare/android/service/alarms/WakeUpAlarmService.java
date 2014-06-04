@@ -55,6 +55,7 @@ public class WakeUpAlarmService extends AlarmService implements AnySensorListene
         return START_STICKY;
     }
 
+    //Comentarios aquí habría que desregistrar listerners...
     @Override
     public void onDestroy() {
         Log.d(TAG, "Stopping service");
@@ -137,7 +138,7 @@ public class WakeUpAlarmService extends AlarmService implements AnySensorListene
     private boolean isNowAfterEndTime(Date now, Date endTime) {
         return now.compareTo(endTime) > 0;
     }
-
+//Comentario no entiendo por qué sobre escribes este método para hacer lo que ya hace el método del servicio de Android
     @Override
     public Context getContext() {
         return getApplicationContext();

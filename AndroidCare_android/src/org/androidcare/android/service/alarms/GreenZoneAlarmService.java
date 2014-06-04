@@ -42,7 +42,7 @@ public class GreenZoneAlarmService extends AlarmService {
         Bundle bundle = intent.getExtras();
         super.setAlarm((Alarm) bundle.getSerializable("alarm"));
         this.heWasInside = (Boolean) bundle.getSerializable("heWasInside");
-
+//Comentario no habría que guardar una referencia al servicio de localización para poder desregistrarse?
         runWatchDog(new LocationRetreiver(alarmService, wakeLock));
 
         return result;
@@ -185,7 +185,7 @@ public class GreenZoneAlarmService extends AlarmService {
     private GeoPoint getSecondGeoPoint(int i, List<GeoPoint> points) {
         return i < (points.size() - 1) ? points.get(i + 1) : points.get(0);
     }
-
+//Comentario desregistrar listernes
     @Override
     public void onDestroy() {
         Log.d(TAG, "Stopping service");
