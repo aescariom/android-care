@@ -129,10 +129,11 @@ public class AlarmForm extends ObservableForm {
 	            generateSeverityList();
 	            generateAlarmTypeList(); 
 	            setFormValues();
-	            container.center();
+	            if (container != null) {
+	            	container.center();
+	            }
 	        }
 	      });
-        container.center();
     }
     
     private void setUpMap() {
@@ -570,5 +571,6 @@ public class AlarmForm extends ObservableForm {
 	
 	public void setContainer(DialogBoxClose container) {
 		this.container = container;
+		this.container.center();
 	}
 }

@@ -111,9 +111,13 @@ public class AlarmsTable extends FlexTable implements Observer {
 
     private void editIndex(int editIndex) {
         Alarm alarm = alarms.get(editIndex);
+
         AlarmForm alarmForm = new AlarmForm(alarm);
         alarmForm.addObserver(this);
-        new DialogBoxClose(localizedConstants.editAlarm(), alarmForm).show();
+        
+        DialogBoxClose container = new DialogBoxClose(localizedConstants.editAlarm(), alarmForm);
+        alarmForm.setContainer(container);
+        container.show();
     }
 
     private void removeReminder(int removeIndex) {

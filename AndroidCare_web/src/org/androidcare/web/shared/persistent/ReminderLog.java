@@ -3,12 +3,13 @@ package org.androidcare.web.shared.persistent;
 import com.google.appengine.api.datastore.Key;
 import org.androidcare.web.shared.ReminderStatusCode;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import java.io.Serializable;
-import java.util.Date;
 
 @PersistenceCapable
 public class ReminderLog implements Serializable {
