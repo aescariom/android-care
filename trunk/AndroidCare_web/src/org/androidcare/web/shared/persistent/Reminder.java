@@ -1,10 +1,18 @@
 package org.androidcare.web.shared.persistent;
 
-import javax.jdo.annotations.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Order;
+import javax.jdo.annotations.Extension;
 
 @PersistenceCapable
 public class Reminder implements Serializable{

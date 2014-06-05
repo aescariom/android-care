@@ -1,3 +1,2 @@
 # Module userBox
 # RPC service class, partial path of RPC policy file
-org.androidcare.web.client.module.userbox.rpc.LoggedUserService, 1C9341FB3EA1E6919A92CBA820B261D6.gwt.rpc

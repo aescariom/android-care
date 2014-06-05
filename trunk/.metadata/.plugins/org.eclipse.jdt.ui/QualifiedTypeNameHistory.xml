@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="javax.jdo.annotations.NotPersistent"/>
+<fullyQualifiedTypeName name="javax.jdo.annotations.PersistenceCapable"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="javax.jdo.annotations.PrimaryKey"/>
+<fullyQualifiedTypeName name="javax.jdo.annotations.IdGeneratorStrategy"/>
+<fullyQualifiedTypeName name="javax.jdo.annotations.Persistent"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+</qualifiedTypeNameHistroy>
