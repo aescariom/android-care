@@ -50,10 +50,11 @@ public class GreenZoneAlarmService extends AlarmService {
     }
 
     private void runWatchDog(LocationRetreiver locationRetreiver) {
-        Log.i(TAG, "Red zone monitor started");
+        Log.i(TAG, "Green zone monitor started");
 
         locationRetreiver.getLocation();
         scheduleNextLaunch();
+        locationRetreiver.unRegisterListener();
     }
 
     private void scheduleNextLaunch() {
@@ -189,7 +190,6 @@ public class GreenZoneAlarmService extends AlarmService {
 //Comentario desregistrar listernes
     @Override
     public void onDestroy() {
-
         Log.d(TAG, "Stopping service");
         super.onDestroy();
     }

@@ -13,7 +13,10 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
 import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
-import org.androidcare.android.service.alarms.receivers.*;
+import org.androidcare.android.service.alarms.receivers.DownloadAlarmsReceiver;
+import org.androidcare.android.service.alarms.receivers.FellOffAlarmReceiver;
+import org.androidcare.android.service.alarms.receivers.GreenZoneAlarmReceiver;
+import org.androidcare.android.service.alarms.receivers.WakeUpAlarmReceiver;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -24,9 +27,6 @@ public class DownloadAlarmsService extends Service {
 
     private final String TAG = this.getClass().getName();
     private DatabaseHelper databaseHelper;
-
-    private DownloadAlarmsReceiver downloadAlarmsReceiver = new DownloadAlarmsReceiver();
-    private IntentFilter downloadAlarmFilter = new IntentFilter(DownloadAlarmsReceiver.ACTION_UPDATE);
 
     private WakeUpAlarmReceiver wakeUpAlarmReceiver = new WakeUpAlarmReceiver();
     private IntentFilter wakeUpAlarmBroadcastFilter = new IntentFilter(WakeUpAlarmReceiver.ACTION_TRIGGER_WAKEUP_SENSOR);
@@ -45,8 +45,6 @@ public class DownloadAlarmsService extends Service {
         Log.i(TAG, "Alarms downloads service started");
         Log.d(TAG, "Alarms download action " + action);
 
-        registerReceiver(downloadAlarmsReceiver, downloadAlarmFilter);
-        Log.d(TAG, "Registred download alarm receiver");
         registerReceiver(wakeUpAlarmReceiver, wakeUpAlarmBroadcastFilter);
         Log.d(TAG, "Registred Wake up alarm receiver");
         registerReceiver(greenZoneAlarmReceiver, redZoneAlarmBroadcastFilter);
@@ -55,8 +53,10 @@ public class DownloadAlarmsService extends Service {
         Log.d(TAG, "Registred Fell off alarm receiver");
 
         if ("schedule".equals(action)) {
+            Log.d(TAG, "Scheduling alarms");
             this.scheduleAlarms();
         } else {
+            Log.d(TAG, "Updating alarms");
             this.removeAllAlarms();
             this.downloadAlarms();
         }
@@ -65,6 +65,7 @@ public class DownloadAlarmsService extends Service {
     }
 
     private void removeAllAlarms() {
+        Log.d(TAG, "Removing alarms");
         this.removeAllGeoPoints();
         try {
             List<Alarm> alarms = getHelper().getAlarmDao().queryForAll();
@@ -76,6 +77,7 @@ public class DownloadAlarmsService extends Service {
         } finally {
             closeDatabaseConnection();
         }
+        Log.d(TAG, "Finished removing alarms");
     }
 
     private void removeAllGeoPoints() {
@@ -90,13 +92,15 @@ public class DownloadAlarmsService extends Service {
     }
 
     private void downloadAlarms() {
-        Calendar cal = Calendar.getInstance();
+        try {
+            Intent intent = new Intent(getApplicationContext(), DownloadAlarmsReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(DownloadAlarmsReceiver.ACTION_UPDATE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        am.cancel(pendingIntent);
-        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+            Log.d(TAG, "Downloading alarm");
+            pendingIntent.send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
     }
 
     private void scheduleAlarms() {
@@ -193,9 +197,11 @@ public class DownloadAlarmsService extends Service {
         Log.i(TAG, "Unregistred greenZoneAlarmReceiver");
         unregisterReceiver(wakeUpAlarmReceiver);
         Log.i(TAG, "Unregistred wakeUpAlarmReceiver");
-        unregisterReceiver(downloadAlarmsReceiver);
-        Log.i(TAG, "Unregistred downloadAlarmsReceiver");
         closeDatabaseConnection();
+
+        getApplicationContext().stopService(new Intent(getApplicationContext(), FellOffAlarmService.class));
+        getApplicationContext().stopService(new Intent(getApplicationContext(), WakeUpAlarmService.class));
+        getApplicationContext().stopService(new Intent(getApplicationContext(), GreenZoneAlarmService.class));
 
         super.onDestroy();
     }

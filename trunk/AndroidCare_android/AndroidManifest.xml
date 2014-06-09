@@ -79,6 +79,9 @@
         <!-- Specific window activity launcher receiver -->
         <receiver android:name=".view.SpecificWarningActivityLauncher">
         </receiver>
+        <!-- download alarm register -->
+        <receiver android:name=".service.alarms.receivers.DownloadAlarmsReceiver">
+        </receiver>
 
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service android:enabled="true" android:name=".service.alarms.AlarmService" />

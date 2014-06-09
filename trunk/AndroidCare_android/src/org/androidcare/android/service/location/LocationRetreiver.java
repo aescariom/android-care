@@ -78,7 +78,6 @@ public class LocationRetreiver implements LocationListener {
     public void getLocation() {
         Log.i(TAG, "Parent class is " + parentService.getClass());
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parentService.getApplicationContext());
         final Criteria criteria = getCriteria();
 
         looper = getLooper();
@@ -153,5 +152,9 @@ public class LocationRetreiver implements LocationListener {
         Intent intent = new Intent(ConnectionServiceBroadcastReceiver.ACTION_POST_MESSAGE);
         intent.putExtra(ConnectionServiceBroadcastReceiver.EXTRA_MESSAGE, message);
         parentService.getApplicationContext().sendBroadcast(intent);
+    }
+
+    public void unRegisterListener() {
+        locationManager.removeUpdates(this);
     }
 }
