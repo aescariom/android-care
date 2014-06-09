@@ -46,7 +46,7 @@ public class AlarmService extends Service implements Serializable {
     }
 
     private void notifyByEmail(Context ctx) {
-        Log.e("TEST", "Enviamos correo");
+        Log.d("TEST", "Send mail");
         postData(ctx, new SendEmailMessage(this.alarm));
     }
 
@@ -61,18 +61,25 @@ public class AlarmService extends Service implements Serializable {
         String message = new StringBuilder().append(this.smsAlarmStartText).append(alarm.getName())
                 .append(this.smsAlarmMiddleText).append(alarm.getAlarmSeverity()).toString();
 
-        Log.e("TEST", "Enviamos SMS a " + destination + ". Mensaje: " + message);
+        Log.d("TEST", "Send SMS to " + destination + ". Message: " + message);
         /*
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(alarm.getPhoneNumber().trim(), null, message , null, null);
         */
     }
 
-    private void notifyByCall(Context ctx) {
-        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + alarm.getPhoneNumber().trim()));
-        callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    private void notifyByCall(final Context ctx) {
+        Log.d(TAG, "Starts a call");
 
-        ctx.startActivity(callIntent);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + alarm.getPhoneNumber().trim()));
+                callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                ctx.startActivity(callIntent);
+            }
+        }).start();
     }
 
     public void fireAlarm(Context ctx) {

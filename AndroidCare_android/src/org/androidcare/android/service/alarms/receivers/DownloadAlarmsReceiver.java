@@ -20,7 +20,6 @@ import java.util.List;
 
 public class DownloadAlarmsReceiver extends BroadcastReceiver {
 
-    public static final String ACTION_UPDATE = "org.androidcare.android.service.UPDATE_ALARMS";
     private final String TAG = this.getClass().getName();
     private ConnectionService connectionService;
     private DatabaseHelper databaseHelper = null;
@@ -87,7 +86,7 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
         }
 
         boolean setUpTheQuery = (PendingIntent.getBroadcast(context, 0,
-                new Intent(DownloadAlarmsReceiver.ACTION_UPDATE), PendingIntent.FLAG_NO_CREATE) == null);
+                new Intent(context, DownloadAlarmsReceiver.class), PendingIntent.FLAG_NO_CREATE) == null);
 
         if (tryNumber > 3) {
             tryNumber = 1;
@@ -98,7 +97,7 @@ public class DownloadAlarmsReceiver extends BroadcastReceiver {
             Log.d(TAG, "download alarms will be refreshed in " + timeInMillis + " millis");
 
             AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(DownloadAlarmsReceiver.ACTION_UPDATE);
+            Intent intent = new Intent(context, DownloadAlarmsReceiver.class);
             intent.putExtra("tryNumber", String.valueOf(tryNumber));
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
             am.cancel(pendingIntent);

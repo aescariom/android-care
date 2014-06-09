@@ -24,12 +24,9 @@ public abstract class ServiceManager {
     }
     
     public static void stopSecondaryServices(Context context){
+        context.stopService(new Intent(context, ReminderService.class));
         context.stopService(new Intent(context, LocationService.class));
         context.stopService(new Intent(context, DownloadAlarmsService.class));
-        context.stopService(new Intent(context, AlarmService.class));
-        context.stopService(new Intent(context, WakeUpAlarmService.class));
-        context.stopService(new Intent(context, GreenZoneAlarmService.class));
-        context.stopService(new Intent(context, FellOffAlarmService.class));
-        context.stopService(new Intent(context, ReminderService.class));
+        context.stopService(new Intent(context, ConnectionService.class));
     }
 }
