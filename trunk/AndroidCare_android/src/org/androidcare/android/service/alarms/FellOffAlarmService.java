@@ -23,6 +23,7 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     private static final double DELTA = 8.5f;
     private FellOffAlarmService thisService = this;
     private double lastMed = 0;
+    private boolean continueRunning = true;
 
     public FellOffAlarmService() {
         super();
@@ -51,22 +52,15 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
             wakeLock.acquire();
             Log.d(TAG, "lock set");
         }
-//Comentario  ¿no tendría sentido guardar una referencia a esto y desregistrarse cuando se pare el servicio de la alarma?
         new AnySensorRetriever(this, this, wakeLock, Sensor.TYPE_ACCELEROMETER);
 
         return START_STICKY;
     }
 
-    //Comentario entiendo que aquí habría que desregistrar tanto tu listener como el listener del sistema que
-    //Tu listener tiene dentro
     @Override
     public void onDestroy() {
+        continueRunning = false;
         Log.d(TAG, "Stopping service");
-    }
-//Comentario no entiendo cuál es el propósito de esto
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     @Override
@@ -77,8 +71,12 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     @Override
     public void onChangeSensor(float[] values, PowerManager.WakeLock lock, AnySensorRetriever retriever) {
         Log.d(TAG, "sensor values: " + values[0] + "; " + values[1] + "; " + values[2]);
-        if (mustLaunchAlarm(values)) {
-            launchAlarm(lock, retriever);
+        if (continueRunning) {
+            if (mustLaunchAlarm(values)) {
+                launchAlarm(lock, retriever);
+            }
+        } else {
+            finishRunning(lock, retriever);
         }
     }
 
@@ -127,14 +125,21 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     private void finishRunning(PowerManager.WakeLock lock, AnySensorRetriever retriever) {
         Log.d(TAG, "Finishes execution");
 
+        retriever.unregister();
+
         ComponentName component = new ComponentName(getApplicationContext(), FellOffAlarmReceiver.class);
         getApplicationContext().getPackageManager().
                 setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
+        if(lock.isHeld()){
+            lock.release();
+        }
+        continueRunning = false;
+        super.onDestroy();
     }
-//Comentario ¿y esto que viene?
+
     @Override
     public Context getContext() {
-        return null;
+        return getApplicationContext();
     }
 }

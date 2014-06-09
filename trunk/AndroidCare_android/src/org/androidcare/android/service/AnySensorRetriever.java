@@ -35,6 +35,7 @@ public class AnySensorRetriever implements SensorEventListener{
     }
 
     public void unregister() {
+        Log.d(TAG, "Unregistering sensors Listener");
         if (sensorLock.isHeld()) {
             sensorLock.release();
         }
