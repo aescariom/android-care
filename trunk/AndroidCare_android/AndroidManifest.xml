@@ -82,6 +82,9 @@
         <!-- download alarm register -->
         <receiver android:name=".service.alarms.receivers.DownloadAlarmsReceiver">
         </receiver>
+        <!-- alarm window receiver -->
+        <receiver android:name=".view.alarm.AlarmReceiver">
+        </receiver>
 
         <!-- Hay que poner la clase con el paquete, porque está en distinto paquete que aquel que le invoca -->
         <service android:enabled="true" android:name=".service.alarms.AlarmService" />
@@ -100,6 +103,5 @@
 				<category android:name="android.intent.category.HOME" />
 			</intent-filter>
 		</receiver>
-        <receiver android:name=".view.alarm.AlarmReceiver"/>
     </application>
 </manifest>
