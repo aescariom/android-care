@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
+import android.telephony.SmsManager;
 import android.util.Log;
 import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
@@ -62,10 +63,9 @@ public class AlarmService extends Service implements Serializable {
                 .append(this.smsAlarmMiddleText).append(alarm.getAlarmSeverity()).toString();
 
         Log.d("TEST", "Send SMS to " + destination + ". Message: " + message);
-        /*
+
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(alarm.getPhoneNumber().trim(), null, message , null, null);
-        */
     }
 
     private void notifyByCall(final Context ctx) {

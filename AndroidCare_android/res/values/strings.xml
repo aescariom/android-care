@@ -33,6 +33,7 @@
     <string name="location_updates">Location updates</string>
     <string name="reminder_updates">Reminder updates</string>
     <string name="alarm_updates">Alarm updates</string>
+    <string name="alarm_mobile_height">Height of the mobile phone</string>
     <string name="synchronization_interval">Event sync. interval</string>
     <string name="reminder_cache_time">Cache time</string>
     <string name="minute_s">minute(s)</string>

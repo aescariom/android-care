@@ -33,6 +33,7 @@
     <string name="location_updates">Actualización de la localización</string>
     <string name="reminder_updates">Actualización de recordatorios</string>
     <string name="alarm_updates">Actualización de alarmas</string>
+    <string name="alarm_mobile_height">Altura del teléfono móvil</string>
     <string name="synchronization_interval">Frec. envío eventos</string>
     <string name="reminder_cache_time">Duración de la caché</string>
     <string name="minute_s">minuto(s)</string>

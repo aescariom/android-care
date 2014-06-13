@@ -17,7 +17,7 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
 
     protected AccountManager accountManager;
     protected boolean isMock;
-//Comentario es que me fastidiaba en estos warnings y no tengo intención de ponernos a usar fragmentos
+//Comentario es que me fastidiaba en estos warnings y no tengo intenciï¿½n de ponernos a usar fragmentos
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,27 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
         setSynchronizationInterval();
         setReminderUpdates();
         setAlarmUpdates();
+        setAlarmHeightPhone();
         setCacheTime();
         setStopButton();
         setResetButton();
     }
-    
+
+    private void setAlarmHeightPhone() {
+        @SuppressWarnings("deprecation")
+        EditTextPreference pref = (EditTextPreference)findPreference("alarmPhoneHeigth");
+        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
+        pref.setSummary(pref.getText());
+        pref.setSummary(pref.getText() + " cm");
+        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                pref.setSummary(newValue.toString() + " cm");
+                return true;
+            }
+        });
+    }
+
     private void setSynchronizationInterval() {
         @SuppressWarnings("deprecation")
         EditTextPreference pref = (EditTextPreference)findPreference("synchronizationInterval");

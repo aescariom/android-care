@@ -1,4 +1,4 @@
-package org.androidcare.android.service.extra_tasks;
+package org.androidcare.android.service.noisy_tasks;
 
 import android.app.Activity;
 import android.content.Context;
