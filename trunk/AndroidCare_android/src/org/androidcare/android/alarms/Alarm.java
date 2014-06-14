@@ -64,6 +64,8 @@ public class Alarm implements Serializable {
     @DatabaseField
     private double longitude;
 
+    public boolean runnable = true;
+
     // default date time format
     private final static DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy",
             Locale.UK);

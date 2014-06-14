@@ -7,11 +7,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.service.AnySensorListener;
 import org.androidcare.android.service.AnySensorRetriever;
 import org.androidcare.android.service.alarms.receivers.FellOffAlarmReceiver;
 
@@ -34,6 +34,7 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "Starting service");
+        Log.d(TAG, "Value of intent " + intent);
 
         Bundle bundle = intent.getExtras();
 
@@ -154,7 +155,6 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
             abstractInitiateAlarm();
             isTheAlarmLaunchable = false;
         }
-        finishRunning(lock, retriever);
     }
 
     private void finishRunning(PowerManager.WakeLock lock, AnySensorRetriever retriever) {

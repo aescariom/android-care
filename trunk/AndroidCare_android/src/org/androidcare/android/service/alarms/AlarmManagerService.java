@@ -11,8 +11,8 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.AlarmType;
-import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.database.DatabaseHelper;
+import org.androidcare.android.service.alarms.messages.GetAlarmsMessage;
 import org.androidcare.android.service.alarms.receivers.DownloadAlarmsReceiver;
 import org.androidcare.android.service.alarms.receivers.FellOffAlarmReceiver;
 import org.androidcare.android.service.alarms.receivers.GreenZoneAlarmReceiver;
@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DownloadAlarmsService extends Service {
+public class AlarmManagerService extends Service {
 
     private final String TAG = this.getClass().getName();
     private DatabaseHelper databaseHelper;
@@ -52,43 +52,15 @@ public class DownloadAlarmsService extends Service {
         registerReceiver(fellOffAlarmReceiver, fellOffAlarmBroadcastFilter);
         Log.d(TAG, "Registred Fell off alarm receiver");
 
-        if ("schedule".equals(action)) {
-            Log.d(TAG, "Scheduling alarms");
-            this.scheduleAlarms();
-        } else {
-            Log.d(TAG, "Updating alarms");
-            this.removeAllAlarms();
-            this.downloadAlarms();
-        }
+        Log.d(TAG, "Scheduling alarms");
+        this.scheduleAlarmsFromDatabase();
+
+        Log.d(TAG, "Trying to update alarms");
+        this.downloadAlarms();
+
+        GetAlarmsMessage.setAlarmManagerService(this);
 
         return result;
-    }
-
-    private void removeAllAlarms() {
-        Log.d(TAG, "Removing alarms");
-        this.removeAllGeoPoints();
-        try {
-            List<Alarm> alarms = getHelper().getAlarmDao().queryForAll();
-            for (Alarm alarm : alarms) {
-                getHelper().getAlarmDao().delete(alarm);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } finally {
-            closeDatabaseConnection();
-        }
-        Log.d(TAG, "Finished removing alarms");
-    }
-
-    private void removeAllGeoPoints() {
-        try {
-            List<GeoPoint> geoPoints = getHelper().getGeoPointDao().queryForAll();
-            getHelper().getGeoPointDao().delete(geoPoints);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } finally {
-            closeDatabaseConnection();
-        }
     }
 
     private void downloadAlarms() {
@@ -103,7 +75,12 @@ public class DownloadAlarmsService extends Service {
         }
     }
 
-    private void scheduleAlarms() {
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    public void scheduleAlarmsFromDatabase() {
         List<Alarm> alarms = null;
         try {
             alarms = getHelper().getAlarmDao().queryForAll();
@@ -119,6 +96,28 @@ public class DownloadAlarmsService extends Service {
     private void scheduleFirstLaunch(Alarm alarm) {
         Context context = getApplicationContext();
 
+        Intent intent = getIntentByAlarmType(alarm);
+        intent.putExtra("alarm", alarm);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Calendar calendar = getNextTime(alarm);
+
+        Log.d(TAG, "Alarm data @ AlarmManagerService " + alarm.getName() + " (" + alarm.getAlarmStartTime().getHours()
+                + ":" + alarm.getAlarmStartTime().getMinutes() + " - "
+                + alarm.getAlarmEndTime().getHours() + ":" + alarm.getAlarmEndTime().getMinutes() + ")");
+
+        if (calendar != null) {
+            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+
+            Log.d(TAG, "Alarm in the future: " + alarm + " scheduled @ " + calendar.getTime());
+            Log.d(TAG, "Alarm " + alarm + " will be triggered @ " + alarm.getAlarmEndTime());
+        } else {
+            Log.d(TAG, "Alarm in the past, we will schedule it tomorrow, when it is in the future");
+        }
+    }
+
+    private Intent getIntentByAlarmType(Alarm alarm) {
         Intent intent = null;
 
         if (alarm.getAlarmType() == AlarmType.WAKE_UP) {
@@ -132,24 +131,13 @@ public class DownloadAlarmsService extends Service {
             intent = new Intent(FellOffAlarmReceiver.ACTION_TRIGGER_FELLOFF_SENSOR);
             Log.d(TAG, "Launching Fell off alarm");
         }
+        return intent;
+    }
 
-        intent.putExtra("alarm", alarm);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        Calendar calendar = getNextTime(alarm);
-        Log.d(TAG, "Alarm data @ DownloadAlarmsService " + alarm.getName() + " (" + alarm.getAlarmStartTime().getHours()
-                + ":" + alarm.getAlarmStartTime().getMinutes() + " - "
-                + alarm.getAlarmEndTime().getHours() + ":" + alarm.getAlarmEndTime().getMinutes() + ")");
-
-        if (calendar != null) {
-            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-
-            Log.d(TAG, "Alarm in the future " + alarm + " scheduled @ " + calendar.getTime());
-            Log.d(TAG, "Alarm will be triggered " + alarm + " scheduled @ " + alarm.getAlarmEndTime());
-        } else {
-            Log.d(TAG, "Alarm in the past, we will schedule it tomorrow, when it is in the future");
-        }
+    public void unscheduleAllDatabaseAlarms() {
+        getApplicationContext().stopService(new Intent(getApplicationContext(), FellOffAlarmService.class));
+        getApplicationContext().stopService(new Intent(getApplicationContext(), WakeUpAlarmService.class));
+        getApplicationContext().stopService(new Intent(getApplicationContext(), GreenZoneAlarmService.class));
     }
 
     private Calendar getNextTime(Alarm alarm) {
@@ -185,11 +173,6 @@ public class DownloadAlarmsService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
     public void onDestroy() {
         unregisterReceiver(fellOffAlarmReceiver);
         Log.d(TAG, "Unregistred fellOffAlarmReceiver");
@@ -199,10 +182,9 @@ public class DownloadAlarmsService extends Service {
         Log.i(TAG, "Unregistred wakeUpAlarmReceiver");
         closeDatabaseConnection();
 
-        getApplicationContext().stopService(new Intent(getApplicationContext(), FellOffAlarmService.class));
-        getApplicationContext().stopService(new Intent(getApplicationContext(), WakeUpAlarmService.class));
-        getApplicationContext().stopService(new Intent(getApplicationContext(), GreenZoneAlarmService.class));
+        unscheduleAllDatabaseAlarms();
 
         super.onDestroy();
     }
+
 }

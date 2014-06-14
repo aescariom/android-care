@@ -1,6 +1,5 @@
 package org.androidcare.android.alarms;
 
-import android.util.Log;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.json.JSONException;
@@ -27,7 +26,6 @@ public class GeoPoint implements Serializable {
         this.latitude = Double.parseDouble(jsonObj.getString("latitude"));
         this.longitude = Double.parseDouble(jsonObj.getString("longitude"));
         this.alarm = alarm;
-        Log.e("TEST", "Creado objeto GeoPoint " + latitude + ";" + longitude);
     }
 
     public int getId() {

@@ -50,6 +50,7 @@ public class LocationRetreiver implements LocationListener {
             postData(new LocationMessage(location));
         } else if (parentService.getClass() == GreenZoneAlarmService.class) {
             GreenZoneAlarmService redZoneAlarm = (GreenZoneAlarmService) parentService;
+            Log.d(TAG, "looking if we are inside...");
             redZoneAlarm.analyzeThe(location, wakeLock);
         } else {
             throw new RuntimeException("No idea what should I do with this...");

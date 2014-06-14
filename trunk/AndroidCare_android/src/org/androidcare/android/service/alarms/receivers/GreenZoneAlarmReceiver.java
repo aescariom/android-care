@@ -21,6 +21,7 @@ public class GreenZoneAlarmReceiver extends BroadcastReceiver implements Seriali
         Bundle bundle = intent.getExtras();
         Alarm alarm = (Alarm) bundle.getSerializable("alarm");
         boolean heWasInside = true;
+
         if (bundle.getSerializable("heWasInside") != null) {
             heWasInside = (Boolean) bundle.getSerializable("heWasInside");
         }

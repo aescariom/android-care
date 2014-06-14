@@ -1,4 +1,4 @@
-package org.androidcare.android.service.alarms;
+package org.androidcare.android.service;
 
 import android.content.Context;
 import android.os.PowerManager;
