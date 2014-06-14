@@ -9,6 +9,7 @@ import org.androidcare.android.database.DatabaseHelper;
 import org.androidcare.android.service.ConnectionService;
 import org.androidcare.android.service.InvalidMessageResponseException;
 import org.androidcare.android.service.Message;
+import org.androidcare.android.service.alarms.AlarmManagerService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -31,10 +32,16 @@ public class GetAlarmsMessage extends Message {
     private DatabaseHelper databaseHelper = null;
     private List<Alarm> alarms = new ArrayList();
 
+    private static AlarmManagerService alarmManagerService;
+
     private final String TAG = this.getClass().getName();
 
     public GetAlarmsMessage(){
         super();
+    }
+
+    public static void setAlarmManagerService (AlarmManagerService service) {
+        alarmManagerService = service;
     }
 
     @Override
@@ -63,6 +70,10 @@ public class GetAlarmsMessage extends Message {
                 throw new InvalidMessageResponseException("No JSON String received");
             }
 
+            Log.d(TAG, "Unschedule all alarms");
+            this.alarmManagerService.unscheduleAllDatabaseAlarms();
+
+            Log.d(TAG, "delete all alarms");
             this.removeAllAlarms();
 
             JSONArray array = new JSONArray(jsonString);
@@ -70,16 +81,20 @@ public class GetAlarmsMessage extends Message {
                 JSONObject obj = array.getJSONObject(i);
                 this.alarms.add(new Alarm(obj, null));
             }
-            this.addAlarmsToDatabase(this.alarms);
 
+            Log.d(TAG, "add new alarms");
+            this.addAlarmsToDatabase(this.alarms);
             Log.i(TAG, "Alarms updated from the server");
+
+            this.alarmManagerService.scheduleAlarmsFromDatabase();
+
         }
         catch (Exception e) {
             Log.e(TAG, "Error when retrieving alarms from the server: " + e.getMessage(), e);
             throw new InvalidMessageResponseException("Error ocurend when parsing JSON String", e);
         }
     }
-    
+
     @Override
     public void onError(Exception ex){
         super.onError(ex);

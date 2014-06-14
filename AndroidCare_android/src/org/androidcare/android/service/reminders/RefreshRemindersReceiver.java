@@ -21,7 +21,6 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
     private ServiceConnection mConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.e("RefreshRemindersReceiver", "onServiceConnected()");
             ConnectionServiceBinder binder = (ConnectionServiceBinder) service;
             connectionService = binder.getService();
 
@@ -42,7 +41,6 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent arg1) {
-        Log.e("RefreshRemindersReceiver", "onReceive()");
         context.getApplicationContext().bindService(
                            new Intent(context.getApplicationContext(), ConnectionService.class),
                            mConnection, Context.BIND_AUTO_CREATE);
@@ -63,7 +61,7 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
         
         Log.d("RefreshReminders", "The reminders will be reloaded in " + hours + " hours");
         
-        long fourHours = hours*60*60*1000;
+        long fourHours = hours * 60 * 60 * 1000;
 
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, RefreshRemindersReceiver.class);
@@ -75,7 +73,6 @@ public class RefreshRemindersReceiver extends BroadcastReceiver {
     }
 
     private void cleanReminderCache(Context context) {
-        Log.e("RefreshRemindersReceiver", "cleanReminderCache()");
         String path = android.os.Environment.getDownloadCacheDirectory().getAbsolutePath() + "/AndroidCare";
         File dir = new File(path);
         

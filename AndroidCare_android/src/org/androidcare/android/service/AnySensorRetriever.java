@@ -7,7 +7,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.util.Log;
-import org.androidcare.android.service.alarms.AnySensorListener;
 
 import java.util.List;
 

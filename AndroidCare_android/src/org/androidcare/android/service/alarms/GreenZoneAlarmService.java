@@ -30,6 +30,7 @@ public class GreenZoneAlarmService extends AlarmService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
+
         Log.d(TAG, "Green zone alarm service started");
 
         final GreenZoneAlarmService alarmService = this;
@@ -38,13 +39,19 @@ public class GreenZoneAlarmService extends AlarmService {
         final PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wakelook " + TAG);
         wakeLock.acquire();
         Log.i(TAG, "Lock taken");
+        Log.d(TAG, "Value of intent " + intent);
 
         Bundle bundle = intent.getExtras();
-        super.setAlarm((Alarm) bundle.getSerializable("alarm"));
+        Alarm alarm = (Alarm) bundle.getSerializable("alarm");
+        super.setAlarm(alarm);
         this.heWasInside = (Boolean) bundle.getSerializable("heWasInside");
 
-        LocationRetreiver locationRetreiver = new LocationRetreiver(alarmService, wakeLock);
-        runWatchDog(locationRetreiver);
+        if (alarm.runnable) {
+            alarm.runnable = false;
+            Log.d(TAG, "Launching location retriever");
+            LocationRetreiver locationRetreiver = new LocationRetreiver(alarmService, wakeLock);
+            runWatchDog(locationRetreiver);
+        }
 
         return result;
     }
@@ -54,7 +61,6 @@ public class GreenZoneAlarmService extends AlarmService {
 
         locationRetreiver.getLocation();
         scheduleNextLaunch();
-        locationRetreiver.unRegisterListener();
     }
 
     private void scheduleNextLaunch() {
@@ -131,12 +137,7 @@ public class GreenZoneAlarmService extends AlarmService {
     }
 
     private void launchAlarm(PowerManager.WakeLock wakeLock) {
-
         abstractInitiateAlarm();
-
-        if(wakeLock.isHeld()){
-            wakeLock.release();
-        }
     }
 
     private boolean pointIsInPolygon(int crossings) {
@@ -166,11 +167,11 @@ public class GreenZoneAlarmService extends AlarmService {
         return (((secondGeoPointX >= locationX && locationX >= firstGeoPointX) &&
                 (secondGeoPointY >= candidateY && candidateY >= firstGeoPointY)) ||
                 ((firstGeoPointX >= locationX && locationX >= secondGeoPointX) &&
-                (firstGeoPointY >= candidateY && candidateY >= secondGeoPointY)) ||
+                        (firstGeoPointY >= candidateY && candidateY >= secondGeoPointY)) ||
                 ((secondGeoPointX >= locationX && locationX >= firstGeoPointX) &&
-                (firstGeoPointY >= candidateY && candidateY >= secondGeoPointY)) ||
+                        (firstGeoPointY >= candidateY && candidateY >= secondGeoPointY)) ||
                 ((firstGeoPointX >= locationX && locationX >= secondGeoPointX) &&
-                (secondGeoPointY >= candidateY && candidateY >= firstGeoPointY)));
+                        (secondGeoPointY >= candidateY && candidateY >= firstGeoPointY)));
     }
 
     private double evaluateForY(double firstGeoPointX, double firstGeoPointY, double secondGeoPointX, double secondGeoPointY,
@@ -187,7 +188,7 @@ public class GreenZoneAlarmService extends AlarmService {
     private GeoPoint getSecondGeoPoint(int i, List<GeoPoint> points) {
         return i < (points.size() - 1) ? points.get(i + 1) : points.get(0);
     }
-//Comentario desregistrar listernes
+
     @Override
     public void onDestroy() {
         Log.d(TAG, "Stopping service");

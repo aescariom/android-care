@@ -52,7 +52,7 @@
     <string name="SMSAlarmStartText">ANDROIDCARE: Alarma</string>
     <string name="SMSAlarmMiddleText">disparada con prioridad</string>
     <string name="Cancel">Cancelar</string>
-    <string name="LaunchAlarm">Disparar alarma (</string>
+    <string name="LaunchAlarm">Disparar alarma</string>
     <string name="wake_up">Despertador</string>
     <string name="red_zone">Zona roja</string>
     <string name="fell_off">Caida</string>

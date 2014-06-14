@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import org.androidcare.android.R;
+import org.androidcare.android.service.alarms.AlarmService;
 import org.androidcare.android.widget.SlideButton;
 
 import java.io.Serializable;
@@ -63,7 +64,8 @@ public class UISliderView extends RelativeLayout {
         sbtnUnlock.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                closeWindow(type, displayable);
+                closeWindow();
+                launchSpecificWindow(type, displayable);
                 shouldFire = false;
             }
         });
@@ -80,7 +82,12 @@ public class UISliderView extends RelativeLayout {
 
                 public void onFinish() {
                     if (shouldFire) {
-                        closeWindow(type, displayable);
+                        if ("alarm".equals(type)) {
+                            AlarmService alarm = (AlarmService) displayable;
+                            alarm.fireAlarm(activity);
+
+                            closeWindow();
+                        }
                     }
                 }
 
@@ -88,12 +95,14 @@ public class UISliderView extends RelativeLayout {
         }
     }
 
-    private void closeWindow(String type, Serializable displayable) {
+    private void closeWindow() {
         cancelVibrationAndSound();
         FrameLayout unlockLayout = (FrameLayout)findViewById(R.id.unlockLayout);
 
         unlockLayout.setVisibility(INVISIBLE);
+    }
 
+    private void launchSpecificWindow(String type, Serializable displayable) {
         Intent intent = new Intent(getContext(), SpecificWarningActivityLauncher.class);
         intent.putExtra("type", type);
         intent.putExtra("displayable", displayable);

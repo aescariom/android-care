@@ -6,16 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.service.AnySensorListener;
 import org.androidcare.android.service.AnySensorRetriever;
 import org.androidcare.android.service.alarms.receivers.WakeUpAlarmReceiver;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Date;
 
 public class WakeUpAlarmService extends AlarmService implements AnySensorListener {
@@ -37,6 +34,7 @@ public class WakeUpAlarmService extends AlarmService implements AnySensorListene
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "Starting service");
+        Log.d(TAG, "Value of intent " + intent);
 
         Bundle bundle = intent.getExtras();
 
