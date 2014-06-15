@@ -17,6 +17,8 @@ import com.google.gwt.user.client.ui.*;
 import org.androidcare.web.client.module.dashboard.LocalizedConstants;
 import org.androidcare.web.client.module.dashboard.rpc.AlarmService;
 import org.androidcare.web.client.module.dashboard.rpc.AlarmServiceAsync;
+import org.androidcare.web.client.module.dashboard.rpc.PositionService;
+import org.androidcare.web.client.module.dashboard.rpc.PositionServiceAsync;
 import org.androidcare.web.client.observer.ObservableForm;
 import org.androidcare.web.client.widgets.DialogBoxClose;
 import org.androidcare.web.client.widgets.TimeBox;
@@ -24,6 +26,8 @@ import org.androidcare.web.shared.AlarmSeverity;
 import org.androidcare.web.shared.AlarmType;
 import org.androidcare.web.shared.persistent.Alarm;
 import org.androidcare.web.shared.persistent.GeoPoint;
+import org.androidcare.web.shared.persistent.Position;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,6 +108,7 @@ public class AlarmForm extends ObservableForm {
     private DialogBoxClose container;
 
     private final AlarmServiceAsync alarmService = GWT.create(AlarmService.class);
+    private final PositionServiceAsync positionService = GWT.create(PositionService.class);
 
     //Persistent data
     private Alarm alarm;
@@ -137,13 +142,11 @@ public class AlarmForm extends ObservableForm {
     }
     
     private void setUpMap() {
-    	LatLng madridCentred = LatLng.newInstance(40.416667, -3.70355); //Madrid
-    	int zoomPrettyClosed = 14;
+    	getGoodMapLocationByGreenZone();
     	
     	this.greenZoneMap = new MapWidget();
     	this.greenZoneMap.setSize("400px", "300px");
     	
-    	this.greenZoneMap.setCenter(madridCentred, zoomPrettyClosed);
     	this.greenZoneMap.checkResize();
     	
     	this.greenZoneMap.addMapClickHandler(new MapClickHandler() {
@@ -163,7 +166,64 @@ public class AlarmForm extends ObservableForm {
         });
 	}
 
-    private void setFormValues() {
+    private void getGoodMapLocationByGreenZone() {
+    	alarmService.getActiveAlarms(new AsyncCallback<List<Alarm>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                caught.printStackTrace();
+                getGoodMapLocationByPosition();
+            }
+
+            @Override
+            public void onSuccess(List<Alarm> result) {
+            	boolean weHaveLocation = false;
+                for (Alarm alarm : result) {
+                    if (alarm.getAlarmType() == AlarmType.GREEN_ZONE) {
+                    	List<GeoPoint> positions = alarm.getPositions();
+                        LatLng[] points = convertToArray(positions);
+                        centerMap(points[0]);
+                        weHaveLocation = true;
+                    }
+                }
+                
+                if (!weHaveLocation) {
+                	getGoodMapLocationByPosition();
+                }
+            }
+
+        });
+    	
+	}
+    
+    private void getGoodMapLocationByPosition() {
+    	positionService.getLastPositions(1, new AsyncCallback<List<Position>>() {
+			public void onFailure(Throwable caught) {
+				caught.printStackTrace();
+				centerMadridMap();
+			}
+
+			@Override
+			public void onSuccess(List<Position> positions) {
+				LatLng[] points = convertPositionsToArray(positions);
+				if (points.length > 0) {
+					centerMap(points[0]);
+				} else {
+					centerMadridMap();
+				}
+			}
+		});
+    }
+    
+    private void centerMadridMap() {
+    	centerMap(LatLng.newInstance(40.416667, -3.70355));	// Madrid
+    }
+    
+    private void centerMap(LatLng position) {
+    	int zoomPrettyClose = 14;
+    	this.greenZoneMap.setCenter(position, zoomPrettyClose);
+    }
+
+	private void setFormValues() {
         Alarm alarm = this.alarm;
 
         if (alarm == null) {
@@ -531,6 +591,16 @@ public class AlarmForm extends ObservableForm {
         }
 		return lats;
 	}
+	
+	private LatLng[] convertPositionsToArray(List<Position> list) {
+		LatLng[] lats = new LatLng[list.size()];
+        int i = 0;
+        for (Position point : list) {
+            lats[i] = point.toLatLng();
+            i++;
+        }
+		return lats;
+	}
 
 	private boolean isAlarmDataVisible() {
 		return lblSeverityLevel.isVisible();
@@ -573,4 +643,5 @@ public class AlarmForm extends ObservableForm {
 		this.container = container;
 		this.container.center();
 	}
+	
 }

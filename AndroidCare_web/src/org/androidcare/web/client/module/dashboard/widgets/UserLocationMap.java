@@ -155,7 +155,6 @@ public class UserLocationMap extends FlowPanel {
             lats[i] = positions.get(i).toLatLng();
         }
         return lats;
-
     }
 
     protected void showWindow(LatLng point, Date date) {
