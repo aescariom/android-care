@@ -8,6 +8,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.maps.client.geom.LatLng;
+
 
 @PersistenceCapable
 public class Position implements Serializable {
@@ -74,6 +76,10 @@ public class Position implements Serializable {
 	public float getLongitude(){
 		return longitude;
 	}
+	
+	public LatLng toLatLng() {
+        return LatLng.newInstance(latitude, longitude);
+    }
 	
 	public Date getDate(){
 		return new Date(date);
