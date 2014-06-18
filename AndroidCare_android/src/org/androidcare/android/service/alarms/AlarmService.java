@@ -12,6 +12,7 @@ import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
+import org.androidcare.android.service.ServiceManager;
 import org.androidcare.android.service.alarms.messages.SendEmailMessage;
 import org.androidcare.android.view.UserWarningReceiver;
 
@@ -82,6 +83,7 @@ public class AlarmService extends Service implements Serializable {
     }
 
     public void fireAlarm(Context ctx) {
+        Log.d(TAG, "Fire alarm");
         if (alarm.isSendSMS()) {
             notifyBySMS(ctx);
         }
@@ -117,9 +119,13 @@ public class AlarmService extends Service implements Serializable {
     }
 
     private void closeWindow(Context ctx) {
+        ServiceManager.stopSecondaryServices(ctx);
+        ServiceManager.startAllServices(ctx);
+
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         ctx.startActivity(intent);
     }
 

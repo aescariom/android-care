@@ -1,14 +1,15 @@
 package uspceu.logservice;
 
+import android.util.Log;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import android.util.Log;
-
 public class LogWriter {
 	public static void appendLog(String text) {
+        Log.d("DATA: ", text);
 		File logFile = new File("sdcard/log.file");
 		if (!logFile.exists()) {
 			try {
@@ -26,7 +27,7 @@ public class LogWriter {
 			Long timestampLong = System.currentTimeMillis() / 1000;
 			String timestamp = timestampLong.toString();
 
-			buf.append("TIME: " + timestamp + " " + text);
+			buf.append(text);
 			buf.newLine();
 			buf.flush();
 			buf.close();

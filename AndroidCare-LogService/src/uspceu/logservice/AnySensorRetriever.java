@@ -1,4 +1,4 @@
-package org.androidcare.android.service;
+package uspceu.logservice;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -17,7 +17,6 @@ public class AnySensorRetriever implements SensorEventListener{
     private SensorManager sensorManager;
     private List<Sensor> deviceSensors;
     private PowerManager.WakeLock lock;
-    private PowerManager.WakeLock sensorLock;
 
     public AnySensorRetriever(AnySensorListener sensorListener, Context ctx, PowerManager.WakeLock lock, int type) {
         this.subscribedSensor = sensorListener;
@@ -26,18 +25,11 @@ public class AnySensorRetriever implements SensorEventListener{
 
         this.lock = lock;
 
-        PowerManager pm = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
-        this.sensorLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "Wakelock " + TAG);
-
-        sensorLock.acquire();
         registerSensorsListener();
     }
 
     public void unregister() {
         Log.d(TAG, "Unregistering sensors Listener");
-        if (sensorLock.isHeld()) {
-            sensorLock.release();
-        }
 
         sensorManager.unregisterListener(this);
         subscribedSensor = null;
@@ -58,10 +50,7 @@ public class AnySensorRetriever implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (subscribedSensor != null) {
-            subscribedSensor.onChangeSensor(event.values, lock, this);
-        }
-        if (sensorLock.isHeld()) {
-            sensorLock.release();
+            subscribedSensor.onChangeSensorAcl(event.values, lock, this);
         }
     }
 }
