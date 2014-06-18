@@ -71,7 +71,9 @@ public class GetAlarmsMessage extends Message {
             }
 
             Log.d(TAG, "Unschedule all alarms");
-            this.alarmManagerService.unscheduleAllDatabaseAlarms();
+            if (this.alarmManagerService != null) {
+                this.alarmManagerService.unscheduleAllDatabaseAlarms();
+            }
 
             Log.d(TAG, "delete all alarms");
             this.removeAllAlarms();

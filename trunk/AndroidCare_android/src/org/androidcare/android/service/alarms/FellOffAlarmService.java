@@ -17,14 +17,19 @@ import org.androidcare.android.service.alarms.receivers.FellOffAlarmReceiver;
 
 public class FellOffAlarmService extends AlarmService implements AnySensorListener {
 
-    private final String TAG = this.getClass().getName();
+    private static final double DELTA = 8.0;
 
+    private final String TAG = this.getClass().getName();
     private boolean isTheAlarmLaunchable = true;
-    private static final double DELTA = 8.5f;
-    private FellOffAlarmService thisService = this;
-    private double lastMed = 0;
     private boolean continueRunning = true;
-    private Chronometer chrono;
+
+    private int currentIndex = 0;
+
+    private final int SAMPLING_NUMBER = 30;
+
+    private float[] xIndexes = new float[SAMPLING_NUMBER];
+    private float[] yIndexes = new float[SAMPLING_NUMBER];
+    private float[] zIndexes = new float[SAMPLING_NUMBER];
 
     public FellOffAlarmService() {
         super();
@@ -35,6 +40,7 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "Starting service");
         Log.d(TAG, "Value of intent " + intent);
+        isTheAlarmLaunchable = true;
 
         Bundle bundle = intent.getExtras();
 
@@ -55,33 +61,7 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
             Log.d(TAG, "lock set");
         }
 
-        new AnySensorRetriever(this, this, wakeLock, Sensor.TYPE_ACCELEROMETER);
-
-        int height = Integer.parseInt(prefs.getString("alarmPhoneHeigth", "80"));
-
-        /*
-         s(t) final height (ground = 0)
-         s_0 initial height (pocket heigth)
-         v_0 initial velocity (in y axis, no flying 0 m/s)
-         t   flying time (in seconds)
-         g   Sir Isaac Newton constant... 9.8 (@ Earth surface, change for Moon/Mars/Red Bull HQ/...)
-
-         s(t) = s_0 + v_0 * t - 1/2 g * t^2
-         0    = s_0 + 0 * t   - 1/2 g * t^2
-         1/2 g * t^2 = s_0
-         g * t^2 = 2 * s_0
-         t^2 = 2 * s_0 / g
-         t = sqrt(2 * s_0 / g)
-         we don't like decimals, we have g = 9.8 and s_0 = [cm] (no International System)
-         t = sqrt(2 * s_0 / (g * 100))
-         t = sqrt(2 * s_0 / 980)
-          */
-        long millisFallingTime = new Double(Math.sqrt(2.0 * ((double) height) / 980.0) * 1000).longValue();
-
-        Log.d(TAG, "falling time " + millisFallingTime + "ms");
-        Log.d(TAG, "height " + height + "cm");
-
-        this.chrono = new Chronometer(millisFallingTime);
+        new AnySensorRetriever(this, this, wakeLock, Sensor.TYPE_LINEAR_ACCELERATION);
 
         return START_STICKY;
     }
@@ -99,10 +79,12 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
 
     @Override
     public void onChangeSensor(float[] values, PowerManager.WakeLock lock, AnySensorRetriever retriever) {
-        Log.d(TAG, "sensor values: " + values[0] + "; " + values[1] + "; " + values[2]);
+
         if (continueRunning) {
-            if (mustLaunchAlarm(values)) {
-                launchAlarm(lock, retriever);
+            synchronized(this) {
+                if (mustLaunchAlarm(values)) {
+                    launchAlarm();
+                }
             }
         } else {
             finishRunning(lock, retriever);
@@ -110,50 +92,50 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     }
 
     private boolean mustLaunchAlarm(float[] values) {
-        double vectorMod = calculateVectorMod(values);
-        boolean mustLaunch = false;
+        int xAboveMin = 0;
+        int yAboveMin = 0;
+        int zAboveMin = 0;
 
-        if (lastMed != 0.0f) {
-            mustLaunch = isOutOfInterval(vectorMod);
-            if (values != null) {
-                lastMed = vectorMod;
+        xIndexes[currentIndex] = values[0];
+        yIndexes[currentIndex] = values[1];
+        zIndexes[currentIndex] = values[2];
+
+        for (int position = 0 ; position < SAMPLING_NUMBER - 1; position++) {
+            float currentX = xIndexes[position];
+            float currentY = yIndexes[position];
+            float currentZ = zIndexes[position];
+
+            float nextX = xIndexes[position + 1];
+            float nextY = yIndexes[position + 1];
+            float nextZ = zIndexes[position + 1];
+
+            if (Math.abs(nextX - currentX) > DELTA) {
+                xAboveMin++;
+            }
+
+            if (Math.abs(nextY - currentY) > DELTA) {
+                yAboveMin++;
+            }
+
+            if (Math.abs(nextZ - currentZ) > DELTA) {
+                zAboveMin++;
+            }
+            if(xAboveMin > 0 || yAboveMin > 0 || zAboveMin > 0) {
+                Log.d(TAG, currentIndex + " - " + xAboveMin + ", " + yAboveMin + ", " + zAboveMin);
             }
         }
 
-        if (mustLaunch) {
-            this.chrono.count();
-            mustLaunch = this.chrono.hasABigInterval();
-        } else {
-            this.chrono.reset();
-        }
+        currentIndex = (currentIndex + 1) % SAMPLING_NUMBER;
 
-        if (values != null) {
-            lastMed = vectorMod;
-        } else {
-            thisService.stopSelf();
-            Log.w(TAG, "No data available");
-        }
-
-        return mustLaunch;
+        return xAboveMin + yAboveMin + zAboveMin > 9;
     }
 
-    private boolean isOutOfInterval(double vectorMod) {
-        return lastMed + DELTA < vectorMod || vectorMod < lastMed - DELTA;
-    }
 
-    private double calculateVectorMod(float[] sensorsData) {
-        double x = sensorsData[0];
-        double y = sensorsData[1];
-        double z = sensorsData[2];
-
-        return Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
-    }
-
-    private void launchAlarm(PowerManager.WakeLock lock, AnySensorRetriever retriever) {
+    private void launchAlarm() {
         Log.d(TAG, "INITIATE ALARM LAUNCH");
         if (isTheAlarmLaunchable) {
-            abstractInitiateAlarm();
             isTheAlarmLaunchable = false;
+            abstractInitiateAlarm();
         }
     }
 

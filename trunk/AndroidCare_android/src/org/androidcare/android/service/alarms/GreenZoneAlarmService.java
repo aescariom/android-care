@@ -20,7 +20,7 @@ import java.util.List;
 public class GreenZoneAlarmService extends AlarmService {
 
     private static final String TAG = GreenZoneAlarmService.class.getName();
-    static final int UPDATE_INTERVAL = 60 * 60 * 1000;
+    static final int UPDATE_INTERVAL = 1 * 60 * 1000;
     private boolean heWasInside = true;
 
     public GreenZoneAlarmService() {

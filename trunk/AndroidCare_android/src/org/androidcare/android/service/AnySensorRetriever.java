@@ -28,8 +28,8 @@ public class AnySensorRetriever implements SensorEventListener{
 
         PowerManager pm = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
         this.sensorLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "Wakelock " + TAG);
-        sensorLock.acquire();
 
+        sensorLock.acquire();
         registerSensorsListener();
     }
 
@@ -45,7 +45,7 @@ public class AnySensorRetriever implements SensorEventListener{
 
     public void registerSensorsListener() {
         for (Sensor sensor : deviceSensors) {
-            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
             Log.d(TAG, "Sensor registered");
         }
     }
@@ -57,12 +57,10 @@ public class AnySensorRetriever implements SensorEventListener{
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.d(TAG, "Sensor changed");
         if (subscribedSensor != null) {
             subscribedSensor.onChangeSensor(event.values, lock, this);
         }
         if (sensorLock.isHeld()) {
-            Log.d(TAG, "Screen lock released");
             sensorLock.release();
         }
     }

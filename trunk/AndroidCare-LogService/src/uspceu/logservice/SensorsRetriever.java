@@ -18,8 +18,7 @@ public class SensorsRetriever implements SensorEventListener {
 	public SensorsRetriever(Context context) {
 		sensorManager = (SensorManager) context
 				.getSystemService(Context.SENSOR_SERVICE);
-		//deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        deviceSensors = sensorManager.getSensorList(Sensor.TYPE_GRAVITY);
+		deviceSensors = sensorManager.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION);
 		deviceSensorValues = new HashMap<String, SensorsRetriever.SensorValues>();
 
 		registerSensorsListener();
@@ -29,7 +28,7 @@ public class SensorsRetriever implements SensorEventListener {
 		for (Sensor sensor : deviceSensors) {
 			deviceSensorValues.put(sensor.getName(), new SensorValues(sensor));
 			sensorManager.registerListener(this, sensor,
-					SensorManager.SENSOR_DELAY_NORMAL);
+					SensorManager.SENSOR_DELAY_FASTEST);
 		}
 	}
 
@@ -40,8 +39,7 @@ public class SensorsRetriever implements SensorEventListener {
 			float[] sensorValues = deviceSensorValues.get(sensorName)
 					.getValues();
 			if (sensorValues != null)
-				sensorsString += "\n" + sensorName + ": " + sensorValues[0] + ", "
-						+ sensorValues[1] + ", " + sensorValues[2];
+				sensorsString += sensorValues[0] + ", " + sensorValues[1] + ", " + sensorValues[2];
 		}
 
 		return sensorsString;
