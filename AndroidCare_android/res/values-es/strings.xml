@@ -33,7 +33,7 @@
     <string name="location_updates">Actualización de la localización</string>
     <string name="reminder_updates">Actualización de recordatorios</string>
     <string name="alarm_updates">Actualización de alarmas</string>
-    <string name="alarm_mobile_height">Altura del teléfono móvil</string>
+    <string name="fellOffCalibration">Calibrar caidas</string>
     <string name="synchronization_interval">Frec. envío eventos</string>
     <string name="reminder_cache_time">Duración de la caché</string>
     <string name="minute_s">minuto(s)</string>
@@ -41,6 +41,9 @@
     <string name="day_s">día(s)</string>
     <string name="location_service">Servicio de localización</string>
     <string name="force_gps_location_if_airplane_mode">Ignorar modo avión</string>
+    <string name="no_calibration_found">No se ha encontrado la calibración</string>
+    <string name="calibrate_felloff_sensor">Por favor, calibre el sensor.</string>
+    <string name="calibrate">Calibrar</string>
     
     <!-- Network -->
     <string name="not_reachable">El servidor no responde</string>
@@ -58,4 +61,7 @@
     <string name="fell_off">Caida</string>
     <string name="alarm_service">Servicio de alarmas</string>
     <string name="use_lock_with_fell_off_alarm">Usar lock al activar monitorización</string>
+    <string name="calibration_instructions">Por favor, agarre el teléfono, extienda el brazo sobre una superficie blanda
+        para evitar daños (como una cama), pulse el botón Aceptar y déjelo caer. Después, vuelva a pulsar el botón.</string>
+    <string name="sensor_calibrated">Sensor calibrado correctamente</string>
 </resources>

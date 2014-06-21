@@ -49,10 +49,6 @@
                 android:defaultValue="true"
                 android:key="forceLockWithFellOffAlarm"
                 />
-        <EditTextPreference
-                android:key="alarmPhoneHeigth"
-                android:title="@string/alarm_mobile_height"
-                android:defaultValue="80"/>
     </PreferenceCategory>
  	
  	<PreferenceCategory

@@ -213,24 +213,6 @@ public class Alarm implements Serializable {
     }
 
     public List<GeoPoint> getGeoPoints(Context context) {
-       /*
-       Procedimiento alternativo (dejar unso días hasta estar seguros de que funciona)
-
-       List<GeoPoint> points = new ArrayList();
-        try {
-            List<GeoPoint> allpoints = getHelper(context).getGeoPointDao().queryForAll();
-            for (GeoPoint point : allpoints) {
-                if (point.getAlarm().getName().equals(getName())) {
-                    points.add(point);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeDatabaseConnection();
-        }
-        return points;
-        */
         return new ArrayList<GeoPoint>(this.geoPoints);
     }
 }
