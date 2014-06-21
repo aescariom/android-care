@@ -10,6 +10,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.preferences.PreferencesActivity;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
 import org.androidcare.android.service.ServiceManager;
@@ -121,6 +122,10 @@ public class AlarmService extends Service implements Serializable {
     private void closeWindow(Context ctx) {
         ServiceManager.stopSecondaryServices(ctx);
         ServiceManager.startAllServices(ctx);
+
+        Intent mainWindow = new Intent(ctx, PreferencesActivity.class);
+        mainWindow.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(mainWindow);
 
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
