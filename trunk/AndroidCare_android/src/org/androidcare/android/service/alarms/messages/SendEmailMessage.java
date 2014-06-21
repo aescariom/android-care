@@ -19,6 +19,7 @@ import java.util.List;
 @DatabaseTable(tableName = "SendEmailMessage")
 public class SendEmailMessage extends Message {
     public static final String SENDMAIL_URL = "api/sendMailAlarm";
+    private final String TAG = this.getClass().getName();
 
     @DatabaseField
     protected long alarmId;
@@ -39,11 +40,11 @@ public class SendEmailMessage extends Message {
         List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("alarmId", String.valueOf(alarmId)));
         String date = format.format(creationDate);
+        Log.d(TAG, "Launch date: " + date);
+
         nameValuePairs.add(new BasicNameValuePair("time", date));
 
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-        Log.e("TEST", "Enviamos un correo SendEmailMessage");
 
         return httppost;
     }
