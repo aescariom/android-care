@@ -36,22 +36,18 @@ public class SendMailAlarm extends HttpServlet {
         long alarmId = Long.parseLong(req.getParameter("alarmId").toString());
 
         Alarm alarm = (Alarm) pm.getObjectById(Alarm.class, alarmId);
-
-        SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        Date date = new Date();
+        
+        String date = "Unknown";
+        
         if(req.getParameter("time") != null){
-            try {
-                date = format.parse(req.getParameter("time").toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        	date = req.getParameter("time");
         }
 
         sendMail(alarm, date);
 
     }
 
-    private void sendMail(Alarm alarm, Date date) {
+    private void sendMail(Alarm alarm, String date) {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
 
