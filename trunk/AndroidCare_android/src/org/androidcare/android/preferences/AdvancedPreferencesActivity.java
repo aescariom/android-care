@@ -29,25 +29,9 @@ public class AdvancedPreferencesActivity extends PreferenceActivity {
         setSynchronizationInterval();
         setReminderUpdates();
         setAlarmUpdates();
-        setAlarmHeightPhone();
         setCacheTime();
         setStopButton();
         setResetButton();
-    }
-
-    private void setAlarmHeightPhone() {
-        @SuppressWarnings("deprecation")
-        EditTextPreference pref = (EditTextPreference)findPreference("alarmPhoneHeigth");
-        pref.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
-        pref.setSummary(pref.getText());
-        pref.setSummary(pref.getText() + " cm");
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            public boolean onPreferenceChange(Preference pref, Object newValue) {
-                pref.setSummary(newValue.toString() + " cm");
-                return true;
-            }
-        });
     }
 
     private void setSynchronizationInterval() {

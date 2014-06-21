@@ -15,7 +15,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 import org.androidcare.android.R;
 import org.androidcare.android.service.ServiceManager;
@@ -36,7 +35,20 @@ public class PreferencesActivity extends PreferenceActivity {
         addGoogleAccounts();
         setDisplayRemindersButton();
         setDisplayAlarmsButton();
+        setFellOffCalibrationButton();
         setAdvancedButton();
+    }
+
+    private void setFellOffCalibrationButton() {
+        final Preference calibration = (Preference) findPreference("fellOffCalibration");
+        calibration.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(PreferencesActivity.this, CalibrationWindow.class);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     private void setDisplayRemindersButton(){
@@ -59,7 +71,6 @@ public class PreferencesActivity extends PreferenceActivity {
         restart.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 
             public boolean onPreferenceClick(Preference preference) {
-                Log.v(TAG, "Llegando a alarmas");
                 Intent intent = new Intent(PreferencesActivity.this, AlarmList.class);
                 startActivity(intent);
                 return true;

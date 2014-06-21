@@ -11,6 +11,7 @@ import org.androidcare.android.alarms.Alarm;
 import org.androidcare.android.alarms.GeoPoint;
 import org.androidcare.android.reminders.Reminder;
 import org.androidcare.android.service.Message;
+import org.androidcare.android.service.alarms.FellOffAlgorithm;
 import org.androidcare.android.service.alarms.messages.GetAlarmsMessage;
 import org.androidcare.android.service.alarms.messages.SendEmailMessage;
 import org.androidcare.android.service.location.LocationMessage;
@@ -34,6 +35,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<GetAlarmsMessage, Integer> getAlarmMessageDao;
     private Dao<SendEmailMessage, Integer> sendEmailMessagesDao;
     private Dao<GeoPoint, Integer> geoPointDao;
+    Dao<FellOffAlgorithm, Integer> fellOffAlgorithmDao;
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,6 +53,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, SendEmailMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, GeoPoint.class);
+            TableUtils.createTableIfNotExists(connectionSource, FellOffAlgorithm.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -71,6 +74,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, GetAlarmsMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, SendEmailMessage.class);
             TableUtils.createTableIfNotExists(connectionSource, GeoPoint.class);
+            TableUtils.createTableIfNotExists(connectionSource, FellOffAlgorithm.class);
         }catch(SQLException ex){
             Log.e(DatabaseHelper.class.getName(), "Can't create database", ex);
             throw new RuntimeException(ex);
@@ -133,10 +137,21 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return geoPointDao;
     }
 
+    public Dao<FellOffAlgorithm, Integer> getFellOffAlgorithmDao() throws SQLException {
+        if (fellOffAlgorithmDao == null) {
+            fellOffAlgorithmDao = getDao(FellOffAlgorithm.class);
+        }
+        return fellOffAlgorithmDao;
+    }
+
     public void truncateReminderTable() throws SQLException {
         TableUtils.clearTable(connectionSource, Reminder.class);
 
         Log.i(DatabaseHelper.class.getName(), "Reminders table successfully cleared");
+    }
+
+    public void truncateFellOffAlgorithTable() throws SQLException {
+        TableUtils.clearTable(connectionSource, FellOffAlgorithm.class);
     }
 
     public int create(Message message) throws SQLException {
@@ -194,6 +209,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         Log.d(DatabaseHelper.class.getName(), "Enviando mensaje de posicionamiento");
         messages.addAll(getLocationMessageDao().queryForAll());
         return messages;
+    }
+
+    public void setFellOffThreshold(int threshold) throws SQLException {
+        truncateFellOffAlgorithTable();
+        getFellOffAlgorithmDao().create(new FellOffAlgorithm(threshold));
+    }
+
+    public int getFellOffThreshold() throws SQLException {
+        List<FellOffAlgorithm> algorithms = getFellOffAlgorithmDao().queryForAll();
+        FellOffAlgorithm lastValue = algorithms.get(algorithms.size() - 1);
+        return lastValue.getFellOffThreshold();
     }
 
 }

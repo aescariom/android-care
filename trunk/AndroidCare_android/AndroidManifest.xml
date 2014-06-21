@@ -51,7 +51,10 @@
             android:name=".preferences.ReminderList">
         </activity>
         <activity
-            android:name=".preferences.AlarmList">
+                android:name=".preferences.AlarmList">
+        </activity>
+        <activity
+                android:name=".preferences.CalibrationWindow">
         </activity>
         <activity android:name=".view.alarm.AlarmWindowReceiver"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -59,6 +62,8 @@
         <activity android:name=".view.UserWarningDialogReceiver">
         </activity>
         <activity android:name=".view.SpecificWarningActivityLauncher">
+        </activity>
+        <activity android:name=".view.NoCalibrationFoundWindow">
         </activity>
 
         <!-- reminder notification receiver -->

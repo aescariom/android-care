@@ -41,6 +41,9 @@
     <string name="day_s">day(s)</string>
     <string name="location_service">Location service</string>
     <string name="force_gps_location_if_airplane_mode">Ignore Airplane Mode</string>
+    <string name="no_calibration_found">No calibration found</string>
+    <string name="calibrate_felloff_sensor">Please, calibrate the fell off sensor.</string>
+    <string name="calibrate">Calibrate</string>
     
     <!-- Network -->
     <string name="not_reachable">Server not responding</string>
@@ -58,4 +61,8 @@
     <string name="fell_off">Fell off</string>
     <string name="alarm_service">Alarm Service</string>
     <string name="use_lock_with_fell_off_alarm">Use lock with fell off alarm monitor</string>
+    <string name="fellOffCalibration">Fell off calibration</string>
+    <string name="calibration_instructions">Please, pick the device, extend your arm over a soft surface to avoid damage
+        (like a bed), tap OK and drop it. After that, tap the button again</string>
+    <string name="sensor_calibrated">Sensor calibrated successfully</string>
 </resources>
