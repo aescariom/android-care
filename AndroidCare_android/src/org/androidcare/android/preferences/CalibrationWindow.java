@@ -2,6 +2,7 @@ package org.androidcare.android.preferences;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.os.Bundle;
@@ -78,6 +79,15 @@ public class CalibrationWindow extends Activity implements AnySensorListener {
             Toast.makeText(this, sensorCalibrated + ". " + restartingServices, Toast.LENGTH_SHORT).show();
 
             ServiceManager.startAllServices(this);
+
+            Intent mainWindow = new Intent(this, PreferencesActivity.class);
+            this.startActivity(mainWindow);
+
+            Intent desktopIntent = new Intent(Intent.ACTION_MAIN);
+            desktopIntent.addCategory(Intent.CATEGORY_HOME);
+            desktopIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            this.startActivity(desktopIntent);
         }
     }
 

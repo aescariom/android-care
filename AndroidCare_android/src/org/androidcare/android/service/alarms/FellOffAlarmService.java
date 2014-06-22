@@ -1,6 +1,9 @@
 package org.androidcare.android.service.alarms;
 
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.os.Bundle;
@@ -18,6 +21,8 @@ import org.androidcare.android.view.NoCalibrationFoundWindow;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class FellOffAlarmService extends AlarmService implements AnySensorListener {
 
@@ -25,6 +30,7 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     private boolean isTheAlarmLaunchable = true;
     private boolean continueRunning = true;
     private int fellOffThreshold = 9;
+    private final Lock monitorLock = new ReentrantLock();
 
     public FellOffAlarmService() {
         super();
@@ -98,27 +104,25 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     public void onChangeSensor(float[] values, PowerManager.WakeLock lock, AnySensorRetriever retriever) {
 
         if (continueRunning) {
-            synchronized(this) {
+            monitorLock.lock();
                 if (mustLaunchAlarm(values)) {
                     launchAlarm();
                 }
-            }
+            monitorLock.unlock();
         } else {
             finishRunning(lock, retriever);
         }
     }
 
     private boolean mustLaunchAlarm(float[] values) {
-         return FellOffAlgorithm.run(values) > 9;
+         return FellOffAlgorithm.run(values) > fellOffThreshold && isTheAlarmLaunchable ;
     }
 
 
     private void launchAlarm() {
         Log.d(TAG, "INITIATE ALARM LAUNCH");
-        if (isTheAlarmLaunchable) {
-            isTheAlarmLaunchable = false;
-            abstractInitiateAlarm();
-        }
+        isTheAlarmLaunchable = false;
+        abstractInitiateAlarm();
     }
 
     private void finishRunning(PowerManager.WakeLock lock, AnySensorRetriever retriever) {

@@ -38,6 +38,8 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionService extends Service {
 
@@ -72,6 +74,8 @@ public class ConnectionService extends Service {
     private final int timeout = 60 * 1000; // 1 minute
 
     private DatabaseHelper databaseHelper = null;
+
+    private final Lock messagesLock = new ReentrantLock();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -313,6 +317,7 @@ public class ConnectionService extends Service {
     }
 
     public void pushLowPriorityMessage(Message message) {
+        Log.d(TAG, "Pushed to low priority the message: " + message);
         try {
             getHelper().create(message);
         }
@@ -415,8 +420,9 @@ public class ConnectionService extends Service {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            Log.e("TEST","Entrando en el MessageQueueProcessor");
             try{
+                messagesLock.lock();
+
                 if (!isConnectionAvailable()) {
                     triggerConnectionErrorNotification();
                     return false;
@@ -428,12 +434,8 @@ public class ConnectionService extends Service {
                 }
                 List<Message> messages = getHelper().getMessages();
 
-                Log.e("TEST","Comenzando a procesar mensajes");
                 for (Message m : messages) {
-
-                    Log.e("TEST","Mensaje: " + m);
                     try {
-
                         HttpClient client = DefaultHttpClientFactory.getDefaultHttpClient(
                                                ConnectionService.this.getApplicationContext(), authCookie);
                         HttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(5, false){
@@ -473,6 +475,8 @@ public class ConnectionService extends Service {
                 return true;
             }catch(SQLException e){
                 Log.e(tag, "Error when procesing the Queue -> " + e.getMessage(), e);
+            } finally {
+                messagesLock.unlock();
             }
             Log.i(TAG, "Finished procesing messages");
             return false;
