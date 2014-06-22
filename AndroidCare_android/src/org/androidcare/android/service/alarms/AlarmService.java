@@ -99,6 +99,12 @@ public class AlarmService extends Service implements Serializable {
                 notifyByEmail(ctx);
             }
 
+            try {
+                Thread.sleep(2*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             if (alarm.isInitiateCall()) {
                 openMainWindow(ctx);
                 notifyByCall(ctx);
