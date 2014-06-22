@@ -18,6 +18,8 @@ import org.androidcare.android.service.alarms.messages.SendEmailMessage;
 import org.androidcare.android.view.UserWarningReceiver;
 
 import java.io.Serializable;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class AlarmService extends Service implements Serializable {
 
@@ -25,14 +27,18 @@ public class AlarmService extends Service implements Serializable {
     private final String TAG = this.getClass().getName();
     private String smsAlarmStartText = "";
     private String smsAlarmMiddleText = "";
+    private boolean notificationPending = true;
+    private final Lock notificationLock = new ReentrantLock();
 
     public AlarmService(Alarm alarm) {
         super();
+        notificationPending = true;
         this.alarm = alarm;
     }
 
     public AlarmService() {
         super();
+        notificationPending = true;
     }
 
     @Override
@@ -44,7 +50,7 @@ public class AlarmService extends Service implements Serializable {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     private void notifyByEmail(Context ctx) {
@@ -69,36 +75,44 @@ public class AlarmService extends Service implements Serializable {
         smsManager.sendTextMessage(alarm.getPhoneNumber().trim(), null, message , null, null);
     }
 
-    private void notifyByCall(final Context ctx) {
+    private void notifyByCall(Context ctx) {
         Log.d(TAG, "Starts a call");
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + alarm.getPhoneNumber().trim()));
-                callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + alarm.getPhoneNumber().trim()));
+        callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                ctx.startActivity(callIntent);
-            }
-        }).start();
+        ctx.startActivity(callIntent);
     }
 
     public void fireAlarm(Context ctx) {
-        Log.d(TAG, "Fire alarm");
-        if (alarm.isSendSMS()) {
-            notifyBySMS(ctx);
+        notificationLock.lock();
+        if (notificationPending) {
+            notificationPending = false;
+
+            Log.d(TAG, "Fire alarm");
+            if (alarm.isSendSMS()) {
+                notifyBySMS(ctx);
+            }
+
+            if (alarm.isSendEmail()) {
+                notifyByEmail(ctx);
+            }
+
+            if (alarm.isInitiateCall()) {
+                openMainWindow(ctx);
+                notifyByCall(ctx);
+            } else {
+                closeWindow(ctx);
+            }
         }
+        notificationLock.unlock();
+    }
 
-        if (alarm.isSendEmail()) {
-            notifyByEmail(ctx);
-        }
-
-        if (alarm.isInitiateCall()) {
-            notifyByCall(ctx);
-        }
-
-        closeWindow(ctx);
-
+    private void openMainWindow(Context ctx) {
+        Intent mainWindow = new Intent(ctx, PreferencesActivity.class);
+        mainWindow.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(mainWindow);
     }
 
     public void cancelAlarm(Context ctx) {
@@ -120,18 +134,15 @@ public class AlarmService extends Service implements Serializable {
     }
 
     private void closeWindow(Context ctx) {
-        ServiceManager.stopSecondaryServices(ctx);
-        ServiceManager.startAllServices(ctx);
-
-        Intent mainWindow = new Intent(ctx, PreferencesActivity.class);
-        mainWindow.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ctx.startActivity(mainWindow);
+        openMainWindow(ctx);
 
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
         ctx.startActivity(intent);
+
+        ServiceManager.stopSecondaryServices(ctx);
+        ServiceManager.startAllServices(ctx);
     }
 
     public void abstractInitiateAlarm() {}

@@ -56,9 +56,7 @@ public class SendEmailMessage extends Message {
 
         SendEmailMessage that = (SendEmailMessage) o;
 
-        if (alarmId != that.alarmId) return false;
-
-        return true;
+        return alarmId != that.alarmId;
     }
 
     @Override
