@@ -115,7 +115,7 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
     }
 
     private boolean mustLaunchAlarm(float[] values) {
-         return FellOffAlgorithm.run(values) > fellOffThreshold && isTheAlarmLaunchable ;
+         return FellOffAlgorithm.run(values) >= fellOffThreshold && isTheAlarmLaunchable ;
     }
 
 

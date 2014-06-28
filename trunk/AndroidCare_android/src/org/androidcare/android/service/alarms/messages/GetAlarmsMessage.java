@@ -68,27 +68,27 @@ public class GetAlarmsMessage extends Message {
 
             if (jsonString.isEmpty()) {
                 throw new InvalidMessageResponseException("No JSON String received");
+            } else {
+                Log.d(TAG, "Unschedule all alarms");
+                if (this.alarmManagerService != null) {
+                    this.alarmManagerService.unscheduleAllDatabaseAlarms();
+                }
+
+                Log.d(TAG, "delete all alarms");
+                this.removeAllAlarms();
+
+                JSONArray array = new JSONArray(jsonString);
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
+                    this.alarms.add(new Alarm(obj, null));
+                }
+
+                Log.d(TAG, "add new alarms");
+                this.addAlarmsToDatabase(this.alarms);
+                Log.i(TAG, "Alarms updated from the server");
+
+                this.alarmManagerService.scheduleAlarmsFromDatabase();
             }
-
-            Log.d(TAG, "Unschedule all alarms");
-            if (this.alarmManagerService != null) {
-                this.alarmManagerService.unscheduleAllDatabaseAlarms();
-            }
-
-            Log.d(TAG, "delete all alarms");
-            this.removeAllAlarms();
-
-            JSONArray array = new JSONArray(jsonString);
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                this.alarms.add(new Alarm(obj, null));
-            }
-
-            Log.d(TAG, "add new alarms");
-            this.addAlarmsToDatabase(this.alarms);
-            Log.i(TAG, "Alarms updated from the server");
-
-            this.alarmManagerService.scheduleAlarmsFromDatabase();
 
         }
         catch (Exception e) {

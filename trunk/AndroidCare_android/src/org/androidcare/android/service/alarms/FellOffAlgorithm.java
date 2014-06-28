@@ -32,6 +32,8 @@ public class FellOffAlgorithm {
         int yAboveMin = 0;
         int zAboveMin = 0;
 
+        int sum = 0;
+
         xIndexes[currentIndex] = values[0];
         yIndexes[currentIndex] = values[1];
         zIndexes[currentIndex] = values[2];
@@ -56,14 +58,17 @@ public class FellOffAlgorithm {
             if (Math.abs(nextZ - currentZ) > DELTA) {
                 zAboveMin++;
             }
-            if(xAboveMin > 0 || yAboveMin > 0 || zAboveMin > 0) {
-                Log.d(TAG, currentIndex + " - " + xAboveMin + ", " + yAboveMin + ", " + zAboveMin);
+
+            sum = xAboveMin + yAboveMin + zAboveMin;
+            if(sum > 0) {
+
+                Log.d(TAG, currentIndex + " - " + sum + " = " + xAboveMin + ", " + yAboveMin + ", " + zAboveMin);
             }
         }
 
         currentIndex = (currentIndex + 1) % SAMPLING_RATE;
 
-        return xAboveMin + yAboveMin + zAboveMin;
+        return sum;
     }
 
     public int getFellOffThreshold() {
