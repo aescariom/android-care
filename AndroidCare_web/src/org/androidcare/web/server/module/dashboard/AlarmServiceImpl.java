@@ -1,21 +1,19 @@
 package org.androidcare.web.server.module.dashboard;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-
-import org.androidcare.web.client.module.dashboard.rpc.AlarmService;
-import org.androidcare.web.server.PMF;
-import org.androidcare.web.shared.persistent.Alarm;
-
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.androidcare.web.client.module.dashboard.rpc.AlarmService;
+import org.androidcare.web.server.PMF;
+import org.androidcare.web.shared.persistent.Alarm;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public class AlarmServiceImpl extends RemoteServiceServlet implements AlarmService {
@@ -50,34 +48,6 @@ public class AlarmServiceImpl extends RemoteServiceServlet implements AlarmServi
         return alarms;
     }
     
-    /*
-     List<Reminder> list = new ArrayList();
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-
-		UserService userService = UserServiceFactory.getUserService();
-	    User user = userService.getCurrentUser();
-		
-		Query query = pm.newQuery(Reminder.class);
-	    query.setFilter("owner == reminderOwner");
-	    query.declareParameters("String reminderOwner");
-	    query.setOrdering("title asc");
-
-	    try {
-	        List<?> resulset = (List<?>) query.execute(user.getUserId());
-	        if(resulset != null){
-		        for (Object persitedReminder : resulset) {
-		        	Reminder rem = new Reminder((Reminder)persitedReminder);
-		            list.add(rem);
-		        }
-	        }
-	    } catch(Exception ex){
-	    	log.log(Level.SEVERE, "Reminders could not be retrieved", ex);
-	    }finally {
-	        query.closeAll();
-	    }
-	    return list;
-     */
-
     @Override
     public void saveAlarm(Alarm alarm) {
         PersistenceManager pm = PMF.get().getPersistenceManager();

@@ -78,6 +78,7 @@ public class CalibrationWindow extends Activity implements AnySensorListener {
             String restartingServices = getResources().getString(R.string.restarting_service);
             Toast.makeText(this, sensorCalibrated + ". " + restartingServices, Toast.LENGTH_SHORT).show();
 
+            ServiceManager.stopSecondaryServices(this);
             ServiceManager.startAllServices(this);
 
             Intent mainWindow = new Intent(this, PreferencesActivity.class);
