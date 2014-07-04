@@ -61,6 +61,8 @@ public class AlarmManagerService extends Service {
             this.downloadAlarms();
 
             GetAlarmsMessage.setAlarmManagerService(this);
+        } else {
+            Log.w(TAG, "Intent == null @ onStartCommand()");
         }
         return result;
     }
