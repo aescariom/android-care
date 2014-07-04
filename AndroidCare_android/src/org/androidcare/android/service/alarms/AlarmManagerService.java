@@ -40,26 +40,28 @@ public class AlarmManagerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int result = super.onStartCommand(intent, flags, startId);
-        String action = intent.getStringExtra("action");
 
-        Log.i(TAG, "Alarms downloads service started");
-        Log.d(TAG, "Alarms download action " + action);
+        if (intent != null) {
+            String action = intent.getStringExtra("action");
 
-        registerReceiver(wakeUpAlarmReceiver, wakeUpAlarmBroadcastFilter);
-        Log.d(TAG, "Registred Wake up alarm receiver");
-        registerReceiver(greenZoneAlarmReceiver, redZoneAlarmBroadcastFilter);
-        Log.d(TAG, "Registred Green zone alarm receiver");
-        registerReceiver(fellOffAlarmReceiver, fellOffAlarmBroadcastFilter);
-        Log.d(TAG, "Registred Fell off alarm receiver");
+            Log.i(TAG, "Alarms downloads service started");
+            Log.d(TAG, "Alarms download action " + action);
 
-        Log.d(TAG, "Scheduling alarms");
-        this.scheduleAlarmsFromDatabase();
+            registerReceiver(wakeUpAlarmReceiver, wakeUpAlarmBroadcastFilter);
+            Log.d(TAG, "Registred Wake up alarm receiver");
+            registerReceiver(greenZoneAlarmReceiver, redZoneAlarmBroadcastFilter);
+            Log.d(TAG, "Registred Green zone alarm receiver");
+            registerReceiver(fellOffAlarmReceiver, fellOffAlarmBroadcastFilter);
+            Log.d(TAG, "Registred Fell off alarm receiver");
 
-        Log.d(TAG, "Trying to update alarms");
-        this.downloadAlarms();
+            Log.d(TAG, "Scheduling alarms");
+            this.scheduleAlarmsFromDatabase();
 
-        GetAlarmsMessage.setAlarmManagerService(this);
+            Log.d(TAG, "Trying to update alarms");
+            this.downloadAlarms();
 
+            GetAlarmsMessage.setAlarmManagerService(this);
+        }
         return result;
     }
 
