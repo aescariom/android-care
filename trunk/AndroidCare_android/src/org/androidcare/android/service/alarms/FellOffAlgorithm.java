@@ -61,7 +61,6 @@ public class FellOffAlgorithm {
 
             sum = xAboveMin + yAboveMin + zAboveMin;
             if(sum > 0) {
-
                 Log.d(TAG, currentIndex + " - " + sum + " = " + xAboveMin + ", " + yAboveMin + ", " + zAboveMin);
             }
         }

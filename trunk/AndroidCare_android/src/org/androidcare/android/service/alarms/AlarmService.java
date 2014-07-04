@@ -10,11 +10,12 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import org.androidcare.android.R;
 import org.androidcare.android.alarms.Alarm;
+import org.androidcare.android.alarms.AlarmType;
 import org.androidcare.android.preferences.PreferencesActivity;
 import org.androidcare.android.service.ConnectionServiceBroadcastReceiver;
 import org.androidcare.android.service.Message;
-import org.androidcare.android.service.ServiceManager;
 import org.androidcare.android.service.alarms.messages.SendEmailMessage;
+import org.androidcare.android.service.alarms.receivers.FellOffAlarmReceiver;
 import org.androidcare.android.view.UserWarningReceiver;
 
 import java.io.Serializable;
@@ -147,8 +148,12 @@ public class AlarmService extends Service implements Serializable {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ctx.startActivity(intent);
 
-        ServiceManager.stopSecondaryServices(ctx);
-        ServiceManager.startAllServices(ctx);
+        if (this.alarm.getAlarmType() == AlarmType.FELL_OFF) {
+            getApplicationContext().stopService(new Intent(ctx, FellOffAlarmService.class));
+            Intent fellOff = new Intent(FellOffAlarmReceiver.ACTION_TRIGGER_FELLOFF_SENSOR);
+            fellOff.putExtra("alarm", this.alarm);
+            ctx.sendBroadcast(fellOff);
+        }
     }
 
     public void abstractInitiateAlarm() {}
