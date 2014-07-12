@@ -41,51 +41,54 @@ public class FellOffAlarmService extends AlarmService implements AnySensorListen
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "Starting service");
 
-        DatabaseHelper helper = new DatabaseHelper(this);
-        List<FellOffAlgorithm> thresholds = new ArrayList();
-        try {
-            thresholds = helper.getFellOffAlgorithmDao().queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (thresholds.size() > 0) {
+        if (intent != null) {
+            DatabaseHelper helper = new DatabaseHelper(this);
+            List<FellOffAlgorithm> thresholds = new ArrayList();
             try {
-                fellOffThreshold = helper.getFellOffThreshold();
+                thresholds = helper.getFellOffAlgorithmDao().queryForAll();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-            Log.d(TAG, "fellOffThreshold value " + fellOffThreshold);
-            Toast.makeText(this, "fellOffThreshold value " + fellOffThreshold, Toast.LENGTH_SHORT).show();
+            if (thresholds.size() > 0) {
+                try {
+                    fellOffThreshold = helper.getFellOffThreshold();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
-            isTheAlarmLaunchable = true;
+                Log.d(TAG, "fellOffThreshold value " + fellOffThreshold);
+                Toast.makeText(this, "fellOffThreshold value " + fellOffThreshold, Toast.LENGTH_SHORT).show();
 
-            Bundle bundle = intent.getExtras();
+                isTheAlarmLaunchable = true;
 
-            Alarm alarmReceived = (Alarm) bundle.getSerializable("alarm");
-            super.setAlarm(alarmReceived);
+                Bundle bundle = intent.getExtras();
 
-            Log.d(TAG, "Alarm data watchdog @ WakeUpAlarmService " + alarmReceived.getName());
+                Alarm alarmReceived = (Alarm) bundle.getSerializable("alarm");
+                super.setAlarm(alarmReceived);
 
-            PowerManager.WakeLock wakeLock = null;
+                Log.d(TAG, "Alarm data watchdog @ WakeUpAlarmService " + alarmReceived.getName());
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            boolean useLock = prefs.getBoolean("forceLockWithFellOffAlarm", true);
+                PowerManager.WakeLock wakeLock = null;
 
-            if (useLock) {
-                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wakelook " + TAG);
-                wakeLock.acquire();
-                Log.d(TAG, "lock set");
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                boolean useLock = prefs.getBoolean("forceLockWithFellOffAlarm", true);
+
+                if (useLock) {
+                    PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                    wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wakelook " + TAG);
+                    wakeLock.acquire();
+                    Log.d(TAG, "lock set");
+                }
+
+                new AnySensorRetriever(this, this, wakeLock, Sensor.TYPE_LINEAR_ACCELERATION);
+            } else {
+                Intent intentWindow = new Intent(this, NoCalibrationFoundWindow.class);
+                intentWindow.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentWindow);
             }
-
-            new AnySensorRetriever(this, this, wakeLock, Sensor.TYPE_LINEAR_ACCELERATION);
-        } else {
-            Intent intentWindow = new Intent(this, NoCalibrationFoundWindow.class);
-            intentWindow.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intentWindow);
         }
+
         return START_STICKY;
     }
 
