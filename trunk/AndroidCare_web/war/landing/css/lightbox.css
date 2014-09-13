@@ -1,0 +1,265 @@
+html, body {
+	background: #fff;
+}
+
+/* Special Short Grid for Lightbox / Start */
+.about-container { position: relative; width: 780px; margin: 0 auto; padding: 0; }
+.project-container { position: relative; width: 960px; margin: 0 auto; padding: 0; }
+
+.about-photo { width: 380px; float: left; display: inline; }
+.about-informations { width: 360px; float: left; display: inline; padding: 0 20px; }
+
+.video-container,
+.photo-container {	float: left; display: inline; width: 580px;}
+.project-informations { float: left; display: inline; width: 340px; margin-left: 20px; } 
+
+.video-container {	max-height: 327px; }
+.video { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;}
+.video iframe,
+.video object,
+.video embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+/* Special Short Grid for Lightbox / End */
+
+
+.scroll-disabled{
+    overflow: hidden !important;
+	margin-left: -4px;
+}
+
+#popup_loader{
+	position: absolute;
+	z-index: 50;
+	top:45%;
+	left: 50%;
+	width: 32px;
+	height: 32px;
+	margin-top: -8px;
+	margin-left: -8px;
+}
+
+#popup_mask {
+	z-index: 30px;
+	position: absolute;
+	width: 100%;
+	height:100%;
+	background: #000;
+	opacity: .85; /* other browsers  and IE9+ */
+	filter: alpha(opacity=85); /* IE6+ */
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=85); /* IE6+ */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=85)"; /* this works in IE8 only */
+}
+
+#popup{
+	background: transparent;
+	width:100%;
+	height:100%;
+	position: fixed;
+	background-color: #fff;
+	top:0;
+	left:0;
+	z-index: 9999;
+	display: none;
+}
+
+#popup_box{
+	background: #fff;
+	z-index: 51;
+	display: block;
+	position: absolute;
+	left: 50%;
+	margin-left:-300px;
+}
+
+#popup_content{display:none;}
+
+.popup_close {cursor: pointer;}
+
+.close {
+	position: absolute;
+	z-index: 1;
+	right: 10px;
+	top: 10px;
+	cursor: pointer;
+	color: #252525;
+}
+
+.popup_next, .popup_pre {
+	position: absolute;
+	z-index: 1;
+	top: 10px;
+	cursor: pointer;
+	color: #252525;
+}
+
+.popup_pre {right: 50px;}
+.popup_next  {right: 30px;}
+
+.about-informations h3 {
+	font-family: 'Novecentowide-DemiBold';
+	font-size: 21px;
+	margin-left: -1px; /* font bug fix */
+	margin-top: 15px;
+	color: #252525;
+}
+
+.about-informations .title {
+	font-size: 14px;
+	color: #b3b3b3;
+	padding: 11px 0 9px;
+	display: block;
+}
+
+.about-informations p {
+	margin-top: 12px;
+	color: #252525;
+}
+
+.project-informations h3{
+	font-family: 'Novecentowide-DemiBold';
+	font-size: 21px;
+	margin-left: -1px; /* font bug fix */
+	margin-top: 20px;
+	color: #252525;
+}
+
+.project-informations .title {
+	font-size: 14px;
+	color: #b3b3b3;
+	padding: 14px 0 9px;
+	display: block;
+}
+
+.project-informations p {
+	margin-top: 5px;
+	padding-top: 8px;
+	color: #252525;
+	border-top: 1px solid #e8e8e8;
+}
+
+.about-socials {
+	width: 100%;
+	height: 22px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.about-socials li a {
+	width: 22px;
+	height: 22px;
+	float: left;
+	margin: 0 3px 0 0;
+	background-repeat: no-repeat;
+	-webkit-transition: background 0.15s ease-in-out;
+	-moz-transition: background 0.15s ease-in-out;
+	transition: background 0.15s ease-in-out;
+	background-image: url(../images/social/blue.png);
+}
+
+.about-socials li a.facebook-about { background-position: 0 top; }
+.about-socials li a.twitter-about { background-position: -22px top; }
+.about-socials li a.vimeo-about { background-position: -43px top; }
+.about-socials li a.tumblr-about { background-position: -65px top; }
+
+.about-socials li a.facebook-about:hover { background-position: 0 bottom; }
+.about-socials li a.twitter-about:hover { background-position: -22px bottom; }
+.about-socials li a.vimeo-about:hover { background-position: -43px bottom; }
+.about-socials li a.tumblr-about:hover { background-position: -65px bottom; }
+
+/* ========================================================
+   SKILL BARS
+   ===================================================== */
+
+#skills {
+	width: 100%;
+	margin-top: 15px;
+}
+#skills li {
+	clear:both;
+}
+
+.skill-bar {
+height: 24px;
+position: relative;
+background: #f7f7f7;
+margin: 0 0 8px 0;
+width: 260px;
+float: left;
+display: inline;
+}
+
+.skill-bar-content[data-percentage] {
+text-indent: 5px;
+color: #fff;
+padding: 5px;
+font-size: 13px;
+}
+
+.skill-bar-content {
+float: left;
+height: 14px;
+width: 0;
+}
+
+.skill-title {
+color: #828282;
+float: left;
+display: inline;
+width: 97px;
+margin-top: 5px;
+font-size: 13px;
+}
+
+
+ul.bjqs{position:relative; list-style:none;padding:0;margin:0;overflow:hidden; display:none;}
+li.bjqs-slide{position:absolute; display:none;}
+ul.bjqs-controls{list-style:none;margin:0;padding:0;z-index:9999;}
+ul.bjqs-controls.v-centered li a{position:absolute;}
+ul.bjqs-controls.v-centered li.bjqs-next a{right:0;}
+ul.bjqs-controls.v-centered li.bjqs-prev a{left:0;}
+ol.bjqs-markers{list-style: none; padding: 0; margin: 0; width:100%;}
+ol.bjqs-markers.h-centered{text-align: center;}
+ol.bjqs-markers li{display:inline;}
+ol.bjqs-markers li a{display:inline-block;}
+p.bjqs-caption{display:block;width:96%;margin:0;padding:2%;position:absolute;bottom:0;}
+
+
+@media only screen and (min-width: 768px) and (max-width: 959px) { 
+	.about-container,
+	.about-photo{ width: 520px; }
+	.about-informations { width: 480px; }
+	
+	.project-container { width: 600px; margin: 0; } 
+	.video-container,
+	.photo-container { width: 600px; margin: 0; } 
+	.project-informations { width: 580px; margin: 0 10px; } 
+	.video-container {	max-height: 427px; }
+	.close {right: 10px; top: 10px; background:#fff; padding: 5px 7px;}
+	.popup_next {right: 40px; top: 10px; background:#fff; padding: 5px 7px;}
+	.popup_pre {right: 70px; top: 10px; background:#fff; padding: 5px 7px;}
+}
+
+@media only screen and (max-width: 767px) {
+	.about-container,
+	.about-photo { width: 300px; }
+	.about-informations { width: 260px; }
+	
+	.project-container { width: 300px; margin: 0; } 
+	.video-container,
+	.photo-container { width: 300px; margin: 0; } 
+	.project-informations { width: 280px; margin: 0 10px; } 
+	
+	.close {right: 10px; top: 10px; background:#fff; padding: 5px 7px;}
+	.popup_next {right: 40px; top: 10px; background:#fff; padding: 5px 7px;}
+	.popup_pre {right: 70px; top: 10px; background:#fff; padding: 5px 7px;}
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	.about-container,
+	.about-photo { width: 420px; }
+	.about-informations { width: 380px; }
+	
+	.project-container { width: 420px; margin: 0; } 
+	.video-container,
+	.photo-container { width: 420px; margin: 0; } 
+	.project-informations { width: 400px; margin: 0 10px; } 
+}
